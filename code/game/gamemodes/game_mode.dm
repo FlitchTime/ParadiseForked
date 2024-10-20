@@ -727,21 +727,21 @@
 	var/obj/singularity/narsie/N = locate(/obj/singularity/narsie) in GLOB.poi_list
 	var/obj/singularity/ratvar/R = locate(/obj/singularity/ratvar) in GLOB.poi_list
 	if(!N && !R)
-		GLOB.priority_announcement.Announce("Угроза пропала с наших сенсоров. Нам требуется срочный отчет о вашей ситуации. Но, мгм, пока что мы санкционировали вам экстренную эвакуацию.", 'sound/AI/commandreport.ogg')
+		GLOB.priority_announcement.Announce("Угроза пропала с наших сенсоров. Нам требуется срочный отчет о вашей ситуации. Мы санкционировали вам экстренную эвакуацию.", 'sound/AI/commandreport.ogg')
 		SSshuttle.emergency.request(null, 0.3)
 		SSshuttle.emergency.canRecall = FALSE
 		return
-	if(SSticker.cultdat.name == "Cult of Nar'Sie")
-		if(N.soul_devoured > 20)
-			play_cinematic(/datum/cinematic/cult_arm, world)
-			sleep(15 SECONDS)
-			SSticker.force_ending = TRUE
-			return
-	play_cinematic(/datum/cinematic/nuke/self_destruct, world)
-	sleep(8 SECONDS)
-	SSticker.force_ending = TRUE
-	qdel(R)
-	qdel(N)
+	if(SSticker.cultdat.name == "Cult of Nar'Sie" || SSticker.cultdat.name == "Cult of Kha'Rin" || SSticker.cultdat.name == "Cult of Mortality")
+		play_cinematic(/datum/cinematic/cult_arm, world)
+		sleep(15 SECONDS)
+		SSticker.force_ending = TRUE
+		return
+	else
+		play_cinematic(/datum/cinematic/clockwork_win, world)
+		sleep(15 SECONDS)
+		SSticker.force_ending = TRUE
+		return
+
 
 
 #undef NUKE_INTACT
