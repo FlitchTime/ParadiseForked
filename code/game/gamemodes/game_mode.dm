@@ -737,7 +737,7 @@
 		SSticker.force_ending = TRUE
 		return
 	else
-		play_cinematic(datum/cinematic/clockwork_win, world)
+		play_cinematic(/datum/cinematic/clockwork_win, world)
 		sleep(15 SECONDS)
 		SSticker.force_ending = TRUE
 		return
