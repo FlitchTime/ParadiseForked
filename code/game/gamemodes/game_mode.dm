@@ -731,7 +731,7 @@
 		SSshuttle.emergency.request(null, 0.3)
 		SSshuttle.emergency.canRecall = FALSE
 		return
-	if(SSticker.cultdat.name == "Cult of Nar'Sie" || SSticker.cultdat.name == "Cult of Kha'Rin" || SSticker.cultdat.name == "Cult of Mortality")
+	if(SSticker.cultdat.name == "Cult of Nar'Sie" && SSticker.cultdat.name == "Cult of Kha'Rin" && SSticker.cultdat.name == "Cult of Mortality")
 		play_cinematic(/datum/cinematic/cult_arm, world)
 		sleep(15 SECONDS)
 		SSticker.force_ending = TRUE
