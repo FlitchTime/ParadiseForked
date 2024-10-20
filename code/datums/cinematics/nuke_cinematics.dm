@@ -73,10 +73,18 @@
 /datum/cinematic/nuke/cult
 	after_nuke_summary_state = "summary_cult"
 
-
 /datum/cinematic/nuke/cult/play_nuke_effect()
 	flick("station_explode_fade_red", screen)
 	play_cinematic_sound(sound('sound/effects/explosion_distant.ogg'))
+
+/datum/cinematic/nuke/cult/Kharin
+	after_nuke_summary_state = "summary_cult_Kharin"
+
+/datum/cinematic/nuke/cult/Reaper
+	after_nuke_summary_state = "summary_cult_Reaper"
+
+/datum/cinematic/nuke/cult/Ratvar
+	after_nuke_summary_state = "summary_cult_Ratvar"
 
 
 /// A fake version of the nuclear detonation, where it winds up, but doesn't explode.
