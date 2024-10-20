@@ -1,7 +1,5 @@
 /// Ratvar summoned and capture nuke with gear
-/datum/cinematic/clockwork_win // Gear in nuke term ¯\_(ツ)_/¯
-
-
+/datum/cinematic/clockwork_win 
 /datum/cinematic/clockwork_win/play_cinematic()
 	screen.icon_state = null
 	flick("intro_cult_clockwork", screen)
@@ -16,9 +14,8 @@
 	special_callback?.Invoke()
 
 
-/datum/cinematic/clockwork_fail /// Why are u here? Just for BLOW UP ON NUKE?
-
-
+/// Why are u here? Just for BLOW UP ON NUKE?
+/datum/cinematic/clockwork_fail
 /datum/cinematic/clockwork_fail/play_cinematic()
 	screen.icon_state = "station_intact"
 	stoplag(2 SECONDS)
