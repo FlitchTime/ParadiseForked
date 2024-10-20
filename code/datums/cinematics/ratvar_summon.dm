@@ -4,7 +4,7 @@
 	screen.icon_state = null
 	flick("intro_cult_clockwork", screen)
 	stoplag(2.5 SECONDS)
-	play_cinematic_sound(sound('sound\magic\clockwork\reconstruct.ogg'))
+	play_cinematic_sound(sound('sound/magic/clockwork/reconstruct.ogg'))
 	stoplag(2.8 SECONDS)
 	play_cinematic_sound(sound('sound/machines/terminal_off.ogg'))
 	stoplag(2 SECONDS)
@@ -19,7 +19,7 @@
 /datum/cinematic/clockwork_fail/play_cinematic()
 	screen.icon_state = "station_intact"
 	stoplag(2 SECONDS)
-	play_cinematic_sound(sound('sound\magic\clockwork\clockcult_gateway_disrupted.ogg'))
+	play_cinematic_sound(sound('sound/magic/clockwork/clockcult_gateway_disrupted.ogg'))
 	stoplag(6 SECONDS)
 	play_cinematic_sound(sound('sound/effects/explosion_distant.ogg'))
 	stoplag(1 SECONDS)
