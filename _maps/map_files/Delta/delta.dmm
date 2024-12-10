@@ -451,9 +451,9 @@
 	dir = 4
 	},
 /obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
 /obj/item/clothing/gloves/combat,
 /obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/shoes/combat,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -476,9 +476,9 @@
 	dir = 8
 	},
 /obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
 /obj/item/clothing/gloves/combat,
 /obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/shoes/combat,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -509,9 +509,9 @@
 	dir = 8
 	},
 /obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
 /obj/item/clothing/gloves/combat,
 /obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/shoes/combat,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -26509,8 +26509,8 @@
 	},
 /obj/structure/filingcabinet/chestdrawer,
 /obj/item/radio/intercom{
-	pixel_y = -26;
-	pixel_x = 0
+	pixel_x = 0;
+	pixel_y = -26
 	},
 /turf/simulated/floor/plasteel{
 	dir = 6;
@@ -64115,10 +64115,7 @@
 /turf/simulated/floor/plasteel,
 /area/bridge/vip)
 "jBm" = (
-/obj/effect/decal/warning_stripes/north,
-/obj/item/radio/intercom{
-	pixel_x = 28
-	},
+/obj/effect/decal/warning_stripes/northeast,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -109516,6 +109513,10 @@
 	pixel_y = 6
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/window/reinforced,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -114037,6 +114038,9 @@
 	},
 /obj/item/gun/projectile/automatic/sp91rc{
 	pixel_x = 7
+	},
+/obj/structure/window/reinforced{
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -123446,6 +123450,19 @@
 	icon_state = "whiteblue"
 	},
 /area/assembly/robotics)
+"xFg" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/window/reinforced,
+/obj/structure/window/reinforced,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/structure/rack,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/securearmory)
 "xFk" = (
 /obj/machinery/ai_status_display{
 	pixel_y = -32
@@ -180826,7 +180843,7 @@ xmw
 tsW
 vuE
 urn
-xqE
+xFg
 vYt
 wCH
 myZ
@@ -181343,7 +181360,7 @@ vpi
 kaB
 vYL
 jDw
-lhS
+xqE
 lhS
 oHJ
 unN
