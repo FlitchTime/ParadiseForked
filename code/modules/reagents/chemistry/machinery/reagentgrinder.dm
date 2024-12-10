@@ -162,7 +162,6 @@
 		return
 	default_unfasten_wrench(user, I)
 
-
 /obj/machinery/reagentgrinder/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -232,7 +231,25 @@
 	updateUsrDialog()
 	return ATTACK_CHAIN_BLOCKED_ALL
 
+/obj/machinery/reagentgrinder/AltClick(mob/user)
+	var/mob/living/carbon/human/human = user
+	if(!istype(human))
+		return
+	if(operating)
+		return
 
+	add_fingerprint(user)
+	grind(user)
+
+/obj/machinery/reagentgrinder/CtrlShiftClick(mob/user)
+	var/mob/living/carbon/human/human = user
+	if(!istype(human))
+		return
+	if(operating)
+		return
+
+	add_fingerprint(user)
+	detach(user)
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user)
 	return FALSE
@@ -307,7 +324,7 @@
 		if ("detach")
 			detach()
 
-/obj/machinery/reagentgrinder/proc/detach()
+/obj/machinery/reagentgrinder/proc/detach(mob/user)
 
 		if (usr.stat != 0)
 				return
@@ -409,7 +426,7 @@
 
 				remove_object(O)
 
-/obj/machinery/reagentgrinder/proc/grind()
+/obj/machinery/reagentgrinder/proc/grind(mob/user)
 
 		power_change()
 		if(stat & (NOPOWER|BROKEN))

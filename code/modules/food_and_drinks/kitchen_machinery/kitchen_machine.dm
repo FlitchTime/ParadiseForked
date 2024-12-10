@@ -147,6 +147,25 @@
 	to_chat(user, span_warning("You have no idea how to cook with [I]."))
 	return ATTACK_CHAIN_PROCEED|ATTACK_CHAIN_NO_AFTERATTACK
 
+/obj/machinery/kitchen_machine/AltClick(mob/user)
+	var/mob/living/carbon/human/human = user
+	if(!istype(human))
+		return
+	if(operating)
+		return
+
+	add_fingerprint(user)
+	cook()
+
+/obj/machinery/kitchen_machine/CtrlShiftClick(mob/user)
+	var/mob/living/carbon/human/human = user
+	if(!istype(human))
+		return
+	if(operating)
+		return
+
+	add_fingerprint(user)
+	dispose()
 
 /obj/machinery/kitchen_machine/screwdriver_act(mob/living/user, obj/item/I)
 	. = TRUE
@@ -322,7 +341,7 @@
 *   Machine Menu Handling/Cooking	*
 ************************************/
 
-/obj/machinery/kitchen_machine/proc/cook()
+/obj/machinery/kitchen_machine/proc/cook(mob/user)
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
@@ -458,7 +477,7 @@
 	update_icon(UPDATE_ICON_STATE)
 	updateUsrDialog()
 
-/obj/machinery/kitchen_machine/proc/dispose()
+/obj/machinery/kitchen_machine/proc/dispose(mob/user)
 	for(var/obj/O in contents)
 		O.forceMove(loc)
 	if(reagents.total_volume)
