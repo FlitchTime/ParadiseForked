@@ -818,8 +818,8 @@
 "adH" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible,
 /turf/simulated/floor/engine,
@@ -836,8 +836,8 @@
 "adJ" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/item/tank/internals/plasma,
 /obj/machinery/atmospherics/pipe/simple/visible,
@@ -9912,8 +9912,8 @@
 "btt" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/door/poddoor{
 	name = "Supermatter Blast Doors";
@@ -10198,13 +10198,13 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/green,
 /turf/simulated/floor/engine,
@@ -10249,8 +10249,8 @@
 "buZ" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/engine,
 /area/engineering/supermatter)
@@ -10260,8 +10260,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/trinary/tvalve/digital/flipped,
 /turf/simulated/floor/engine,
@@ -10429,8 +10429,8 @@
 "bwo" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/item/tank/internals/plasma,
 /obj/machinery/atmospherics/pipe/simple/visible{
@@ -10444,13 +10444,13 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/cyan,
 /turf/simulated/floor/engine,
@@ -10682,13 +10682,13 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/manifold/visible/cyan{
 	dir = 8
@@ -10848,8 +10848,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/green,
 /turf/simulated/floor/engine,
@@ -10872,8 +10872,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/cyan,
 /turf/simulated/floor/engine,
@@ -11435,8 +11435,8 @@
 "bBN" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable{
 	icon_state = "4-8"
@@ -11501,8 +11501,8 @@
 "bBT" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/cyan{
 	dir = 9
@@ -11708,8 +11708,8 @@
 "bCP" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	dir = 4
@@ -11719,21 +11719,21 @@
 "bCT" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/engine,
 /area/engineering/engine)
 "bCV" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	dir = 4
@@ -11743,8 +11743,8 @@
 "bCX" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/engine,
 /area/engineering/engine)
@@ -11912,8 +11912,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/engine,
 /area/engineering/engine)
@@ -12237,8 +12237,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -12809,8 +12809,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -12822,8 +12822,8 @@
 "bIA" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -13787,8 +13787,8 @@
 /obj/effect/spawner/window/reinforced,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine/smes)
@@ -13913,8 +13913,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/suit_storage_unit/engine,
 /turf/simulated/floor/plasteel{
@@ -14039,8 +14039,8 @@
 	dir = 4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -14116,8 +14116,8 @@
 "bPH" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on,
 /turf/simulated/floor/plasteel{
@@ -14134,8 +14134,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -14901,8 +14901,8 @@
 	dir = 4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "o2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15494,8 +15494,8 @@
 	dir = 4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "air_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 2000;
 	pressure_checks = 2;
@@ -15898,8 +15898,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "co2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15934,8 +15934,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "tox_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15964,8 +15964,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2o_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -16006,8 +16006,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "mix_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -23051,8 +23051,8 @@
 /area/maintenance/turbine)
 "cUJ" = (
 /obj/machinery/power/smes{
-	charge = 10000;
-	capacity = 9e+06
+	capacity = 9e+06;
+	charge = 10000
 	},
 /obj/structure/cable{
 	icon_state = "0-2"
@@ -23084,8 +23084,8 @@
 "cUN" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable{
 	icon_state = "4-8"
@@ -23141,8 +23141,8 @@
 "cUT" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/purple,
 /turf/simulated/floor/plasteel,
@@ -23212,8 +23212,8 @@
 "cUZ" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/manifold/visible/purple,
@@ -23257,8 +23257,8 @@
 "cVe" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/door/airlock/public/glass{
 	name = "Turbine Interior Airlock";
@@ -23294,8 +23294,8 @@
 "cVi" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/engine,
 /area/maintenance/turbine)
@@ -23322,8 +23322,8 @@
 "cVl" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/door/airlock/public/glass{
 	name = "Turbine Exterior Airlock";
@@ -23358,8 +23358,8 @@
 "cVo" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/igniter{
 	id = "gasturbine"
@@ -23386,8 +23386,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/engine/vacuum,
 /area/maintenance/turbine)
@@ -33914,8 +33914,8 @@
 "fNP" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/binary/volume_pump{
 	dir = 4
@@ -35362,8 +35362,8 @@
 "glA" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	dir = 4
@@ -39537,8 +39537,8 @@
 "hvW" = (
 /obj/structure/cable{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/starboardaux)
@@ -44275,8 +44275,8 @@
 "iRa" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible{
 	dir = 10
@@ -46355,8 +46355,8 @@
 /obj/item/extinguisher,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkyellow"
@@ -48758,8 +48758,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/trinary/tvalve/digital/flipped/bypass{
 	dir = 1
@@ -51421,8 +51421,8 @@
 "kRw" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -51766,8 +51766,8 @@
 "kVz" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	dir = 9
@@ -52406,8 +52406,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/cyan,
 /obj/machinery/light{
@@ -56212,8 +56212,8 @@
 "miw" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/landmark/start/engineer,
 /turf/simulated/floor/plasteel{
@@ -57446,8 +57446,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -67793,8 +67793,8 @@
 "pvW" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	dir = 4
@@ -75780,8 +75780,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -80687,8 +80687,8 @@
 "thN" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -83085,8 +83085,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -86708,8 +86708,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -90581,8 +90581,8 @@
 "wfp" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	dir = 4
@@ -93013,8 +93013,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -93140,8 +93140,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/green,
 /obj/machinery/light{

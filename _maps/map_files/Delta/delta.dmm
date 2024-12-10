@@ -3767,8 +3767,8 @@
 /obj/effect/decal/warning_stripes/east,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/door/poddoor/preopen{
 	name = "Supermatter Blast Doors";
@@ -3920,8 +3920,8 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -4043,8 +4043,8 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/door/poddoor/preopen{
 	name = "Supermatter Blast Doors";
@@ -4105,8 +4105,8 @@
 "aEn" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 4
@@ -4277,13 +4277,13 @@
 /obj/effect/decal/warning_stripes/northwestcorner,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -4517,8 +4517,8 @@
 "aHc" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on,
 /turf/simulated/floor/plasteel{
@@ -4529,8 +4529,8 @@
 /obj/machinery/door/firedoor,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -8117,8 +8117,8 @@
 "bep" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/lattice/catwalk,
 /turf/space,
@@ -10127,8 +10127,8 @@
 /obj/effect/decal/warning_stripes/north,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -10425,8 +10425,8 @@
 "bsu" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -10435,8 +10435,8 @@
 "bsw" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "yellowfull"
@@ -10447,8 +10447,8 @@
 /obj/machinery/hologram/holopad,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -10460,8 +10460,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "yellowfull"
@@ -10879,8 +10879,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plating/airless,
@@ -13918,13 +13918,13 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/engine,
 /area/toxins/sm_test_chamber)
@@ -17559,8 +17559,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plating/airless,
@@ -17568,8 +17568,8 @@
 "bZn" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -17578,8 +17578,8 @@
 /obj/effect/spawner/window/reinforced,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "0-8";
@@ -17587,27 +17587,27 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
 "bZv" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/southwest,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
@@ -17874,8 +17874,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -17976,13 +17976,13 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -18014,8 +18014,8 @@
 "cbj" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/east,
 /turf/simulated/floor/plasteel,
@@ -18501,8 +18501,8 @@
 "cdd" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -18928,8 +18928,8 @@
 /obj/effect/decal/warning_stripes/east,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -21110,8 +21110,8 @@
 "cqQ" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/camera{
 	dir = 1;
@@ -21200,8 +21200,8 @@
 /obj/effect/decal/warning_stripes/north,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -21695,8 +21695,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -22081,8 +22081,8 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -23909,8 +23909,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /turf/simulated/floor/plating/airless,
@@ -24033,8 +24033,8 @@
 /obj/effect/decal/warning_stripes/east,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -24562,8 +24562,8 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -26628,8 +26628,8 @@
 /obj/effect/decal/warning_stripes/east,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -27406,8 +27406,8 @@
 /obj/effect/decal/warning_stripes/north,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/controlroom)
@@ -35280,13 +35280,13 @@
 "dBt" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/landmark/start/engineer,
 /obj/effect/decal/warning_stripes/south,
@@ -35295,8 +35295,8 @@
 "dBu" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/sign/electricshock{
 	pixel_x = 32
@@ -35849,8 +35849,8 @@
 "dDP" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plasteel,
@@ -37134,8 +37134,8 @@
 "dJh" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4"
@@ -39742,8 +39742,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/warning_stripes/south,
@@ -39752,8 +39752,8 @@
 "dUC" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/southeast,
 /obj/item/wrench,
@@ -40559,8 +40559,8 @@
 "dXo" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/northeast,
 /obj/item/radio/intercom{
@@ -41144,8 +41144,8 @@
 /obj/structure/table,
 /obj/machinery/cell_charger,
 /obj/item/stock_parts/cell/high{
-	maxcharge = 15000;
-	charge = 100
+	charge = 100;
+	maxcharge = 15000
 	},
 /obj/item/clothing/glasses/welding,
 /obj/item/radio/intercom{
@@ -41567,8 +41567,8 @@
 /obj/effect/landmark/start/engineer,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -41687,8 +41687,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "air_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 2000;
 	pressure_checks = 2;
@@ -41820,8 +41820,8 @@
 "efA" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/lattice/catwalk,
 /turf/space,
@@ -42181,13 +42181,13 @@
 "ejp" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -44472,8 +44472,8 @@
 "eMv" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -44829,8 +44829,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /turf/simulated/floor/plasteel,
@@ -44909,8 +44909,8 @@
 "eQV" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plating,
@@ -46158,8 +46158,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/southeast,
 /turf/simulated/floor/plating/airless,
@@ -46701,8 +46701,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "co2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -48789,8 +48789,8 @@
 "fPA" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -50776,8 +50776,8 @@
 "goI" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4"
@@ -51608,8 +51608,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /obj/machinery/door/poddoor/preopen{
@@ -51673,8 +51673,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "o2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -51993,8 +51993,8 @@
 "gFc" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -52197,8 +52197,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /turf/simulated/floor/plating/airless,
@@ -52235,8 +52235,8 @@
 "gHz" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/table/reinforced,
 /obj/item/wrench,
@@ -55204,8 +55204,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "mix_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -55714,8 +55714,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "tox_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -55768,8 +55768,8 @@
 /obj/effect/spawner/window/reinforced,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -56426,8 +56426,8 @@
 "hHu" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/lattice/catwalk,
 /turf/space,
@@ -57319,8 +57319,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plasteel{
@@ -57570,8 +57570,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -57649,13 +57649,13 @@
 "hWL" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plating,
@@ -57981,8 +57981,8 @@
 "ibT" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/southeast,
 /turf/simulated/floor/plasteel,
@@ -60574,8 +60574,8 @@
 "iIm" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plating,
@@ -60979,8 +60979,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -63382,8 +63382,8 @@
 "jsU" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/north,
 /turf/simulated/floor/plasteel,
@@ -64483,8 +64483,8 @@
 "jGo" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /obj/machinery/light,
@@ -65494,8 +65494,8 @@
 /obj/machinery/atmospherics/pipe/simple/hidden,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/engine,
 /area/toxins/sm_test_chamber)
@@ -66251,8 +66251,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/southwestcorner,
 /turf/simulated/floor/plating/airless,
@@ -66755,8 +66755,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /turf/simulated/floor/plasteel,
@@ -66787,8 +66787,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2o_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -68392,8 +68392,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/light,
@@ -73589,8 +73589,8 @@
 /obj/machinery/atmospherics/pipe/simple/hidden,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/east,
 /obj/machinery/door/window/brigdoor,
@@ -77717,8 +77717,8 @@
 "mWV" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /obj/machinery/door/poddoor/preopen{
@@ -78439,8 +78439,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/lattice/catwalk,
 /turf/space,
@@ -79664,8 +79664,8 @@
 "nsT" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/east,
 /turf/simulated/floor/plating/airless,
@@ -79694,13 +79694,13 @@
 "nth" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4"
@@ -80219,8 +80219,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plasteel{
@@ -80732,8 +80732,8 @@
 "nGC" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4"
@@ -82255,8 +82255,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/northeast,
 /turf/simulated/floor/plating/airless,
@@ -84923,8 +84923,8 @@
 "oHg" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/northeast,
 /turf/simulated/floor/plating/airless,
@@ -85561,8 +85561,8 @@
 /obj/item/stack/cable_coil/random,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/light{
@@ -87517,8 +87517,8 @@
 "pnx" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/lattice/catwalk,
 /turf/space,
@@ -88295,8 +88295,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/door/poddoor/preopen{
 	name = "Singularity Blast Doors";
@@ -88725,8 +88725,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/light,
@@ -89336,8 +89336,8 @@
 "pGB" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -93054,8 +93054,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /obj/machinery/light{
@@ -93431,8 +93431,8 @@
 "qAK" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -96831,8 +96831,8 @@
 /obj/machinery/light/small,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden{
 	dir = 9
@@ -97620,8 +97620,8 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "0-8";
@@ -98930,8 +98930,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -101238,8 +101238,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /obj/machinery/light{
@@ -102390,8 +102390,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /turf/simulated/floor/plasteel,
@@ -104275,8 +104275,8 @@
 "tgT" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/southeast,
 /turf/simulated/floor/plating/airless,
@@ -104752,8 +104752,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating,
@@ -106531,13 +106531,13 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/engine,
 /area/toxins/sm_test_chamber)
@@ -108575,8 +108575,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/northwestcorner,
 /turf/simulated/floor/plating/airless,
@@ -110361,8 +110361,8 @@
 "uBx" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
@@ -110983,8 +110983,8 @@
 "uJi" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -111922,8 +111922,8 @@
 /obj/structure/closet/secure_closet{
 	name = "Evidence Storage";
 	req_access = list(4);
-	locked = 0;
 	anchored = 1;
+	locked = 0;
 	opened = 1
 	},
 /obj/item/storage/box/evidence,
@@ -112161,8 +112161,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /turf/simulated/floor/plating,
@@ -113478,8 +113478,8 @@
 /obj/effect/decal/warning_stripes/northwestcorner,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/engine,
 /area/toxins/sm_test_chamber)
@@ -114804,8 +114804,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/east,
 /turf/simulated/floor/plasteel,
@@ -116692,8 +116692,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/lattice/catwalk,
 /turf/space,
@@ -116716,8 +116716,8 @@
 "waI" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /turf/simulated/floor/plating,
@@ -117146,8 +117146,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /turf/simulated/floor/plasteel,
@@ -119750,8 +119750,8 @@
 "wNB" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /obj/machinery/door/poddoor/preopen{
@@ -120273,8 +120273,8 @@
 "wUB" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/landmark/start/engineer,
 /turf/simulated/floor/plasteel{
@@ -122144,8 +122144,8 @@
 "xsj" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "yellow";
@@ -123562,8 +123562,8 @@
 "xGf" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/table/reinforced,
 /obj/item/storage/toolbox/mechanical,

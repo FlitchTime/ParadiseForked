@@ -3913,8 +3913,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on,
 /turf/simulated/floor/plasteel{
@@ -8132,8 +8132,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
@@ -12680,8 +12680,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "tox_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2
@@ -16163,8 +16163,8 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/cable{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -18994,8 +18994,8 @@
 "bhL" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 9
@@ -26566,8 +26566,8 @@
 	},
 /obj/structure/cable{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull";
@@ -28067,13 +28067,13 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -29158,8 +29158,8 @@
 "bPc" = (
 /obj/structure/cable{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -29231,8 +29231,8 @@
 /obj/machinery/hologram/holopad,
 /obj/structure/cable{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/engineering)
@@ -29377,8 +29377,8 @@
 "bPO" = (
 /obj/structure/cable{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating,
@@ -31104,8 +31104,8 @@
 	},
 /obj/structure/cable{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/effect/spawner/window/reinforced,
 /turf/simulated/floor/plating,
@@ -33908,8 +33908,8 @@
 "ccQ" = (
 /obj/structure/cable{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/engineering)
@@ -43081,8 +43081,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2o_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2
@@ -43184,13 +43184,13 @@
 /obj/effect/landmark/start/chief_engineer,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull";
@@ -43764,8 +43764,8 @@
 /obj/structure/chair/stool,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -43791,13 +43791,13 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 8
@@ -45522,8 +45522,8 @@
 "cLS" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel,
@@ -46076,8 +46076,8 @@
 "cNk" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /obj/effect/decal/cleanable/dirt,
@@ -46444,13 +46444,13 @@
 "cOl" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -46756,8 +46756,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -47324,8 +47324,8 @@
 "cQG" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -47472,8 +47472,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "waste_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2
@@ -47594,8 +47594,8 @@
 "cRp" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/effect/decal/warning_stripes/southwest,
 /turf/simulated/floor/plasteel,
@@ -47603,8 +47603,8 @@
 "cRq" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -47625,8 +47625,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -47775,8 +47775,8 @@
 /obj/item/lighter/zippo/ce,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/spawner/lootdrop/officetoys,
 /turf/simulated/floor/plasteel{
@@ -48128,8 +48128,8 @@
 "cSM" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -48390,13 +48390,13 @@
 "cTx" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -48404,13 +48404,13 @@
 "cTy" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -48462,8 +48462,8 @@
 "cTF" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -48670,8 +48670,8 @@
 "cUl" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -48769,8 +48769,8 @@
 /obj/machinery/computer/station_alert,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull";
@@ -48842,8 +48842,8 @@
 "cUD" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -48862,8 +48862,8 @@
 "cUF" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -48917,8 +48917,8 @@
 "cUO" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -48979,8 +48979,8 @@
 /obj/item/storage/belt/utility,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/light,
 /turf/simulated/floor/plasteel,
@@ -49010,13 +49010,13 @@
 /obj/machinery/power/port_gen/pacman,
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -49103,8 +49103,8 @@
 "cVk" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -49149,8 +49149,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plasteel,
@@ -49227,8 +49227,8 @@
 "cVx" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /turf/simulated/floor/plasteel,
@@ -50076,8 +50076,8 @@
 "cXP" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 4
@@ -50205,8 +50205,8 @@
 "cYo" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/east,
 /obj/machinery/camera{
@@ -50233,8 +50233,8 @@
 "cYs" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -50260,13 +50260,13 @@
 "cYv" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
@@ -50311,8 +50311,8 @@
 "cYC" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -50320,26 +50320,26 @@
 /obj/effect/decal/warning_stripes/east,
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
 "cYE" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -50350,8 +50350,8 @@
 "cYG" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/east,
 /turf/simulated/floor/plasteel,
@@ -50412,13 +50412,13 @@
 /obj/effect/decal/warning_stripes/west,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -50449,8 +50449,8 @@
 "cYX" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -50465,8 +50465,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/machinery/door_control{
@@ -50480,13 +50480,13 @@
 "cYZ" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel,
@@ -50548,8 +50548,8 @@
 "cZl" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel,
@@ -50663,8 +50663,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -50730,8 +50730,8 @@
 "cZO" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plasteel,
@@ -50767,8 +50767,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /obj/effect/decal/cleanable/dirt,
@@ -51136,8 +51136,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -51196,8 +51196,8 @@
 "dbs" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
@@ -51211,8 +51211,8 @@
 "dbt" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -51599,8 +51599,8 @@
 /obj/effect/decal/warning_stripes/northwestcorner,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -51758,8 +51758,8 @@
 	dir = 8;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "co2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2
@@ -51881,8 +51881,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -52831,8 +52831,8 @@
 "dgJ" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -56277,26 +56277,26 @@
 "dsI" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
 "dsK" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "0-4";
@@ -56310,8 +56310,8 @@
 "dsL" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/suit_storage_unit/ce,
 /turf/simulated/floor/plasteel{
@@ -56386,8 +56386,8 @@
 /obj/machinery/door/firedoor,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/door/airlock/command/glass{
 	name = "Chief Engineer";
@@ -56424,8 +56424,8 @@
 "dtp" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
 	dir = 8
@@ -56439,13 +56439,13 @@
 /obj/machinery/hologram/holopad,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
@@ -56456,13 +56456,13 @@
 "dts" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -56475,13 +56475,13 @@
 "dtt" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -57305,13 +57305,13 @@
 "dWX" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -57501,8 +57501,8 @@
 "eeG" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -58104,8 +58104,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -58612,8 +58612,8 @@
 "eNl" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -59500,8 +59500,8 @@
 /obj/structure/dispenser,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/door_control{
 	name = "Engineering Secure Storage";
@@ -59670,13 +59670,13 @@
 "fDK" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -59881,8 +59881,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -59953,8 +59953,8 @@
 "fNj" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/camera/emp_proof{
 	dir = 4;
@@ -60601,8 +60601,8 @@
 /area/toxins/explab)
 "gib" = (
 /obj/machinery/power/smes{
-	charge = 10000;
-	capacity = 9e+06
+	capacity = 9e+06;
+	charge = 10000
 	},
 /obj/structure/cable{
 	icon_state = "0-8";
@@ -60823,13 +60823,13 @@
 "got" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -62530,18 +62530,18 @@
 "hyo" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel,
@@ -63145,13 +63145,13 @@
 "hTh" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -63454,8 +63454,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -64061,8 +64061,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
@@ -64157,13 +64157,13 @@
 "iDt" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/cable/yellow,
 /obj/effect/spawner/window/reinforced/polarized{
@@ -65765,8 +65765,8 @@
 "jMt" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -65869,8 +65869,8 @@
 "jSm" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -66068,8 +66068,8 @@
 "jYG" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/atmospherics/unary/vent_pump/on{
@@ -66138,13 +66138,13 @@
 "kaz" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -66428,8 +66428,8 @@
 "kjc" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/photocopier,
 /turf/simulated/floor/plasteel{
@@ -68920,8 +68920,8 @@
 "lUt" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel,
@@ -69112,8 +69112,8 @@
 "lYW" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/machinery/camera/emp_proof{
 	dir = 8;
@@ -70022,8 +70022,8 @@
 "mCt" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "0-8";
@@ -70031,8 +70031,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/effect/spawner/window/reinforced/polarized{
 	id = "ceoffice"
@@ -70345,8 +70345,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -72984,8 +72984,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -73123,8 +73123,8 @@
 "oPA" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -73149,13 +73149,13 @@
 "oQm" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -74232,8 +74232,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
@@ -74267,8 +74267,8 @@
 /obj/effect/decal/warning_stripes/northeastcorner,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -74773,8 +74773,8 @@
 "pUG" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/effect/spawner/window/reinforced/plasma,
 /turf/simulated/floor/plating,
@@ -75271,8 +75271,8 @@
 "qiV" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/sign/poster/official/space_a{
 	pixel_x = -32
@@ -75560,8 +75560,8 @@
 /obj/effect/spawner/window/reinforced,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "0-4";
@@ -75610,8 +75610,8 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -75648,8 +75648,8 @@
 /obj/effect/spawner/window/reinforced,
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "0-2";
@@ -75657,8 +75657,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /turf/simulated/floor/plating,
 /area/engineering/gravitygenerator)
@@ -76855,8 +76855,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/gravitygenerator)
@@ -77559,8 +77559,8 @@
 "rET" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 4
@@ -77699,8 +77699,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -78812,8 +78812,8 @@
 "swC" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-4";
-	d2 = 4;
-	d1 = 2
+	d1 = 2;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -78835,13 +78835,13 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -78978,8 +78978,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -79116,16 +79116,16 @@
 "sGs" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/gravitygenerator)
 "sGx" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/disposalpipe/segment,
@@ -79262,8 +79262,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/gravitygenerator)
@@ -79362,13 +79362,13 @@
 "sNA" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/gravitygenerator)
@@ -79504,8 +79504,8 @@
 "sRl" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/sign/poster/official/space_a{
 	pixel_x = 32
@@ -80663,8 +80663,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -80766,8 +80766,8 @@
 /obj/structure/grille,
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
@@ -81157,8 +81157,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -81222,8 +81222,8 @@
 	dir = 1;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "o2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 400;
 	pressure_checks = 2
@@ -81236,8 +81236,8 @@
 	dir = 1;
 	frequency = 1443;
 	on = 1;
-	releasing = 0;
 	id_tag = "air_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 606;
 	pressure_checks = 2
@@ -81794,8 +81794,8 @@
 "uqj" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -82773,13 +82773,13 @@
 "vgS" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-4";
-	d2 = 4;
-	d1 = 1
+	d1 = 1;
+	d2 = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel,
@@ -83022,8 +83022,8 @@
 	dir = 1;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 1600;
 	pressure_checks = 2
@@ -83263,8 +83263,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -83980,13 +83980,13 @@
 "vSc" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating/airless,
 /area/space)
@@ -84038,8 +84038,8 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
@@ -84618,8 +84618,8 @@
 /obj/machinery/hologram/holopad,
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /turf/simulated/floor/plasteel,
@@ -84832,15 +84832,15 @@
 "wou" = (
 /obj/structure/cable{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable{
 	icon_state = "1-8";
-	d2 = 8;
-	d1 = 1
+	d1 = 1;
+	d2 = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull";
@@ -85085,8 +85085,8 @@
 "wze" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -85961,8 +85961,8 @@
 /obj/structure/disposalpipe/trunk,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/sign/double/no_idiots/left{
 	pixel_y = 32
@@ -86366,8 +86366,8 @@
 /obj/item/wirecutters,
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel,
@@ -86571,8 +86571,8 @@
 "xpc" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2";
-	d2 = 2;
-	d1 = 1
+	d1 = 1;
+	d2 = 2
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 9
@@ -86876,8 +86876,8 @@
 "xzQ" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/structure/grille,
 /turf/simulated/floor/plating/airless,
@@ -86968,13 +86968,13 @@
 "xCn" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8";
-	d2 = 8;
-	d1 = 4
+	d1 = 4;
+	d2 = 8
 	},
 /obj/structure/cable/yellow{
 	icon_state = "2-8";
-	d2 = 8;
-	d1 = 2
+	d1 = 2;
+	d2 = 8
 	},
 /obj/effect/decal/warning_stripes/west,
 /turf/simulated/floor/plasteel,

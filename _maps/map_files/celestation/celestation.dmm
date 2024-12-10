@@ -13974,8 +13974,8 @@
 	dir = 4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -14630,8 +14630,8 @@
 	dir = 4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "o2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15438,8 +15438,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "co2_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15468,8 +15468,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "tox_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15508,8 +15508,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "n2o_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -15549,8 +15549,8 @@
 	layer = 2.4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "mix_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 4000;
 	pressure_checks = 2;
@@ -36693,8 +36693,8 @@
 /area/quartermaster/delivery)
 "fDJ" = (
 /obj/machinery/power/smes{
-	charge = 10000;
-	capacity = 9e+06
+	capacity = 9e+06;
+	charge = 10000
 	},
 /obj/structure/cable/orange,
 /obj/effect/decal/cleanable/dirt,
@@ -107573,8 +107573,8 @@
 	dir = 4;
 	frequency = 1441;
 	on = 1;
-	releasing = 0;
 	id_tag = "air_out";
+	releasing = 0;
 	external_pressure_bound = 0;
 	internal_pressure_bound = 2000;
 	pressure_checks = 2;
