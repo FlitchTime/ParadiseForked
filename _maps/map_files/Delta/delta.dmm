@@ -122037,6 +122037,21 @@
 /area/engineering/engine)
 "xqE" = (
 /obj/vehicle/ridden/secway,
+/obj/item/radio/intercom{
+	pixel_y = -28
+	},
+/obj/item/radio/intercom{
+	pixel_y = -28
+	},
+/obj/item/radio/intercom{
+	pixel_y = -28
+	},
+/obj/item/radio/intercom{
+	pixel_y = -28
+	},
+/obj/item/radio/intercom{
+	pixel_x = 28
+	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "vault"
