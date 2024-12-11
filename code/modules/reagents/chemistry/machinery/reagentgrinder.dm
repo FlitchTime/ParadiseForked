@@ -235,11 +235,11 @@
 	var/mob/living/carbon/human/human = user
 	if(!istype(human))
 		return
+	if(!Adjacent(human))
+		return
+	if(human.incapacitated() || HAS_TRAIT(human, TRAIT_HANDS_BLOCKED))
+		return
 	if(operating)
-		return
-	if(HAS_TRAIT(user, TRAIT_INCAPACITATED) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
-		return
-	if(!Adjacent(user))
 		return
 
 	add_fingerprint(user)
@@ -249,11 +249,11 @@
 	var/mob/living/carbon/human/human = user
 	if(!istype(human))
 		return
+	if(!Adjacent(human))
+		return
+	if(human.incapacitated() || HAS_TRAIT(human, TRAIT_HANDS_BLOCKED))
+		return
 	if(operating)
-		return
-	if(HAS_TRAIT(user, TRAIT_INCAPACITATED) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
-		return
-	if(!Adjacent(user))
 		return
 
 	add_fingerprint(user)
