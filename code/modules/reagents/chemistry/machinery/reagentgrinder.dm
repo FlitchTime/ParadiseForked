@@ -231,33 +231,37 @@
 	updateUsrDialog()
 	return ATTACK_CHAIN_BLOCKED_ALL
 
-/obj/machinery/reagentgrinder/AltClick(mob/user)
-	var/mob/living/carbon/human/human = user
+/obj/machinery/reagentgrinder/AltClick(mob/living/carbon/human/human)
 	if(!istype(human))
 		return
+
 	if(!Adjacent(human))
 		return
+
 	if(human.incapacitated() || HAS_TRAIT(human, TRAIT_HANDS_BLOCKED))
 		return
+
 	if(operating)
 		return
 
-	add_fingerprint(user)
+	add_fingerprint(human)
 	grind()
 
-/obj/machinery/reagentgrinder/CtrlShiftClick(mob/user)
-	var/mob/living/carbon/human/human = user
+/obj/machinery/reagentgrinder/CtrlShiftClick(mob/living/carbon/human/human)
 	if(!istype(human))
 		return
+
 	if(!Adjacent(human))
 		return
+
 	if(human.incapacitated() || HAS_TRAIT(human, TRAIT_HANDS_BLOCKED))
 		return
+
 	if(operating)
 		return
 
-	add_fingerprint(user)
-	detach()
+	add_fingerprint(human)
+	detach(human)
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user)
 	return FALSE
@@ -330,16 +334,18 @@
 		if("eject")
 			eject()
 		if ("detach")
-			detach()
+			detach(usr)
 
-/obj/machinery/reagentgrinder/proc/detach()
+/obj/machinery/reagentgrinder/proc/detach(mob/user)
+		if(user.stat)
+			return
 
-		if (usr.stat != 0)
-				return
 		if (!beaker)
-				return
+			return
+
 		beaker.loc = src.loc
 		beaker = null
+
 		update_icon(UPDATE_ICON_STATE)
 		updateUsrDialog()
 
