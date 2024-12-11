@@ -324,15 +324,15 @@
 		return
 	switch(href_list["action"])
 		if ("grind")
-			grind()
+			grind(usr)
 		if("juice")
 			juice()
 		if("eject")
 			eject()
 		if ("detach")
-			detach()
+			detach(usr)
 
-/obj/machinery/reagentgrinder/proc/detach(mob/user)
+/obj/machinery/reagentgrinder/proc/detach()
 
 		if (usr.stat != 0)
 				return
@@ -434,7 +434,7 @@
 
 				remove_object(O)
 
-/obj/machinery/reagentgrinder/proc/grind(mob/user)
+/obj/machinery/reagentgrinder/proc/grind()
 
 		power_change()
 		if(stat & (NOPOWER|BROKEN))

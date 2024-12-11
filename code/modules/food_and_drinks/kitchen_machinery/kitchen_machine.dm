@@ -159,7 +159,7 @@
 		return
 
 	add_fingerprint(user)
-	cook()
+	cook(user)
 
 /obj/machinery/kitchen_machine/CtrlShiftClick(mob/user)
 	var/mob/living/carbon/human/human = user
@@ -173,7 +173,7 @@
 		return
 
 	add_fingerprint(user)
-	dispose()
+	dispose(user)
 
 /obj/machinery/kitchen_machine/screwdriver_act(mob/living/user, obj/item/I)
 	. = TRUE
@@ -549,10 +549,10 @@
 
 	switch(href_list["action"])
 		if("cook")
-			cook()
+			cook(usr)
 
 		if("dispose")
-			dispose()
+			dispose(usr)
 	return
 
 
