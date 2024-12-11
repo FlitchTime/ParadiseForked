@@ -337,17 +337,17 @@
 			detach(usr)
 
 /obj/machinery/reagentgrinder/proc/detach(mob/user)
-		if(user.stat)
-			return
+	if(user.stat)
+		return
 
-		if (!beaker)
-			return
+	if(!beaker)
+		return
 
-		beaker.loc = src.loc
-		beaker = null
+	beaker.loc = src.loc
+	beaker = null
 
-		update_icon(UPDATE_ICON_STATE)
-		updateUsrDialog()
+	update_icon(UPDATE_ICON_STATE)
+	updateUsrDialog()
 
 /obj/machinery/reagentgrinder/proc/eject()
 
