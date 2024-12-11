@@ -243,7 +243,7 @@
 		return
 
 	add_fingerprint(user)
-	grind(user)
+	grind()
 
 /obj/machinery/reagentgrinder/CtrlShiftClick(mob/user)
 	var/mob/living/carbon/human/human = user
@@ -257,7 +257,7 @@
 		return
 
 	add_fingerprint(user)
-	detach(user)
+	detach()
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user)
 	return FALSE
@@ -324,13 +324,13 @@
 		return
 	switch(href_list["action"])
 		if ("grind")
-			grind(usr)
+			grind()
 		if("juice")
 			juice()
 		if("eject")
 			eject()
 		if ("detach")
-			detach(usr)
+			detach()
 
 /obj/machinery/reagentgrinder/proc/detach()
 

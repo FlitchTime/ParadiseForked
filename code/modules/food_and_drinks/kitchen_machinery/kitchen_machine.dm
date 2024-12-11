@@ -159,7 +159,7 @@
 		return
 
 	add_fingerprint(user)
-	cook(user)
+	cook()
 
 /obj/machinery/kitchen_machine/CtrlShiftClick(mob/user)
 	var/mob/living/carbon/human/human = user
@@ -349,7 +349,7 @@
 *   Machine Menu Handling/Cooking	*
 ************************************/
 
-/obj/machinery/kitchen_machine/proc/cook(mob/user)
+/obj/machinery/kitchen_machine/proc/cook()
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
@@ -491,7 +491,7 @@
 	if(reagents.total_volume)
 		dirty++
 	reagents.clear_reagents()
-	to_chat(usr, "<span class='notice'>You dispose of \the [src]'s contents.</span>")
+	to_chat(user, "<span class='notice'>You dispose of \the [src]'s contents.</span>")
 	updateUsrDialog()
 
 /obj/machinery/kitchen_machine/proc/muck_start()
@@ -549,7 +549,7 @@
 
 	switch(href_list["action"])
 		if("cook")
-			cook(usr)
+			cook()
 
 		if("dispose")
 			dispose(usr)
