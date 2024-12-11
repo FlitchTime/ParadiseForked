@@ -237,6 +237,10 @@
 		return
 	if(operating)
 		return
+	if(HAS_TRAIT(user, TRAIT_INCAPACITATED) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
+		return
+	if(!Adjacent(user))
+		return
 
 	add_fingerprint(user)
 	grind(user)
@@ -246,6 +250,10 @@
 	if(!istype(human))
 		return
 	if(operating)
+		return
+	if(HAS_TRAIT(user, TRAIT_INCAPACITATED) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
+		return
+	if(!Adjacent(user))
 		return
 
 	add_fingerprint(user)
