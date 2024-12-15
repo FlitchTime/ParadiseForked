@@ -155,7 +155,7 @@
 	icon_state = "armored_shoes"
 	item_color = "armored_shoes"
 	item_state = "armored_shoes"
-	armor = list("melee" = 5, "bullet" = 5, "laser" = 5, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 0, "acid" = 0)
+	armor = list("melee" = 5, "bullet" = 25, "laser" = 10, "energy" = 5, "bomb" = 5, "bio" = 0, "rad" = 0, "fire" = 75, "acid" = 75)
 	sprite_sheets = list(
 		SPECIES_VOX = 'icons/mob/clothing/species/vox/shoes.dmi',
 		SPECIES_DRASK = 'icons/mob/clothing/species/drask/shoes.dmi',
