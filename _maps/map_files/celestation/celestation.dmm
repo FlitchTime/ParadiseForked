@@ -5788,20 +5788,13 @@
 /area/crew_quarters/fitness)
 "aVT" = (
 /obj/structure/rack,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
-/obj/item/shield/riot,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/obj/machinery/door/window{
-	dir = 2;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkred"
@@ -9031,6 +9024,17 @@
 	icon_state = "whitebluefull"
 	},
 /area/medical/sleeper)
+"bpY" = (
+/obj/structure/rack,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "bqe" = (
 /obj/structure/table,
 /obj/item/pickaxe/mini,
@@ -13219,9 +13223,9 @@
 /obj/machinery/turretid/stun{
 	control_area = "AI Satellite Secondary Antechamber";
 	name = "AI Satellite Secondary Antechamber Turret Control";
-	req_access = list(75);
 	pixel_x = -30;
-	pixel_y = -24
+	pixel_y = -24;
+	req_access = list(75)
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -15907,8 +15911,8 @@
 /obj/machinery/cryopod/robot,
 /obj/effect/landmark/join_late_cyborg,
 /obj/item/radio/intercom{
-	pixel_y = 22;
-	pixel_x = 0
+	pixel_x = 0;
+	pixel_y = 22
 	},
 /turf/simulated/floor/plasteel{
 	dir = 5;
@@ -18902,9 +18906,9 @@
 /obj/machinery/turretid/lethal{
 	check_synth = 1;
 	name = "AI Chamber Turret Control";
-	req_access = list(75);
 	pixel_x = 32;
-	pixel_y = 0
+	pixel_y = 0;
+	req_access = list(75)
 	},
 /turf/simulated/floor/glass/reinforced,
 /area/turret_protected/ai)
@@ -27550,9 +27554,9 @@
 "dOS" = (
 /obj/machinery/turretid/stun{
 	name = "AI Satellite Turret Control";
-	req_access = list(75);
 	pixel_x = 0;
-	pixel_y = -26
+	pixel_y = -26;
+	req_access = list(75)
 	},
 /turf/simulated/floor/plating,
 /area/turret_protected/aisat)
@@ -31889,6 +31893,20 @@
 /obj/structure/mecha_wreckage/ripley,
 /turf/simulated/floor/plating,
 /area/maintenance/electrical_shop)
+"eLh" = (
+/obj/structure/rack,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "eLj" = (
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/unary/vent_pump/on{
@@ -39682,18 +39700,11 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/obj/machinery/door/window{
-	dir = 2;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
 /obj/structure/rack,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
 /obj/item/clothing/head/helmet/riot,
 /obj/item/clothing/head/helmet/riot,
-/obj/item/shield/riot,
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkred"
@@ -60521,9 +60532,9 @@
 "kiQ" = (
 /obj/machinery/turretid/stun{
 	name = "AI Satellite Turret Control";
-	req_access = list(75);
 	pixel_x = 0;
-	pixel_y = 28
+	pixel_y = 28;
+	req_access = list(75)
 	},
 /turf/simulated/floor/plating,
 /area/turret_protected/aisat)
@@ -64805,18 +64816,10 @@
 /area/medical/medbay2)
 "kYX" = (
 /obj/structure/rack,
-/obj/structure/window/reinforced,
 /obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/alt,
 /obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/alt,
-/obj/machinery/door/window{
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkred"
 	},
@@ -70575,21 +70578,10 @@
 /area/chapel/office)
 "mhb" = (
 /obj/structure/rack,
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/window/reinforced,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/alt,
-/obj/machinery/door/window{
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkred"
 	},
@@ -92951,12 +92943,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/toxins/mixing)
-"qyg" = (
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "darkredalt"
-	},
-/area/security/armory)
 "qyj" = (
 /obj/structure/stairs{
 	dir = 4
@@ -96815,17 +96801,9 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/structure/window/reinforced,
-/obj/machinery/door/window{
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
 /obj/structure/rack,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/gloves/combat,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
 /obj/item/clothing/head/helmet/alt,
 /obj/item/clothing/head/helmet/alt,
 /turf/simulated/floor/plasteel{
@@ -117811,22 +117789,6 @@
 /area/hallway/primary/fore)
 "vnx" = (
 /obj/structure/rack,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/structure/window/reinforced,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
-/obj/item/shield/riot,
-/obj/item/shield/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/door/window{
 	dir = 1;
 	name = "Secure Armory";
@@ -117835,6 +117797,10 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkred"
 	},
@@ -118352,9 +118318,9 @@
 /obj/machinery/turretid/stun{
 	control_area = "AI Satellite Antechamber";
 	name = "AI Satellite Antechamber Turret Control";
-	req_access = list(75);
 	pixel_x = -28;
-	pixel_y = 0
+	pixel_y = 0;
+	req_access = list(75)
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -128485,6 +128451,20 @@
 	},
 /turf/simulated/floor/plating,
 /area/medical/medbay)
+"xqw" = (
+/obj/structure/rack,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "xqy" = (
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -131687,9 +131667,9 @@
 /obj/machinery/turretid/stun{
 	control_area = "AI Satellite Antechamber";
 	name = "AI Satellite Antechamber Turret Control";
-	req_access = list(75);
 	pixel_x = 0;
-	pixel_y = -26
+	pixel_y = -26;
+	req_access = list(75)
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "navyblue"
@@ -218574,8 +218554,8 @@ pNG
 eEt
 qJm
 vpy
-qyg
-qyg
+hxu
+xKk
 ybD
 jkR
 vnx
@@ -218831,8 +218811,8 @@ pNG
 aOM
 jgB
 iWY
-hxu
-xKk
+bpY
+eLh
 wAq
 eGv
 uGo
@@ -219346,7 +219326,7 @@ lHu
 fQm
 iWY
 kYX
-aVT
+xqw
 iWY
 eGv
 uGo

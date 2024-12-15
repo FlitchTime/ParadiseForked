@@ -337,12 +337,6 @@
 	layer = 2.9
 	},
 /obj/structure/window/reinforced,
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
 /obj/machinery/door/window{
 	dir = 8;
 	name = "Secure Armory";
@@ -1625,12 +1619,6 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/head/helmet/alt,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -1642,8 +1630,10 @@
 /obj/machinery/light{
 	dir = 4
 	},
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -1862,9 +1852,6 @@
 	},
 /obj/structure/window/reinforced{
 	dir = 1
-	},
-/obj/structure/window/reinforced{
-	dir = 4
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/machinery/camera{
@@ -2358,33 +2345,6 @@
 /obj/structure/sign/nosmoking_2,
 /turf/simulated/wall/r_wall,
 /area/security/podbay)
-"akf" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/storage/box/flashbangs,
-/obj/item/storage/box/flashbangs{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/storage/box/teargas{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/storage/box/teargas,
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/structure/window/reinforced,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/securearmory)
 "aki" = (
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -3026,17 +2986,11 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/structure/window/reinforced,
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/camera{
 	c_tag = "Secure Armory West";
 	dir = 4;
 	network = list("SS13","Security")
 	},
-/obj/item/clothing/suit/armor/laserproof,
-/obj/item/gun/energy/ionrifle,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -3044,6 +2998,10 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
+/obj/item/shield/riot,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -3051,6 +3009,9 @@
 "amb" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 6
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 5
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -3097,14 +3058,15 @@
 	},
 /area/security/main)
 "amh" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 5
-	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "vault"
 	},
 /area/security/securearmory)
 "amm" = (
@@ -3227,9 +3189,6 @@
 /obj/item/gun/energy/gun{
 	pixel_x = 3;
 	pixel_y = -3
-	},
-/obj/structure/window/reinforced{
-	dir = 4
 	},
 /obj/structure/window/reinforced,
 /obj/effect/decal/warning_stripes/red/hollow,
@@ -4984,17 +4943,9 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/riot,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/window/reinforced,
 /obj/machinery/door/window{
 	name = "Secure Armory";
 	req_access = list(1)
@@ -5002,6 +4953,10 @@
 /obj/machinery/light{
 	dir = 8
 	},
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -5022,22 +4977,15 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/head/helmet/alt,
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/structure/window/reinforced,
 /obj/machinery/door/window{
 	dir = 8;
 	name = "Secure Armory";
 	req_access = list(1)
 	},
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -7669,12 +7617,6 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/head/helmet/alt,
-/obj/structure/window/reinforced,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -7684,7 +7626,9 @@
 	req_access = list(1)
 	},
 /obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -59904,6 +59848,24 @@
 	icon_state = "whitegreencorner"
 	},
 /area/medical/virology)
+"fQF" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/clothing/suit/armor/laserproof,
+/obj/item/gun/energy/ionrifle,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/machinery/door/window{
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/securearmory)
 "fRf" = (
 /obj/structure/cable{
 	icon_state = "4-8"
@@ -66135,6 +66097,26 @@
 	icon_state = "white"
 	},
 /area/medical/research)
+"kgn" = (
+/obj/structure/window/reinforced{
+	dir = 8
+	},
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/storage/box/teargas,
+/obj/item/storage/box/teargas{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/securearmory)
 "kgx" = (
 /obj/structure/cable{
 	icon_state = "2-8"
@@ -70349,6 +70331,26 @@
 /obj/item/beach_ball/holoball,
 /turf/simulated/floor/plating,
 /area/maintenance/apmaint)
+"mSX" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/machinery/door/window{
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/securearmory)
 "mTq" = (
 /obj/machinery/newscaster{
 	name = "north newscaster";
@@ -74707,14 +74709,6 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/riot,
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -74722,6 +74716,10 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -74956,12 +74954,6 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/head/helmet/alt,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -74970,7 +74962,9 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
-/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
 /obj/item/clothing/gloves/color/black/ballistic,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -77608,14 +77602,6 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/item/clothing/suit/armor/riot,
-/obj/item/shield/riot,
-/obj/item/clothing/gloves/combat,
-/obj/item/clothing/head/helmet/riot,
-/obj/structure/window/reinforced,
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -77623,6 +77609,10 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -80989,6 +80979,24 @@
 /obj/effect/spawner/lootdrop/maintenance,
 /turf/simulated/floor/plating,
 /area/maintenance/fsmaint2)
+"tRQ" = (
+/obj/structure/window/reinforced,
+/obj/structure/window/reinforced{
+	dir = 8
+	},
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/storage/box/flashbangs,
+/obj/item/storage/box/flashbangs{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/securearmory)
 "tSH" = (
 /obj/machinery/button/windowtint{
 	id = "ceoffice";
@@ -86559,9 +86567,6 @@
 	pixel_y = 6
 	},
 /obj/machinery/light{
-	dir = 4
-	},
-/obj/structure/window/reinforced{
 	dir = 4
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
@@ -114759,11 +114764,11 @@ aiv
 aiv
 acR
 aeo
-akf
-ama
+fQF
+fQF
 ama
 arG
-pUD
+mSX
 pUD
 rIF
 vUG
@@ -115272,8 +115277,8 @@ abO
 aiv
 acS
 aev
-qzT
-qzT
+ahU
+akv
 amb
 alk
 alk
@@ -115528,9 +115533,9 @@ aiv
 abO
 aiv
 acW
-qzT
-ahU
-akv
+yjg
+tRQ
+kgn
 amh
 qzT
 yjg
