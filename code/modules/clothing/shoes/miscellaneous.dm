@@ -17,7 +17,7 @@
 	drop_sound = 'sound/items/handling/boots_drop.ogg'
 
 /obj/item/clothing/shoes/combat/riot
-	name = "Riot boots"
+	name = "riot boots"
 	desc = "High speed, low drag riot boots."
 	can_cut_open = 0
 	icon_state = "riotboots"
