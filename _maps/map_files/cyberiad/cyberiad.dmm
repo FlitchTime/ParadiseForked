@@ -1728,7 +1728,6 @@
 	pixel_y = -4
 	},
 /obj/item/crowbar,
-/obj/item/radio/sec,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "darkredfull"
@@ -2917,6 +2916,23 @@
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/rack,
+/obj/item/radio/sec{
+	pixel_x = -4
+	},
+/obj/item/radio/sec{
+	pixel_x = 4
+	},
+/obj/item/radio/sec{
+	pixel_x = -4;
+	pixel_y = 5
+	},
+/obj/item/radio/sec{
+	pixel_x = 4;
+	pixel_y = 5
+	},
+/obj/item/radio/sec{
+	pixel_y = 6
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
