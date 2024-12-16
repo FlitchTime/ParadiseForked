@@ -12490,10 +12490,10 @@
 	},
 /area/medical/cmostore)
 "bKc" = (
-/obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/structure/railing/corner{
 	dir = 1
 	},
+/obj/machinery/suit_storage_unit/security,
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "darkred"
@@ -68058,7 +68058,6 @@
 	icon_state = "0-2"
 	},
 /obj/machinery/camera/autoname,
-/obj/structure/dispenser/oxygen,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkred"
@@ -102877,6 +102876,7 @@
 	dir = 4;
 	pixel_x = 26
 	},
+/obj/structure/dispenser/oxygen,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkred"
@@ -122857,10 +122857,10 @@
 /obj/structure/sign/poster/official/random{
 	pixel_x = 32
 	},
-/obj/machinery/suit_storage_unit/security,
 /obj/machinery/light{
 	dir = 4
 	},
+/obj/machinery/portable_atmospherics/canister/oxygen,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkred"
