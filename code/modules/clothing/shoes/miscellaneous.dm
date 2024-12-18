@@ -19,7 +19,7 @@
 /obj/item/clothing/shoes/combat/riot
 	name = "riot boots"
 	desc = "High speed, low drag riot boots."
-	can_cut_open = 0
+	can_cut_open = FALSE
 	icon_state = "riotboots"
 	item_state = "riotboots"
 	sprite_sheets = list(
