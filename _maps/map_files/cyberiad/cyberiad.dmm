@@ -228,13 +228,11 @@
 "acB" = (
 /obj/structure/rack/gunrack,
 /obj/item/gun/energy/laser{
-	pixel_x = -2;
-	pixel_y = 3
+	pixel_x = -3
 	},
 /obj/item/gun/energy/laser,
 /obj/item/gun/energy/laser{
-	pixel_x = 3;
-	pixel_y = -3
+	pixel_x = 3
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/window/reinforced,
@@ -345,7 +343,8 @@
 	pixel_y = -3
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 5;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "acP" = (
@@ -356,9 +355,10 @@
 /area/security/range)
 "acR" = (
 /obj/machinery/suit_storage_unit/security,
-/obj/effect/decal/warning_stripes/yellow/hollow,
+/obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 9;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "acV" = (
@@ -383,9 +383,10 @@
 /area/security/prisonershuttle)
 "acY" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
-/obj/effect/decal/warning_stripes/yellow/hollow,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 1;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "acZ" = (
@@ -408,9 +409,10 @@
 	dir = 1
 	},
 /obj/structure/dispenser/oxygen,
-/obj/effect/decal/warning_stripes/yellow/hollow,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 1;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "adb" = (
@@ -434,7 +436,8 @@
 	pixel_y = 24
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 1;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "adi" = (
@@ -448,13 +451,12 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/effect/decal/warning_stripes/red/hollow,
 /obj/machinery/alarm{
 	pixel_y = 24
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	dir = 1;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "adk" = (
@@ -483,7 +485,8 @@
 	},
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 5;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "adn" = (
@@ -863,8 +866,7 @@
 	location = "Armory_sleva"
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "dark"
 	},
 /area/security/securearmory)
 "aew" = (
@@ -985,8 +987,7 @@
 	pixel_y = 28
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "dark"
 	},
 /area/security/securearmory)
 "aeT" = (
@@ -1597,8 +1598,10 @@
 /obj/item/clothing/suit/armor/bulletproof,
 /obj/item/clothing/suit/armor/bulletproof,
 /obj/item/clothing/suit/armor/bulletproof,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 4;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "ahE" = (
@@ -1828,7 +1831,8 @@
 	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 4;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "ail" = (
@@ -2979,8 +2983,10 @@
 /obj/item/shield/riot,
 /obj/item/shield/riot,
 /obj/item/shield/riot,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "amb" = (
@@ -3042,8 +3048,7 @@
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "dark"
 	},
 /area/security/securearmory)
 "amm" = (
@@ -3095,8 +3100,7 @@
 	pixel_y = -28
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "amx" = (
@@ -4893,8 +4897,10 @@
 /obj/item/clothing/head/helmet/riot,
 /obj/item/clothing/head/helmet/riot,
 /obj/item/clothing/head/helmet/riot,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "arH" = (
@@ -4925,8 +4931,10 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 4;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "arJ" = (
@@ -7568,8 +7576,10 @@
 /obj/item/clothing/shoes/jackboots/armored,
 /obj/item/clothing/shoes/jackboots/armored,
 /obj/item/clothing/shoes/jackboots/armored,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 6;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "ayH" = (
@@ -21864,8 +21874,7 @@
 	dir = 1
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "dark"
 	},
 /area/security/securearmory)
 "brX" = (
@@ -50902,8 +50911,7 @@
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "darkredcorners"
 	},
 /area/security/securearmory)
 "dbo" = (
@@ -59227,6 +59235,14 @@
 /obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/maintenance/disposal)
+"fxj" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/flasher/portable,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/securearmory)
 "fxl" = (
 /obj/structure/chair{
 	dir = 8
@@ -59557,6 +59573,14 @@
 	icon_state = "neutralfull"
 	},
 /area/engineering/chiefs_office)
+"fIt" = (
+/obj/machinery/flasher/portable,
+/obj/effect/decal/warning_stripes/red/hollow,
+/turf/simulated/floor/plasteel{
+	dir = 9;
+	icon_state = "darkred"
+	},
+/area/security/securearmory)
 "fIu" = (
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -59802,8 +59826,10 @@
 	},
 /obj/item/clothing/suit/armor/laserproof,
 /obj/item/clothing/suit/armor/laserproof,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "fRf" = (
@@ -59860,7 +59886,8 @@
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/machinery/flasher/portable,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 6;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "fSG" = (
@@ -61125,7 +61152,8 @@
 /obj/machinery/flasher/portable,
 /obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "gID" = (
@@ -63219,8 +63247,10 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 4;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "icM" = (
@@ -66077,10 +66107,11 @@
 	},
 /obj/structure/rack/gunrack,
 /obj/item/gun/energy/ionrifle{
-	pixel_x = 3;
-	pixel_y = 3
+	pixel_x = 3
 	},
-/obj/item/gun/energy/ionrifle,
+/obj/item/gun/energy/ionrifle{
+	pixel_x = 3
+	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -70316,8 +70347,10 @@
 /obj/item/clothing/suit/armor/riot,
 /obj/item/clothing/suit/armor/riot,
 /obj/item/clothing/suit/armor/riot,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "mTq" = (
@@ -74037,7 +74070,7 @@
 	dir = 9
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "pyQ" = (
@@ -74689,8 +74722,10 @@
 /obj/item/clothing/gloves/combat/riot,
 /obj/item/clothing/gloves/combat/riot,
 /obj/item/clothing/gloves/combat/riot,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 8;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "pUG" = (
@@ -74935,8 +74970,10 @@
 /obj/item/clothing/gloves/color/black/ballistic,
 /obj/item/clothing/gloves/color/black/ballistic,
 /obj/item/clothing/gloves/color/black/ballistic,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 4;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "qcJ" = (
@@ -77604,8 +77641,10 @@
 /obj/item/clothing/shoes/combat/riot,
 /obj/item/clothing/shoes/combat/riot,
 /obj/item/clothing/shoes/combat/riot,
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 10;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "rIH" = (
@@ -77729,6 +77768,17 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel,
 /area/maintenance/port)
+"rNu" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/securearmory)
 "rNJ" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 8
@@ -78274,6 +78324,14 @@
 /obj/effect/decal/remains/human,
 /turf/simulated/floor/plating,
 /area/maintenance/xenozoo)
+"sfG" = (
+/obj/machinery/suit_storage_unit/security,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/securearmory)
 "sfL" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -80972,13 +81030,11 @@
 "tRQ" = (
 /obj/structure/rack/gunrack,
 /obj/item/gun/energy/gun{
-	pixel_x = -3;
-	pixel_y = 3
+	pixel_x = -3
 	},
 /obj/item/gun/energy/gun,
 /obj/item/gun/energy/gun{
-	pixel_x = 3;
-	pixel_y = -3
+	pixel_x = 3
 	},
 /obj/structure/window/reinforced,
 /obj/effect/decal/warning_stripes/red/hollow,
@@ -86564,7 +86620,8 @@
 	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "dark"
+	dir = 4;
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "xnH" = (
@@ -87859,8 +87916,7 @@
 /area/maintenance/fsmaint2)
 "yjg" = (
 /turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "vault"
+	icon_state = "darkred"
 	},
 /area/security/securearmory)
 "yjl" = (
@@ -114755,7 +114811,7 @@ aiv
 abO
 aiv
 aiv
-gGq
+fIt
 qzT
 gGq
 fQF
@@ -115012,14 +115068,14 @@ aiv
 abO
 aiv
 acR
-yjg
 qzT
 qzT
-yjg
-yjg
-yjg
-yjg
-yjg
+qzT
+qzT
+qzT
+qzT
+qzT
+qzT
 yjg
 aAl
 aqv
@@ -115268,7 +115324,7 @@ lTl
 aiv
 abO
 aiv
-acR
+sfG
 aev
 ahU
 akv
@@ -115525,15 +115581,15 @@ uTI
 aiv
 abO
 aiv
-acR
-yjg
+sfG
+qzT
 tRQ
 kgn
 amh
 qzT
-yjg
-yjg
-yjg
+qzT
+qzT
+qzT
 yjg
 aAr
 aBT
@@ -115783,7 +115839,7 @@ aiv
 abO
 aiv
 acY
-yjg
+qzT
 acB
 akl
 dbn
@@ -116040,10 +116096,10 @@ aiv
 abO
 aiv
 ada
-yjg
+qzT
 ale
 akn
-dbn
+rNu
 aiv
 aiv
 aiv
@@ -116296,8 +116352,8 @@ lTl
 aiv
 abO
 aiv
-fSC
-yjg
+fxj
+qzT
 adt
 akt
 amv
@@ -116553,8 +116609,8 @@ uTI
 aiv
 abO
 aiv
-fSC
-yjg
+fxj
+qzT
 jfS
 qYF
 brW
@@ -117326,8 +117382,8 @@ abO
 aiv
 adm
 aeR
-yjg
-yjg
+qzT
+qzT
 qzT
 qzT
 qzT
