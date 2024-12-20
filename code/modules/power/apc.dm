@@ -792,7 +792,7 @@
 
 /obj/machinery/power/apc/examine(mob/user)
 	. = ..()
-	if(in_range(src, user) || loc == user)
+	if(in_range(src, user))
 		. += "<span class='info'>Alt-click to toggle locker.<br/>Ctrl-click to toggle power.</span>"
 
 /obj/machinery/power/apc/AltClick(mob/user)

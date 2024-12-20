@@ -233,7 +233,7 @@
 
 /obj/machinery/reagentgrinder/examine(mob/user)
 	. = ..()
-	if(in_range(src, user) || loc == user)
+	if(in_range(src, user))
 		. += "<span class='info'>Alt-click to activate it.<br/>Ctrl-Shift-click to dispose content.</span>"
 
 /obj/machinery/reagentgrinder/AltClick(mob/living/carbon/human/human)

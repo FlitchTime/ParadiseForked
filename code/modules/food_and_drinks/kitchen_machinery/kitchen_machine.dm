@@ -149,7 +149,7 @@
 
 /obj/machinery/kitchen_machine/examine(mob/user)
 	. = ..()
-	if(in_range(src, user) || loc == user)
+	if(in_range(src, user))
 		. += "<span class='info'>Alt-click to activate it.<br/>Ctrl-Shift-click to dispose content.</span>"
 
 /obj/machinery/kitchen_machine/AltClick(mob/living/carbon/human/human)
