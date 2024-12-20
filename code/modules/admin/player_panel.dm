@@ -650,3 +650,72 @@
 
 	txt += "</tr>"
 	return txt
+
+/datum/admins/proc/check_security_line(mob/M, close = 1)
+	var/logout_status
+	logout_status = M.client ? "" : " <i>(logged out)</i>"
+	var/dname = M.real_name
+	var/job = M.job
+	var/mob/living/carbon/human/H = M
+	var/area/A = get_area(M)
+	var/turf/GT = get_turf(M)
+	var/list/coords = ATOM_COORDS(GT)
+	var/area_name = get_area_name(A)
+	if(!dname)
+		dname = M
+	if(issilicon(M))
+		job = "Cyborg"
+	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[M.UID()]'>[dname]</a>[logout_status]</td><td>[job][M.stat == 2 ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [H.health]%</font>"] <b>[area_name]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[M.client?.ckey]'>PM</A> [ADMIN_FLW(M, "FLW")]</td>[close ? "</tr>" : ""]"}
+
+/datum/admins/proc/check_security()
+	if(!check_rights(R_ADMIN))
+		return
+
+	if(SSticker && SSticker.current_state >= GAME_STATE_PLAYING)
+		var/dat = {"<html><meta charset="UTF-8"><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"}
+		var/list/sec_list = check_active_security_force()
+		dat += "<br><table cellspacing=5><tr><td><b>Security</b></td><td></td></tr>"
+		dat += "<tr><td>Total: </td><td>[sec_list[1]]</td>"
+		dat += "<tr><td>Active: </td><td>[sec_list[2]]</td>"
+		dat += "<tr><td>Dead: </td><td>[sec_list[3]]</td>"
+		dat += "<tr><td>Antag: </td><td>[sec_list[4]]</td>"
+		dat += "</table>"
+		dat += "</body></html>"
+
+		dat += "<br><table cellspacing=5><tr><td><B>Security</B></td><td></td></tr>"
+		for(var/datum/mind/N in SSticker.mode.get_all_sec())
+			var/mob/M = N.current
+			if(M)
+				dat += check_security_line(M)
+		dat += "</table>"
+
+		if(SSticker.mode.ert.len)
+			dat += check_role_table_sec("ERT", SSticker.mode.ert)
+
+		usr << browse(dat, "window=roundstatus;size=600x800")
+
+	else
+		alert("The game hasn't started yet!")
+
+/datum/admins/proc/check_role_table_sec(name, list/members, show_objectives=0)
+	var/txt = "<br><table cellspacing=5><tr><td><b>[name]</b></td><td></td></tr>"
+	for(var/datum/mind/M in members)
+		txt += check_role_table_row_sec(M.current, show_objectives)
+	txt += "</table>"
+	return txt
+
+/datum/admins/proc/check_role_table_row_sec(mob/M, show_objectives)
+	if(!istype(M))
+		return "<tr><td><i>Not found!</i></td></tr>"
+
+	var/txt = check_security_line(M, close = 0)
+
+	if(show_objectives)
+		txt += {"
+			<td>
+				<a href='byond://?src=[UID()];traitor=[M.UID()]'>Show Objective</a>
+			</td>
+		"}
+
+	txt += "</tr>"
+	return txt
