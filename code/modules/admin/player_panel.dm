@@ -651,12 +651,10 @@
 	txt += "</tr>"
 	return txt
 
-/datum/admins/proc/check_security_line(mob/living/carbon/human/human, close = 1)
+/datum/admins/proc/check_security_line(mob/living/human, close = 1)
 	var/logout_status = human.client ? "" : " <i>(logged out)</i>"
 	var/list/coords = ATOM_COORDS(human)
-	var/job = human.job
-	if(issilicon(human))
-		job = "Cyborg"
+	var/job = human.job || human.mind?.assigned_role // || need because maybe ert robots with null in job
 	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[human.UID()]'>[human.real_name]</a>[logout_status]</td><td>[job][human.stat == DEAD ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [human.health]%</font>"] <b>[get_area_name(human)]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[human.client?.ckey]'>PM</A> [ADMIN_FLW(human, "FLW")]</td>[close ? "</tr>" : ""]"}
 
 /datum/admins/proc/check_security()
