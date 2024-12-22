@@ -662,7 +662,7 @@
 /datum/admins/proc/check_security()
 	if(!check_rights(R_ADMIN))
 		return
-	if!(SSticker && SSticker.current_state >= GAME_STATE_PLAYING)
+	if(!SSticker || SSticker.current_state < GAME_STATE_PLAYING)
 		return
 
 	var/dat = {"<html><meta charset="UTF-8"><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"}
