@@ -653,17 +653,11 @@
 
 /datum/admins/proc/check_security_line(mob/living/carbon/human/human, close = 1)
 	var/logout_status = human.client ? "" : " <i>(logged out)</i>"
-	var/dname = human.real_name
+	var/list/coords = ATOM_COORDS(human)
 	var/job = human.job
-	var/area/area = get_area(human)
-	var/area_name = get_area_name(area)
-	var/turf/GT = get_turf(human)
-	var/list/coords = ATOM_COORDS(GT)
-	if(!dname)
-		dname = human
 	if(issilicon(human))
 		job = "Cyborg"
-	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[human.UID()]'>[dname]</a>[logout_status]</td><td>[job][human.stat == 2 ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [human.health]%</font>"] <b>[area_name]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[human.client?.ckey]'>PM</A> [ADMIN_FLW(human, "FLW")]</td>[close ? "</tr>" : ""]"}
+	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[human.UID()]'>[human.real_name]</a>[logout_status]</td><td>[job][human.stat == DEAD ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [human.health]%</font>"] <b>[get_area_name(human)]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[human.client?.ckey]'>PM</A> [ADMIN_FLW(human, "FLW")]</td>[close ? "</tr>" : ""]"}
 
 /datum/admins/proc/check_security()
 	if(!check_rights(R_ADMIN))
@@ -681,10 +675,9 @@
 		dat += "</body></html>"
 
 		dat += "<br><table cellspacing=5><tr><td><B>Security</B></td><td></td></tr>"
-		for(var/datum/mind/N in SSticker.mode.get_all_sec())
-			var/mob/M = N.current
-			if(M)
-				dat += check_security_line(M)
+		for(var/datum/mind/mind in SSticker.mode.get_all_sec())
+			if(mind.current)
+				dat += check_security_line(mind.current)
 		dat += "</table>"
 
 		if(SSticker.mode.ert.len)
@@ -697,21 +690,21 @@
 
 /datum/admins/proc/check_role_table_sec(name, list/members, show_objectives=0)
 	var/txt = "<br><table cellspacing=5><tr><td><b>[name]</b></td><td></td></tr>"
-	for(var/datum/mind/M in members)
-		txt += check_role_table_row_sec(M.current, show_objectives)
+	for(var/datum/mind/mind in members)
+		txt += check_role_table_row_sec(mind.current, show_objectives)
 	txt += "</table>"
 	return txt
 
-/datum/admins/proc/check_role_table_row_sec(mob/M, show_objectives)
-	if(!istype(M))
+/datum/admins/proc/check_role_table_row_sec(mob/mob, show_objectives)
+	if(!istype(mob))
 		return "<tr><td><i>Not found!</i></td></tr>"
 
-	var/txt = check_security_line(M, close = 0)
+	var/txt = check_security_line(mob, close = 0)
 
 	if(show_objectives)
 		txt += {"
 			<td>
-				<a href='byond://?src=[UID()];traitor=[M.UID()]'>Show Objective</a>
+				<a href='byond://?src=[UID()];traitor=[mob.UID()]'>Show Objective</a>
 			</td>
 		"}
 
