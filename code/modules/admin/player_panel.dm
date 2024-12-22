@@ -651,21 +651,19 @@
 	txt += "</tr>"
 	return txt
 
-/datum/admins/proc/check_security_line(mob/M, close = 1)
-	var/logout_status
-	logout_status = M.client ? "" : " <i>(logged out)</i>"
-	var/dname = M.real_name
-	var/job = M.job
-	var/mob/living/carbon/human/H = M
-	var/area/A = get_area(M)
-	var/turf/GT = get_turf(M)
+/datum/admins/proc/check_security_line(mob/living/carbon/human/human, close = 1)
+	var/logout_status = human.client ? "" : " <i>(logged out)</i>"
+	var/dname = human.real_name
+	var/job = human.job
+	var/area/area = get_area(human)
+	var/area_name = get_area_name(area)
+	var/turf/GT = get_turf(human)
 	var/list/coords = ATOM_COORDS(GT)
-	var/area_name = get_area_name(A)
 	if(!dname)
-		dname = M
-	if(issilicon(M))
+		dname = human
+	if(issilicon(human))
 		job = "Cyborg"
-	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[M.UID()]'>[dname]</a>[logout_status]</td><td>[job][M.stat == 2 ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [H.health]%</font>"] <b>[area_name]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[M.client?.ckey]'>PM</A> [ADMIN_FLW(M, "FLW")]</td>[close ? "</tr>" : ""]"}
+	return {"<tr><td><a href='byond://?src=[UID()];adminplayeropts=[human.UID()]'>[dname]</a>[logout_status]</td><td>[job][human.stat == 2 ? " <b><font color=red>(Dead)</font></b>" : "<font color=green> [human.health]%</font>"] <b>[area_name]</b> [coords[1]],[coords[2]],[coords[3]]</td><td><a href='byond://?src=[usr.UID()];priv_msg=[human.client?.ckey]'>PM</A> [ADMIN_FLW(human, "FLW")]</td>[close ? "</tr>" : ""]"}
 
 /datum/admins/proc/check_security()
 	if(!check_rights(R_ADMIN))
