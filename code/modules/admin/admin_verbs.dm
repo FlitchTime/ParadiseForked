@@ -405,14 +405,14 @@ GLOBAL_LIST_INIT(view_runtimes_verbs, list(
 	return
 
 /client/proc/check_security()
-	set name = "Check Secutiry"
+	set name = "Check Security"
 	set category = "Admin"
 
 	if(!check_rights(R_ADMIN))
 		return
 
 	holder.check_security()
-	log_admin("[key_name(usr)] checked secutiry")
+	log_admin("[key_name(usr)] checked security")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Check Secs") //If you are copy-pasting this, ensure the 4th parameter is unique to the new proc!
 
 /client/proc/ban_panel()
