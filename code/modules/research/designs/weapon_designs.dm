@@ -576,6 +576,19 @@
 	build_path = /obj/item/clothing/gloves/color/black/pyro_claws
 	category = list("Weapons")
 
+/datum/design/laserminigun
+	name = "Laser gatling gun"
+	desc = "Self-rechargable monster made of advanced techonology's and crazy machine thinking."
+	id = "laser_gatling"
+	build_type = PROTOLATHE
+	req_tech = list("combat" = 8, "materials" = 7, "magnets" = 7, "powerstorage" = 7)
+	materials = list(MAT_METAL = 12000, MAT_GLASS = 2400, MAT_URANIUM = 1200, MAT_TITANIUM = 1200, MAT_DIAMOND = 1200)
+	locked = TRUE
+	w_class = WEIGHT_CLASS_GIGANTIC
+	build_path = /obj/item/gun/energy/gun/minigun
+	category = list("Weapons")
+	lathe_time_factor = 0.5
+
 /datum/design/real_plasma_pistol
 	name = "Plasma Pistol"
 	desc = "HA specialized firearm designed to fire heated bolts of plasma. Can be overloaded for a high damage shield breaking shot."

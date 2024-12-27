@@ -499,6 +499,13 @@ GLOBAL_LIST_EMPTY(closets)
 
 	return ..()
 
+/obj/structure/closet/can_be_pulled(atom/movable/user, force, show_message = FALSE)
+	for(var/obj/a in src.contents)
+		if(istype(a, /obj/item/gun/energy/gun/minigun))
+			to_chat(user, span_warning("[src.name] слишком тяжелый!"))
+			return FALSE
+	return ..()
+
 /obj/structure/closet/bluespace
 	name = "bluespace closet"
 	desc = "A storage unit that moves and stores through the fourth dimension."
