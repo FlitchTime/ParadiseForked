@@ -32,7 +32,7 @@ GLOBAL_VAR_INIT(wizard_events_triggered, 0)
 		EC.next_event_time = world.time + (60 SECONDS)
 		return
 
-	for(length(candidates) in mages_number)
+	for(mages_number in length(candidates))
 		var/mob/new_mage = pick_n_take(candidates)
 		if(new_mage)
 			GLOB.wizard_events_triggered += 1
