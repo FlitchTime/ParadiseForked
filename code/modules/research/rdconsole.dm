@@ -507,7 +507,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					var/list/lockbox_access
 					for(var/A in lockbox.req_access)
 						lockbox_access += "[get_access_desc(A)] "
-					lockbox_access.desc = "A locked box. It is locked to [lockbox_access]access."
+					lockbox.desc = "A locked box. It is locked to [lockbox_access]access."
 				else
 					new_item.loc = machine.loc
 
