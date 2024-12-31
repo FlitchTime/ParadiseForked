@@ -30,12 +30,13 @@ GLOBAL_VAR_INIT(wizard_events_triggered, 0)
 		log_and_message_admins("Warning: Could not spawn any mobs for event Wizard Raid. Reason - not enough candidates.")
 		var/datum/event_container/EC = SSevents.event_containers[EVENT_LEVEL_MAJOR]
 		EC.next_event_time = world.time + (60 SECONDS)
+		return
 
-	while(mages_number && length(candidates))
+	for(length(candidates) in mages_number)
 		var/mob/new_mage = pick_n_take(candidates)
 		if(new_mage)
 			GLOB.wizard_events_triggered += 1
-			var/mob/living/carbon/human/new_character= makeBody(new_mage)
+			var/mob/living/carbon/human/new_character = makeBody(new_mage)
 			new_character.mind.make_Wizard() // This puts them at the wizard spawn, worry not
 			mages_number--
 			log_game("Spawned [new_character] (ckey: [new_character.key]) as midround Wizard.")
