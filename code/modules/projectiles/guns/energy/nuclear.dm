@@ -112,7 +112,15 @@
 
 /obj/item/gun/energy/gun/minigun
 	name = "Laser gatling gun"
-	desc = "Self-rechargable monster made of advanced techonology's and crazy machine thinking."
+	desc = "Само-заряжающийся монстр созданный с помощью передовых технологий и любителей пушек побольше."
+	ru_names = list(
+		NOMINATIVE = "Гатлинг-лазер",
+		GENITIVE = "Гатлинг-лазера",
+		DATIVE = "Гатлинг-лазеру",
+		ACCUSATIVE = "Гатлинг-лазер",
+		INSTRUMENTAL = "Гатлинг-лазером",
+		PREPOSITIONAL = "Гатлинг-лазере"
+	)
 	icon_state = "gatling"
 	item_state = "gatling"
 	fire_sound = "lasergatling"
@@ -142,9 +150,9 @@
 		require_twohands = TRUE \
 	)
 
-/obj/item/gun/energy/gun/minigun/can_be_pulled(atom/movable/user, force, show_message = TRUE)
+/obj/item/gun/energy/gun/minigun/can_be_pulled(atom/movable/user, force, show_message = FALSE)
 	..()
-	to_chat(user, span_warning("[name] слишком тяжелый!"))
+	balloon_alert(user, "слишком тяжело!")
 
 /obj/item/gun/energy/gun/minigun/update_icon_state()
 	if(!cell)
@@ -163,8 +171,4 @@
 	if(!cell)
 		return .
 	var/charge_amount = round(cell.charge/600)
-	. += span_notice("Вы видите заряд батареи на [charge_amount] [declension_ru(charge_amount, "залп", "залпа", "залпов")]")
-
-/obj/item/stock_parts/cell/laser/gatling
-	maxcharge = 9000
-	charge = 9000
+	. += span_notice("Индикатор батареи сообщает: заряда хватит на [charge_amount] [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")

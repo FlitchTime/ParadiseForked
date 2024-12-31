@@ -497,18 +497,17 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					new_item_item.update_materials_coeff(coeff)
 
 				if(locked)
-					var/obj/item/storage/lockbox/research/L = new/obj/item/storage/lockbox/research(machine.loc)
-					new_item.forceMove(L)
-					L.name += " ([new_item.name])"
-					L.origin_tech = new_item.origin_tech
-					L.req_access = being_built.access_requirement
+					var/obj/item/storage/lockbox/research/lockbox = new/obj/item/storage/lockbox/research(machine.loc)
+					new_item.forceMove(lockbox)
+					lockbox.name += " ([new_item.name])"
+					lockbox.origin_tech = new_item.origin_tech
+					lockbox.req_access = being_built.access_requirement
+					lockbox.w_class = lockbox.w_class < being_built.w_class ? being_built.w_class : lockbox.w_class
 
 					var/list/lockbox_access
-					for(var/A in L.req_access)
+					for(var/A in lockbox.req_access)
 						lockbox_access += "[get_access_desc(A)] "
 
-					L.desc = "A locked box. It is locked to [lockbox_access]access."
-					L.w_class = being_built.w_class
 				else
 					new_item.loc = machine.loc
 

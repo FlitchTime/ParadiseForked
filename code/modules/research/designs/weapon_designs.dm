@@ -578,7 +578,7 @@
 
 /datum/design/laserminigun
 	name = "Laser gatling gun"
-	desc = "Self-rechargable monster made of advanced techonology's and crazy machine thinking."
+	desc = "Само-заряжающийся монстр созданный с помощью передовых технологий и любителей пушек побольше."
 	id = "laser_gatling"
 	build_type = PROTOLATHE
 	req_tech = list("combat" = 8, "materials" = 7, "magnets" = 7, "powerstorage" = 7)

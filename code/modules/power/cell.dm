@@ -23,6 +23,10 @@
 /obj/item/stock_parts/cell/laser
 	maxcharge = 1500
 
+/obj/item/stock_parts/cell/laser/gatling
+	maxcharge = 9000
+	charge = 9000
+
 /obj/item/stock_parts/cell/get_cell()
 	return src
 
