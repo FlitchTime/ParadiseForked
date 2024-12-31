@@ -502,7 +502,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					lockbox.name += " ([new_item.name])"
 					lockbox.origin_tech = new_item.origin_tech
 					lockbox.req_access = being_built.access_requirement
-					lockbox.w_class = lockbox.w_class < being_built.w_class ? being_built.w_class : lockbox.w_class
+					lockbox.w_class = new_item.w_class > lockbox.w_class ? new_item.w_class : lockbox.w_class
 
 					var/list/lockbox_access
 					for(var/A in lockbox.req_access)

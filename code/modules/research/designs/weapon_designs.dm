@@ -584,7 +584,6 @@
 	req_tech = list("combat" = 8, "materials" = 7, "magnets" = 7, "powerstorage" = 7)
 	materials = list(MAT_METAL = 12000, MAT_GLASS = 2400, MAT_URANIUM = 1200, MAT_TITANIUM = 1200, MAT_DIAMOND = 1200)
 	locked = TRUE
-	w_class = WEIGHT_CLASS_GIGANTIC
 	build_path = /obj/item/gun/energy/gun/minigun
 	category = list("Weapons")
 	lathe_time_factor = 0.5

@@ -72,7 +72,6 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	)
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
-	var/w_class = WEIGHT_CLASS_NORMAL
 	pressure_resistance = 4
 	//	causeerrorheresoifixthis
 	var/obj/item/master = null
