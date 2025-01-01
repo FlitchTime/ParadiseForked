@@ -11,7 +11,6 @@
 	var/obj_integrity	//defaults to max_integrity
 	var/max_integrity = 500
 	var/integrity_failure = 0 //0 if we have no special broken behavior
-	var/w_class = WEIGHT_CLASS_NORMAL
 	///Damage under this value will be completely ignored
 	var/damage_deflection = 0
 
