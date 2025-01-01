@@ -14,7 +14,8 @@
 	var/modifystate = FALSE
 	var/shaded_charge = FALSE	//if this gun uses a stateful charge bar for more detail
 	var/selfcharge = FALSE
-	var/recharge_rate = 100 //recharge rate if self-charging
+	/// Recharge rate if self-charging
+	var/recharge_rate = 100
 	var/can_charge = TRUE
 	var/charge_sections = 4
 	var/charge_tick = 0
@@ -185,7 +186,7 @@
 		charge_tick = 0
 		if(!cell)
 			return // check if we actually need to recharge
-		cell.give(recharge_rate) //... to recharge the shot
+		cell.give(recharge_rate) // to recharge the shot
 		on_recharge()
 		update_icon()
 
