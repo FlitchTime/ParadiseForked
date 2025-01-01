@@ -171,4 +171,4 @@
 	if(!cell)
 		return .
 	var/charge_amount = round(cell.charge/600)
-	. += span_notice("Индикатор батареи сообщает: заряда хватит на [charge_amount] [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")
+	. += span_notice("Индикатор батареи сообщает: заряда хватит на <b>[charge_amount]</b> [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")
