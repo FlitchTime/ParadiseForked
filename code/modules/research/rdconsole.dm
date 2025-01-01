@@ -497,12 +497,13 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					new_item_item.update_materials_coeff(coeff)
 
 				if(locked)
+					var/obj/item/real_item = new being_built.build_path(src)
 					var/obj/item/storage/lockbox/research/lockbox = new/obj/item/storage/lockbox/research(machine.loc)
-					new_item.forceMove(lockbox)
-					lockbox.name += " ([new_item.name])"
-					lockbox.origin_tech = new_item.origin_tech
+					real_item.forceMove(lockbox)
+					lockbox.name += " ([real_item.name])"
+					lockbox.origin_tech = real_item.origin_tech
 					lockbox.req_access = being_built.access_requirement
-					lockbox.w_class = new_item.w_class > lockbox.w_class ? new_item.w_class : lockbox.w_class
+					lockbox.w_class = real_item.w_class > lockbox.w_class ? real_item.w_class : lockbox.w_class
 
 					var/list/lockbox_access
 					for(var/A in lockbox.req_access)
