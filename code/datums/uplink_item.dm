@@ -2330,7 +2330,7 @@
 
 /datum/uplink_item/contractor/zippo
 	name = "Contractor Zippo Lighter"
-	desc = "An unique black and gold zippo lighter with no purpose other than showing off. You must complete all your contracts in order to buy this."
+	desc = "An unique black and gold zippo lighter with no purpose other than showing off."
 	item = /obj/item/lighter/zippo/contractor
 	cost = 1
 
