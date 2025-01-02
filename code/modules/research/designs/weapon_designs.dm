@@ -578,7 +578,7 @@
 
 /datum/design/laserminigun
 	name = "Laser gatling gun"
-	desc = "Само-заряжающийся монстр созданный с помощью передовых технологий и любителей пушек побольше."
+	desc = "Огромное лазерное орудие, обладающее выдающейся скорострельностью и поражающей силой. Говорят, что 12 секунд стрельбы из этой малышки обойдутся вам в 400 тысяч кредитов."
 	id = "laser_gatling"
 	build_type = PROTOLATHE
 	req_tech = list("combat" = 8, "materials" = 7, "magnets" = 7, "powerstorage" = 7)
