@@ -498,7 +498,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 
 				if(locked && isitem(new_item))
 					var/obj/item/real_item = new_item
-					var/obj/item/storage/lockbox/research/lockbox = new/obj/item/storage/lockbox/research(machine.loc)
+					var/obj/item/storage/lockbox/research/lockbox = new /obj/item/storage/lockbox/research(machine.loc)
 					real_item.forceMove(lockbox)
 					lockbox.name += " ([real_item.name])"
 					lockbox.origin_tech = real_item.origin_tech

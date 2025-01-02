@@ -155,20 +155,14 @@
 	balloon_alert(user, "слишком тяжело!")
 
 /obj/item/gun/energy/gun/minigun/update_icon_state()
-	if(!cell)
-		item_state = initial(item_state)
-		icon_state = initial(icon_state)
-		return
-	if(cell.charge > 600)
-		item_state = "gatling1"
-		icon_state = "gatling1"
-	else
-		item_state = "gatling"
-		icon_state = "gatling"
+	item_state = !cell ? initial(item_state) : "gatling[!can_shoot(silent = TRUE) ? "1" : ""]"
+	icon_state = !cell ? initial(icon_state) : "gatling[!can_shoot(silent = TRUE) ? "1" : ""]"
 
 /obj/item/gun/energy/gun/minigun/examine(mob/user)
 	. = ..()
+
 	if(!cell)
 		return .
-	var/charge_amount = round(cell.charge/600)
-	. += span_notice("Индикатор батареи сообщает: заряда хватит на <b>[charge_amount]</b> [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")
+		
+	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+	. += span_notice("Индикатор батареи сообщает: заряда хватит на <b>[round(cell.charge / (shot.e_cost * burst_size))]</b> [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")
