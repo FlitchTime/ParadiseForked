@@ -165,4 +165,6 @@
 		return .
 		
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
-	. += span_notice("Индикатор батареи сообщает: заряда хватит на <b>[round(cell.charge / (shot.e_cost * burst_size))]</b> [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")
+	var/charge_amount = round(cell.charge / (shot.e_cost * burst_size))
+
+	. += span_notice("Индикатор батареи сообщает: заряда хватит на <b>[charge_amount]</b> [declension_ru(charge_amount, "выстрел", "выстрела", "выстрелов")].")
