@@ -51,15 +51,32 @@
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/radio/headset/headset_med(src)
 	new /obj/item/clothing/gloves/color/latex/nitrile(src)
-	new /obj/item/defibrillator/loaded(src)
-	new /obj/item/handheld_defibrillator(src)
-	new /obj/item/handheld_defibrillator(src)
 	new /obj/item/storage/belt/medical(src)
+	new /obj/item/clothing/glasses/regular(src)
 	new /obj/item/clothing/glasses/hud/health(src)
 	new /obj/item/clothing/shoes/sandal/white(src)
 	new /obj/item/clothing/head/surgery/lightgreen(src)
 	new /obj/item/clothing/under/rank/medical/lightgreen(src)
+	new /obj/item/reagent_containers/hypospray/safety(src)
 
+/obj/structure/closet/secure_closet/medical4
+	name = "surgeon locker"
+	req_access = list(ACCESS_SURGERY)
+	icon_state = "med"
+
+/obj/structure/closet/secure_closet/medical4/populate_contents()
+	new /obj/item/clothing/head/surgery/lightgreen(src)
+	new /obj/item/clothing/suit/apron/surgical(src)
+	new /obj/item/clothing/gloves/color/latex/nitrile(src)
+	new /obj/item/clothing/gloves/color/latex(src)
+	new /obj/item/defibrillator/loaded(src)
+	new /obj/item/handheld_defibrillator(src)
+	new /obj/item/handheld_defibrillator(src)
+	new /obj/item/storage/belt/medical/surgery/loaded(src)
+	new /obj/item/storage/box/bodybags/biohazard(src)
+	new /obj/item/storage/box/bodybags(src)
+	new /obj/item/storage/box/masks(src)
+	new /obj/item/storage/box/gloves(src)
 
 //Exam Room
 /obj/structure/closet/secure_closet/exam
@@ -151,6 +168,11 @@
 	new /obj/item/clothing/accessory/medal/medical(src)
 	new /obj/item/megaphone(src)	//added here deleted on maps
 	new /obj/item/storage/garmentbag/CMO(src)
+	new /obj/item/cartridge/chemistry(src)
+	new /obj/item/cartridge/medical(src)
+	new /obj/item/cartridge/medical(src)
+	new /obj/item/cartridge/medical(src)
+	new /obj/item/clothing/glasses/hud/health/sunglasses(src)
 
 /obj/structure/closet/secure_closet/animal
 	name = "animal control locker"

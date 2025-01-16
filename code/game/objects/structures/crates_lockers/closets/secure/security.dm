@@ -69,6 +69,7 @@
 	new /obj/item/megaphone(src)	//added here deleted on maps
 	new /obj/item/reagent_containers/food/drinks/flask(src)
 	new /obj/item/storage/garmentbag/hos(src)
+	new /obj/item/clothing/glasses/hud/health/sunglasses(src)
 
 /obj/structure/closet/secure_closet/warden
 	name = "warden's locker"
@@ -152,6 +153,10 @@
 	new /obj/item/sensor_device/advanced/security(src)
 	new /obj/item/radio/headset/headset_brigphys(src)
 	new /obj/item/clothing/shoes/sandal/white(src)
+	new /obj/item/storage/pill_bottle/patch_pack(src)
+	new /obj/item/storage/pill_bottle(src)
+	new /obj/item/storage/belt/medical(src)
+	new /obj/item/handheld_defibrillator(src)
 
 /obj/structure/closet/secure_closet/blueshield
 	name = "blueshield's locker"

@@ -3030,9 +3030,6 @@
 /area/crew_quarters/captain)
 "azO" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/machinery/camera{
 	c_tag = "Medbay Storage";
 	dir = 10;
@@ -4963,7 +4960,7 @@
 /turf/simulated/floor/carpet/royalblack,
 /area/crew_quarters/bar)
 "aQo" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -8036,11 +8033,6 @@
 /area/medical/cmo)
 "bjK" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -8206,7 +8198,7 @@
 	dir = 1;
 	network = list("SS13","CMO")
 	},
-/obj/item/defibrillator/loaded,
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteblue"
@@ -8547,7 +8539,7 @@
 	dir = 10;
 	network = list("SS13","CMO")
 	},
-/obj/item/defibrillator/loaded,
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -20378,11 +20370,6 @@
 /obj/structure/table/glass,
 /obj/item/soap/nanotrasen,
 /obj/item/reagent_containers/spray/cleaner/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
 /obj/machinery/light_switch{
 	dir = 4;
 	pixel_x = -24
@@ -20955,11 +20942,7 @@
 /area/lawoffice)
 "cLe" = (
 /obj/structure/table,
-/obj/item/reagent_containers/glass/bottle/ether,
-/obj/item/reagent_containers/syringe{
-	pixel_x = -1;
-	pixel_y = 11
-	},
+/obj/item/defibrillator/loaded,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteblue"
@@ -26950,7 +26933,9 @@
 	c_tag = "Medbay Break Room";
 	network = list("SS13","CMO")
 	},
-/obj/machinery/vending/chinese,
+/obj/machinery/computer/med_data{
+	dir = 1
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -32650,10 +32635,6 @@
 /obj/structure/closet/secure_closet/brigdoc{
 	req_access = list(2,5)
 	},
-/obj/item/storage/pill_bottle/patch_pack,
-/obj/item/storage/pill_bottle,
-/obj/item/storage/belt/medical,
-/obj/item/handheld_defibrillator,
 /obj/machinery/light,
 /obj/item/radio/intercom{
 	pixel_y = -28
@@ -37748,7 +37729,7 @@
 /area/hallway/secondary/entry/south)
 "hat" = (
 /obj/machinery/bodyscanner{
-	dir = 4
+	dir = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
@@ -43710,11 +43691,6 @@
 /area/maintenance/auxsolarstarboard)
 "iNC" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -50047,18 +50023,6 @@
 	pixel_x = 24
 	},
 /obj/structure/closet/secure_closet/CMO,
-/obj/item/cartridge/medical{
-	pixel_x = -2;
-	pixel_y = 6
-	},
-/obj/item/cartridge/medical{
-	pixel_x = 6;
-	pixel_y = 3
-	},
-/obj/item/cartridge/medical,
-/obj/item/cartridge/chemistry{
-	pixel_y = 2
-	},
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "darkblue"
@@ -56208,10 +56172,6 @@
 "moY" = (
 /obj/structure/closet/secure_closet/medical3,
 /obj/machinery/light,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
-/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -65174,7 +65134,7 @@
 /obj/machinery/newscaster{
 	pixel_y = 32
 	},
-/obj/machinery/vending/clothing/departament/medical,
+/obj/machinery/vending/chinese,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -65966,11 +65926,7 @@
 /area/toxins/misc_lab)
 "oXt" = (
 /obj/structure/table,
-/obj/item/reagent_containers/glass/bottle/ether,
-/obj/item/reagent_containers/syringe{
-	pixel_x = -1;
-	pixel_y = 11
-	},
+/obj/item/defibrillator/loaded,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -73869,9 +73825,6 @@
 /area/engineering/gravitygenerator)
 "rki" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -77159,9 +77112,6 @@
 /obj/structure/table,
 /obj/item/folder,
 /obj/item/clothing/accessory/stethoscope,
-/obj/item/clothing/glasses/hud/health/sunglasses{
-	pixel_y = 10
-	},
 /obj/item/stamp/cmo,
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -77170,11 +77120,7 @@
 /area/medical/cmo)
 "sfA" = (
 /obj/structure/table,
-/obj/item/reagent_containers/glass/bottle/ether,
-/obj/item/reagent_containers/syringe{
-	pixel_x = -1;
-	pixel_y = 11
-	},
+/obj/item/defibrillator/loaded,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteblue"
@@ -79962,9 +79908,8 @@
 	},
 /area/security/prison/cell_block/A)
 "sXz" = (
-/obj/machinery/computer/med_data{
-	dir = 1
-	},
+/obj/structure/table,
+/obj/machinery/recharger,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -80489,7 +80434,7 @@
 	},
 /area/hallway/secondary/entry/south)
 "tgA" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -85811,11 +85756,6 @@
 /obj/item/stock_parts/cell,
 /obj/machinery/cell_charger,
 /obj/structure/table,
-/obj/item/screwdriver,
-/obj/item/storage/box/masks{
-	pixel_y = 5
-	},
-/obj/item/storage/box/gloves,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -88043,7 +87983,8 @@
 	pixel_x = 9;
 	pixel_y = 9
 	},
-/obj/machinery/recharger,
+/obj/item/screwdriver,
+/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -90417,7 +90358,9 @@
 	},
 /area/crew_quarters/theatre)
 "wdX" = (
-/obj/machinery/bodyscanner,
+/obj/machinery/bodyscanner{
+	dir = 2
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -97163,15 +97106,11 @@
 /area/maintenance/gambling_den2)
 "ycl" = (
 /obj/structure/table,
-/obj/item/reagent_containers/glass/bottle/ether,
-/obj/item/reagent_containers/syringe{
-	pixel_x = -1;
-	pixel_y = 11
-	},
 /obj/machinery/alarm{
 	dir = 4;
 	pixel_x = -24
 	},
+/obj/item/defibrillator/loaded,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteblue"

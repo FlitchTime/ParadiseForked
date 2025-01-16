@@ -404,9 +404,6 @@
 	name = "south light switch";
 	pixel_y = -24
 	},
-/obj/item/handheld_defibrillator,
-/obj/item/storage/pill_bottle,
-/obj/item/storage/pill_bottle/patch_pack,
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "whiteblue"
@@ -1125,24 +1122,16 @@
 	},
 /area/security/prisonershuttle)
 "agu" = (
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "HoS personal weapons";
-	req_access = list(58)
+/obj/structure/safe{
+	known_by = list("hos")
 	},
-/obj/item/ammo_box/speedloader/a357{
-	pixel_x = -9;
-	pixel_y = 9
-	},
-/obj/item/ammo_box/speedloader/a357{
-	pixel_x = -4;
-	pixel_y = 4
-	},
+/obj/item/ammo_box/inc46x30mm,
+/obj/item/ammo_box/inc46x30mm,
 /obj/item/ammo_box/speedloader/a357,
-/obj/item/gun/projectile/revolver/mateba{
-	pixel_x = 3;
-	pixel_y = -3
-	},
+/obj/item/ammo_box/speedloader/a357,
+/obj/item/ammo_box/speedloader/a357,
+/obj/item/clothing/accessory/holster,
+/obj/item/gun/projectile/revolver/mateba,
 /obj/machinery/door_control{
 	id = "HoSPriv";
 	name = "HoS Office Privacy Shutters Control";
@@ -2703,11 +2692,11 @@
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 4
 	},
-/obj/item/paper/monitorkey,
 /obj/item/spacepod_equipment/key{
 	pixel_x = -8;
 	pixel_y = 10
 	},
+/obj/item/lighter/zippo/hos,
 /turf/simulated/floor/carpet,
 /area/security/hos)
 "amQ" = (
@@ -3778,14 +3767,18 @@
 /area/security/customs)
 "apV" = (
 /obj/structure/table/wood,
-/obj/item/flashlight/lamp,
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/item/toy/figure/hos,
-/obj/item/lighter/zippo/hos,
 /obj/machinery/newscaster/security_unit{
 	pixel_x = -30
+	},
+/obj/item/paper/monitorkey{
+	pixel_x = 5;
+	pixel_y = 4
+	},
+/obj/item/paper/safe_code{
+	owner = "hos"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "grimy"
@@ -10043,6 +10036,7 @@
 	pixel_y = 1
 	},
 /obj/item/book/manual/sop_legal,
+/obj/item/toy/figure/hos,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -27110,20 +27104,7 @@
 	},
 /area/medical/chemistry)
 "bLF" = (
-/obj/structure/table,
-/obj/item/clothing/glasses/hud/health{
-	pixel_x = -2;
-	pixel_y = 2
-	},
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health{
-	pixel_x = 2;
-	pixel_y = -2
-	},
-/obj/item/clothing/glasses/hud/health{
-	pixel_x = 4;
-	pixel_y = -4
-	},
+/obj/machinery/vending/clothing/departament/medical,
 /turf/simulated/floor/plasteel{
 	icon_state = "whitebluefull"
 	},
@@ -33307,26 +33288,31 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/structure/table/tray,
+/obj/structure/table/glass,
+/obj/item/defibrillator/loaded,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
 /area/medical/surgery/north)
 "cee" = (
 /obj/structure/table/glass,
-/obj/item/reagent_containers/iv_bag/salglu,
+/obj/item/reagent_containers/spray/cleaner/medical{
+	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
+	name = "Surgery Cleaner"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
 /area/medical/surgery/south)
 "cef" = (
-/obj/structure/closet/secure_closet/medical3,
 /obj/machinery/door_control{
 	id = "surgeryobs2";
 	name = "Privacy Shutters Control";
 	pixel_y = 25
 	},
-/obj/item/storage/belt/medical/surgery/loaded,
+/obj/machinery/bodyscanner{
+	dir = 2
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whitebluecorner"
 	},
@@ -33339,7 +33325,8 @@
 	layer = 4;
 	pixel_y = 32
 	},
-/obj/structure/table/tray,
+/obj/structure/table/glass,
+/obj/item/defibrillator/loaded,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -35110,25 +35097,24 @@
 "ciU" = (
 /obj/structure/table,
 /obj/machinery/recharger,
-/obj/item/screwdriver,
-/obj/item/reagent_containers/food/drinks/britcup,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
 /area/medical/medbreak)
 "ciV" = (
-/obj/structure/table/wood,
-/obj/item/phone{
-	pixel_x = -3;
-	pixel_y = 3
-	},
 /obj/machinery/firealarm{
 	dir = 4;
 	name = "east fire alarm";
 	pixel_x = 24
 	},
-/obj/machinery/cell_charger,
-/obj/item/stock_parts/cell,
+/obj/structure/table,
+/obj/item/phone{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/screwdriver,
+/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
@@ -35356,12 +35342,12 @@
 	},
 /area/crew_quarters/sleep)
 "cjB" = (
-/obj/machinery/bodyscanner,
 /obj/machinery/firealarm{
 	dir = 1;
 	name = "south fire alarm";
 	pixel_y = -24
 	},
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteblue"
@@ -37480,7 +37466,7 @@
 /turf/simulated/floor/plasteel,
 /area/atmos/distribution)
 "crb" = (
-/obj/machinery/bodyscanner,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteblue"
@@ -44109,19 +44095,11 @@
 /area/maintenance/asmaint)
 "cKO" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
-/obj/item/reagent_containers/spray/cleaner/medical{
-	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
-	name = "Surgery Cleaner"
-	},
 /obj/machinery/camera{
 	c_tag = "Medbay Surgery West Storage";
 	dir = 1
 	},
+/obj/item/reagent_containers/iv_bag/salglu,
 /turf/simulated/floor/plasteel{
 	icon_state = "showroomfloor"
 	},
@@ -60991,13 +60969,14 @@
 	},
 /area/security/range)
 "gWr" = (
-/obj/structure/closet/secure_closet/medical3,
 /obj/machinery/door_control{
 	id = "surgeryobs1";
 	name = "Privacy Shutters Control";
 	pixel_y = 25
 	},
-/obj/item/storage/belt/medical/surgery/loaded,
+/obj/machinery/bodyscanner{
+	dir = 2
+	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitebluecorner"
@@ -64284,7 +64263,10 @@
 	name = "north fire alarm";
 	pixel_y = 24
 	},
-/obj/item/reagent_containers/iv_bag/salglu,
+/obj/item/reagent_containers/spray/cleaner/medical{
+	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
+	name = "Surgery Cleaner"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -68969,7 +68951,6 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/item/clothing/glasses/hud/health/sunglasses,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkblue"
@@ -79289,15 +79270,6 @@
 /area/security/permabrig)
 "sVp" = (
 /obj/structure/rack,
-/obj/item/storage/belt/medical,
-/obj/item/storage/belt/medical{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/storage/belt/medical{
-	pixel_x = 6;
-	pixel_y = -6
-	},
 /obj/machinery/power/apc{
 	name = "south bump";
 	pixel_y = -24
@@ -79395,18 +79367,10 @@
 /area/medical/cloning)
 "sYi" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
-/obj/item/reagent_containers/spray/cleaner/medical{
-	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
-	name = "Surgery Cleaner"
-	},
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 4
 	},
+/obj/item/reagent_containers/iv_bag/salglu,
 /turf/simulated/floor/plasteel{
 	icon_state = "showroomfloor"
 	},
@@ -82308,7 +82272,9 @@
 	},
 /area/maintenance/apmaint)
 "uVT" = (
-/obj/machinery/vending/clothing/departament/medical,
+/obj/structure/table,
+/obj/machinery/cell_charger,
+/obj/item/stock_parts/cell,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},

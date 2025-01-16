@@ -6176,23 +6176,10 @@
 /turf/simulated/floor/carpet,
 /area/crew_quarters/bar/atrium)
 "aUJ" = (
-/obj/structure/table,
-/obj/machinery/cell_charger{
-	pixel_x = -2;
-	pixel_y = 2
-	},
-/obj/item/stock_parts/cell,
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/item/pen{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/paper_bin{
-	pixel_x = 5;
-	pixel_y = 12
-	},
+/obj/machinery/computer/med_data,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -25254,11 +25241,11 @@
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/reagent_containers/spray/cleaner/chemical,
 /obj/machinery/alarm{
 	dir = 8;
 	pixel_x = 22
 	},
+/obj/item/hand_labeler,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteyellow"
@@ -26438,10 +26425,6 @@
 /area/medical/chemistry)
 "cRi" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
-/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "whiteblue"
@@ -28696,7 +28679,13 @@
 "dbj" = (
 /obj/machinery/light,
 /obj/structure/table,
-/obj/machinery/recharger,
+/obj/item/paper_bin{
+	pixel_y = 5
+	},
+/obj/item/pen{
+	pixel_x = -3;
+	pixel_y = 5
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -39948,11 +39937,11 @@
 	pixel_x = 5;
 	pixel_y = 10
 	},
-/obj/item/reagent_containers/spray/cleaner{
-	pixel_x = 5
-	},
 /obj/item/reagent_containers/spray/cleaner/medical{
 	pixel_x = -5
+	},
+/obj/item/reagent_containers/spray/cleaner/medical{
+	pixel_x = 5
 	},
 /obj/structure/extinguisher_cabinet{
 	pixel_x = 28
@@ -43333,17 +43322,17 @@
 /area/toxins/test_chamber)
 "eIV" = (
 /obj/structure/table/glass,
-/obj/item/reagent_containers/spray/cleaner{
-	desc = "Someone has crossed out the 'Space' from Space Cleaner and written in Chemistry. Scrawled on the back is, 'Okay, whoever filled this with polytrinic acid, it was only funny the first time. It was hard enough replacing the CMO's first cat!'";
-	name = "Chemistry Cleaner"
-	},
-/obj/item/hand_labeler,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
 /obj/structure/window/reinforced{
 	dir = 4
 	},
+/obj/item/reagent_containers/spray/cleaner/chemical{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/reagent_containers/spray/cleaner/chemical,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -53511,11 +53500,6 @@
 /area/quartermaster/office)
 "hdk" = (
 /obj/structure/table/glass,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -58145,7 +58129,8 @@
 /obj/machinery/light_switch{
 	pixel_y = 24
 	},
-/obj/structure/filingcabinet/chestdrawer,
+/obj/structure/table,
+/obj/machinery/recharger,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -68393,11 +68378,7 @@
 	},
 /area/security/medbay)
 "kMK" = (
-/obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/box/bodybags,
-/obj/item/clothing/suit/apron/surgical,
-/obj/item/storage/box/bodybags/biohazard,
-/obj/item/storage/belt/medical/surgery/loaded,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -80537,9 +80518,6 @@
 /area/maintenance/asmaint3)
 "nIr" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/machinery/newscaster{
 	pixel_y = 30
 	},
@@ -82885,7 +82863,8 @@
 	pixel_y = 32;
 	step_size = 0
 	},
-/obj/machinery/computer/med_data,
+/obj/structure/table,
+/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -84248,11 +84227,7 @@
 /turf/simulated/floor/plating,
 /area/maintenance/electrical)
 "oCg" = (
-/obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/box/bodybags,
-/obj/item/clothing/suit/apron/surgical,
-/obj/item/storage/box/bodybags/biohazard,
-/obj/item/storage/belt/medical/surgery/loaded,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteblue"
@@ -87353,11 +87328,6 @@
 /area/crew_quarters/chief)
 "pof" = (
 /obj/structure/table/glass,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -95234,7 +95204,6 @@
 	pixel_y = 28
 	},
 /obj/item/stamp/cmo,
-/obj/item/clothing/glasses/hud/health/sunglasses,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -96319,9 +96288,6 @@
 /area/maintenance/consarea_virology)
 "rnz" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/machinery/power/apc{
 	dir = 1;
 	pixel_y = 26
@@ -104608,10 +104574,6 @@
 /obj/structure/closet/secure_closet/brigdoc{
 	req_access = list(2,5)
 	},
-/obj/item/handheld_defibrillator,
-/obj/item/storage/belt/medical,
-/obj/item/storage/pill_bottle,
-/obj/item/storage/pill_bottle/patch_pack,
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "whitered"
@@ -115718,15 +115680,15 @@
 	},
 /area/crew_quarters/locker)
 "vQQ" = (
-/obj/machinery/bodyscanner{
-	dir = 4
-	},
 /obj/machinery/light,
 /obj/machinery/camera{
 	c_tag = "South Surgery";
 	dir = 1;
 	network = list("SS13","Medical");
 	pixel_x = 30
+	},
+/obj/machinery/bodyscanner{
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -116043,7 +116005,12 @@
 /obj/machinery/computer/security/telescreen/entertainment{
 	pixel_y = 32
 	},
-/obj/item/twohanded/required/kirbyplants,
+/obj/structure/table,
+/obj/item/stock_parts/cell,
+/obj/machinery/cell_charger{
+	pixel_x = -2;
+	pixel_y = 2
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -116257,9 +116224,6 @@
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "vWg" = (
-/obj/machinery/bodyscanner{
-	dir = 4
-	},
 /obj/machinery/light{
 	dir = 1
 	},
@@ -116267,6 +116231,9 @@
 	c_tag = "North Surgery";
 	network = list("SS13","Medical");
 	pixel_x = 32
+	},
+/obj/machinery/bodyscanner{
+	dir = 2
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
@@ -120331,9 +120298,6 @@
 /area/medical/virology)
 "wWZ" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteblue"
