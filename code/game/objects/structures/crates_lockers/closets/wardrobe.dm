@@ -336,6 +336,16 @@
 	icon_state = "robo"
 
 /obj/structure/closet/wardrobe/robotics_black/populate_contents()
+	new /obj/item/storage/backpack(src)
+	new /obj/item/storage/backpack(src)
+	new /obj/item/storage/backpack/satchel_norm(src)
+	new /obj/item/storage/backpack/satchel_norm(src)
+	new /obj/item/storage/backpack/duffel(src)
+	new /obj/item/storage/backpack/duffel(src)
+	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/clothing/suit/storage/labcoat(src)
+	new /obj/item/radio/headset/headset_sci(src)
+	new /obj/item/radio/headset/headset_sci(src)
 	new /obj/item/clothing/under/rank/roboticist(src)
 	new /obj/item/clothing/under/rank/roboticist(src)
 	new /obj/item/clothing/under/rank/roboticist/skirt(src)

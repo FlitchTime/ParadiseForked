@@ -7277,7 +7277,6 @@
 /area/hydroponics)
 "bfO" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkgreenfull"
@@ -12920,7 +12919,6 @@
 	pixel_y = -28
 	},
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkgreenfull"
@@ -28934,7 +28932,6 @@
 /area/medical/virology/lab)
 "eni" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/item/radio/intercom{
 	pixel_y = -28
 	},
@@ -32969,27 +32966,7 @@
 	},
 /area/engineering/mechanic_workshop)
 "fEb" = (
-/obj/item/flash,
-/obj/item/extraction_pack,
-/obj/item/cartridge/quartermaster{
-	pixel_x = -3
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = -1;
-	pixel_y = 7
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = 5;
-	pixel_y = 3
-	},
-/obj/item/megaphone,
-/obj/item/fulton_core,
 /obj/structure/closet/secure_closet/quartermaster,
-/obj/item/clipboard,
-/obj/item/stamp/qm{
-	pixel_y = 7
-	},
-/obj/item/mining_voucher,
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "brown"
@@ -45994,9 +45971,6 @@
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 4
 	},
-/obj/item/lighter/zippo/qm{
-	pixel_x = -12
-	},
 /turf/simulated/floor/plasteel,
 /area/quartermaster/qm)
 "juf" = (
@@ -47546,7 +47520,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/starboard)
 "jQz" = (
-/obj/structure/closet/secure_closet/roboticist,
 /obj/machinery/door_control{
 	id = "RoboticsShutters";
 	name = "Robotics Privacy Shutters";
@@ -47556,6 +47529,8 @@
 /obj/machinery/light_switch{
 	pixel_y = -34
 	},
+/obj/structure/bed/dogbed,
+/mob/living/simple_animal/pet/dog/corgi/borgi,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkpurple"
 	},
@@ -51911,10 +51886,6 @@
 	},
 /obj/item/toy/figure/qm{
 	pixel_x = 8
-	},
-/obj/item/lighter/zippo/qm{
-	pixel_x = -9;
-	pixel_y = 4
 	},
 /turf/simulated/floor/plasteel,
 /area/quartermaster/qm)
@@ -88065,8 +88036,7 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/structure/bed/dogbed,
-/mob/living/simple_animal/pet/dog/corgi/borgi,
+/obj/structure/closet/secure_closet/roboticist,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -89029,16 +88999,6 @@
 /area/maintenance/engineering)
 "vMS" = (
 /obj/structure/closet/secure_closet/RD,
-/obj/item/cartridge/signal/toxins{
-	pixel_x = 4;
-	pixel_y = 6
-	},
-/obj/item/cartridge/signal/toxins{
-	pixel_x = -4;
-	pixel_y = 2
-	},
-/obj/item/cartridge/signal/toxins,
-/obj/item/clothing/glasses/welding/superior,
 /turf/simulated/floor/carpet/purple,
 /area/toxins/rdoffice)
 "vNg" = (
@@ -89861,10 +89821,10 @@
 /area/toxins/misc_lab)
 "vVF" = (
 /obj/structure/table,
-/obj/item/qm_quest_tablet{
-	pixel_y = 15
-	},
 /obj/machinery/keycard_auth,
+/obj/item/stamp/qm{
+	pixel_y = 10
+	},
 /turf/simulated/floor/plasteel,
 /area/quartermaster/qm)
 "vVG" = (
@@ -91153,12 +91113,7 @@
 /area/hallway/primary/starboard/south)
 "wpR" = (
 /obj/structure/rack,
-/obj/item/storage/belt/utility/full,
-/obj/item/clothing/head/welding,
 /obj/effect/turf_decal/bot,
-/obj/item/clothing/glasses/hud/diagnostic,
-/obj/item/clothing/glasses/hud/diagnostic,
-/obj/item/clothing/glasses/welding,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkpurple"

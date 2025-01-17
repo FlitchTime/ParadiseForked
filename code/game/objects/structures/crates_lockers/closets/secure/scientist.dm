@@ -31,16 +31,14 @@
 	icon_state = "res"
 
 /obj/structure/closet/secure_closet/roboticist/populate_contents()
-	new /obj/item/storage/backpack(src)
-	new /obj/item/storage/backpack(src)
-	new /obj/item/storage/backpack/satchel_norm(src)
-	new /obj/item/storage/backpack/satchel_norm(src)
-	new /obj/item/storage/backpack/duffel(src)
-	new /obj/item/storage/backpack/duffel(src)
-	new /obj/item/clothing/suit/storage/labcoat(src)
-	new /obj/item/clothing/suit/storage/labcoat(src)
-	new /obj/item/radio/headset/headset_sci(src)
-	new /obj/item/radio/headset/headset_sci(src)
+	new /obj/item/clothing/glasses/hud/diagnostic(src)
+	new /obj/item/clothing/glasses/hud/diagnostic(src)
+	new /obj/item/clothing/head/welding(src)
+	new /obj/item/clothing/head/welding(src)
+	new /obj/item/clothing/glasses/welding(src)
+	new /obj/item/clothing/glasses/welding(src)
+	new /obj/item/storage/belt/utility(src)
+	new /obj/item/storage/belt/utility(src)
 
 /obj/structure/closet/secure_closet/RD
 	name = "research director's locker"
@@ -48,6 +46,11 @@
 	icon_state = "rd"
 
 /obj/structure/closet/secure_closet/RD/populate_contents()
+	if(prob(50))
+			new /obj/item/storage/backpack/science(src)
+		else
+			new /obj/item/storage/backpack/satchel_tox(src)
+	new /obj/item/storage/backpack/duffel/science(src)
 	new /obj/item/cartridge/rd(src)
 	new /obj/item/radio/headset/heads/rd(src)
 	new /obj/item/tank/internals/air(src)
@@ -62,6 +65,9 @@
 	new /obj/item/megaphone(src)	//added here deleted on maps
 	new /obj/item/storage/garmentbag/RD(src)
 	new /obj/item/t_scanner/experimental(src)
+	new /obj/item/lighter/zippo/rd(src)
+	new /obj/item/cartridge/signal/toxins(src)
+	new /obj/item/clothing/glasses/welding/superior(src)
 
 /obj/structure/closet/secure_closet/research_reagents
 	name = "research chemical storage closet"

@@ -565,15 +565,6 @@
 /area/crew_quarters/dorms)
 "aon" = (
 /obj/structure/table/glass,
-/obj/item/cartridge/chemistry{
-	pixel_y = 6
-	},
-/obj/item/cartridge/medical{
-	pixel_x = 3
-	},
-/obj/item/cartridge/medical{
-	pixel_x = -3
-	},
 /obj/machinery/power/apc{
 	dir = 1;
 	pixel_y = 24
@@ -10495,32 +10486,6 @@
 "gRu" = (
 /obj/structure/closet/wardrobe/robotics_black,
 /obj/effect/turf_decal/delivery,
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/storage/belt/utility,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whitepurple"
@@ -10803,7 +10768,6 @@
 /area/crew_quarters/kitchen)
 "gZn" = (
 /obj/structure/table/glass,
-/obj/item/clothing/glasses/hud/health/sunglasses,
 /obj/item/stamp/cmo,
 /obj/machinery/firealarm{
 	pixel_y = -28
@@ -12112,28 +12076,12 @@
 "hNE" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table/reinforced,
-/obj/item/cartridge/quartermaster{
-	pixel_y = 6
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = -6
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = 6
-	},
-/obj/item/gps/mining,
 /obj/machinery/camera/autoname,
-/obj/item/lighter/zippo/qm{
-	pixel_x = 10
-	},
-/obj/item/stamp/qm,
 /obj/machinery/firealarm{
 	dir = 1;
 	pixel_y = 28
 	},
-/obj/item/qm_quest_tablet{
-	pixel_y = -3
-	},
+/obj/item/stamp/qm,
 /turf/simulated/floor/carpet/black,
 /area/quartermaster/storage)
 "hNH" = (
@@ -13257,13 +13205,6 @@
 "izV" = (
 /obj/structure/closet/secure_closet/medical3,
 /obj/effect/turf_decal/delivery,
-/obj/item/storage/belt/medical,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
-/obj/item/clothing/glasses/regular,
-/obj/item/reagent_containers/food/drinks/mug/med,
 /obj/machinery/requests_console{
 	department = "Medbay";
 	departmentType = 1;
@@ -17980,7 +17921,6 @@
 /obj/item/pen{
 	pixel_x = 8
 	},
-/obj/item/stamp/rd,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -18886,6 +18826,7 @@
 /obj/structure/table,
 /obj/item/paper_bin,
 /obj/item/pen,
+/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel/white,
 /area/medical/sleeper)
 "mgI" = (
@@ -21655,8 +21596,6 @@
 	dir = 1
 	},
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/item/reagent_containers/glass/bucket,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
@@ -22779,9 +22718,6 @@
 /area/gateway)
 "oHH" = (
 /obj/structure/closet/secure_closet/roboticist,
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -25787,11 +25723,6 @@
 	pixel_y = 3
 	},
 /obj/item/storage/toolbox/electrical,
-/obj/item/multitool,
-/obj/item/screwdriver{
-	pixel_y = 5
-	},
-/obj/item/clothing/head/welding,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -27214,7 +27145,6 @@
 /area/medical/research)
 "rAn" = (
 /obj/structure/rack,
-/obj/item/storage/belt/utility/full,
 /obj/item/circuitboard/mecha/ripley/main,
 /obj/item/circuitboard/mecha/ripley/peripherals,
 /obj/effect/decal/warning_stripes/north,
@@ -27322,18 +27252,6 @@
 	pixel_y = 3
 	},
 /obj/item/gun/syringe,
-/obj/item/storage/belt/medical,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/reagent_containers/spray/cleaner{
-	pixel_x = -3;
-	pixel_y = 2
-	},
 /turf/simulated/floor/plasteel/white,
 /area/medical/biostorage)
 "rDN" = (
@@ -27608,12 +27526,6 @@
 "rNF" = (
 /obj/structure/closet/secure_closet/medical3,
 /obj/effect/turf_decal/delivery,
-/obj/item/storage/belt/medical,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
-/obj/item/clothing/glasses/regular,
 /turf/simulated/floor/plasteel/white,
 /area/medical/biostorage)
 "rNJ" = (
@@ -27670,7 +27582,6 @@
 "rPn" = (
 /obj/structure/table/glass,
 /obj/item/storage/firstaid/regular,
-/obj/item/clothing/glasses/hud/health,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -28604,8 +28515,6 @@
 /area/turret_protected/aisat)
 "sxH" = (
 /obj/structure/closet/secure_closet/CMO,
-/obj/item/clothing/head/nursehat,
-/obj/item/clothing/under/rank/medical,
 /obj/effect/turf_decal/delivery,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
@@ -29758,8 +29667,6 @@
 /area/crew_quarters/captain/bedroom)
 "tkR" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/item/reagent_containers/glass/bucket,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
@@ -30838,18 +30745,7 @@
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 1
 	},
-/obj/structure/closet/secure_closet/medical3,
-/obj/item/clothing/suit/apron/surgical,
-/obj/item/storage/box/bodybags,
-/obj/item/reagent_containers/spray/cleaner/medical{
-	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
-	name = "Surgery Cleaner"
-	},
-/obj/item/storage/box/masks,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel/white/side{
 	dir = 1
 	},
@@ -31781,16 +31677,7 @@
 /area/engineering/engine)
 "uzj" = (
 /obj/structure/table/reinforced,
-/obj/item/lighter/zippo/rd,
-/obj/item/cartridge/signal/toxins{
-	pixel_x = -6
-	},
-/obj/item/cartridge/signal/toxins{
-	pixel_x = 6
-	},
-/obj/item/cartridge/signal/toxins{
-	pixel_y = 6
-	},
+/obj/item/stamp/rd,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -33898,7 +33785,6 @@
 /obj/item/robot_parts/l_arm{
 	pixel_x = -3
 	},
-/obj/item/clothing/glasses/welding,
 /obj/item/wrench,
 /obj/machinery/light,
 /turf/simulated/floor/plasteel{

@@ -17358,24 +17358,11 @@
 	},
 /area/hydroponics)
 "bfG" = (
-/obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/item/radio/intercom{
 	name = "north station intercom (General)";
 	pixel_y = 28
 	},
-/obj/structure/closet/crate,
-/obj/item/hatchet,
-/obj/item/hatchet{
-	pixel_x = -2;
-	pixel_y = -2
-	},
-/obj/item/hatchet{
-	pixel_x = -4;
-	pixel_y = -4
-	},
-/obj/item/storage/bag/plants/portaseeder,
-/obj/item/storage/bag/plants/portaseeder,
-/obj/item/storage/bag/plants/portaseeder,
+/obj/structure/closet/secure_closet/hydroponics,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -22041,7 +22028,6 @@
 	pixel_x = 2;
 	pixel_y = 5
 	},
-/obj/item/storage/belt/utility,
 /obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/requests_console{
 	department = "Robotics";
@@ -22463,18 +22449,13 @@
 	},
 /area/hallway/primary/central/west)
 "bvM" = (
-/obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/structure/closet/crate/hydroponics/prespawned,
-/obj/item/watertank,
-/obj/item/reagent_containers/spray/plantbgone,
-/obj/item/reagent_containers/spray/plantbgone,
-/obj/item/reagent_containers/spray/plantbgone,
 /obj/machinery/camera{
 	c_tag = "Hydroponics Storage"
 	},
 /obj/structure/sign/poster/contraband/have_a_puff{
 	pixel_y = 32
 	},
+/obj/structure/closet/secure_closet/hydroponics,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -25512,12 +25493,6 @@
 	pixel_y = 24;
 	req_access = list(29)
 	},
-/obj/item/clothing/glasses/hud/diagnostic,
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/welding,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whitered"
@@ -32679,7 +32654,6 @@
 /obj/item/book/manual/sop_science,
 /obj/item/paper_bin/nanotrasen,
 /obj/item/pen/multi,
-/obj/item/lighter/zippo/rd,
 /turf/simulated/floor/carpet/purple,
 /area/crew_quarters/hor)
 "ccm" = (
@@ -34715,23 +34689,15 @@
 	},
 /area/crew_quarters/hor)
 "chN" = (
-/obj/item/cartridge/signal/toxins,
-/obj/item/cartridge/signal/toxins{
-	pixel_x = -4;
-	pixel_y = 2
-	},
-/obj/item/cartridge/signal/toxins{
-	pixel_x = 4;
-	pixel_y = 6
-	},
 /obj/machinery/camera{
 	c_tag = "Research Director's Office";
 	dir = 1;
 	network = list("Research","SS13")
 	},
-/obj/item/clothing/glasses/welding/superior,
 /obj/structure/table/glass,
-/obj/effect/spawner/lootdrop/officetoys,
+/obj/effect/spawner/lootdrop/officetoys{
+	pixel_y = 5
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkpurple"
 	},
@@ -45064,21 +45030,11 @@
 	},
 /area/hydroponics)
 "cNt" = (
-/obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/structure/table,
-/obj/item/storage/box/disks_plantgene{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/storage/box/disks_plantgene{
-	pixel_x = 2;
-	pixel_y = 2
-	},
-/obj/item/storage/box/disks_plantgene,
 /obj/machinery/vending/wallmed{
 	name = "North Emergency NanoMed";
 	pixel_y = 30
 	},
+/obj/structure/closet/secure_closet/hydroponics,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -46964,6 +46920,12 @@
 /turf/simulated/floor/engine/insulated/vacuum,
 /area/atmos)
 "cSs" = (
+/obj/effect/decal/warning_stripes/yellow/hollow,
+/obj/structure/closet/crate/hydroponics/prespawned,
+/obj/item/watertank,
+/obj/item/reagent_containers/spray/plantbgone,
+/obj/item/reagent_containers/spray/plantbgone,
+/obj/item/reagent_containers/spray/plantbgone,
 /obj/machinery/light,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -50241,6 +50203,13 @@
 /obj/structure/lattice/catwalk,
 /turf/space,
 /area/solar/auxport)
+"dbU" = (
+/obj/effect/decal/warning_stripes/green/hollow,
+/obj/machinery/smartfridge,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/hydroponics)
 "dcb" = (
 /obj/item/twohanded/required/kirbyplants,
 /obj/machinery/power/apc{
@@ -57970,10 +57939,6 @@
 	pixel_x = 8;
 	pixel_y = 3
 	},
-/obj/item/lighter/zippo/qm{
-	pixel_x = -8;
-	pixel_y = 2
-	},
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "brown"
@@ -61997,10 +61962,7 @@
 "hFF" = (
 /obj/structure/table,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
-/obj/item/qm_quest_tablet{
-	pixel_x = 1;
-	pixel_y = 6
-	},
+/obj/item/stamp/qm,
 /turf/simulated/floor/plasteel,
 /area/quartermaster/qm)
 "hFI" = (
@@ -62293,13 +62255,13 @@
 /turf/simulated/floor/wood,
 /area/crew_quarters/captain)
 "hQc" = (
-/obj/machinery/smartfridge,
 /obj/machinery/door_control{
 	id = "HydroHallway";
 	name = "Hydroponics Privacy Shutters Control";
 	pixel_x = 24;
 	req_access = list(35)
 	},
+/obj/machinery/biogenerator,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -62725,6 +62687,13 @@
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
+"idS" = (
+/obj/effect/decal/warning_stripes/green/hollow,
+/obj/machinery/chem_dispenser/botanical,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/hydroponics)
 "idU" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/engineering/glass{
@@ -70236,14 +70205,6 @@
 	pixel_x = -2;
 	pixel_y = -1
 	},
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/welding,
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -71958,6 +71919,25 @@
 	icon_state = "floorgrime"
 	},
 /area/maintenance/apmaint)
+"oqD" = (
+/obj/effect/decal/warning_stripes/yellow/hollow,
+/obj/structure/closet/crate,
+/obj/item/hatchet,
+/obj/item/hatchet{
+	pixel_x = -2;
+	pixel_y = -2
+	},
+/obj/item/hatchet{
+	pixel_x = -4;
+	pixel_y = -4
+	},
+/obj/item/storage/bag/plants/portaseeder,
+/obj/item/storage/bag/plants/portaseeder,
+/obj/item/storage/bag/plants/portaseeder,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/hydroponics)
 "oqU" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -84812,27 +84792,6 @@
 /area/storage/tech)
 "wri" = (
 /obj/structure/closet/secure_closet/quartermaster,
-/obj/item/extraction_pack,
-/obj/item/fulton_core,
-/obj/item/flash,
-/obj/item/clipboard,
-/obj/item/cartridge/quartermaster{
-	pixel_x = -4;
-	pixel_y = 7
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = 6;
-	pixel_y = 5
-	},
-/obj/item/cartridge/quartermaster,
-/obj/item/megaphone{
-	pixel_x = 7
-	},
-/obj/item/stamp/qm{
-	pixel_x = 7;
-	pixel_y = 3
-	},
-/obj/item/mining_voucher,
 /turf/simulated/floor/plasteel{
 	icon_state = "brown"
 	},
@@ -86222,8 +86181,7 @@
 	},
 /area/hallway/primary/aft)
 "xhE" = (
-/obj/machinery/biogenerator,
-/obj/item/reagent_containers/glass/bucket,
+/obj/structure/table,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -127563,7 +127521,7 @@ bjq
 hfu
 dbi
 imN
-vbu
+dbU
 vbu
 vbu
 vbu
@@ -127820,7 +127778,7 @@ beb
 cWP
 dbo
 bmA
-vbu
+idS
 vbu
 vbu
 vbu
@@ -128072,7 +128030,7 @@ cHn
 beb
 bfG
 bhu
-kqU
+oqD
 beb
 cWQ
 dnH

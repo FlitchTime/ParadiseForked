@@ -6392,8 +6392,6 @@
 "aWr" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/secure_closet/cargotech,
-/obj/item/stamp/granted,
-/obj/item/stamp/denied,
 /turf/simulated/floor/plasteel{
 	icon_state = "brown"
 	},
@@ -8008,21 +8006,12 @@
 	},
 /area/hallway/secondary/entry)
 "bgT" = (
-/obj/item/folder/yellow{
-	pixel_y = 1
-	},
-/obj/item/lighter/zippo/qm{
-	pixel_x = 10;
-	pixel_y = 4
-	},
-/obj/item/toy/figure/qm{
-	pixel_x = -8;
-	pixel_y = 2
-	},
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
 /obj/structure/table/reinforced,
+/obj/item/clipboard,
+/obj/item/toy/figure/qm,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "brown"
@@ -14179,9 +14168,8 @@
 /area/bridge)
 "bLH" = (
 /obj/structure/table/reinforced,
-/obj/item/qm_quest_tablet{
-	pixel_y = -3
-	},
+/obj/item/pen,
+/obj/item/paper_bin,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -14818,8 +14806,6 @@
 	},
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/secure_closet/cargotech,
-/obj/item/stamp/granted,
-/obj/item/stamp/denied,
 /turf/simulated/floor/plasteel{
 	icon_state = "brown"
 	},
@@ -19458,7 +19444,6 @@
 /obj/structure/table/wood,
 /obj/item/paper_bin,
 /obj/item/pen,
-/obj/item/clothing/glasses/welding/superior,
 /obj/effect/decal/warning_stripes/northwest,
 /obj/item/flashlight/lamp{
 	layer = 4;
@@ -40339,8 +40324,6 @@
 /area/security/podbay)
 "dZw" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/sign/botany{
 	pixel_y = -32
@@ -51480,11 +51463,8 @@
 	},
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
-/obj/item/toy/figure/rd{
-	pixel_x = -7
-	},
+/obj/item/toy/figure/rd,
 /obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/effect/spawner/lootdrop/officetoys,
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/hor)
 "gHp" = (
@@ -55211,28 +55191,6 @@
 	pixel_y = -30
 	},
 /obj/structure/closet/secure_closet/quartermaster,
-/obj/item/fulton_core,
-/obj/item/extraction_pack,
-/obj/item/flash,
-/obj/item/megaphone,
-/obj/item/gps{
-	desc = "A positioning system designed to keep an eye on your fellow workers.";
-	gpstag = "CARG0";
-	icon_state = "gps-m"
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = -1;
-	pixel_y = 7
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = -3
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = 5;
-	pixel_y = 3
-	},
-/obj/item/clipboard,
-/obj/item/mining_voucher,
 /turf/simulated/floor/plasteel{
 	icon_state = "brown"
 	},
@@ -61685,9 +61643,6 @@
 "jeg" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/secure_closet/roboticist,
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitepurple"
@@ -64347,12 +64302,6 @@
 /obj/effect/landmark/tiles/damageturf,
 /turf/simulated/floor/glass/reinforced,
 /area/maintenance/asmaint4)
-"jJc" = (
-/obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/structure/closet/secure_closet/engineering_personal,
-/obj/item/reagent_containers/food/drinks/mug/eng,
-/turf/simulated/floor/plasteel,
-/area/engineering/engine)
 "jJj" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/cable{
@@ -70895,8 +70844,6 @@
 /area/security/detectives_office)
 "lwz" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -71092,17 +71039,10 @@
 	dir = 4;
 	pixel_x = 26
 	},
-/obj/item/cartridge/signal/toxins{
-	pixel_x = -6
-	},
-/obj/item/cartridge/signal/toxins{
-	pixel_x = 6
-	},
-/obj/item/cartridge/signal/toxins{
-	pixel_y = 6
-	},
 /obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/item/lighter/zippo/rd,
+/obj/effect/spawner/lootdrop/officetoys{
+	pixel_y = 5
+	},
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/hor)
 "lzm" = (
@@ -90417,6 +90357,7 @@
 "pWC" = (
 /obj/structure/table/reinforced,
 /obj/item/reagent_containers/spray/cleaner,
+/obj/item/reagent_containers/food/drinks/mug/eng,
 /turf/simulated/floor/plasteel{
 	icon_state = "redyellowfull"
 	},
@@ -91381,14 +91322,9 @@
 	pixel_x = -6;
 	pixel_y = 6
 	},
-/obj/item/paper_bin{
-	pixel_x = -3;
-	pixel_y = 6
+/obj/item/stamp/rd{
+	pixel_x = 5
 	},
-/obj/item/pen{
-	pixel_x = 8
-	},
-/obj/item/stamp/rd,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -91910,8 +91846,6 @@
 "qnD" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/secure_closet/cargotech,
-/obj/item/stamp/granted,
-/obj/item/stamp/denied,
 /obj/machinery/newscaster{
 	pixel_y = -30
 	},
@@ -109706,14 +109640,6 @@
 /obj/structure/cable{
 	icon_state = "1-8"
 	},
-/obj/item/paper_bin{
-	pixel_x = 4;
-	pixel_y = -10
-	},
-/obj/item/pen{
-	pixel_x = 4;
-	pixel_y = -10
-	},
 /obj/machinery/keycard_auth,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
@@ -123180,32 +123106,6 @@
 "xDU" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/wardrobe/robotics_black,
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
-/obj/item/storage/belt/utility,
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitepurple"
@@ -148844,7 +148744,7 @@ mrH
 tdv
 tPh
 dDP
-jJc
+dQD
 tXp
 eAh
 nnT

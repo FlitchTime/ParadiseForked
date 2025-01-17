@@ -20,3 +20,4 @@
 	new /obj/item/clothing/suit/hooded/wintercoat/hydro(src)
 	new /obj/item/clothing/suit/hooded/wintercoat/hydro(src)
 	new /obj/item/clothing/under/rank/hydroponics/skirt(src)
+	new /obj/item/clothing/glasses/hud/hydroponic(src)

@@ -7533,25 +7533,7 @@
 /area/crew_quarters/theatre)
 "beV" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/structure/closet/wardrobe/robotics_black,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
-/obj/item/storage/belt/utility,
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
+/obj/structure/closet/secure_closet/roboticist,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkpurple"
 	},
@@ -19608,9 +19590,6 @@
 	network = list("Research","SS13")
 	},
 /obj/structure/closet/secure_closet/roboticist,
-/obj/item/radio/headset/headset_sci{
-	pixel_x = -3
-	},
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkpurple"
@@ -19826,10 +19805,6 @@
 	c_tag = "Research Director's Office";
 	dir = 1;
 	network = list("Research","SS13")
-	},
-/obj/item/clothing/glasses/welding/superior{
-	pixel_x = 6;
-	pixel_y = 5
 	},
 /obj/structure/table/glass,
 /obj/structure/cable{
@@ -21073,8 +21048,6 @@
 /area/maintenance/secpost)
 "cZv" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/sign/botany{
 	pixel_y = -32
@@ -25755,7 +25728,6 @@
 	pixel_x = 4;
 	pixel_y = -10
 	},
-/obj/item/stamp/qm,
 /turf/simulated/floor/carpet/royalblack,
 /area/quartermaster/qm)
 "dLa" = (
@@ -51978,18 +51950,7 @@
 /area/hallway/primary/central/second/south)
 "hCi" = (
 /obj/structure/table/wood/fancy/black,
-/obj/item/mining_voucher{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/obj/item/lighter/zippo/qm{
-	pixel_x = 7;
-	pixel_y = 5
-	},
-/obj/item/mining_voucher{
-	pixel_x = -6;
-	pixel_y = 6
-	},
+/obj/item/reagent_containers/food/drinks/bottle/vodka/badminka,
 /turf/simulated/floor/wood,
 /area/quartermaster/qm)
 "hCr" = (
@@ -60885,9 +60846,6 @@
 "iVc" = (
 /obj/structure/closet/secure_closet/RD,
 /obj/effect/decal/warning_stripes/east,
-/obj/item/cartridge/signal/toxins,
-/obj/item/cartridge/signal/toxins,
-/obj/item/cartridge/signal/toxins,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -65328,7 +65286,6 @@
 /obj/item/book/manual/sop_science,
 /obj/item/paper_bin/nanotrasen,
 /obj/item/pen/multi,
-/obj/item/lighter/zippo/rd,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkpurple"
@@ -69175,9 +69132,7 @@
 	dir = 10
 	},
 /obj/structure/table/wood,
-/obj/item/qm_quest_tablet{
-	pixel_y = -3
-	},
+/obj/item/stamp/qm,
 /turf/simulated/floor/carpet/royalblack,
 /area/quartermaster/qm)
 "kgS" = (
@@ -81077,8 +81032,6 @@
 /area/quartermaster/delivery)
 "lYy" = (
 /obj/structure/closet/secure_closet/hydroponics,
-/obj/item/clothing/glasses/hud/hydroponic,
-/obj/item/clothing/glasses/hud/hydroponic,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -88960,7 +88913,6 @@
 	pixel_x = 5;
 	pixel_y = 9
 	},
-/obj/item/clothing/glasses/welding/superior,
 /obj/item/radio/intercom{
 	dir = 4;
 	pixel_x = 34;
@@ -134767,26 +134719,6 @@
 /area/crew_quarters/theatre)
 "tHJ" = (
 /obj/structure/closet/secure_closet/quartermaster,
-/obj/item/fulton_core,
-/obj/item/extraction_pack,
-/obj/item/flash,
-/obj/item/megaphone,
-/obj/item/gps{
-	desc = "A positioning system designed to keep an eye on your fellow workers.";
-	gpstag = "CARG0";
-	icon_state = "gps-m"
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = -1;
-	pixel_y = 7
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = -3
-	},
-/obj/item/cartridge/quartermaster{
-	pixel_x = 5;
-	pixel_y = 3
-	},
 /obj/structure/window/reinforced{
 	dir = 4
 	},
@@ -155911,7 +155843,6 @@
 	pixel_x = -2;
 	pixel_y = -1
 	},
-/obj/item/storage/belt/utility,
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "purple"
@@ -163891,15 +163822,6 @@
 /area/maintenance/secpost)
 "xXQ" = (
 /obj/structure/closet/wardrobe/robotics_black,
-/obj/item/clothing/glasses/hud/diagnostic{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/storage/belt/utility,
-/obj/item/clothing/head/welding{
-	pixel_x = -3;
-	pixel_y = 5
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkpurple"
 	},

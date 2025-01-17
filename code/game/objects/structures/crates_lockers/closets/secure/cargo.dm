@@ -13,6 +13,8 @@
 	new /obj/item/storage/backpack/cargo(src)
 	new /obj/item/clothing/suit/storage/cargotech(src)
 	new /obj/item/qm_quest_tablet/cargotech(src)
+	new /obj/item/stamp/denied(src)
+	new /obj/item/stamp/granted(src)
 
 
 /obj/structure/closet/secure_closet/quartermaster
@@ -33,3 +35,11 @@
 	new /obj/item/stamp/granted(src)	//added here deleted on maps
 	new /obj/item/stamp/denied(src)
 	new /obj/item/storage/garmentbag/quartermaster(src)
+	new /obj/item/mining_voucher(src)
+	new /obj/item/lighter/zippo/qm(src)
+	new /obj/item/cartridge/quartermaster(src)
+	new /obj/item/gps(src)
+	new /obj/item/flash(src)
+	new /obj/item/extraction_pack(src)
+	new /obj/item/fulton_core(src)
+	new /obj/item/qm_quest_tablet(src)
