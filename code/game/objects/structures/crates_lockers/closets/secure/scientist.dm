@@ -47,9 +47,9 @@
 
 /obj/structure/closet/secure_closet/RD/populate_contents()
 	if(prob(50))
-			new /obj/item/storage/backpack/science(src)
-		else
-			new /obj/item/storage/backpack/satchel_tox(src)
+		new /obj/item/storage/backpack/science(src)
+	else
+		new /obj/item/storage/backpack/satchel_tox(src)
 	new /obj/item/storage/backpack/duffel/science(src)
 	new /obj/item/cartridge/rd(src)
 	new /obj/item/radio/headset/heads/rd(src)
