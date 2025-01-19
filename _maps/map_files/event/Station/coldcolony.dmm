@@ -24969,11 +24969,11 @@
 /turf/simulated/floor/plating,
 /area/toxins/server)
 "lwY" = (
-/obj/structure/closet/secure_closet/medical2,
 /obj/machinery/light_switch{
 	pixel_x = -8;
 	pixel_y = -24
 	},
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel/white,
 /area/medical/surgery/north)
 "lxw" = (
@@ -45017,7 +45017,7 @@
 	},
 /area/crew_quarters/fitness)
 "uMv" = (
-/obj/structure/closet/secure_closet/medical2,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel/white,
 /area/medical/surgery/south)
 "uMy" = (
