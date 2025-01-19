@@ -1792,8 +1792,8 @@
 /area/ruin/unpowered/coldcolony_outside)
 "aPm" = (
 /obj/structure/wooden_sign{
-	name = "DANGER!";
-	desc = "BEARS!"
+	desc = "BEARS!";
+	name = "DANGER!"
 	},
 /turf/simulated/floor/plating/asteroid/snow/planet,
 /area/ruin/unpowered/coldcolony_outside)
@@ -19562,24 +19562,9 @@
 	dwidth = 7;
 	height = 5;
 	id = "sit_arrivals";
-	name = "South-East Solars";
+	name = "Colony East";
 	turf_type = /turf/simulated/floor/plating/asteroid/snow/atmosphere;
 	width = 11
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/docking_port/stationary{
-	dir = 4;
-	dwidth = 7;
-	height = 5;
-	id = "sit_arrivals";
-	name = "Colony East";
-	width = 11;
-	area_type = /area/ruin/unpowered/coldcolony_outside;
-	turf_type = /turf/simulated/floor/plating/asteroid/snow/atmosphere
 	},
 /turf/simulated/floor/plating/asteroid/snow/planet,
 /area/ruin/unpowered/coldcolony_outside)
@@ -20518,9 +20503,9 @@
 /obj/machinery/door_control{
 	id = "paramedic";
 	name = "Garage Door Control";
-	req_access = list(66);
 	pixel_x = 24;
-	pixel_y = 24
+	pixel_y = 24;
+	req_access = list(66)
 	},
 /turf/simulated/floor/plasteel/white,
 /area/medical/paramedic)
@@ -21072,6 +21057,28 @@
 "jGe" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/wardrobe/robotics_black,
+/obj/item/clothing/head/welding{
+	pixel_x = -3;
+	pixel_y = 5
+	},
+/obj/item/storage/belt/utility,
+/obj/item/clothing/head/welding{
+	pixel_x = -3;
+	pixel_y = 5
+	},
+/obj/item/clothing/glasses/welding,
+/obj/item/clothing/glasses/welding,
+/obj/item/clothing/glasses/hud/diagnostic{
+	pixel_x = 2;
+	pixel_y = 5
+	},
+/obj/item/clothing/glasses/hud/diagnostic{
+	pixel_x = 2;
+	pixel_y = 5
+	},
+/obj/item/radio/headset/headset_sci{
+	pixel_x = -3
+	},
 /obj/structure/window/reinforced{
 	dir = 8
 	},
@@ -22295,8 +22302,8 @@
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /obj/machinery/door_control{
-	pixel_x = -24;
 	id = "secgarage";
+	pixel_x = -24;
 	req_access = list(63)
 	},
 /turf/simulated/floor/plasteel,
@@ -24120,20 +24127,6 @@
 /obj/machinery/door/poddoor/shutters{
 	dir = 8;
 	id_tag = "evacgarage"
-	},
-/obj/effect/decal/warning_stripes/yellow,
-/obj/structure/fans/tiny,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/effect/decal/snow/sand/edge{
-	dir = 1
-	},
-/obj/machinery/door/poddoor/shutters{
-	id_tag = "evacgarage";
-	dir = 8
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /obj/structure/fans/tiny,
@@ -28960,27 +28953,13 @@
 /area/bridge/meeting_room)
 "noH" = (
 /obj/structure/fans/tiny,
+/obj/effect/decal/snow/sand/edge{
+	dir = 8
+	},
+/obj/effect/decal/warning_stripes/yellow,
 /obj/machinery/door/poddoor/shutters{
 	dir = 2;
 	id_tag = "comgarage"
-	},
-/obj/effect/decal/snow/sand/edge{
-	dir = 8
-	},
-/obj/effect/decal/warning_stripes/yellow,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/fans/tiny,
-/obj/effect/decal/snow/sand/edge{
-	dir = 8
-	},
-/obj/effect/decal/warning_stripes/yellow,
-/obj/machinery/door/poddoor/shutters{
-	id_tag = "comgarage";
-	dir = 2
 	},
 /obj/machinery/door_control{
 	id = "comgarage";
@@ -32371,6 +32350,9 @@
 	dir = 8
 	},
 /obj/structure/closet/secure_closet/roboticist,
+/obj/item/radio/headset/headset_sci{
+	pixel_x = -3
+	},
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel{
@@ -33103,22 +33085,6 @@
 	},
 /area/atmos)
 "pnx" = (
-/obj/machinery/door_control{
-	id = "paramedic";
-	name = "Garage Door Control";
-	pixel_x = 24;
-	req_access = list(66)
-	},
-/obj/effect/decal/warning_stripes/eastsouthwest,
-/obj/machinery/light{
-	dir = 4
-	},
-/obj/vehicle/ridden/ambulance,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/eastsouthwest,
 /obj/machinery/light{
 	dir = 4
@@ -33164,12 +33130,6 @@
 	icon_state = "neutralfull"
 	},
 /area/hallway/secondary/exit)
-"ppl" = (
-/turf/simulated/floor/wood/cherry{
-	temperature = 180;
-	icon_state = "wood-cherry-broken"
-	},
-/area/ruin/unpowered)
 "ppQ" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/sheet/metal{
@@ -33448,8 +33408,8 @@
 	pixel_y = -3
 	},
 /obj/structure/sign/directions/medical{
-	pixel_y = 4;
-	dir = 1
+	dir = 1;
+	pixel_y = 4
 	},
 /obj/structure/sign/directions/security{
 	dir = 1;
@@ -33771,24 +33731,10 @@
 /obj/effect/decal/snow/sand/edge{
 	dir = 4
 	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/machinery/door/poddoor/shutters{
-	id_tag = "engigarage";
-	dir = 1
-	},
-/obj/structure/fans/tiny,
-/obj/effect/decal/warning_stripes/yellow,
-/obj/effect/decal/snow/sand/edge{
-	dir = 4
-	},
 /obj/machinery/door_control{
 	id = "engigarage";
-	req_access = list(32);
-	pixel_x = 24
+	pixel_x = 24;
+	req_access = list(32)
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/break_room)
@@ -34580,8 +34526,8 @@
 /area/medical/biostorage)
 "pXX" = (
 /obj/structure/sign/directions/security{
-	pixel_y = 11;
-	dir = 1
+	dir = 1;
+	pixel_y = 11
 	},
 /turf/simulated/wall,
 /area/hallway/primary/central/east)
@@ -34907,8 +34853,8 @@
 /area/maintenance/incinerator)
 "qgj" = (
 /obj/structure/sign/directions/engineering{
-	pixel_y = -10;
-	dir = 4
+	dir = 4;
+	pixel_y = -10
 	},
 /obj/structure/sign/directions/cargo{
 	dir = 4;
@@ -37466,19 +37412,6 @@
 	icon_state = "whiteblue"
 	},
 /area/medical/cmostore)
-"riV" = (
-/obj/machinery/door_control{
-	id = "engigarage";
-	pixel_x = -9;
-	req_access = list(32)
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/turf/simulated/wall,
-/area/engineering/break_room)
 "riZ" = (
 /obj/machinery/cryopod{
 	dir = 8
@@ -38427,8 +38360,8 @@
 	},
 /obj/effect/decal/warning_stripes/yellow,
 /obj/machinery/door_control{
-	pixel_x = -24;
-	id = "rndgarage"
+	id = "rndgarage";
+	pixel_x = -24
 	},
 /turf/simulated/floor/plasteel,
 /area/medical/research)
@@ -41056,19 +40989,6 @@
 /obj/effect/landmark/start/nanotrasen_rep,
 /turf/simulated/floor/carpet/royalblue,
 /area/bridge/vip)
-"sPb" = (
-/obj/machinery/door_control{
-	id = "secgarage";
-	pixel_x = 9;
-	req_access = list(63)
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/turf/simulated/wall/r_wall,
-/area/security/lobby)
 "sPc" = (
 /obj/effect/turf_decal/siding/white{
 	dir = 8
@@ -45514,12 +45434,6 @@
 	icon_state = "white"
 	},
 /area/hydroponics)
-"uYk" = (
-/turf/simulated/floor/wood/cherry{
-	temperature = 180;
-	icon_state = "wood-cherry-broken3"
-	},
-/area/ruin/unpowered)
 "uYv" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Vacant Office"
@@ -45666,36 +45580,6 @@
 	icon_state = "rightsecure";
 	name = "Secure Armory";
 	req_access = list(1)
-	},
-/obj/machinery/door/window/brigdoor{
-	armor = list("melee"=60,"bullet"=70,"laser"=70,"energy"=70,"bomb"=40,"bio"=100,"rad"=100,"fire"=70,"acid"=100);
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(3)
-	},
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "ArmoryLock";
-	name = "Armory Lockdown"
-	},
-/obj/machinery/door/firedoor,
-/obj/machinery/door/poddoor/shutters{
-	dir = 8;
-	id_tag = "ArmorySec";
-	layer = 5;
-	name = "Armory Security Shutters"
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/table/reinforced,
-/obj/machinery/door/window/brigdoor{
-	armor = list("melee"=60,"bullet"=70,"laser"=70,"energy"=70,"bomb"=40,"bio"=100,"rad"=100,"fire"=70,"acid"=100);
-	name = "Secure Armory";
-	req_access = list(1);
-	base_state = "rightsecure";
-	icon_state = "rightsecure"
 	},
 /obj/machinery/door/window/brigdoor{
 	armor = list("melee"=60,"bullet"=70,"laser"=70,"energy"=70,"bomb"=40,"bio"=100,"rad"=100,"fire"=70,"acid"=100);
@@ -47117,12 +47001,6 @@
 /obj/machinery/mineral/processing_unit_console,
 /turf/simulated/wall,
 /area/coldcolony/ruin/ore_production)
-"vCF" = (
-/turf/simulated/floor/wood/cherry{
-	temperature = 180;
-	icon_state = "wood-cherry-broken2"
-	},
-/area/ruin/unpowered)
 "vCG" = (
 /obj/effect/spawner/random_spawners/blood_5,
 /obj/effect/decal/cleanable/dirt,
@@ -47282,8 +47160,8 @@
 "vGn" = (
 /obj/effect/landmark/tiles/burnturf,
 /turf/simulated/floor/wood/cherry{
-	temperature = 180;
-	icon_state = "wood-cherry-broken4"
+	icon_state = "wood-cherry-broken4";
+	temperature = 180
 	},
 /area/ruin/unpowered)
 "vGr" = (
@@ -49565,10 +49443,10 @@
 /area/ruin/unpowered/coldcolony_outside)
 "wJb" = (
 /mob/living/simple_animal/hostile/winter/reindeer{
-	melee_damage_lower = 20;
-	melee_damage_upper = 30;
+	health = 200;
 	maxHealth = 200;
-	health = 200
+	melee_damage_lower = 20;
+	melee_damage_upper = 30
 	},
 /turf/simulated/floor/wood/cherry{
 	temperature = 180
@@ -50273,18 +50151,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
-"wZJ" = (
-/obj/machinery/door_control{
-	id = "rndgarage";
-	pixel_x = 9
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/turf/simulated/wall,
-/area/medical/research)
 "wZS" = (
 /turf/simulated/wall,
 /area/toxins/storage)
@@ -51151,7 +51017,6 @@
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel/white,
 /area/medical/medbay2)
 "xtI" = (
@@ -51997,12 +51862,6 @@
 	icon_state = "grimy"
 	},
 /area/coldcolony/ruin/miningbar)
-"xIP" = (
-/turf/simulated/floor/wood/cherry{
-	temperature = 180;
-	icon_state = "wood-cherry-broken5"
-	},
-/area/ruin/unpowered)
 "xIR" = (
 /obj/machinery/power/apc{
 	dir = 4;
@@ -52801,18 +52660,6 @@
 	},
 /area/assembly/robotics)
 "yao" = (
-/obj/structure/closet/crate,
-/obj/item/stack/spacecash/c100,
-/obj/effect/spawner/lootdrop/maintenance,
-/obj/machinery/light_switch{
-	pixel_x = 8;
-	pixel_y = 24
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/closet/crate,
 /obj/item/stack/spacecash/c100,
 /obj/effect/spawner/lootdrop/maintenance,
@@ -100728,7 +100575,7 @@ rSb
 jpa
 kyF
 rSb
-wZJ
+vQg
 eqe
 jmv
 gAz
@@ -104311,7 +104158,7 @@ fLZ
 vaD
 rfE
 kzF
-sPb
+bWt
 iMX
 rSb
 rSb
@@ -105306,7 +105153,7 @@ rSb
 rSb
 rSb
 rSb
-riV
+kJj
 hxB
 bbm
 bhE
@@ -131732,7 +131579,7 @@ uCb
 kwb
 bhK
 oLl
-xIP
+uBo
 pgy
 diL
 oaq
@@ -132031,7 +131878,7 @@ rSb
 rvL
 kwb
 bhK
-ppl
+tGS
 eMo
 rFK
 eMo
@@ -132337,7 +132184,7 @@ kwb
 kwb
 pdA
 kwb
-uYk
+qrv
 vGn
 pgy
 knn
@@ -132937,11 +132784,11 @@ rSb
 lHv
 xEk
 kwb
-xIP
+uBo
 kwb
 kwb
 kwb
-ppl
+tGS
 pgy
 pgy
 ylT
@@ -133540,11 +133387,11 @@ abG
 rSb
 rvL
 kwb
-uYk
+qrv
 kwb
 kwb
 bhK
-vCF
+fKU
 pgy
 nIS
 fIu
