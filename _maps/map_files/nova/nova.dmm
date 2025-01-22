@@ -32529,7 +32529,6 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -48818,7 +48817,6 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -86482,7 +86480,6 @@
 /area/security/securehallway)
 "mNf" = (
 /obj/structure/closet/secure_closet/engineering_welding,
-/obj/item/clothing/glasses/welding,
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
 "mNh" = (
@@ -143435,7 +143432,6 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -150219,7 +150215,6 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},

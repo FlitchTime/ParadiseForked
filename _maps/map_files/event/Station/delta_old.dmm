@@ -5957,7 +5957,6 @@
 /obj/effect/decal/warning_stripes/southwest,
 /obj/structure/window/reinforced,
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "aXe" = (
@@ -13538,7 +13537,6 @@
 	layer = 2.9
 	},
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "bMV" = (
@@ -14808,7 +14806,6 @@
 	layer = 2.9
 	},
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "bTo" = (
@@ -15507,7 +15504,6 @@
 /obj/effect/decal/warning_stripes/east,
 /obj/structure/window/reinforced,
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "bWf" = (
@@ -34611,7 +34607,6 @@
 /obj/effect/decal/warning_stripes/southeast,
 /obj/structure/window/reinforced,
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "dAO" = (
@@ -36943,7 +36938,6 @@
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/window/reinforced,
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "dKo" = (
@@ -47275,7 +47269,6 @@
 	layer = 2.9
 	},
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "fLv" = (
@@ -54301,7 +54294,6 @@
 	layer = 2.9
 	},
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "hAY" = (
@@ -66570,9 +66562,6 @@
 "ldB" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/secure_closet/engineering_welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
 "ldC" = (
@@ -94837,9 +94826,6 @@
 "sCB" = (
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/structure/closet/secure_closet/engineering_welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
-/obj/item/clothing/glasses/welding,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},

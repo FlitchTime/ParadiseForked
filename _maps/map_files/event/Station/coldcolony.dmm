@@ -4626,7 +4626,6 @@
 /area/bridge/vip)
 "bOc" = (
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/effect/decal/warning_stripes/south,
 /obj/machinery/light{
@@ -21879,7 +21878,6 @@
 "iFr" = (
 /obj/structure/closet/secure_closet/engineering_welding,
 /obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/item/clothing/glasses/welding,
 /obj/machinery/light,
 /turf/simulated/floor/plasteel{
 	icon_state = "yellow"
@@ -22066,7 +22064,6 @@
 /area/security/prison/cell_block/A)
 "iIJ" = (
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/effect/decal/warning_stripes/south,
 /obj/effect/decal/cleanable/dirt,
@@ -24297,7 +24294,6 @@
 "jBK" = (
 /obj/structure/closet/secure_closet/engineering_welding,
 /obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/item/clothing/glasses/welding,
 /turf/simulated/floor/plasteel{
 	icon_state = "yellow"
 	},
@@ -42641,7 +42637,6 @@
 /area/crew_quarters/heads/hop)
 "qKQ" = (
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/effect/decal/warning_stripes/south,
 /turf/simulated/floor/plasteel{
@@ -43205,7 +43200,6 @@
 /area/ruin/unpowered)
 "qXj" = (
 /obj/structure/closet/secure_closet/atmos_personal,
-/obj/item/extinguisher/mini,
 /obj/effect/decal/warning_stripes/yellow/hollow,
 /obj/effect/decal/warning_stripes/south,
 /obj/machinery/firealarm{

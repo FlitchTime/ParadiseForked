@@ -43530,7 +43530,6 @@
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
 	},
-/obj/item/storage/briefcase/inflatable,
 /turf/simulated/floor/plasteel,
 /area/atmos/control)
 "cJr" = (
@@ -46920,12 +46919,6 @@
 /turf/simulated/floor/engine/insulated/vacuum,
 /area/atmos)
 "cSs" = (
-/obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/structure/closet/crate/hydroponics/prespawned,
-/obj/item/watertank,
-/obj/item/reagent_containers/spray/plantbgone,
-/obj/item/reagent_containers/spray/plantbgone,
-/obj/item/reagent_containers/spray/plantbgone,
 /obj/machinery/light,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -50374,7 +50367,6 @@
 	pixel_x = -24
 	},
 /obj/effect/decal/warning_stripes/northwest,
-/obj/item/storage/briefcase/inflatable,
 /turf/simulated/floor/plasteel,
 /area/atmos/control)
 "dcG" = (
@@ -62689,7 +62681,7 @@
 /area/engineering/engine)
 "idS" = (
 /obj/effect/decal/warning_stripes/green/hollow,
-/obj/machinery/chem_dispenser/botanical,
+/obj/machinery/hydroponics/constructable,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -71920,20 +71912,21 @@
 	},
 /area/maintenance/apmaint)
 "oqD" = (
-/obj/effect/decal/warning_stripes/yellow/hollow,
-/obj/structure/closet/crate,
-/obj/item/hatchet,
-/obj/item/hatchet{
-	pixel_x = -2;
-	pixel_y = -2
-	},
+/obj/structure/closet/crate/hydroponics/prespawned,
+/obj/item/watertank,
+/obj/item/reagent_containers/spray/plantbgone,
+/obj/item/reagent_containers/spray/plantbgone,
+/obj/item/reagent_containers/spray/plantbgone,
 /obj/item/hatchet{
 	pixel_x = -4;
 	pixel_y = -4
 	},
-/obj/item/storage/bag/plants/portaseeder,
-/obj/item/storage/bag/plants/portaseeder,
-/obj/item/storage/bag/plants/portaseeder,
+/obj/item/hatchet{
+	pixel_x = -2;
+	pixel_y = -2
+	},
+/obj/item/hatchet,
+/obj/effect/decal/warning_stripes/yellow/hollow,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -77472,7 +77465,6 @@
 /obj/machinery/light,
 /obj/structure/closet/secure_closet/atmos_personal,
 /obj/effect/decal/warning_stripes/north,
-/obj/item/storage/briefcase/inflatable,
 /turf/simulated/floor/plasteel,
 /area/atmos/control)
 "rRj" = (

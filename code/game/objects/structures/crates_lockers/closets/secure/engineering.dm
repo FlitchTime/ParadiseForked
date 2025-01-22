@@ -65,6 +65,9 @@
 	new /obj/item/weldingtool/largetank(src)
 	new /obj/item/weldingtool/largetank(src)
 	new /obj/item/weldingtool/largetank(src)
+	new /obj/item/clothing/glasses/welding(src)
+	new /obj/item/clothing/glasses/welding(src)
+	new /obj/item/clothing/glasses/welding(src)
 
 
 /obj/structure/closet/secure_closet/engineering_personal
@@ -118,3 +121,5 @@
 	new /obj/item/clothing/head/hardhat/atmos(src)
 	new /obj/item/rpd(src)
 	new /obj/item/destTagger(src)
+	new /obj/item/storage/briefcase/inflatable(src)
+	new /obj/item/extinguisher/mini(src)
