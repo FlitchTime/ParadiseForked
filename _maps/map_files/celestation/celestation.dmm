@@ -127248,7 +127248,6 @@
 /obj/structure/cable/orange{
 	icon_state = "4-8"
 	},
-/obj/structure/table/reinforced,
 /turf/simulated/floor/plasteel,
 /area/engineering/chiefs_office)
 "xeA" = (
