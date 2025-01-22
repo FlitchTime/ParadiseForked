@@ -7933,6 +7933,10 @@
 "bjN" = (
 /obj/structure/table/wood,
 /obj/item/storage/fancy/donut_box,
+/obj/item/reagent_containers/food/drinks/mug/cap{
+	pixel_x = 6;
+	pixel_y = 6
+	},
 /turf/simulated/floor/carpet/black,
 /area/crew_quarters/captain)
 "bjS" = (
@@ -12441,10 +12445,8 @@
 	},
 /area/ntrep)
 "bKq" = (
-/obj/structure/disposalpipe/segment,
-/obj/machinery/photocopier{
-	pixel_y = 2
-	},
+/obj/machinery/disposal,
+/obj/structure/disposalpipe/trunk,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkyellow"
@@ -14178,6 +14180,10 @@
 "bTJ" = (
 /obj/machinery/newscaster{
 	pixel_y = 32
+	},
+/obj/structure/table/reinforced,
+/obj/machinery/photocopier/faxmachine/longrange{
+	department = "Chief Engineer's Office"
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -24467,7 +24473,8 @@
 /turf/simulated/floor/plasteel,
 /area/security/prisonershuttle)
 "doG" = (
-/obj/machinery/computer/sm_monitor,
+/obj/structure/table/reinforced,
+/obj/item/phone,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkyellow"
 	},
@@ -33175,11 +33182,10 @@
 /turf/simulated/floor/plasteel,
 /area/security/permahallway)
 "faE" = (
-/obj/machinery/disposal,
-/obj/structure/disposalpipe/trunk,
 /obj/machinery/light_switch{
 	pixel_x = -26
 	},
+/obj/machinery/papershredder,
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "darkyellow"
@@ -38839,6 +38845,12 @@
 /obj/structure/cable/orange,
 /obj/machinery/power/apc{
 	pixel_y = -28
+	},
+/obj/structure/table/reinforced,
+/obj/item/reagent_containers/food/drinks/mug/ce,
+/obj/item/lighter/zippo/ce,
+/obj/item/clothing/mask/cigarette/cigar{
+	pixel_x = 5
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkyellow"
@@ -45549,6 +45561,10 @@
 	},
 /obj/item/reagent_containers/food/drinks/bottle/vodka/badminka,
 /obj/machinery/atmospherics/pipe/simple/hidden/universal,
+/obj/item/reagent_containers/food/drinks/mug/hop{
+	pixel_x = 10;
+	pixel_y = -11
+	},
 /turf/simulated/floor/wood/fancy/light,
 /area/crew_quarters/heads/hop)
 "hpg" = (
@@ -58846,7 +58862,6 @@
 	},
 /area/maintenance/disposal)
 "jUY" = (
-/obj/machinery/papershredder,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkyellow"
@@ -65449,6 +65464,7 @@
 "liT" = (
 /obj/item/reagent_containers/food/drinks/shaker,
 /obj/structure/table/wood,
+/obj/item/reagent_containers/food/drinks/mug/novelty,
 /turf/simulated/floor/wood/fancy/oak,
 /area/maintenance/gambling_den2)
 "liW" = (
@@ -75165,13 +75181,6 @@
 	icon_state = "whiteyellowfull"
 	},
 /area/hallway/primary/central)
-"nfB" = (
-/obj/structure/table/reinforced,
-/obj/machinery/photocopier/faxmachine/longrange{
-	department = "Chief Engineer's Office"
-	},
-/turf/simulated/floor/plasteel,
-/area/engineering/chiefs_office)
 "nfC" = (
 /obj/structure/table/wood,
 /obj/machinery/camera{
@@ -93543,9 +93552,6 @@
 	},
 /area/chapel/main)
 "qGh" = (
-/obj/machinery/photocopier{
-	pixel_y = 2
-	},
 /mob/living/simple_animal/parrot/Poly,
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -94988,6 +94994,9 @@
 	pixel_y = 26
 	},
 /obj/machinery/camera/autoname,
+/obj/machinery/photocopier{
+	pixel_y = 2
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkyellow"
@@ -106153,6 +106162,9 @@
 	name = "Chief Engineer Requests Console";
 	pixel_y = 32
 	},
+/obj/structure/table/reinforced,
+/obj/item/paper_bin,
+/obj/item/pen,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkyellow"
@@ -106469,6 +106481,9 @@
 	},
 /obj/structure/cable/orange{
 	icon_state = "4-8"
+	},
+/obj/structure/chair{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/chiefs_office)
@@ -108049,6 +108064,7 @@
 /obj/structure/table/wood,
 /obj/item/paper_bin/nanotrasen,
 /obj/item/pen,
+/obj/item/reagent_containers/food/drinks/mug/cmo,
 /turf/simulated/floor/carpet/cyan,
 /area/medical/cmo)
 "twd" = (
@@ -109212,13 +109228,19 @@
 /area/medical/paramedic)
 "tId" = (
 /obj/structure/table/reinforced,
-/obj/item/paper/monitorkey,
-/obj/item/toy/figure/ce,
-/obj/item/paper/tcommskey,
-/obj/item/clothing/mask/cigarette/cigar{
-	pixel_x = 5
+/obj/item/flashlight/lamp{
+	pixel_x = -3;
+	pixel_y = 11
 	},
-/obj/effect/spawner/lootdrop/officetoys,
+/obj/item/paper/monitorkey{
+	pixel_x = 5;
+	pixel_y = 4
+	},
+/obj/item/paper/tcommskey,
+/obj/item/stamp/ce{
+	pixel_x = -6;
+	pixel_y = -6
+	},
 /turf/simulated/floor/plasteel,
 /area/engineering/chiefs_office)
 "tIe" = (
@@ -118459,8 +118481,12 @@
 /turf/simulated/floor/plating,
 /area/maintenance/cele/cargo)
 "vvZ" = (
-/obj/structure/rack,
-/obj/item/lock_buster,
+/obj/structure/table/reinforced,
+/obj/effect/spawner/lootdrop/officetoys{
+	pixel_x = 15
+	},
+/obj/item/clipboard,
+/obj/item/toy/figure/ce,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkyellow"
 	},
@@ -120331,6 +120357,7 @@
 /obj/machinery/status_display{
 	pixel_x = -32
 	},
+/obj/item/reagent_containers/food/drinks/mug/serv,
 /turf/simulated/floor/carpet/royalblack,
 /area/crew_quarters/bar)
 "vOG" = (
@@ -123390,25 +123417,6 @@
 /area/medical/virology/lab)
 "wsa" = (
 /obj/structure/closet/secure_closet/engineering_chief,
-/obj/item/clothing/glasses/meson/sunglasses,
-/obj/item/lock_buster,
-/obj/item/cartridge/engineering{
-	pixel_x = 3
-	},
-/obj/item/cartridge/engineering{
-	pixel_x = -3;
-	pixel_y = 2
-	},
-/obj/item/cartridge/engineering{
-	pixel_x = 4;
-	pixel_y = 5
-	},
-/obj/item/cartridge/atmos,
-/obj/item/cartridge/atmos{
-	pixel_x = 5;
-	pixel_y = -3
-	},
-/obj/item/rcd/combat,
 /obj/machinery/newscaster{
 	pixel_y = 32
 	},
@@ -124710,7 +124718,7 @@
 /turf/simulated/floor/glass/reinforced,
 /area/construction/hallway)
 "wFM" = (
-/obj/machinery/computer/station_alert,
+/obj/machinery/computer/sm_monitor,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkyellow"
@@ -127231,14 +127239,6 @@
 /area/toxins/test_chamber)
 "xez" = (
 /obj/structure/table/reinforced,
-/obj/item/paper_bin,
-/obj/item/pen,
-/obj/item/flashlight/lamp{
-	pixel_x = -3;
-	pixel_y = 11
-	},
-/obj/item/stamp/ce,
-/obj/item/lighter/zippo/ce,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
@@ -127248,6 +127248,7 @@
 /obj/structure/cable/orange{
 	icon_state = "4-8"
 	},
+/obj/structure/table/reinforced,
 /turf/simulated/floor/plasteel,
 /area/engineering/chiefs_office)
 "xeA" = (
@@ -303144,7 +303145,7 @@ oqZ
 aeM
 wIB
 qWQ
-nfB
+jpb
 tId
 xez
 iEF

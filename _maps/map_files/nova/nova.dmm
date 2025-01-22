@@ -29860,12 +29860,18 @@
 /area/security/seceqstorage)
 "enj" = (
 /obj/structure/table/wood,
-/obj/item/flashlight/lamp,
 /obj/item/radio/intercom{
 	dir = 4;
 	pixel_x = -28
 	},
 /obj/item/reagent_containers/food/drinks/mug/ce,
+/obj/item/lighter/zippo/ce{
+	pixel_x = 4;
+	pixel_y = 2
+	},
+/obj/item/clothing/mask/cigarette/cigar{
+	pixel_x = 5
+	},
 /turf/simulated/floor/carpet/royalblack,
 /area/crew_quarters/chief)
 "ens" = (
@@ -43521,16 +43527,15 @@
 /area/maintenance/asmaint3)
 "gkO" = (
 /obj/structure/table/reinforced,
-/obj/item/phone{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/effect/spawner/lootdrop/officetoys,
-/obj/item/clothing/mask/cigarette/cigar{
-	pixel_x = 5
-	},
 /obj/effect/turf_decal/siding/white{
 	dir = 9
+	},
+/obj/item/phone{
+	pixel_x = 12;
+	pixel_y = -4
+	},
+/obj/effect/spawner/lootdrop/officetoys{
+	pixel_y = 5
 	},
 /turf/simulated/floor/glass,
 /area/crew_quarters/chief)
@@ -56898,13 +56903,10 @@
 /area/maintenance/engineering)
 "inZ" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/toolbox/mechanical{
-	pixel_x = -1;
-	pixel_y = 2
-	},
 /obj/machinery/computer/security/telescreen/entertainment{
 	pixel_x = 32
 	},
+/obj/item/paicard,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -85473,10 +85475,6 @@
 /obj/structure/table/reinforced,
 /obj/item/paper_bin,
 /obj/item/pen,
-/obj/item/lighter/zippo/ce{
-	pixel_x = 4;
-	pixel_y = 2
-	},
 /obj/effect/turf_decal/siding/white{
 	dir = 5
 	},
@@ -119104,6 +119102,7 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
+/obj/item/reagent_containers/food/drinks/mug/serv,
 /turf/simulated/floor/carpet/red,
 /area/crew_quarters/theatre)
 "rBc" = (
@@ -139855,7 +139854,10 @@
 /area/quartermaster/qm)
 "uwl" = (
 /obj/structure/rack,
-/obj/item/lock_buster,
+/obj/item/storage/toolbox/mechanical{
+	pixel_x = -1;
+	pixel_y = 2
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -149509,7 +149511,6 @@
 /area/hallway/primary/starboard/south)
 "vUP" = (
 /obj/structure/table/reinforced,
-/obj/item/clothing/glasses/meson/sunglasses,
 /obj/item/rcd_ammo{
 	pixel_y = 8
 	},
@@ -149538,9 +149539,6 @@
 	pixel_y = 8
 	},
 /obj/item/rcd_ammo{
-	pixel_y = 8
-	},
-/obj/item/rcd/combat{
 	pixel_y = 8
 	},
 /obj/effect/turf_decal/siding/white{
@@ -160082,7 +160080,6 @@
 /area/medical/psych)
 "xyh" = (
 /obj/structure/table/reinforced,
-/obj/item/paicard,
 /obj/item/stamp/ce,
 /obj/effect/turf_decal/siding/white{
 	dir = 10

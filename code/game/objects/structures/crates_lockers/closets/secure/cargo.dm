@@ -38,7 +38,7 @@
 	new /obj/item/mining_voucher(src)
 	new /obj/item/lighter/zippo/qm(src)
 	new /obj/item/cartridge/quartermaster(src)
-	new /obj/item/gps(src)
+	new /obj/item/gps/mining(src)
 	new /obj/item/flash(src)
 	new /obj/item/extraction_pack(src)
 	new /obj/item/fulton_core(src)

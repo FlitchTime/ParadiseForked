@@ -511,6 +511,7 @@
 	pixel_x = 6;
 	pixel_y = 6
 	},
+/obj/item/reagent_containers/food/drinks/mug/rd,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "whitepurple"
@@ -572,6 +573,7 @@
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
+/obj/item/reagent_containers/food/drinks/mug/cmo,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -1659,6 +1661,10 @@
 /obj/item/toy/figure/captain,
 /obj/item/storage/lockbox/medal,
 /obj/item/reagent_containers/food/drinks/flask/gold,
+/obj/item/reagent_containers/food/drinks/mug/cap{
+	pixel_x = 6;
+	pixel_y = 6
+	},
 /turf/simulated/floor/carpet/royalblue,
 /area/crew_quarters/captain/bedroom)
 "aZe" = (
@@ -3410,6 +3416,9 @@
 	dir = 2;
 	id_tag = "kitchen";
 	name = "Kitchen Shutters"
+	},
+/obj/item/reagent_containers/food/drinks/mug/serv{
+	pixel_x = 10
 	},
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/kitchen)
@@ -6279,6 +6288,10 @@
 /obj/machinery/light{
 	dir = 1
 	},
+/obj/item/reagent_containers/food/drinks/mug/sci{
+	pixel_x = 6;
+	pixel_y = 6
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whitepurple"
@@ -7735,6 +7748,7 @@
 /obj/item/paper/monitorkey,
 /obj/item/lighter/zippo/hop,
 /obj/item/storage/box/PDAs,
+/obj/item/reagent_containers/food/drinks/mug/hop,
 /turf/simulated/floor/carpet/orange,
 /area/crew_quarters/heads/hop)
 "fjt" = (
@@ -9474,7 +9488,6 @@
 /area/medical/medbay)
 "gma" = (
 /obj/structure/closet/firecloset,
-/obj/item/clothing/glasses/meson,
 /obj/effect/turf_decal/delivery,
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
 /turf/simulated/floor/plasteel,
@@ -10538,15 +10551,6 @@
 /area/engineering/mechanic_workshop)
 "gSK" = (
 /obj/structure/table/reinforced,
-/obj/item/cartridge/engineering{
-	pixel_y = 6
-	},
-/obj/item/cartridge/engineering{
-	pixel_x = 6
-	},
-/obj/item/cartridge/engineering{
-	pixel_x = -6
-	},
 /obj/item/reagent_containers/food/pill/patch/silver_sulf,
 /obj/machinery/alarm{
 	dir = 8;
@@ -11299,6 +11303,7 @@
 /obj/item/cartridge/atmos,
 /obj/item/stamp/ce,
 /obj/item/lighter/zippo/ce,
+/obj/item/reagent_containers/food/drinks/mug/ce,
 /obj/item/toy/figure/ce,
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -20131,6 +20136,7 @@
 /obj/item/clothing/gloves/color/black,
 /obj/item/clothing/gloves/color/black,
 /obj/item/clothing/gloves/color/black,
+/obj/item/reagent_containers/food/drinks/mug/eng,
 /turf/simulated/floor/engine,
 /area/engineering/engine)
 "mVX" = (
@@ -36864,6 +36870,7 @@
 /obj/item/storage/secure/briefcase,
 /obj/item/paper_bin,
 /obj/item/pen,
+/obj/item/reagent_containers/food/drinks/mug/sec,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "red"

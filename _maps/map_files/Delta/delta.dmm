@@ -10474,6 +10474,7 @@
 /obj/machinery/newscaster{
 	pixel_y = 30
 	},
+/obj/item/reagent_containers/food/drinks/mug/serv,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -16232,7 +16233,7 @@
 	pixel_y = -32
 	},
 /obj/effect/decal/warning_stripes/north,
-/obj/machinery/photocopier,
+/obj/machinery/papershredder,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -27948,7 +27949,13 @@
 /area/medical/paramedic)
 "ddM" = (
 /obj/structure/table,
-/obj/item/reagent_containers/food/drinks/coffee,
+/obj/item/reagent_containers/food/drinks/mug/sci{
+	pixel_x = 6
+	},
+/obj/item/reagent_containers/food/drinks/coffee{
+	pixel_x = -7;
+	pixel_y = 6
+	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitepurple"
@@ -28674,7 +28681,9 @@
 	pixel_x = -3;
 	pixel_y = 3
 	},
-/obj/effect/spawner/lootdrop/officetoys,
+/obj/effect/spawner/lootdrop/officetoys{
+	pixel_x = 15
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -29641,10 +29650,11 @@
 	dir = 8
 	},
 /obj/structure/table/reinforced,
-/obj/machinery/photocopier/faxmachine/longrange{
-	department = "Chief Engineer's Office"
-	},
 /obj/effect/decal/warning_stripes/east,
+/obj/item/storage/toolbox/mechanical{
+	pixel_x = -1;
+	pixel_y = 2
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -30453,8 +30463,6 @@
 /obj/item/rcd_ammo,
 /obj/item/rcd_ammo,
 /obj/item/rcd_ammo,
-/obj/item/clothing/glasses/meson/sunglasses,
-/obj/item/rcd/combat,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -30484,8 +30492,8 @@
 	},
 /area/maintenance/detectives_office)
 "dom" = (
-/obj/machinery/computer/sm_monitor,
 /obj/effect/decal/warning_stripes/north,
+/obj/machinery/computer/sm_monitor,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -33387,6 +33395,7 @@
 	pixel_x = -11;
 	pixel_y = 5
 	},
+/obj/item/reagent_containers/food/drinks/mug/eng,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "yellow"
@@ -40696,6 +40705,10 @@
 /obj/effect/spawner/lootdrop/officetoys{
 	pixel_y = 5
 	},
+/obj/item/reagent_containers/food/drinks/mug/rd{
+	pixel_x = 9;
+	pixel_y = 3
+	},
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/hor)
 "eur" = (
@@ -46295,7 +46308,7 @@
 	dir = 1;
 	layer = 2.9
 	},
-/obj/item/extinguisher/mini,
+/obj/structure/closet/secure_closet/atmos_personal,
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "fLv" = (
@@ -63909,6 +63922,7 @@
 /obj/item/reagent_containers/food/drinks/flask/gold,
 /obj/item/razor,
 /obj/machinery/light,
+/obj/item/reagent_containers/food/drinks/mug/cap,
 /turf/simulated/floor/carpet/royalblue,
 /area/crew_quarters/captain/bedroom)
 "jSy" = (
@@ -84885,11 +84899,9 @@
 	pixel_x = -28
 	},
 /obj/structure/table/reinforced,
-/obj/item/enginepicker{
-	layer = 3.1;
-	pixel_y = 3
-	},
 /obj/effect/decal/warning_stripes/southeastcorner,
+/obj/item/reagent_containers/food/drinks/mug/ce,
+/obj/item/gps/engineering,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -88080,6 +88092,10 @@
 "pBp" = (
 /obj/item/flashlight/lamp,
 /obj/structure/table/wood,
+/obj/item/reagent_containers/food/drinks/mug/hop{
+	pixel_x = 10;
+	pixel_y = -11
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "grimy"
 	},
@@ -93750,6 +93766,7 @@
 /obj/structure/table/glass,
 /obj/item/phone,
 /obj/item/lighter/zippo/cmo,
+/obj/item/reagent_containers/food/drinks/mug/cmo,
 /turf/simulated/floor/plasteel{
 	icon_state = "cmo"
 	},
@@ -95310,10 +95327,14 @@
 /area/maintenance/bar)
 "rcp" = (
 /obj/structure/table/reinforced,
-/obj/item/paicard,
 /obj/structure/cable{
 	icon_state = "2-4"
 	},
+/obj/item/paper/monitorkey{
+	pixel_x = 5;
+	pixel_y = 4
+	},
+/obj/item/paper/tcommskey,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -102538,6 +102559,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/whiskey{
 	pixel_y = 18
 	},
+/obj/item/reagent_containers/food/drinks/mug/hos,
 /turf/simulated/floor/wood,
 /area/security/hos)
 "sMh" = (
@@ -106990,13 +107012,13 @@
 /area/security/permabrig)
 "tLH" = (
 /obj/structure/table/reinforced,
-/obj/item/folder/blue,
-/obj/item/paper/tcommskey,
-/obj/item/stamp/ce,
-/obj/item/paper/monitorkey,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
+/obj/item/clothing/mask/cigarette/cigar{
+	pixel_x = 5
+	},
+/obj/item/lighter/zippo/ce,
 /turf/simulated/floor/plasteel{
 	icon_state = "neutralfull"
 	},
@@ -111048,11 +111070,11 @@
 	pixel_y = 28
 	},
 /obj/structure/table/reinforced,
-/obj/item/storage/toolbox/mechanical{
-	pixel_x = -1;
-	pixel_y = 2
-	},
 /obj/effect/decal/warning_stripes/south,
+/obj/item/enginepicker{
+	layer = 3.1;
+	pixel_y = 3
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -111627,6 +111649,10 @@
 /obj/machinery/firealarm{
 	dir = 8;
 	pixel_x = -26
+	},
+/obj/item/reagent_containers/food/drinks/mug/sec{
+	pixel_x = 3;
+	pixel_y = 14
 	},
 /turf/simulated/floor/plasteel,
 /area/security/brigstaff)
@@ -112873,6 +112899,7 @@
 /obj/machinery/door_control{
 	id = "ops"
 	},
+/obj/item/reagent_containers/food/drinks/mug/novelty,
 /turf/simulated/floor/plating,
 /area/maintenance/fpmaint)
 "vcX" = (
@@ -114948,12 +114975,11 @@
 "vAZ" = (
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
-/obj/item/gps/engineering,
-/obj/item/lighter/zippo/ce,
 /obj/effect/decal/warning_stripes/east,
 /obj/machinery/light{
 	dir = 8
 	},
+/obj/item/toy/figure/ce,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -118536,7 +118562,10 @@
 	},
 /obj/structure/cable,
 /obj/effect/decal/warning_stripes/north,
-/obj/machinery/papershredder,
+/obj/structure/table/reinforced,
+/obj/machinery/photocopier/faxmachine/longrange{
+	department = "Chief Engineer's Office"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -118558,8 +118587,7 @@
 	pixel_y = -28
 	},
 /obj/effect/decal/warning_stripes/northeast,
-/obj/structure/rack,
-/obj/item/lock_buster,
+/obj/machinery/photocopier,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -124314,15 +124342,16 @@
 /area/medical/medbay)
 "xHR" = (
 /obj/structure/table/reinforced,
-/obj/item/clipboard,
-/obj/item/toy/figure/ce,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
 /obj/structure/cable{
 	icon_state = "1-8"
 	},
-/obj/item/clothing/mask/cigarette/cigar{
+/obj/item/stamp/ce{
+	pixel_x = -6
+	},
+/obj/item/folder/blue{
 	pixel_x = 5
 	},
 /turf/simulated/floor/plasteel{
@@ -125206,17 +125235,15 @@
 /area/medical/virology/lab)
 "xPm" = (
 /obj/structure/table/reinforced,
-/obj/machinery/cell_charger{
-	pixel_y = 2
-	},
-/obj/item/stock_parts/cell/high,
 /obj/effect/decal/warning_stripes/north,
 /obj/machinery/alarm{
 	dir = 1;
 	pixel_y = -22
 	},
-/obj/item/stock_parts/cell/high/plus,
-/obj/item/stock_parts/cell/high/plus,
+/obj/item/stock_parts/cell/high,
+/obj/machinery/cell_charger{
+	pixel_y = 2
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
