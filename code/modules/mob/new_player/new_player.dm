@@ -350,7 +350,7 @@
 	if(src != usr)
 		return FALSE
 	if(!SSticker || SSticker.current_state != GAME_STATE_PLAYING)
-		to_chat(usr, "<span class='warning'>Раунд либо еще не готов, либо уже завершился...</span>")
+		to_chat(usr, "<span class='warning'>Раунд либо ещё не готов, либо уже завершился...</span>")
 		return FALSE
 	if(!GLOB.enter_allowed)
 		to_chat(usr, "<span class='notice'>Администратор заблокировал вход в игру!</span>")
@@ -639,7 +639,7 @@
 		GLOB.human_names_list += new_character.real_name
 
 
-	new_character.key = key		//Manually transfer the key to log them in
+	new_character.key = key		// Manually transfer the key to log them in
 
 	return new_character
 
