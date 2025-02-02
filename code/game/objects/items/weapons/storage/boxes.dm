@@ -191,6 +191,13 @@
 	for(var/I in 1 to 7)
 		new /obj/item/reagent_containers/glass/beaker(src)
 
+/obj/item/storage/box/beakers/large
+	name = "large beaker box"
+
+/obj/item/storage/box/beakers/large/populate_contents()
+	for(var/I in 1 to 7)
+		new /obj/item/reagent_containers/glass/beaker/large(src)
+
 /obj/item/storage/box/beakers/bluespace
 	name = "box of bluespace beakers"
 	icon_state = "beaker"
