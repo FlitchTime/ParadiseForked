@@ -363,22 +363,16 @@
 	icon_state = "chem"
 
 /obj/structure/closet/wardrobe/chemistry_white/populate_contents()
-	new /obj/item/clothing/under/rank/chemist(src)
-	new /obj/item/clothing/under/rank/chemist(src)
-	new /obj/item/clothing/under/rank/chemist/skirt(src)
-	new /obj/item/clothing/under/rank/chemist/skirt(src)
-	new /obj/item/clothing/shoes/white(src)
-	new /obj/item/clothing/shoes/white(src)
-	new /obj/item/clothing/suit/storage/labcoat/chemist(src)
-	new /obj/item/clothing/suit/storage/labcoat/chemist(src)
-	new /obj/item/storage/backpack/chemistry(src)
-	new /obj/item/storage/backpack/chemistry(src)
-	new /obj/item/storage/backpack/satchel_chem(src)
-	new /obj/item/storage/backpack/satchel_chem(src)
+	new /obj/item/storage/bag/chemistry(src)
+	new /obj/item/storage/bag/chemistry(src)
 	new /obj/item/storage/bag/chemistry(src)
 	new /obj/item/storage/bag/chemistry(src)
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/clothing/mask/gas(src)
+	new /obj/item/clothing/glasses/science(src)
+	new /obj/item/clothing/glasses/science(src)
+	new /obj/item/reagent_scanner/adv(src)
+	new /obj/item/reagent_scanner/adv(src)
 
 
 /obj/structure/closet/wardrobe/genetics_white

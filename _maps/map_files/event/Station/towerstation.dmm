@@ -12999,9 +12999,6 @@
 /obj/item/reagent_containers/glass/beaker/large{
 	pixel_y = 8
 	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/kitchen)
 "iuL" = (
@@ -22327,8 +22324,6 @@
 /area/medical/medbay)
 "ovC" = (
 /obj/structure/table/glass,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/light{
 	dir = 1
 	},
@@ -22339,6 +22334,7 @@
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteyellow"
@@ -27647,7 +27643,6 @@
 /obj/machinery/reagentgrinder{
 	pixel_y = 5
 	},
-/obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/light,
 /obj/machinery/camera/autoname{
 	dir = 1
@@ -31056,14 +31051,6 @@
 "udK" = (
 /obj/effect/turf_decal/delivery,
 /obj/structure/closet/wardrobe/chemistry_white,
-/obj/item/storage/bag/chemistry,
-/obj/item/storage/bag/chemistry,
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
 /obj/item/radio/intercom{
 	pixel_y = 32
 	},

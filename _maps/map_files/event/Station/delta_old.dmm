@@ -880,6 +880,7 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
+/obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteyellowcorner"
@@ -18465,7 +18466,6 @@
 /area/turret_protected/aisat)
 "cjH" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/glass/beaker/large,
 /obj/item/kitchen/knife,
 /obj/item/kitchen/rollingpin,
 /turf/simulated/floor/plasteel{
@@ -24318,7 +24318,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/fpmaint)
 "cJf" = (
-/obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteyellow"
@@ -24975,10 +24974,21 @@
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/hor)
 "cMp" = (
-/obj/item/stack/sheet/mineral/plasma{
-	amount = 5
+/obj/item/reagent_containers/applicator{
+	pixel_x = -4
 	},
-/obj/structure/table,
+/obj/item/reagent_containers/applicator{
+	pixel_x = 4
+	},
+/obj/item/reagent_containers/applicator{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/reagent_containers/applicator{
+	pixel_x = -4;
+	pixel_y = 4
+	},
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteyellow"
 	},
@@ -25757,8 +25767,8 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/structure/disposalpipe/junction{
-	dir = 4
+/obj/structure/disposalpipe/junction/reversed{
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -26158,42 +26168,11 @@
 	},
 /area/medical/reception)
 "cRh" = (
-/obj/structure/table/glass,
-/obj/item/reagent_containers/applicator{
-	pixel_x = 6;
-	pixel_y = 7
-	},
-/obj/item/reagent_containers/applicator{
-	pixel_x = 6;
-	pixel_y = 7
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/item/reagent_containers/applicator{
-	pixel_x = 6;
-	pixel_y = 7
-	},
-/obj/item/reagent_containers/applicator{
-	pixel_x = 6;
-	pixel_y = 7
-	},
+/obj/structure/disposalpipe/segment,
+/obj/structure/closet/secure_closet/reagents,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -26565,6 +26544,9 @@
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
 	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -26572,6 +26554,9 @@
 "cSO" = (
 /obj/structure/cable{
 	icon_state = "4-8"
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteyellowfull"
@@ -26807,6 +26792,9 @@
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/disposalpipe/segment{
+	dir = 10
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -27148,10 +27136,8 @@
 "cVz" = (
 /obj/machinery/chem_heater,
 /obj/effect/decal/warning_stripes/southeast,
-/obj/machinery/light,
 /obj/machinery/power/apc{
-	name = "south bump";
-	pixel_y = -28
+	pixel_y = -26
 	},
 /obj/structure/cable,
 /turf/simulated/floor/engine,
@@ -27175,6 +27161,9 @@
 "cVD" = (
 /obj/structure/cable{
 	icon_state = "4-8"
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -27258,18 +27247,7 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/structure/closet/wardrobe/chemistry_white,
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
-/obj/item/storage/bag/chemistry,
-/obj/item/storage/bag/chemistry,
+/obj/structure/filingcabinet/chestdrawer,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteyellow"
 	},
@@ -27556,6 +27534,9 @@
 	},
 /obj/effect/landmark/start/chemist,
 /obj/machinery/hologram/holopad,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -27567,6 +27548,9 @@
 /obj/structure/cable{
 	icon_state = "2-4"
 	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -27575,7 +27559,17 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/machinery/smartfridge/medbay,
+/obj/item/paper_bin{
+	pixel_y = 5
+	},
+/obj/item/paper_bin{
+	pixel_y = 5
+	},
+/obj/item/lighter/zippo{
+	name = "Ash Generator 3000";
+	pixel_y = 5
+	},
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteyellow"
 	},
@@ -27586,22 +27580,25 @@
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
 /area/medical/chemistry)
 "cXs" = (
-/obj/structure/filingcabinet/chestdrawer,
-/obj/machinery/alarm{
-	dir = 8;
-	pixel_x = 25
-	},
 /obj/machinery/light{
 	dir = 4
 	},
 /obj/structure/extinguisher_cabinet{
-	pixel_y = -32
+	pixel_y = -28
 	},
+/obj/machinery/requests_console{
+	department = "Chemistry";
+	departmentType = 2;
+	name = "Chemistry Requests Console";
+	pixel_x = 30
+	},
+/obj/item/twohanded/required/kirbyplants,
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "whiteyellow"
@@ -33981,7 +33978,6 @@
 	},
 /obj/structure/plasticflaps,
 /turf/simulated/floor/plasteel{
-	dir = 8;
 	icon_state = "neutralfull"
 	},
 /area/medical/chemistry)
@@ -35237,7 +35233,10 @@
 /turf/simulated/floor/plating,
 /area/maintenance/auxsolarstarboard)
 "dEm" = (
-/obj/structure/closet/secure_closet/reagents,
+/obj/structure/table/glass,
+/obj/item/stack/sheet/mineral/plasma{
+	amount = 5
+	},
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "whiteyellow"
@@ -54927,15 +54926,7 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	icon_state = "redfull";
 	tag = "icon-redfull (NORTHWEST)"
@@ -59872,7 +59863,7 @@
 /obj/effect/decal/warning_stripes/northeast,
 /obj/structure/disposalpipe/segment,
 /obj/structure/reagent_dispensers/fueltank/chem{
-	pixel_x = 33
+	pixel_x = 32
 	},
 /obj/machinery/door_control{
 	id = "Chemistry1";
@@ -60707,16 +60698,15 @@
 	},
 /area/crew_quarters/courtroom)
 "jrJ" = (
-/obj/structure/closet/secure_closet/reagents,
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/structure/disposalpipe/segment,
 /obj/machinery/camera{
 	c_tag = "Medbey Chemistry";
 	dir = 6;
 	network = list("Medical","SS13")
 	},
+/obj/structure/closet/wardrobe/chemistry_white,
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "whiteyellow"
@@ -62878,33 +62868,34 @@
 /area/medical/reception)
 "jWq" = (
 /obj/structure/table/glass,
-/obj/machinery/reagentgrinder{
-	pixel_x = -1;
-	pixel_y = 9
+/obj/item/storage/box/beakers{
+	pixel_x = 4;
+	pixel_y = 4
 	},
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "whiteyellow"
 	},
 /area/medical/chemistry)
 "jWA" = (
-/obj/structure/table/glass,
-/obj/item/stack/packageWrap,
-/obj/item/reagent_scanner/adv,
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/item/storage/box/beakers{
-	pixel_x = 2;
-	pixel_y = 2
-	},
-/obj/item/storage/box/pillbottles{
-	pixel_x = 2;
-	pixel_y = 2
-	},
 /obj/machinery/firealarm{
-	dir = 1;
 	pixel_y = 26
+	},
+/obj/structure/table/glass,
+/obj/item/reagent_containers/spray/cleaner/medical{
+	pixel_x = 10;
+	pixel_y = 4
+	},
+/obj/item/reagent_containers/spray/cleaner/medical{
+	pixel_x = 8
+	},
+/obj/item/toy/figure/chemist{
+	pixel_x = -5;
+	pixel_y = 2
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -65537,7 +65528,9 @@
 /obj/structure/cable{
 	icon_state = "1-4"
 	},
-/obj/structure/disposalpipe/segment,
+/obj/structure/disposalpipe/segment{
+	dir = 5
+	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteyellow"
@@ -65553,12 +65546,11 @@
 /obj/structure/cable{
 	icon_state = "1-4"
 	},
-/obj/machinery/atmospherics/unary/vent_scrubber{
-	dir = 1;
-	name = "standard air scrubber";
-	on = 1;
-	scrub_N2O = 1;
-	scrub_Toxins = 1
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 1
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -67034,11 +67026,11 @@
 /turf/simulated/floor/plating/airless,
 /area/space/nearstation)
 "lnt" = (
-/obj/item/twohanded/required/kirbyplants,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/structure/disposalpipe/segment,
+/obj/structure/table/glass,
+/obj/item/hand_labeler,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "whiteyellow"
@@ -67079,11 +67071,8 @@
 	},
 /area/security/processing)
 "lof" = (
-/obj/item/paper_bin,
-/obj/item/lighter/zippo{
-	name = "Ash Generator 3000"
-	},
-/obj/structure/table,
+/obj/machinery/light,
+/obj/machinery/smartfridge/secure/chemistry,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteyellow"
 	},
@@ -67094,15 +67083,6 @@
 	},
 /turf/simulated/floor/engine/n20,
 /area/atmos)
-"lor" = (
-/obj/structure/cable{
-	icon_state = "1-2"
-	},
-/obj/item/twohanded/required/kirbyplants,
-/turf/simulated/floor/plasteel{
-	icon_state = "whiteyellow"
-	},
-/area/medical/chemistry)
 "lot" = (
 /obj/effect/spawner/window/reinforced,
 /obj/structure/cable{
@@ -71174,19 +71154,19 @@
 	},
 /area/engineering/break_room)
 "mtz" = (
-/obj/structure/table/glass,
-/obj/machinery/reagentgrinder{
-	pixel_x = -1;
-	pixel_y = 9
-	},
 /obj/item/radio/intercom{
-	pixel_y = 32
+	pixel_y = 28
 	},
 /obj/machinery/door_control{
 	id = "Chemistry";
 	name = "Chem Privacy Shutters Control";
 	pixel_x = -23;
 	pixel_y = -9
+	},
+/obj/structure/table/glass,
+/obj/machinery/reagentgrinder{
+	pixel_x = -1;
+	pixel_y = 9
 	},
 /turf/simulated/floor/plasteel{
 	dir = 9;
@@ -91461,21 +91441,15 @@
 /area/bridge/vip)
 "rGw" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/box/beakers,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/alarm{
 	dir = 8;
 	pixel_x = 24
 	},
+/obj/item/storage/box/beakers{
+	pixel_x = 8;
+	pixel_y = 2
+	},
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "whitepurple";
@@ -93376,19 +93350,10 @@
 	},
 /area/hallway/primary/central/nw)
 "siD" = (
-/obj/structure/table/glass,
-/obj/item/storage/box/masks,
-/obj/item/storage/box/gloves{
-	pixel_x = 4;
-	pixel_y = 4
+/obj/machinery/alarm{
+	dir = 8;
+	pixel_x = 22
 	},
-/obj/machinery/requests_console{
-	department = "Chemistry";
-	departmentType = 2;
-	name = "Chemistry Requests Console";
-	pixel_x = 30
-	},
-/obj/item/hand_labeler,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteyellow"
@@ -97789,18 +97754,18 @@
 	},
 /area/medical/sleeper)
 "tsF" = (
-/obj/structure/table/glass,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/item/reagent_containers/spray/cleaner/medical{
+/obj/structure/table/glass,
+/obj/item/storage/box/iv_bags{
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/reagent_containers/spray/cleaner/medical,
+/obj/item/storage/box/syringes,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -101401,30 +101366,10 @@
 /turf/simulated/floor/plasteel,
 /area/quartermaster/sorting)
 "upW" = (
-/obj/structure/table/glass,
-/obj/item/reagent_containers/dropper,
-/obj/item/reagent_containers/dropper,
-/obj/item/reagent_containers/dropper,
-/obj/item/reagent_containers/dropper/precision,
-/obj/item/reagent_containers/dropper/precision,
-/obj/item/reagent_containers/dropper/precision,
-/obj/item/storage/box/beakers{
-	pixel_x = 2;
-	pixel_y = 2
-	},
-/obj/item/storage/box/syringes,
-/obj/item/storage/box/syringes,
-/obj/item/storage/box/iv_bags{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/storage/box/iv_bags{
-	pixel_x = 4;
-	pixel_y = 4
-	},
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
+/obj/structure/closet/secure_closet/reagents,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -115125,9 +115070,6 @@
 /turf/simulated/wall,
 /area/medical/virology)
 "xOD" = (
-/obj/structure/disposalpipe/segment{
-	dir = 9
-	},
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteyellowcorner"
@@ -158379,7 +158321,7 @@ jsJ
 jWq
 cVI
 cXh
-lor
+vgF
 lLV
 tEh
 sZT

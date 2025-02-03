@@ -1925,10 +1925,6 @@
 	pixel_y = -24
 	},
 /obj/structure/closet/secure_closet/reagents,
-/obj/item/storage/bag/chemistry,
-/obj/item/storage/bag/chemistry,
-/obj/item/clothing/mask/gas,
-/obj/item/clothing/mask/gas,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "whiteyellow"
@@ -71621,17 +71617,6 @@
 /area/hallway/primary/fore)
 "qBl" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/box/beakers,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
@@ -71639,6 +71624,7 @@
 	dir = 1
 	},
 /obj/item/reagent_containers/spray/cleaner/chemical,
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whitepurple"

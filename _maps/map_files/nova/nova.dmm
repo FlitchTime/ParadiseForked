@@ -12782,15 +12782,8 @@
 /area/maintenance/fsmaint3)
 "bOM" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
 /obj/item/eftpos,
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
@@ -19963,23 +19956,17 @@
 /area/engineering/aienter)
 "cPS" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/box/beakers,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/light{
 	dir = 4
 	},
 /obj/structure/sign/poster/official/random{
 	pixel_x = 32
 	},
+/obj/item/storage/box/beakers{
+	pixel_x = 8;
+	pixel_y = 2
+	},
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -28788,16 +28775,11 @@
 /turf/simulated/floor/plasteel/dark,
 /area/maintenance/starboardaux)
 "efJ" = (
-/obj/structure/table,
-/obj/item/storage/box/masks,
-/obj/item/storage/box/gloves{
-	pixel_x = 4;
-	pixel_y = 4
-	},
 /obj/machinery/firealarm{
 	dir = 1;
 	pixel_y = 26
 	},
+/obj/item/twohanded/required/kirbyplants,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -30730,17 +30712,12 @@
 "eus" = (
 /obj/structure/railing,
 /obj/structure/table/glass,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = 6;
-	pixel_y = 6
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
+	},
+/obj/item/storage/box/beakers/large{
+	pixel_x = 4;
+	pixel_y = 4
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -33141,10 +33118,6 @@
 	layer = 5;
 	pixel_y = 14
 	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = 7;
-	pixel_y = 14
-	},
 /obj/machinery/power/apc{
 	name = "south bump";
 	pixel_y = -24
@@ -35315,7 +35288,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/apmaint)
 "fcJ" = (
-/obj/structure/table,
 /obj/machinery/light{
 	dir = 1;
 	in_use = 1
@@ -35329,11 +35301,12 @@
 	d2 = 2;
 	icon_state = "0-2"
 	},
-/obj/item/storage/box/pillbottles{
-	pixel_x = 5;
-	pixel_y = 5
+/obj/structure/table,
+/obj/item/storage/box/beakers{
+	pixel_x = 4;
+	pixel_y = 4
 	},
-/obj/item/storage/box/beakers,
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -49578,12 +49551,15 @@
 /turf/simulated/wall,
 /area/maintenance/cafeteria)
 "heK" = (
-/obj/structure/closet/secure_closet/reagents,
-/obj/item/reagent_containers/glass/bucket,
-/obj/item/reagent_containers/glass/bucket,
 /obj/machinery/newscaster{
 	pixel_y = 32
 	},
+/obj/structure/table,
+/obj/item/storage/box/iv_bags{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/storage/box/syringes,
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "whiteyellow"
@@ -77849,7 +77825,6 @@
 	},
 /area/gateway)
 "lvF" = (
-/obj/item/twohanded/required/kirbyplants,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteyellow"
@@ -89085,17 +89060,14 @@
 	color = "red";
 	dir = 4
 	},
-/obj/item/gun/projectile/automatic/pistol/enforcer/lethal{
-	pixel_x = -2;
-	pixel_y = 0
+/obj/item/gun/projectile/automatic/pistol/enforcer/security{
+	pixel_x = -2
 	},
-/obj/item/gun/projectile/automatic/pistol/enforcer/lethal{
-	pixel_x = 2;
-	pixel_y = 0
+/obj/item/gun/projectile/automatic/pistol/enforcer/security{
+	pixel_x = 2
 	},
-/obj/item/gun/projectile/automatic/pistol/enforcer/lethal{
-	pixel_x = 6;
-	pixel_y = 0
+/obj/item/gun/projectile/automatic/pistol/enforcer/security{
+	pixel_x = 6
 	},
 /turf/simulated/floor/plasteel{
 	dir = 5;
@@ -89600,6 +89572,9 @@
 /area/hallway/primary/central/nw)
 "nhF" = (
 /obj/machinery/light,
+/obj/structure/closet/secure_closet/reagents,
+/obj/item/reagent_containers/glass/bucket,
+/obj/item/reagent_containers/glass/bucket,
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "whiteyellow"
@@ -98144,9 +98119,6 @@
 	},
 /obj/structure/cable{
 	icon_state = "4-8"
-	},
-/obj/item/lighter/zippo{
-	name = "Ash Generator 3000"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -111065,16 +111037,6 @@
 /area/maintenance/fpmaint)
 "qpx" = (
 /obj/structure/closet/wardrobe/chemistry_white,
-/obj/item/storage/bag/chemistry,
-/obj/item/storage/bag/chemistry,
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
-/obj/item/clothing/mask/gas,
-/obj/item/clothing/mask/gas,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "whiteyellow"
@@ -116252,14 +116214,14 @@
 /turf/simulated/floor/plating,
 /area/security/warden)
 "reG" = (
-/obj/structure/closet/secure_closet/reagents,
-/obj/item/reagent_containers/glass/bucket,
-/obj/item/reagent_containers/glass/bucket,
 /obj/machinery/camera{
 	c_tag = "Medbey Chemistry";
 	dir = 10;
 	network = list("Medical","SS13")
 	},
+/obj/structure/closet/secure_closet/reagents,
+/obj/item/reagent_containers/glass/bucket,
+/obj/item/reagent_containers/glass/bucket,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "yellow"
@@ -124154,11 +124116,12 @@
 "shl" = (
 /obj/structure/table/glass,
 /obj/item/paper_bin,
-/obj/item/pen,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/item/reagent_scanner/adv,
+/obj/item/lighter/zippo{
+	name = "Ash Generator 3000"
+	},
 /turf/simulated/floor/plasteel{
 	dir = 0;
 	icon_state = "yellow"
@@ -139556,25 +139519,12 @@
 /turf/simulated/floor/grass,
 /area/hydroponics)
 "urn" = (
-/obj/item/storage/box/iv_bags{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/storage/box/iv_bags{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/storage/box/syringes,
-/obj/item/storage/box/syringes,
-/obj/item/storage/box/beakers{
-	pixel_x = 2;
-	pixel_y = 2
-	},
-/obj/item/reagent_containers/dropper/precision,
-/obj/item/reagent_containers/dropper/precision,
-/obj/item/reagent_containers/dropper,
-/obj/item/reagent_containers/dropper,
 /obj/structure/table/glass,
+/obj/item/storage/box/gloves{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/storage/box/masks,
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "yellow"
@@ -140703,7 +140653,6 @@
 /turf/simulated/floor/glass,
 /area/crew_quarters/bar/atrium)
 "uzP" = (
-/obj/item/twohanded/required/kirbyplants,
 /obj/structure/extinguisher_cabinet{
 	pixel_x = -27;
 	pixel_y = 32
@@ -148094,15 +148043,6 @@
 /obj/item/storage/box/donkpockets{
 	pixel_x = 3;
 	pixel_y = 3
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
@@ -157545,30 +157485,13 @@
 /turf/simulated/floor/plating,
 /area/maintenance/apmaint)
 "xbi" = (
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/stack/sheet/mineral/plasma{
-	amount = 5;
-	pixel_x = 8
-	},
 /obj/structure/table/glass,
 /obj/machinery/alarm{
 	dir = 8;
 	pixel_x = 25
+	},
+/obj/item/stack/sheet/mineral/plasma{
+	amount = 5
 	},
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -164825,9 +164748,6 @@
 	id_tag = "Biohazard_medi";
 	name = "Quarantine Lockdown";
 	opacity = 0
-	},
-/obj/item/lighter/zippo{
-	name = "Ash Generator 3000"
 	},
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel{

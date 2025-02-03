@@ -7735,15 +7735,8 @@
 /area/security/permabrig)
 "cRJ" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/glass/beaker/large,
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_y = 8
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
 /obj/effect/decal/cleanable/dirt,
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
@@ -12248,22 +12241,6 @@
 /area/maintenance/asmaint2)
 "eDb" = (
 /obj/structure/table/glass,
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
-/obj/item/reagent_containers/glass/beaker/large{
-	pixel_x = -5;
-	pixel_y = 1
-	},
 /obj/item/storage/box/gloves{
 	pixel_x = 4;
 	pixel_y = 4
@@ -12272,6 +12249,7 @@
 	pixel_y = -26
 	},
 /obj/structure/cable,
+/obj/item/storage/box/beakers/large,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteyellow"
 	},
@@ -16244,10 +16222,6 @@
 "gjF" = (
 /obj/structure/table/glass,
 /obj/item/stack/packageWrap,
-/obj/item/storage/box/beakers{
-	pixel_x = 2;
-	pixel_y = 2
-	},
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
@@ -50027,10 +50001,6 @@
 "sVG" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/wardrobe/chemistry_white,
-/obj/item/storage/bag/chemistry,
-/obj/item/clothing/glasses/science{
-	pixel_y = 3
-	},
 /obj/item/radio/intercom{
 	pixel_x = -28
 	},

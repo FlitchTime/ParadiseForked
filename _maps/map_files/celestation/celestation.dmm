@@ -12143,11 +12143,6 @@
 /obj/item/stack/sheet/mineral/plasma,
 /obj/item/reagent_containers/dropper/precision,
 /obj/item/reagent_containers/dropper/precision,
-/obj/item/clothing/glasses/science{
-	pixel_x = 2;
-	pixel_y = 4
-	},
-/obj/item/clothing/glasses/science,
 /obj/item/radio/intercom{
 	pixel_y = -28
 	},
@@ -121816,10 +121811,6 @@
 	},
 /area/maintenance/brig)
 "wdq" = (
-/obj/item/storage/bag/chemistry,
-/obj/item/storage/bag/chemistry,
-/obj/item/clothing/mask/gas,
-/obj/item/clothing/mask/gas,
 /obj/structure/closet/wardrobe/chemistry_white,
 /obj/structure/cable/orange,
 /obj/machinery/power/apc{
