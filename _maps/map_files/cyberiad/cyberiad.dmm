@@ -61413,10 +61413,10 @@
 /turf/simulated/floor/plating,
 /area/maintenance/xenozoo)
 "hBi" = (
-/obj/structure/table/glass,
 /obj/item/scalpel{
 	pixel_y = 8
 	},
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
@@ -67002,9 +67002,8 @@
 	},
 /area/quartermaster/miningdock)
 "luR" = (
-/obj/structure/table/glass,
-/obj/structure/table/glass,
 /obj/item/storage/box/donkpockets,
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "whitepurple"
 	},
@@ -69619,7 +69618,6 @@
 	},
 /area/toxins/mixing)
 "ndH" = (
-/obj/structure/table/glass,
 /obj/item/twohanded/required/kirbyplants{
 	pixel_y = 10
 	},
@@ -69628,6 +69626,7 @@
 	dir = 1;
 	network = list("Research","SS13")
 	},
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "whitepurple"
 	},
@@ -75836,10 +75835,10 @@
 	},
 /area/medical/research)
 "qXR" = (
-/obj/structure/table/glass,
 /obj/item/twohanded/required/kirbyplants{
 	pixel_y = 10
 	},
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "whitepurple"
 	},
@@ -82444,8 +82443,8 @@
 /turf/simulated/floor/wood,
 /area/blueshield)
 "vmw" = (
-/obj/structure/table/glass,
 /obj/item/reagent_containers/food/snacks/sliceable/braincake,
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
@@ -87015,8 +87014,8 @@
 	},
 /area/medical/medbay2)
 "xSA" = (
-/obj/structure/table/glass,
 /obj/item/storage/fancy/donut_box,
+/obj/structure/table/glass,
 /turf/simulated/floor/plasteel{
 	icon_state = "cafeteria"
 	},
