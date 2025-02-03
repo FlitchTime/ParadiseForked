@@ -779,6 +779,7 @@
 		SPECIES_STOK = 'icons/mob/clothing/species/monkey/suit.dmi'
 		)
 	armor = list(melee = 5, bullet = 5, laser = 10, energy = 10, bomb = 15, bio = 0, rad = 0, fire = 10, acid = 10)
+	
 /obj/item/clothing/suit/storage/leather_trenchcoat/runner
 	name = "leather trenchcoat"
 	desc = "Длинное кожаное пальто-тренч с натуральным мехом. Вы чувствуете себя одиноко, когда носите его..."
