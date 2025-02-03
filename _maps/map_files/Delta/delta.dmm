@@ -56122,12 +56122,12 @@
 	pixel_y = -3
 	},
 /obj/item/grenade/flashbang{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/item/grenade/flashbang{
 	pixel_x = 3;
 	pixel_y = -3
+	},
+/obj/item/grenade/flashbang{
+	pixel_x = 6;
+	pixel_y = -6
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -62070,11 +62070,11 @@
 	pixel_y = -26
 	},
 /obj/structure/cable,
+/obj/item/storage/box/barrier,
 /obj/item/storage/box/barrier{
 	pixel_x = 3;
 	pixel_y = -3
 	},
-/obj/item/storage/box/barrier,
 /obj/item/grenade/barrier{
 	pixel_x = 3;
 	pixel_y = -3
