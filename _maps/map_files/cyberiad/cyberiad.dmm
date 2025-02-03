@@ -26362,20 +26362,14 @@
 	req_access = list(47)
 	},
 /obj/machinery/door/firedoor,
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
+/obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard";
-	name = "Biohazard Shutter";
-	opacity = 0
+	name = "Biohazard Shutter"
 	},
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
+/obj/machinery/door/poddoor/shutters/preopen{
 	dir = 2;
-	icon_state = "open";
 	id_tag = "rdlab";
-	name = "Research and Development Lab Shutters";
-	opacity = 0
+	name = "Research Desk Shutters"
 	},
 /turf/simulated/floor/plating,
 /area/toxins/lab)
@@ -66401,22 +66395,16 @@
 	},
 /area/hallway/primary/starboard/east)
 "kBi" = (
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter";
-	opacity = 0
-	},
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	dir = 2;
-	icon_state = "open";
-	id_tag = "rdlab";
-	name = "Research and Development Lab Shutters";
-	opacity = 0
-	},
 /obj/effect/spawner/window/reinforced,
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
+/obj/machinery/door/poddoor/shutters/preopen{
+	dir = 2;
+	id_tag = "rdlab";
+	name = "Research Desk Shutters"
+	},
 /turf/simulated/floor/plating,
 /area/toxins/lab)
 "kBq" = (
@@ -72251,20 +72239,14 @@
 	amount = 10
 	},
 /obj/machinery/autolathe,
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	dir = 2;
-	icon_state = "open";
-	id_tag = "rdlab";
-	name = "Research and Development Lab Shutters";
-	opacity = 0
-	},
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
+/obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard";
-	name = "Biohazard Shutter";
-	opacity = 0
+	name = "Biohazard Shutter"
+	},
+/obj/machinery/door/poddoor/shutters/preopen{
+	dir = 2;
+	id_tag = "rdlab";
+	name = "Research Desk Shutters"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
