@@ -26477,9 +26477,6 @@
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 4
 	},
-/obj/machinery/atmospherics/unary/vent_scrubber/on{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -29024,16 +29021,6 @@
 	icon_state = "whitegreenfull"
 	},
 /area/crew_quarters/sleep)
-"bTe" = (
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/turf/simulated/floor/plasteel{
-	dir = 5;
-	icon_state = "whitepurple"
-	},
-/area/medical/research)
 "bTg" = (
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel{
@@ -29427,14 +29414,13 @@
 	},
 /area/toxins/lab)
 "bUj" = (
-/obj/machinery/light_switch{
-	name = "south light switch";
-	pixel_y = -24
-	},
 /obj/structure/disposalpipe/trunk{
 	dir = 8
 	},
 /obj/machinery/disposal,
+/obj/machinery/light_switch{
+	pixel_y = -24
+	},
 /turf/simulated/floor/plasteel{
 	dir = 6;
 	icon_state = "darkpurple"
@@ -29603,6 +29589,9 @@
 /turf/simulated/floor/plating,
 /area/assembly/robotics)
 "bUH" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whitepurplecorner"
 	},
@@ -30222,6 +30211,10 @@
 	location = "Research Division"
 	},
 /obj/structure/plasticflaps,
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "bot"
 	},
@@ -30964,11 +30957,9 @@
 	icon_state = "1-2"
 	},
 /obj/machinery/hologram/holopad,
-/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/disposalpipe/segment,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -32276,9 +32267,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/fsmaint)
 "ccg" = (
-/obj/machinery/atmospherics/unary/vent_scrubber/on{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitepurplecorner"
@@ -32289,10 +32277,9 @@
 	icon_state = "1-2"
 	},
 /obj/structure/disposalpipe/segment,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -37145,15 +37132,6 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /turf/simulated/floor/plasteel,
 /area/toxins/storage)
-"cri" = (
-/obj/machinery/atmospherics/unary/vent_scrubber/on{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "whitepurplecorner"
-	},
-/area/medical/research)
 "crj" = (
 /obj/machinery/vending/snack,
 /turf/simulated/floor/plasteel{
@@ -61578,6 +61556,20 @@
 /obj/structure/lattice/catwalk,
 /turf/space,
 /area/solar/port)
+"hPI" = (
+/obj/machinery/firealarm{
+	dir = 8;
+	name = "west fire alarm";
+	pixel_x = -24
+	},
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "whitepurple"
+	},
+/area/medical/research)
 "hPL" = (
 /obj/structure/table/wood,
 /obj/effect/turf_decal/siding/wood{
@@ -63308,6 +63300,15 @@
 	icon_state = "cafeteria"
 	},
 /area/crew_quarters/kitchen)
+"iXs" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "whitepurple"
+	},
+/area/medical/research)
 "iXH" = (
 /obj/structure/table,
 /obj/item/paper_bin,
@@ -63579,6 +63580,21 @@
 	},
 /turf/simulated/floor/plating,
 /area/turret_protected/aisat_interior)
+"jhn" = (
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/structure/disposalpipe/segment,
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "white"
+	},
+/area/medical/research)
 "jih" = (
 /obj/effect/spawner/random_spawners/rodent,
 /obj/structure/toilet{
@@ -75491,12 +75507,10 @@
 "qXQ" = (
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
-	dir = 4
-	},
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -81269,9 +81283,11 @@
 	name = "Science Maintenance";
 	req_access = list(47)
 	},
-/turf/simulated/floor/plasteel{
-	icon_state = "white"
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
+/turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
 "uMJ" = (
 /obj/item/trash/liquidfood,
@@ -82868,10 +82884,6 @@
 	},
 /obj/structure/window/reinforced{
 	dir = 1
-	},
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plasteel{
 	dir = 6;
@@ -86354,9 +86366,11 @@
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
 	dir = 8
 	},
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/cable{
 	icon_state = "1-2"
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -132023,7 +132037,7 @@ bIi
 rPJ
 nNM
 uKx
-nNM
+iXs
 gaO
 xyv
 ccg
@@ -132035,8 +132049,8 @@ nNM
 clW
 qTP
 coA
-cdC
-cri
+hPI
+gaO
 diR
 fMH
 bIi
@@ -132280,11 +132294,11 @@ bRO
 bUe
 wUz
 uKK
-cjN
+jhn
 bYl
 cax
 cci
-vKx
+tLu
 chT
 cjN
 qhM
@@ -132538,7 +132552,7 @@ bPy
 lAy
 bVE
 bUH
-qmG
+nRD
 nRD
 nRD
 nRD
@@ -134335,7 +134349,7 @@ hlS
 bRX
 bUj
 thj
-bTe
+fpf
 vLJ
 bYj
 caC
