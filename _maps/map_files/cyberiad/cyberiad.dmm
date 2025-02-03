@@ -32283,18 +32283,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/medical/research)
-"cci" = (
-/obj/structure/cable{
-	icon_state = "1-2"
-	},
-/obj/structure/disposalpipe/segment,
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
-/obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/turf/simulated/floor/plasteel{
-	icon_state = "white"
-	},
-/area/medical/research)
 "ccj" = (
 /obj/structure/table/glass,
 /obj/structure/cable{
@@ -132364,7 +132352,7 @@ uKK
 jhn
 bYl
 cax
-cci
+tLu
 tLu
 chT
 cjN
