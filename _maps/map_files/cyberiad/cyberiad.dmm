@@ -59724,15 +59724,6 @@
 	icon_state = "brown"
 	},
 /area/quartermaster/office)
-"gER" = (
-/obj/effect/spawner/window/reinforced,
-/obj/effect/spawner/window/reinforced,
-/obj/machinery/door/poddoor/shutters/preopen{
-	id_tag = "RoboDesk";
-	name = "Robotics Privacy Shutter"
-	},
-/turf/simulated/floor/plating,
-/area/assembly/robotics)
 "gFk" = (
 /obj/item/stack/sheet/cardboard,
 /obj/effect/decal/cleanable/dirt,
@@ -129775,7 +129766,7 @@ uHv
 bUl
 uHv
 bIa
-gER
+uHv
 uHv
 uHv
 bIa
