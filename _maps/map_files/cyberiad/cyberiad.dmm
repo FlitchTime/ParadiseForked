@@ -56675,7 +56675,6 @@
 	c_tag = "Brig Security Equipment Lockers";
 	dir = 4
 	},
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /obj/machinery/status_display{
 	layer = 4;
@@ -58030,7 +58029,6 @@
 	dir = 8
 	},
 /obj/structure/window/reinforced,
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -59920,7 +59918,6 @@
 /obj/machinery/light{
 	dir = 4
 	},
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -66547,7 +66544,6 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -76146,7 +76142,6 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -80892,7 +80887,6 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -83379,7 +83373,6 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
