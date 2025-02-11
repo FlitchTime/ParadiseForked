@@ -605,18 +605,6 @@
 "aek" = (
 /obj/machinery/vending/security,
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/recharger/wallcharger{
-	pixel_x = 32;
-	pixel_y = 6
-	},
-/obj/machinery/recharger/wallcharger{
-	pixel_x = 32;
-	pixel_y = -3
-	},
-/obj/machinery/recharger/wallcharger{
-	pixel_x = 32;
-	pixel_y = -12
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -1137,19 +1125,29 @@
 	},
 /area/security/prisonershuttle)
 "agu" = (
-/obj/structure/safe{
-	known_by = list("hos")
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "HoS personal weapons";
+	req_access = list(58)
+	},
+/obj/item/ammo_box/speedloader/a357{
+	pixel_x = -9;
+	pixel_y = 9
+	},
+/obj/item/ammo_box/speedloader/a357{
+	pixel_x = -4;
+	pixel_y = 4
+	},
+/obj/item/ammo_box/speedloader/a357,
+/obj/item/gun/projectile/revolver/mateba{
+	pixel_x = 3;
+	pixel_y = -3
 	},
 /obj/machinery/door_control{
 	id = "HoSPriv";
 	name = "HoS Office Privacy Shutters Control";
 	pixel_y = -24
 	},
-/obj/item/ammo_box/speedloader/a357,
-/obj/item/ammo_box/speedloader/a357,
-/obj/item/ammo_box/speedloader/a357,
-/obj/item/clothing/accessory/holster,
-/obj/item/gun/projectile/revolver/mateba,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -1323,6 +1321,9 @@
 	},
 /area/security/brig)
 "agY" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
@@ -2705,11 +2706,6 @@
 	pixel_x = -8;
 	pixel_y = 10
 	},
-/obj/item/paper/safe_code{
-	owner = "hos";
-	pixel_x = 4;
-	pixel_y = 4
-	},
 /turf/simulated/floor/carpet,
 /area/security/hos)
 "amQ" = (
@@ -3123,6 +3119,9 @@
 	},
 /area/security/main)
 "anO" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
@@ -9241,7 +9240,6 @@
 	name = "Armory";
 	req_access = list(1)
 	},
-/obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "escape"
@@ -9831,6 +9829,9 @@
 "aIf" = (
 /obj/structure/cable{
 	icon_state = "2-4"
+	},
+/obj/structure/cable{
+	icon_state = "2-8"
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
 	dir = 4
@@ -55471,6 +55472,20 @@
 	icon_state = "white"
 	},
 /area/toxins/xenobiology)
+"dtU" = (
+/obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced{
+	dir = 8
+	},
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/item/clothing/mask/balaclava,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/main)
 "duS" = (
 /obj/machinery/access_button/airlock_exterior{
 	master_tag = "atmospherics_south";
@@ -56341,6 +56356,18 @@
 /obj/effect/landmark/event/xeno_spawn,
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
+"dWA" = (
+/obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/item/clothing/mask/balaclava,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/main)
 "dWT" = (
 /obj/structure/cable{
 	icon_state = "4-8"
@@ -57266,10 +57293,14 @@
 /area/crew_quarters/locker/locker_toilet)
 "eBW" = (
 /obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced{
+	dir = 8
+	},
 /obj/machinery/camera{
 	c_tag = "Brig Security Equipment Lockers";
 	dir = 4
 	},
+/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /obj/machinery/status_display{
 	layer = 4;
@@ -57614,6 +57645,17 @@
 	layer = 2.9
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/camera{
+	c_tag = "Secure Armory East";
+	dir = 8;
+	network = list("SS13","Security")
+	},
+/obj/structure/window/reinforced,
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
 /obj/item/storage/box/barrier,
 /obj/item/storage/box/barrier{
 	pixel_x = 3;
@@ -57626,17 +57668,6 @@
 /obj/item/grenade/barrier{
 	pixel_x = 3;
 	pixel_y = -3
-	},
-/obj/machinery/camera{
-	c_tag = "Secure Armory East";
-	dir = 8;
-	network = list("SS13","Security")
-	},
-/obj/structure/window/reinforced,
-/obj/machinery/door/window{
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -57825,6 +57856,17 @@
 	icon_state = "stage_bleft"
 	},
 /area/maintenance/cafeteria)
+"eQH" = (
+/obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/item/clothing/mask/balaclava,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/main)
 "eQQ" = (
 /obj/machinery/newscaster{
 	name = "north newscaster";
@@ -58598,7 +58640,11 @@
 /area/aisat/atmospherics)
 "fvE" = (
 /obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced{
+	dir = 8
+	},
 /obj/structure/window/reinforced,
+/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -60378,9 +60424,13 @@
 /area/maintenance/apmaint)
 "gxq" = (
 /obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
 /obj/machinery/light{
 	dir = 4
 	},
+/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -66915,6 +66965,10 @@
 /area/maintenance/genetics)
 "kUl" = (
 /obj/structure/closet/secure_closet/security,
+/obj/structure/window/reinforced{
+	dir = 8
+	},
+/obj/item/clothing/mask/balaclava,
 /obj/effect/decal/warning_stripes/red,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -67698,6 +67752,14 @@
 /obj/effect/decal/remains/mouse,
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
+"lzr" = (
+/obj/structure/cable{
+	d2 = 2;
+	icon_state = "0-2"
+	},
+/obj/effect/spawner/window/reinforced,
+/turf/simulated/floor/plating,
+/area/security/main)
 "lzB" = (
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -68812,6 +68874,11 @@
 /obj/effect/decal/warning_stripes/northwest,
 /turf/simulated/floor/plasteel/airless,
 /area/toxins/test_area)
+"mdE" = (
+/obj/effect/spawner/window/reinforced,
+/obj/structure/cable,
+/turf/simulated/floor/plating,
+/area/security/main)
 "meh" = (
 /obj/machinery/power/apc{
 	dir = 4;
@@ -73775,6 +73842,17 @@
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/starboardsolar)
+"pyz" = (
+/obj/structure/cable{
+	d2 = 2;
+	icon_state = "0-2"
+	},
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/effect/spawner/window/reinforced,
+/turf/simulated/floor/plating,
+/area/security/main)
 "pyQ" = (
 /obj/machinery/light{
 	dir = 1
@@ -76165,6 +76243,18 @@
 /obj/machinery/atmospherics/unary/portables_connector,
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
+"qTG" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel,
+/area/security/main)
 "qTN" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -83696,16 +83786,22 @@
 /turf/simulated/wall,
 /area/security/customs2)
 "vMu" = (
+/obj/structure/cable{
+	icon_state = "2-4"
+	},
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
 /obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/security/glass{
+	name = "Security Office";
+	req_access = list(1)
+	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
-	},
-/obj/machinery/door/airlock/security/glass{
-	name = "Security Office";
-	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel,
 /area/security/main)
@@ -83991,6 +84087,9 @@
 	},
 /area/medical/virology/lab)
 "vVw" = (
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "Security Office";
@@ -118066,7 +118165,7 @@ abO
 abO
 abO
 aiv
-kUl
+dtU
 kUl
 eBW
 fvE
@@ -119094,10 +119193,10 @@ abM
 apP
 arP
 nEQ
-kUl
-kUl
+eQH
+eQH
 gxq
-fvE
+dWA
 aek
 eDL
 vjh
@@ -119354,11 +119453,11 @@ nEQ
 wzV
 wzV
 wzV
-wzV
-wzV
+lzr
+pyz
 vVw
 vMu
-wzV
+mdE
 wzV
 aqA
 wyy
@@ -119871,7 +119970,7 @@ fMP
 wdq
 wdq
 wdq
-agY
+qTG
 jLB
 ahR
 aqC
