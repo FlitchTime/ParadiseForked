@@ -18640,12 +18640,12 @@
 	pixel_y = -3
 	},
 /obj/item/grenade/flashbang{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/item/grenade/flashbang{
 	pixel_x = 3;
 	pixel_y = -3
+	},
+/obj/item/grenade/flashbang{
+	pixel_x = 6;
+	pixel_y = -6
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkred"
@@ -33755,11 +33755,11 @@
 	layer = 2.9
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/storage/box/barrier,
 /obj/item/storage/box/barrier{
 	pixel_x = 3;
 	pixel_y = -3
 	},
-/obj/item/storage/box/barrier,
 /obj/item/grenade/barrier{
 	pixel_x = 3;
 	pixel_y = -3
