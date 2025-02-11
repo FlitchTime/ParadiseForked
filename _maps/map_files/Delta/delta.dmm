@@ -45336,9 +45336,6 @@
 "ffh" = (
 /obj/machinery/suit_storage_unit/security,
 /obj/effect/decal/warning_stripes/red,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -53116,9 +53113,6 @@
 	},
 /obj/item/storage/box/trackimp,
 /obj/item/lock_buster,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -66403,10 +66397,6 @@
 /area/assembly/robotics)
 "klt" = (
 /obj/machinery/flasher/portable,
-/obj/structure/window/reinforced{
-	dir = 1;
-	layer = 2.9
-	},
 /obj/machinery/light{
 	dir = 4
 	},
@@ -71458,9 +71448,6 @@
 	},
 /area/toxins/test_chamber)
 "lBt" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
 /obj/effect/decal/warning_stripes/red,
 /obj/structure/closet/l3closet/security,
 /turf/simulated/floor/plasteel{
@@ -75303,6 +75290,9 @@
 	layer = 2.9
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -91936,7 +91926,6 @@
 /obj/machinery/light{
 	dir = 4
 	},
-/obj/structure/window/reinforced,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "vault"
@@ -102822,6 +102811,7 @@
 	dir = 8;
 	layer = 2.9
 	},
+/obj/structure/window/reinforced,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
