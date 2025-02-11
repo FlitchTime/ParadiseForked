@@ -5716,8 +5716,18 @@
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "aQU" = (
-/obj/structure/closet/bombclosetsecurity,
-/obj/effect/decal/warning_stripes/red,
+/obj/item/storage/box/trackimp,
+/obj/item/storage/box/chemimp{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/storage/lockbox/mindshield,
+/obj/item/lock_buster,
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -53085,24 +53095,8 @@
 	},
 /area/aisat/aihallway)
 "gXi" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/shield/riot{
-	pixel_x = -6;
-	pixel_y = -6
-	},
-/obj/item/shield/riot{
-	pixel_x = -3;
-	pixel_y = -3
-	},
-/obj/item/shield/riot,
-/obj/item/shield/riot{
-	pixel_x = 3;
-	pixel_y = 3
-	},
+/obj/vehicle/ridden/secway,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
@@ -64028,8 +64022,8 @@
 	},
 /area/crew_quarters/kitchen)
 "jDw" = (
-/obj/structure/closet/l3closet/security,
 /obj/effect/decal/warning_stripes/red,
+/obj/structure/closet/bombclosetsecurity,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -71448,21 +71442,11 @@
 	},
 /area/toxins/test_chamber)
 "lBt" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/item/storage/lockbox/mindshield,
-/obj/item/storage/box/trackimp,
-/obj/item/storage/box/chemimp{
-	pixel_x = 4;
-	pixel_y = 3
-	},
-/obj/item/lock_buster,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
+/obj/effect/decal/warning_stripes/red,
+/obj/structure/closet/l3closet/security,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -94758,7 +94742,11 @@
 /obj/machinery/newscaster/security_unit{
 	pixel_x = 28
 	},
-/obj/vehicle/ridden/secway,
+/obj/item/clothing/suit/armor/laserproof,
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -102817,13 +102805,25 @@
 /area/crew_quarters/captain/bedroom)
 "sKi" = (
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/clothing/suit/armor/laserproof,
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/item/shield/riot{
+	pixel_x = -6;
+	pixel_y = -6
+	},
+/obj/item/shield/riot{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/shield/riot,
+/obj/item/shield/riot{
+	pixel_x = 3;
+	pixel_y = 3
+	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
-	},
-/obj/machinery/light{
-	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
