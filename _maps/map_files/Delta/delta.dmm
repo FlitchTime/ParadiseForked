@@ -5716,18 +5716,24 @@
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "aQU" = (
-/obj/item/storage/box/trackimp,
-/obj/item/storage/box/chemimp{
-	pixel_x = 4;
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/ammo_box/magazine/enforcer/lethal{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/obj/item/ammo_box/magazine/enforcer/lethal{
+	pixel_x = -3;
 	pixel_y = 3
 	},
-/obj/item/storage/lockbox/mindshield,
-/obj/item/lock_buster,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
+/obj/item/ammo_box/magazine/enforcer/lethal,
+/obj/item/ammo_box/magazine/enforcer/lethal{
+	pixel_x = 3;
+	pixel_y = -3
 	},
-/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Lethal Bullets"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -9077,11 +9083,6 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/hallway/secondary/entry/commercial)
-"blZ" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/twohanded/required/kirbyplants,
-/turf/simulated/floor/plasteel,
-/area/security/permahallway)
 "bmb" = (
 /obj/structure/cable{
 	icon_state = "4-8"
@@ -35284,6 +35285,14 @@
 "dEt" = (
 /turf/simulated/wall,
 /area/maintenance/banya)
+"dEz" = (
+/obj/effect/decal/warning_stripes/north,
+/obj/machinery/flasher/portable,
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "vault"
+	},
+/area/security/securearmory)
 "dEA" = (
 /obj/structure/closet/secure_closet/clown,
 /obj/structure/window/reinforced{
@@ -53095,8 +53104,18 @@
 	},
 /area/aisat/aihallway)
 "gXi" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/vehicle/ridden/secway,
+/obj/item/storage/lockbox/mindshield,
+/obj/item/storage/box/chemimp{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/storage/box/trackimp,
+/obj/item/lock_buster,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
@@ -62637,9 +62656,6 @@
 	icon_state = "dark"
 	},
 /area/security/permabrig)
-"joB" = (
-/turf/simulated/wall/r_wall,
-/area/security/permahallway)
 "joM" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 9
@@ -64881,9 +64897,6 @@
 /area/space)
 "jPT" = (
 /obj/effect/decal/warning_stripes/northeast,
-/obj/item/radio/intercom{
-	pixel_x = 28
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -66393,6 +66406,9 @@
 /obj/structure/window/reinforced{
 	dir = 1;
 	layer = 2.9
+	},
+/obj/machinery/light{
+	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -75281,14 +75297,14 @@
 /turf/space,
 /area/aisat)
 "mwN" = (
-/obj/machinery/flasher/portable,
-/obj/structure/window/reinforced,
-/obj/machinery/light{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
+/obj/item/clothing/suit/armor/laserproof,
+/obj/structure/rack{
 	dir = 8;
-	icon_state = "vault"
+	layer = 2.9
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
 	},
 /area/security/securearmory)
 "mwW" = (
@@ -78551,27 +78567,7 @@
 /turf/simulated/floor/plating,
 /area/bridge/checkpoint/south)
 "niy" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal,
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Lethal Bullets"
-	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/item/twohanded/required/kirbyplants,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -82546,6 +82542,16 @@
 /obj/machinery/atmospherics/unary/vent_pump/on,
 /turf/simulated/floor/carpet,
 /area/crew_quarters/bar/atrium)
+"oez" = (
+/obj/item/radio/intercom{
+	pixel_x = 28
+	},
+/obj/machinery/flasher/portable,
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "vault"
+	},
+/area/security/securearmory)
 "oeE" = (
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel{
@@ -91922,12 +91928,15 @@
 /turf/simulated/floor/plating,
 /area/security/visiting_room)
 "qif" = (
-/obj/effect/decal/warning_stripes/north,
 /obj/machinery/firealarm{
 	dir = 4;
 	pixel_x = 26
 	},
 /obj/machinery/flasher/portable,
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/structure/window/reinforced,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "vault"
@@ -94742,11 +94751,7 @@
 /obj/machinery/newscaster/security_unit{
 	pixel_x = 28
 	},
-/obj/item/clothing/suit/armor/laserproof,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
+/obj/vehicle/ridden/secway,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -95843,11 +95848,6 @@
 	icon_state = "dark"
 	},
 /area/security/evidence)
-"rbU" = (
-/obj/machinery/vending/cola,
-/obj/effect/decal/warning_stripes/red/hollow,
-/turf/simulated/floor/plasteel,
-/area/security/permahallway)
 "rbY" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
@@ -97842,9 +97842,9 @@
 /turf/simulated/floor/plasteel,
 /area/security/main)
 "rAs" = (
-/obj/effect/decal/warning_stripes/east,
+/obj/effect/decal/warning_stripes/northeastcorner,
 /turf/simulated/floor/plasteel{
-	dir = 5;
+	dir = 1;
 	icon_state = "darkred"
 	},
 /area/security/securearmory)
@@ -102805,9 +102805,6 @@
 /area/crew_quarters/captain/bedroom)
 "sKi" = (
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/light{
-	dir = 4
-	},
 /obj/item/shield/riot{
 	pixel_x = -6;
 	pixel_y = -6
@@ -103239,6 +103236,11 @@
 	},
 /turf/simulated/floor/plating,
 /area/toxins/server)
+"sPH" = (
+/turf/simulated/floor/plasteel{
+	icon_state = "darkredfull"
+	},
+/area/security/securearmory)
 "sPM" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 1
@@ -105386,13 +105388,6 @@
 "toP" = (
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
-	},
-/area/security/securearmory)
-"toS" = (
-/obj/effect/decal/warning_stripes/northeastcorner,
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "darkredcorners"
 	},
 /area/security/securearmory)
 "toW" = (
@@ -108088,6 +108083,7 @@
 "tSY" = (
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/machinery/portable_atmospherics/canister/oxygen,
+/obj/effect/decal/warning_stripes/east,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -181495,7 +181491,7 @@ ioU
 lhS
 tSY
 rAs
-toS
+toP
 hip
 vNX
 tWJ
@@ -181750,9 +181746,9 @@ pdP
 qug
 mml
 lhS
-lhS
 xmw
 tsW
+sPH
 sSc
 dRD
 jFZ
@@ -182006,10 +182002,10 @@ xxI
 oIn
 qug
 mml
-blZ
 lhS
 meo
 gES
+uTS
 uTS
 vdJ
 uTS
@@ -182263,16 +182259,16 @@ wyT
 pee
 gBH
 mml
-rbU
 lhS
 sBd
+dEz
 qif
 mwN
 qOn
 sKi
 klt
 leV
-lhS
+oez
 lhS
 oHJ
 unN
@@ -182520,7 +182516,7 @@ ugN
 pfE
 pLF
 qiv
-joB
+lhS
 lhS
 lhS
 lhS
