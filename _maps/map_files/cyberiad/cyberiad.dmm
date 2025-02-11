@@ -27116,20 +27116,7 @@
 	},
 /area/medical/chemistry)
 "bLF" = (
-/obj/structure/table,
-/obj/item/clothing/glasses/hud/health{
-	pixel_x = -2;
-	pixel_y = 2
-	},
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health{
-	pixel_x = 2;
-	pixel_y = -2
-	},
-/obj/item/clothing/glasses/hud/health{
-	pixel_x = 4;
-	pixel_y = -4
-	},
+/obj/machinery/vending/clothing/departament/medical,
 /turf/simulated/floor/plasteel{
 	icon_state = "whitebluefull"
 	},
@@ -33326,13 +33313,12 @@
 	},
 /area/medical/surgery/south)
 "cef" = (
-/obj/structure/closet/secure_closet/medical3,
 /obj/machinery/door_control{
 	id = "surgeryobs2";
 	name = "Privacy Shutters Control";
 	pixel_y = 25
 	},
-/obj/item/storage/belt/medical/surgery/loaded,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "whitebluecorner"
 	},
@@ -44116,11 +44102,6 @@
 /area/maintenance/asmaint)
 "cKO" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -61004,13 +60985,12 @@
 	},
 /area/security/range)
 "gWr" = (
-/obj/structure/closet/secure_closet/medical3,
 /obj/machinery/door_control{
 	id = "surgeryobs1";
 	name = "Privacy Shutters Control";
 	pixel_y = 25
 	},
-/obj/item/storage/belt/medical/surgery/loaded,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitebluecorner"
@@ -79347,15 +79327,6 @@
 /area/security/permabrig)
 "sVp" = (
 /obj/structure/rack,
-/obj/item/storage/belt/medical,
-/obj/item/storage/belt/medical{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/storage/belt/medical{
-	pixel_x = 6;
-	pixel_y = -6
-	},
 /obj/machinery/power/apc{
 	name = "south bump";
 	pixel_y = -24
@@ -79453,11 +79424,6 @@
 /area/medical/cloning)
 "sYi" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"

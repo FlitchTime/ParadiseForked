@@ -5039,7 +5039,7 @@
 	},
 /area/bridge/meeting_room)
 "aQo" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -7934,11 +7934,6 @@
 /area/atmos/distribution)
 "bjK" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical,
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -8949,6 +8944,7 @@
 /area/storage/primary)
 "bqf" = (
 /obj/effect/decal/warning_stripes/blue,
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -58599,6 +58595,7 @@
 /area/engineering/engine)
 "jRu" = (
 /obj/effect/decal/warning_stripes/blue,
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -58994,11 +58991,6 @@
 /obj/structure/table/glass,
 /obj/item/soap/nanotrasen,
 /obj/item/reagent_containers/spray/cleaner,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteblue"
@@ -62992,9 +62984,6 @@
 /area/security/detectives_office)
 "kIG" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/structure/cable/orange{
 	icon_state = "2-8"
 	},
@@ -65254,10 +65243,6 @@
 /area/medical/research)
 "lgi" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
-/obj/item/reagent_containers/food/drinks/mug/med,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
@@ -65267,6 +65252,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "whiteblue"
@@ -96542,9 +96528,6 @@
 /area/hallway/spacebridge/dockmed)
 "rki" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -98519,11 +98502,6 @@
 /area/quartermaster/office)
 "rCR" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical,
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -126591,7 +126569,7 @@
 	},
 /area/toxins/mixing)
 "wWM" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},

@@ -3036,9 +3036,6 @@
 /area/crew_quarters/captain)
 "azO" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/machinery/camera{
 	c_tag = "Medbay Storage";
 	dir = 10;
@@ -4969,7 +4966,7 @@
 /turf/simulated/floor/carpet/royalblack,
 /area/crew_quarters/bar)
 "aQo" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -8042,11 +8039,6 @@
 /area/medical/cmo)
 "bjK" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -20382,11 +20374,6 @@
 /obj/structure/table/glass,
 /obj/item/soap/nanotrasen,
 /obj/item/reagent_containers/spray/cleaner/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
 /obj/machinery/light_switch{
 	dir = 4;
 	pixel_x = -24
@@ -43759,11 +43746,6 @@
 /area/maintenance/auxsolarstarboard)
 "iNC" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -56272,12 +56254,9 @@
 	},
 /area/quartermaster/miningdock)
 "moY" = (
-/obj/structure/closet/secure_closet/medical3,
 /obj/machinery/light,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/item/reagent_containers/food/drinks/mug/med,
+/obj/structure/closet/secure_closet/medical3,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -70795,6 +70774,7 @@
 /obj/structure/sink/kitchen{
 	pixel_y = 25
 	},
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -72492,7 +72472,6 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/item/storage/box/rxglasses,
 /obj/item/storage/box/iv_bags,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
@@ -73964,9 +73943,6 @@
 /area/engineering/gravitygenerator)
 "rki" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -80603,7 +80579,7 @@
 	},
 /area/hallway/secondary/entry/south)
 "tgA" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -83219,6 +83195,7 @@
 /obj/structure/sink/kitchen{
 	pixel_y = 25
 	},
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
