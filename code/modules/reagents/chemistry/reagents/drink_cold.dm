@@ -120,7 +120,6 @@
 	id = "nuka_cola"
 	description = "Cola, cola never changes."
 	color = "#100800" // rgb: 16, 8, 0
-	overdose_threshold = 20
 	adj_sleepy = -4 SECONDS
 	drink_icon = "nuka_colaglass"
 	drink_name = "Nuka Cola"
@@ -135,20 +134,9 @@
 	user.Druggy(60 SECONDS)
 	user.AdjustDizzy(10 SECONDS)
 	user.SetDrowsy(0)
-	user.apply_effect(2, IRRADIATE, negate_armor = 1)
 	if(!(user.dna && (user.dna.species.reagent_tag & PROCESS_ORG)))
 		user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/nuka_cola)
 	return ..() | update_flags
-
-/datum/reagent/consumable/drink/cold/nuka_cola/overdose_process(mob/living/user, severity)
-	var/list/overdose_info = ..()
-	var/effect = overdose_info[REAGENT_OVERDOSE_EFFECT]
-	var/update_flags = overdose_info[REAGENT_OVERDOSE_FLAGS]
-	user.apply_effect(6, IRRADIATE, negate_armor = 1)
-	if(prob(5))
-		randmut(user, FALSE)
-	return list(effect, update_flags)
-
 
 /datum/reagent/consumable/drink/cold/nuka_cola/on_mob_add(mob/living/user)
 	. = ..()
