@@ -39935,6 +39935,11 @@
 /obj/structure/sign/poster/official/ion_rifle{
 	pixel_y = -32
 	},
+/obj/machinery/door/window{
+	dir = 1;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkred"
 	},
@@ -128164,6 +128169,11 @@
 /obj/item/lock_buster,
 /obj/structure/window/reinforced{
 	dir = 4
+	},
+/obj/machinery/door/window{
+	dir = 1;
+	name = "Secure Armory";
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "darkred"

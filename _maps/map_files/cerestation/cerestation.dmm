@@ -23515,24 +23515,6 @@
 	icon_state = "purple"
 	},
 /area/hallway/primary/aft/east)
-"dbE" = (
-/obj/item/storage/lockbox/mindshield,
-/obj/item/storage/box/trackimp,
-/obj/item/storage/box/chemimp{
-	pixel_x = 4;
-	pixel_y = 3
-	},
-/obj/item/lock_buster,
-/obj/structure/rack,
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	dir = 1;
-	layer = 2.9
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/armory)
 "dbI" = (
 /obj/item/radio/intercom{
 	pixel_x = 28
@@ -25378,9 +25360,6 @@
 	icon_state = "1-4"
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/obj/structure/sign/poster/official/random{
-	pixel_x = -32
-	},
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plating,
 /area/maintenance/fore2)
@@ -28807,7 +28786,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 9
 	},
-/obj/structure/sign/poster/official/ion_rifle{
+/obj/structure/sign/poster/official/random{
 	pixel_y = -32
 	},
 /turf/simulated/floor/plasteel{
@@ -78514,11 +78493,27 @@
 	},
 /area/medical/surgery/south)
 "syq" = (
-/obj/structure/sign/poster/official/random{
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/obj/structure/window/reinforced{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/clothing/suit/armor/laserproof,
+/obj/item/gun/energy/ionrifle{
+	pixel_y = 3
+	},
+/obj/structure/sign/poster/official/ion_rifle{
 	pixel_x = 32
 	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/vehicle/ridden/secway,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -81122,6 +81117,28 @@
 	icon_state = "neutral"
 	},
 /area/hallway/primary/port/east)
+"tmJ" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/obj/structure/window/reinforced,
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/storage/lockbox/mindshield,
+/obj/item/storage/box/chemimp{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/lock_buster,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/armory)
 "tmS" = (
 /obj/structure/chair/sofa/corp/left,
 /turf/simulated/floor/plasteel{
@@ -88485,16 +88502,8 @@
 /turf/simulated/floor/plating,
 /area/maintenance/fsmaint3)
 "vAY" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/clothing/suit/armor/laserproof,
-/obj/item/gun/energy/ionrifle{
-	pixel_y = 3
-	},
-/obj/structure/window/reinforced,
+/obj/vehicle/ridden/secway,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -121403,8 +121412,8 @@ tID
 ttb
 vAY
 syq
+tmJ
 hRD
-dbE
 xCA
 mUz
 bBH

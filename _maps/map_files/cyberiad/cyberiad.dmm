@@ -70415,9 +70415,7 @@
 	dir = 8
 	},
 /obj/structure/rack/gunrack,
-/obj/item/gun/energy/ionrifle{
-	pixel_x = 3
-	},
+/obj/item/gun/energy/ionrifle,
 /obj/item/gun/energy/ionrifle{
 	pixel_x = 3
 	},

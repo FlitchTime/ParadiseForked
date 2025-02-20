@@ -75293,6 +75293,12 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
+/obj/structure/window/reinforced,
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -102812,6 +102818,14 @@
 	layer = 2.9
 	},
 /obj/structure/window/reinforced,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
