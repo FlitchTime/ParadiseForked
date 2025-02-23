@@ -5253,42 +5253,6 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
-/obj/item/gun/energy/dominator,
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 8
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/item/gun/energy/dominator{
-	pixel_x = 2
-	},
-/obj/item/gun/energy/dominator{
-	pixel_x = 4
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 2;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
 /obj/item/gun/energy/dominator{
 	pixel_y = -3
 	},
@@ -5889,36 +5853,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/medroom)
 "aQi" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/lock_buster,
-/obj/item/storage/box/trackimp,
-/obj/item/storage/box/chemimp{
-	pixel_x = 4;
-	pixel_y = 3
-	},
-/obj/item/storage/lockbox/mindshield,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/item/ammo_box/magazine/sp91rc{
 	pixel_x = 8
@@ -9572,37 +9506,6 @@
 	},
 /area/teleporter/abandoned)
 "bqK" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -22967,42 +22870,6 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 8
-	},
-/obj/item/melee/baton/security/loaded,
-/obj/item/melee/baton/security/loaded{
-	pixel_x = 2
-	},
-/obj/item/melee/baton/security/loaded{
-	pixel_x = 4
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 2;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
 /obj/item/melee/baton/security/loaded{
 	pixel_x = -4
 	},
@@ -29265,41 +29132,6 @@
 /obj/structure/window/reinforced{
 	color = "red"
 	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/shield/riot,
-/obj/item/shield/riot,
-/obj/item/shield/riot,
-/obj/item/shield/riot,
-/obj/item/clothing/shoes/combat/riot,
-/obj/item/clothing/shoes/combat/riot,
-/obj/item/clothing/shoes/combat/riot,
-/obj/item/clothing/shoes/combat/riot,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
 /obj/machinery/door/window{
 	color = "red";
 	dir = 8;
@@ -34094,32 +33926,6 @@
 /obj/structure/window/reinforced{
 	color = "red"
 	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
 /obj/machinery/door/window{
 	color = "red";
 	name = "Secure Armory";
@@ -36616,38 +36422,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/fsmaint3)
 "fjV" = (
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 8
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/item/storage/box/flashbangs,
-/obj/item/storage/box/flashbangs{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/machinery/door/window{
 	color = "red";
 	dir = 1;
@@ -39036,32 +38810,6 @@
 /turf/simulated/floor/plasteel,
 /area/hallway/secondary/entry/commercial)
 "fBc" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack/gunrack,
-/obj/item/gun/projectile/automatic/wt550,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/gun/projectile/automatic/wt550{
-	pixel_x = 3
-	},
-/obj/item/gun/projectile/automatic/wt550{
-	pixel_x = 6
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -46840,31 +46588,6 @@
 	},
 /area/hallway/primary/central/north)
 "gIa" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/item/clothing/suit/armor/laserproof,
-/obj/item/gun/energy/ionrifle,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/window/reinforced{
 	color = "red"
@@ -52709,32 +52432,6 @@
 	},
 /area/maintenance/fsmaint2)
 "hED" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack/gunrack,
-/obj/item/gun/energy/gun,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/gun/energy/gun{
-	pixel_x = 3
-	},
-/obj/item/gun/energy/gun{
-	pixel_x = 6
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -62159,42 +61856,6 @@
 	},
 /area/hallway/secondary/entry/lounge)
 "jbE" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/storage/box/teargas,
-/obj/item/storage/box/teargas{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/chem_grenade/teargas{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/item/grenade/chem_grenade/teargas{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/rack/gunrack,
 /obj/structure/window/reinforced{
@@ -71646,32 +71307,6 @@
 /obj/structure/window/reinforced{
 	color = "red"
 	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
 /obj/machinery/door/window{
 	color = "red";
 	name = "Secure Armory";
@@ -74333,42 +73968,6 @@
 	dir = 8;
 	layer = 2.9
 	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 8
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 2;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/item/gun/projectile/automatic/pistol/enforcer/security{
-	pixel_x = -4
-	},
-/obj/item/gun/projectile/automatic/pistol/enforcer/security,
-/obj/item/gun/projectile/automatic/pistol/enforcer/security{
-	pixel_x = 4
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
 /obj/machinery/door/window{
 	color = "red";
 	dir = 1;
@@ -75821,37 +75420,6 @@
 	},
 /area/crew_quarters/kitchen)
 "leG" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/clothing/gloves/combat/riot,
-/obj/item/clothing/gloves/combat/riot,
-/obj/item/clothing/gloves/combat/riot,
-/obj/item/clothing/gloves/combat/riot,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -102579,38 +102147,6 @@
 	layer = 2.9
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/gun/energy/gun/advtaser{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/gun/energy/gun/advtaser,
-/obj/item/gun/energy/gun/advtaser{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
 /obj/item/clothing/suit/armor/laserproof,
 /obj/item/gun/energy/ionrifle,
 /obj/machinery/door/window{
@@ -104910,38 +104446,6 @@
 /turf/simulated/floor/wood,
 /area/maintenance/fsmaint)
 "puI" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/ammo_box/magazine/sp91rc{
-	pixel_x = 8
-	},
-/obj/item/ammo_box/magazine/sp91rc{
-	pixel_x = 4
-	},
-/obj/item/ammo_box/magazine/sp91rc,
-/obj/item/ammo_box/magazine/sp91rc{
-	pixel_x = -4
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/rack{
 	dir = 8;
@@ -109065,32 +108569,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/livingcomplex)
 "pYH" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -118736,36 +118214,6 @@
 	},
 /area/security/interrogation)
 "ruB" = (
-/obj/structure/rack/gunrack,
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = -7
-	},
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = -2
-	},
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = 2
-	},
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = 7
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -122435,32 +121883,6 @@
 /obj/structure/window/reinforced{
 	color = "red"
 	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/head/helmet/alt,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
 /obj/item/clothing/head/helmet/alt,
 /obj/item/clothing/head/helmet/alt,
 /obj/item/clothing/head/helmet/alt,
@@ -122776,32 +122198,6 @@
 	},
 /area/medical/surgery/south)
 "rWa" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/rack/gunrack,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/gun/energy/laser,
-/obj/item/gun/energy/laser{
-	pixel_x = 3
-	},
-/obj/item/gun/energy/laser{
-	pixel_x = 6
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/window/reinforced{
 	color = "red"
 	},
@@ -123175,49 +122571,6 @@
 /turf/simulated/floor/glass/reinforced,
 /area/quartermaster/office)
 "rYJ" = (
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = 4;
-	pixel_y = -4
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = 2;
-	pixel_y = -2
-	},
-/obj/item/ammo_box/magazine/wt550m9,
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = -2;
-	pixel_y = 2
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = -4;
-	pixel_y = 4
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/window/reinforced{
 	color = "red"
 	},
@@ -125720,37 +125073,6 @@
 	},
 /area/quartermaster/miningdock)
 "srz" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 4
-	},
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/structure/rack{
 	dir = 8;
 	layer = 2.9
@@ -130661,46 +129983,6 @@
 /turf/simulated/floor/plasteel/dark,
 /area/maintenance/starboardaux)
 "tbx" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/ammo_box/c9mm,
-/obj/item/ammo_box/c9mm{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal,
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/window/reinforced{
 	color = "red"
@@ -144020,35 +143302,6 @@
 /turf/simulated/floor/wood/fancy/light,
 /area/crew_quarters/heads/hop)
 "uWk" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/gun/projectile/shotgun/riot,
-/obj/item/gun/projectile/shotgun/riot{
-	pixel_x = 7
-	},
-/obj/item/gun/projectile/shotgun/riot{
-	pixel_x = -7
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/rack/gunrack,
-/obj/machinery/door/window{
-	color = "red";
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/gun/projectile/shotgun/riot{
-	pixel_x = -9
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/window/reinforced{
 	color = "red"
@@ -163282,38 +162535,6 @@
 	},
 /area/quartermaster/miningstorage)
 "xOh" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	color = "red"
-	},
-/obj/structure/window/reinforced{
-	color = "red";
-	dir = 1
-	},
-/obj/machinery/door/window{
-	color = "red";
-	dir = 8;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/obj/item/storage/box/barrier,
-/obj/item/grenade/barrier{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/item/grenade/barrier{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/structure/rack/gunrack,
 /obj/item/gun/energy/gun{
