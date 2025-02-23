@@ -3141,9 +3141,14 @@
 						while(iswallturf(turf))
 							turf = get_random_station_turf()
 						addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(doPortalSpawn), turf, pathToSpawn, prefs["amount"]["value"], storm), i*prefs["delay"]["value"])
+
 			if("tripleAI")
 				usr.client.triple_ai()
 				SSblackbox.record_feedback("tally", "admin_secrets_fun_used", 1, "Triple AI")
+
+			if("mass_mindswap")
+				mass_mindswap()
+
 			if("set_station_name")
 				if(!check_rights(R_ADMIN | R_EVENT))
 					return
@@ -3236,19 +3241,18 @@
 					return
 				SSblackbox.record_feedback("tally", "admin_secrets_fun_used", 1, "Prison Warp")
 				log_and_message_admins("teleported all players to the prison station.")
-				for(var/thing in GLOB.human_list)
-					var/mob/living/carbon/human/H = thing
-					var/turf/loc = find_loc(H)
+				for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
+					var/turf/loc = get_turf(human)
 					var/security = FALSE
-					if(!H.client)
+					if(!human.client)
 						continue
 					if(!loc?.z)
 						continue
 					var/datum/space_level/level = GLOB.space_manager.get_zlev(loc.z)
-					if(!is_station_level(loc.z) || level.name != CENTCOMM || GLOB.prisonwarped.Find(H)) //don't warp them if they aren't ready or are already there
+					if(!(is_station_level(loc.z) || level.name == CENTCOMM) || GLOB.prisonwarped.Find(human)) //don't warp them if they aren't ready or are already there
 						continue
-					if(H.wear_id)
-						var/obj/item/card/id/id = H.get_id_card()
+					if(human.wear_id)
+						var/obj/item/card/id/id = human.get_id_card()
 						if(istype(id))
 							if(ACCESS_CENT_COMMANDER in id.access)
 								continue
@@ -3260,9 +3264,9 @@
 
 					var/obj/structure/closet/supplypod/centcompod/prison_warp/pod = new()
 					pod.reverse_dropoff_coords = list(prison_cell.x, prison_cell.y, prison_cell.z)
-					pod.target = H
+					pod.target = human
 					pod.security = security
-					new /obj/effect/pod_landingzone(H, pod)
+					new /obj/effect/pod_landingzone(human, pod)
 
 			if("traitor_all")
 				if(!SSticker)
@@ -3938,6 +3942,9 @@
 
 	else if(href_list["showrelatedacc"])
 		var/client/C = locate(href_list["client"]) in GLOB.clients
+		if(!C)
+			to_chat(usr, "No client inside!")
+			return
 		var/thing_to_check
 		if(href_list["showrelatedacc"] == "cid")
 			thing_to_check = jointext(C.related_accounts_cid, "<br>")
@@ -4059,8 +4066,9 @@
 		if(O.mind && O.mind.current)
 			. += "|[ADMIN_FLW(O.mind.current,"BDY")]"
 
-/proc/you_realy_want_do_this()
-	var/sure = tgui_alert(usr, "Вы действительно хотите сделать это?", "Подтверждение", list("Да", "Нет"))
+/proc/you_realy_want_do_this(mob/user)
+	user = user || usr
+	var/sure = tgui_alert(user, "Вы действительно хотите сделать это?", "Подтверждение", list("Да", "Нет"))
 	return sure == "Да"
 
 
@@ -4079,3 +4087,21 @@
 	playsound(loc, "sparks", rand(80, 100), 1)
 	for (var/i in 1 to numtospawn)
 		new mobtype(loc)
+
+/datum/admins/proc/mass_mindswap()
+	if(!check_rights(R_EVENT) || !you_realy_want_do_this(owner.mob))
+		return
+
+	for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
+		if(!human.mind)
+			continue
+
+		var/mob/living/target = safepick(GLOB.human_list - human)
+
+		if(!target \
+		|| !/obj/effect/proc_holder/spell/mind_transfer::valid_target(target, human))
+			continue
+
+		/obj/effect/proc_holder/spell/mind_transfer::cast(list(target), human)
+
+	log_and_message_admins("Initiated mass mindswap")
