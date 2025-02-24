@@ -69,10 +69,6 @@
 	new /obj/item/defibrillator/loaded(src)
 	new /obj/item/handheld_defibrillator(src)
 	new /obj/item/handheld_defibrillator(src)
-<<<<<<< HEAD
-
-=======
->>>>>>> 42977984473b4a13b4937f4f5f815f13ca2577cd
 
 //Exam Room
 /obj/structure/closet/secure_closet/exam
