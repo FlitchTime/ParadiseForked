@@ -51924,29 +51924,11 @@
 	dir = 1;
 	pixel_y = 3
 	},
-/obj/effect/landmark/start/scientist,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
+/obj/structure/cable{
+	icon_state = "2-4"
 	},
-/obj/structure/table/reinforced,
-/obj/machinery/door/window/eastright{
-	base_state = "left";
-	dir = 2;
-	icon_state = "left";
-	name = "Research and Development Desk";
-	req_access = list(47)
-	},
-/obj/machinery/door/firedoor,
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research Desk Shutters"
+/obj/structure/cable{
+	icon_state = "2-8"
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -53501,6 +53483,12 @@
 	},
 /obj/machinery/light{
 	dir = 8
+	},
+/obj/machinery/door_control{
+	id = "rdprivacy";
+	name = "Privacy Shutters";
+	pixel_x = -24;
+	pixel_y = 24
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -61250,20 +61238,8 @@
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/effect/spawner/window/reinforced,
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research Desk Shutters"
+/obj/structure/cable{
+	icon_state = "1-8"
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -61460,49 +61436,21 @@
 /area/security/permabrig)
 "jiu" = (
 /obj/machinery/door/firedoor,
-/obj/machinery/autolathe,
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
 /obj/machinery/door/window/brigdoor{
 	dir = 1;
 	id = "Autolathe";
 	name = "Autolathe Access";
 	req_access = list(31)
 	},
+/obj/machinery/autolathe,
 /obj/machinery/door/poddoor/shutters/preopen{
 	dir = 2;
 	id_tag = "rdlab";
 	name = "Research and Development Lab Shutters"
-	},
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/machinery/door/firedoor,
-/obj/machinery/door/window/brigdoor{
-	dir = 1;
-	id = "Autolathe";
-	name = "Autolathe Access";
-	req_access = list(47)
-	},
-/obj/item/stack/sheet/glass{
-	amount = 10
-	},
-/obj/item/stack/sheet/metal{
-	amount = 10
-	},
-/obj/machinery/autolathe,
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research Desk Shutters"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -61941,6 +61889,9 @@
 /obj/item/twohanded/required/kirbyplants{
 	icon_state = "plant-35"
 	},
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -62080,12 +62031,6 @@
 /obj/effect/decal/warning_stripes/northwestsouth,
 /turf/simulated/floor/plating/airless,
 /area/engineering/engine)
-"jBY" = (
-/obj/machinery/hologram/holopad,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/toxins/lab)
 "jDN" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/disposalpipe/segment,
@@ -62563,6 +62508,10 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/structure/cable{
 	icon_state = "2-4"
+	},
+/obj/machinery/hologram/holopad,
+/obj/structure/cable{
+	icon_state = "2-8"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -63075,10 +63024,6 @@
 	icon_state = "darkblue"
 	},
 /area/medical/morgue)
-"klC" = (
-/obj/machinery/constructable_frame/machine_frame,
-/turf/simulated/floor/plating,
-/area/maintenance/server)
 "klJ" = (
 /obj/machinery/portable_atmospherics/scrubber,
 /obj/machinery/atmospherics/unary/portables_connector{
@@ -63356,6 +63301,9 @@
 	amount = 50;
 	pixel_x = 3;
 	pixel_y = 3
+	},
+/obj/structure/cable{
+	icon_state = "1-8"
 	},
 /turf/simulated/floor/plasteel{
 	dir = 5;
@@ -64214,6 +64162,12 @@
 /turf/simulated/floor/plasteel,
 /area/hallway/secondary/entry)
 "kXz" = (
+/obj/structure/cable{
+	icon_state = "2-8"
+	},
+/obj/structure/cable{
+	icon_state = "2-4"
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -74709,25 +74663,6 @@
 	},
 /turf/simulated/floor/wood,
 /area/security/permabrig)
-"rjc" = (
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/structure/rack,
-/obj/machinery/power/apc{
-	name = "south bump";
-	pixel_y = -24
-	},
-/obj/structure/cable,
-/obj/item/gun/syringe,
-/obj/item/gun/syringe{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/turf/simulated/wall/r_wall,
-/area/medical/biostorage)
 "rjp" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/maintenance{
@@ -76000,6 +75935,9 @@
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard";
 	name = "Biohazard Shutter"
+	},
+/obj/structure/cable{
+	icon_state = "0-2"
 	},
 /turf/simulated/floor/plating,
 /area/toxins/lab)
@@ -78137,27 +78075,20 @@
 /area/solar/starboard)
 "tiS" = (
 /obj/structure/table/reinforced,
+/obj/item/storage/belt/utility{
+	pixel_x = 2;
+	pixel_y = 3
+	},
 /obj/item/storage/belt/utility,
-/obj/item/storage/belt/utility,
+/obj/item/clothing/glasses/welding{
+	pixel_x = 5;
+	pixel_y = 13
+	},
 /obj/item/clothing/glasses/welding{
 	pixel_x = 2;
 	pixel_y = 10
-	},
-/obj/item/clothing/glasses/welding{
-	pixel_x = 2;
-	pixel_y = 10
-	},
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/item/radio/intercom{
-	name = "east station intercom (General)";
-	pixel_x = 28
 	},
 /obj/structure/table,
-/obj/item/storage/toolbox/mechanical,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkpurple"
@@ -80406,19 +80337,6 @@
 /obj/structure/spacepoddoor,
 /turf/simulated/floor/engine,
 /area/engineering/mechanic_workshop)
-"uIZ" = (
-/obj/structure/closet/secure_closet/medical3,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/machinery/vending/clothing/departament/medical,
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "whiteblue"
-	},
-/area/medical/biostorage)
 "uJu" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /turf/simulated/floor/plasteel{
@@ -81706,6 +81624,17 @@
 	},
 /turf/simulated/floor/plasteel/dark/telecomms,
 /area/toxins/server)
+"vuo" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/obj/structure/cable{
+	icon_state = "1-8"
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/toxins/lab)
 "vux" = (
 /obj/item/radio/intercom{
 	name = "west station intercom (General)";
@@ -82062,6 +81991,10 @@
 	icon_state = "whitepurple"
 	},
 /area/medical/genetics)
+"vDA" = (
+/obj/structure/sign/biohazard,
+/turf/simulated/wall/r_wall,
+/area/medical/research/restroom)
 "vDD" = (
 /turf/simulated/wall/rust,
 /area/maintenance/cafeteria)
@@ -84129,20 +84062,8 @@
 /area/blueshield)
 "wHl" = (
 /obj/machinery/computer/rdconsole/core,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/effect/spawner/window/reinforced,
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research Desk Shutters"
+/obj/structure/cable{
+	icon_state = "1-4"
 	},
 /turf/simulated/floor/plasteel{
 	dir = 9;
@@ -84622,6 +84543,14 @@
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plating,
 /area/maintenance/port)
+"wWV" = (
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/toxins/lab)
 "wXq" = (
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 4
@@ -85277,6 +85206,14 @@
 /obj/effect/decal/cleanable/generic,
 /turf/simulated/floor/plating,
 /area/maintenance/apmaint)
+"xnJ" = (
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/toxins/lab)
 "xnP" = (
 /obj/machinery/requests_console{
 	announcementConsole = 1;
@@ -124355,7 +124292,7 @@ nJY
 nJY
 nJY
 nJY
-uIZ
+nJY
 nJY
 uCN
 nun
@@ -125128,7 +125065,7 @@ jct
 hIN
 hIN
 hIN
-rjc
+hIN
 hIN
 gLG
 cQn
@@ -130037,7 +129974,7 @@ csr
 csr
 csr
 csr
-klC
+csr
 toX
 tjt
 kFB
@@ -130294,7 +130231,7 @@ eOl
 nFV
 peC
 tJG
-doa
+csr
 doa
 doa
 doa
@@ -130551,7 +130488,7 @@ pkq
 pgJ
 pkq
 wwI
-doa
+csr
 wZr
 gqJ
 wZr
@@ -130808,7 +130745,7 @@ lTq
 lTq
 lTq
 xdY
-doa
+csr
 wZr
 pLV
 wZr
@@ -131065,7 +131002,7 @@ nMy
 nMy
 nMy
 fct
-doa
+csr
 wZr
 wZr
 vZV
@@ -131322,7 +131259,7 @@ eNf
 eRy
 sow
 qkO
-doa
+csr
 kZs
 eNX
 xUK
@@ -131579,7 +131516,7 @@ lwC
 lwC
 lwC
 lwC
-oRw
+vDA
 vPj
 slL
 rKh
@@ -133089,9 +133026,9 @@ bFz
 bwv
 tvo
 dHS
-eLP
-eLP
-eLP
+xnJ
+xnJ
+wWV
 eLP
 fRl
 vyj
@@ -133348,7 +133285,7 @@ rVQ
 jdw
 phw
 rPw
-jBY
+sjV
 lYM
 avu
 xAS
@@ -133860,9 +133797,9 @@ gkd
 bwv
 jiu
 kXz
-eLP
-eLP
-sjV
+xnJ
+xnJ
+vuo
 eLP
 eLP
 jRp
