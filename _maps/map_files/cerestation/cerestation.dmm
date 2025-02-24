@@ -2998,9 +2998,6 @@
 /area/crew_quarters/captain)
 "azO" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/machinery/camera{
 	c_tag = "Medbay Storage";
 	dir = 10;
@@ -4931,7 +4928,7 @@
 /turf/simulated/floor/carpet/royalblack,
 /area/crew_quarters/bar)
 "aQo" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -8004,11 +8001,6 @@
 /area/medical/cmo)
 "bjK" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -20344,11 +20336,6 @@
 /obj/structure/table/glass,
 /obj/item/soap/nanotrasen,
 /obj/item/reagent_containers/spray/cleaner/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/hud/health,
 /obj/machinery/light_switch{
 	dir = 4;
 	pixel_x = -24
@@ -25360,9 +25347,6 @@
 	icon_state = "1-4"
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/obj/structure/sign/poster/official/random{
-	pixel_x = -32
-	},
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plating,
 /area/maintenance/fore2)
@@ -28789,7 +28773,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 9
 	},
-/obj/structure/sign/poster/official/ion_rifle{
+/obj/structure/sign/poster/official/random{
 	pixel_y = -32
 	},
 /turf/simulated/floor/plasteel{
@@ -29231,15 +29215,15 @@
 	pixel_y = -3
 	},
 /obj/item/grenade/flashbang{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/item/grenade/flashbang{
 	pixel_x = 3;
 	pixel_y = -3
 	},
 /obj/structure/window/reinforced{
 	dir = 8
+	},
+/obj/item/grenade/flashbang{
+	pixel_x = 6;
+	pixel_y = -6
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -34913,6 +34897,28 @@
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/fsmaint4)
+"ghO" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/obj/structure/window/reinforced,
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/storage/lockbox/mindshield,
+/obj/item/storage/box/chemimp{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/lock_buster,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/armory)
 "ghX" = (
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 8
@@ -43706,11 +43712,6 @@
 /area/maintenance/auxsolarstarboard)
 "iNC" = (
 /obj/structure/table,
-/obj/item/storage/box/gloves{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/storage/box/masks,
 /obj/item/reagent_containers/spray/cleaner/medical{
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
@@ -55072,24 +55073,6 @@
 	icon_state = "neutral"
 	},
 /area/hallway/primary/fore/west)
-"lWR" = (
-/obj/item/storage/lockbox/mindshield,
-/obj/item/storage/box/trackimp,
-/obj/item/storage/box/chemimp{
-	pixel_x = 4;
-	pixel_y = 3
-	},
-/obj/item/lock_buster,
-/obj/structure/rack,
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	dir = 1;
-	layer = 2.9
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/armory)
 "lWT" = (
 /turf/simulated/wall,
 /area/hallway/secondary/garden)
@@ -56273,12 +56256,9 @@
 	},
 /area/quartermaster/miningdock)
 "moY" = (
-/obj/structure/closet/secure_closet/medical3,
 /obj/machinery/light,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /obj/item/reagent_containers/food/drinks/mug/med,
+/obj/structure/closet/secure_closet/medical3,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -62942,11 +62922,27 @@
 	},
 /area/medical/medbay)
 "odJ" = (
-/obj/structure/sign/poster/official/random{
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/door/window{
+	dir = 8;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/obj/structure/window/reinforced{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/clothing/suit/armor/laserproof,
+/obj/item/gun/energy/ionrifle{
+	pixel_y = 3
+	},
+/obj/structure/sign/poster/official/ion_rifle{
 	pixel_x = 32
 	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/vehicle/ridden/secway,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -66980,11 +66976,11 @@
 	layer = 2.9
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/storage/box/barrier,
 /obj/item/storage/box/barrier{
 	pixel_x = 3;
 	pixel_y = -3
 	},
-/obj/item/storage/box/barrier,
 /obj/item/grenade/barrier{
 	pixel_x = 3;
 	pixel_y = -3
@@ -69782,16 +69778,8 @@
 	},
 /area/hallway/primary/port/south)
 "pZn" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
 /obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/clothing/suit/armor/laserproof,
-/obj/item/gun/energy/ionrifle{
-	pixel_y = 3
-	},
-/obj/structure/window/reinforced,
+/obj/vehicle/ridden/secway,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -70899,6 +70887,7 @@
 /obj/structure/sink/kitchen{
 	pixel_y = 25
 	},
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -72596,7 +72585,6 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/item/storage/box/rxglasses,
 /obj/item/storage/box/iv_bags,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
@@ -74068,9 +74056,6 @@
 /area/engineering/gravitygenerator)
 "rki" = (
 /obj/structure/closet/secure_closet/medical3,
-/obj/item/storage/belt/medical,
-/obj/item/clothing/glasses/hud/health,
-/obj/item/clothing/glasses/regular,
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -79725,6 +79710,10 @@
 	},
 /obj/effect/decal/warning_stripes/red/hollow,
 /obj/item/shield/riot{
+	pixel_x = -6;
+	pixel_y = -6
+	},
+/obj/item/shield/riot{
 	pixel_x = -3;
 	pixel_y = -3
 	},
@@ -79732,10 +79721,6 @@
 /obj/item/shield/riot{
 	pixel_x = 3;
 	pixel_y = 3
-	},
-/obj/item/shield/riot{
-	pixel_x = 6;
-	pixel_y = 6
 	},
 /obj/structure/window/reinforced,
 /obj/structure/window/reinforced{
@@ -80684,7 +80669,7 @@
 	},
 /area/hallway/secondary/entry/south)
 "tgA" = (
-/obj/machinery/iv_drip,
+/obj/structure/closet/secure_closet/medical4,
 /turf/simulated/floor/plasteel{
 	icon_state = "darkblue"
 	},
@@ -83301,6 +83286,7 @@
 /obj/structure/sink/kitchen{
 	pixel_y = 25
 	},
+/obj/machinery/iv_drip,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -121403,8 +121389,8 @@ uem
 qaT
 pZn
 odJ
+ghO
 mDC
-lWR
 idc
 mUz
 bBH
