@@ -12866,14 +12866,10 @@
 	icon_state = "1-2"
 	},
 /obj/machinery/door/firedoor,
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
-/area/medical/research)
+/area/space)
 "aRM" = (
 /obj/machinery/portable_atmospherics/canister/air{
 	filled = 0.1
@@ -13498,23 +13494,14 @@
 /area/crew_quarters/dorms)
 "aTL" = (
 /obj/effect/spawner/window/reinforced,
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	desc = "Lube off, pal.";
-	dir = 8;
-	icon_state = "open";
-	id_tag = "imnotmakingyoulubepissoff";
-	name = "Chemistry Privacy Shutter";
-	opacity = 0
-	},
 /obj/structure/sign/chemistry,
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	dir = 8;
-	icon_state = "open";
+/obj/machinery/door/poddoor/shutters/preopen{
+	id_tag = "imnotmakingyoulubepissoff";
+	name = "Chemistry Privacy Shutter"
+	},
+/obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard_medi";
-	name = "Quarantine Lockdown";
-	opacity = 0
+	name = "Quarantine Lockdown"
 	},
 /turf/simulated/floor/plating,
 /area/medical/chemistry)
@@ -25365,23 +25352,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/fsmaint2)
 "bGd" = (
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	desc = "Lube off, pal.";
-	dir = 8;
-	icon_state = "open";
-	id_tag = "imnotmakingyoulubepissoff";
-	name = "Chemistry Privacy Shutter";
-	opacity = 0
-	},
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	dir = 8;
-	icon_state = "open";
-	id_tag = "Biohazard_medi";
-	name = "Quarantine Lockdown";
-	opacity = 0
-	},
 /obj/machinery/smartfridge/medbay,
 /obj/machinery/door/window/eastright{
 	name = "Chemistry Desk";
@@ -25390,6 +25360,14 @@
 /obj/structure/window/reinforced{
 	dir = 1;
 	layer = 2.9
+	},
+/obj/machinery/door/poddoor/shutters/preopen{
+	id_tag = "imnotmakingyoulubepissoff";
+	name = "Chemistry Privacy Shutter"
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard_medi";
+	name = "Quarantine Lockdown"
 	},
 /turf/simulated/floor/plating,
 /area/medical/chemistry)
@@ -26675,22 +26653,13 @@
 	name = "Chemistry Desk";
 	req_access = list(33)
 	},
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	desc = "Lube off, pal.";
-	dir = 8;
-	icon_state = "open";
+/obj/machinery/door/poddoor/shutters/preopen{
 	id_tag = "imnotmakingyoulubepissoff";
-	name = "Chemistry Privacy Shutter";
-	opacity = 0
+	name = "Chemistry Privacy Shutter"
 	},
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	dir = 8;
-	icon_state = "open";
+/obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard_medi";
-	name = "Quarantine Lockdown";
-	opacity = 0
+	name = "Quarantine Lockdown"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -29700,22 +29669,13 @@
 /area/crew_quarters/mrchangs)
 "bYi" = (
 /obj/effect/spawner/window/reinforced,
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	desc = "Lube off, pal.";
-	dir = 8;
-	icon_state = "open";
+/obj/machinery/door/poddoor/shutters/preopen{
 	id_tag = "imnotmakingyoulubepissoff";
-	name = "Chemistry Privacy Shutter";
-	opacity = 0
+	name = "Chemistry Privacy Shutter"
 	},
-/obj/machinery/door/poddoor/shutters{
-	density = 0;
-	dir = 8;
-	icon_state = "open";
+/obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard_medi";
-	name = "Quarantine Lockdown";
-	opacity = 0
+	name = "Quarantine Lockdown"
 	},
 /turf/simulated/floor/plating,
 /area/medical/chemistry)
@@ -31887,6 +31847,10 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -50368,13 +50332,6 @@
 	name = "Toxins Launcher";
 	req_access = list(7)
 	},
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter";
-	opacity = 0
-	},
 /turf/simulated/floor/plating,
 /area/toxins/launch)
 "doG" = (
@@ -53582,6 +53539,22 @@
 /obj/effect/turf_decal/bot_white,
 /turf/simulated/floor/plasteel,
 /area/security/customs)
+"ezA" = (
+/obj/effect/spawner/window/reinforced,
+/obj/machinery/door/poddoor/shutters/preopen{
+	dir = 2;
+	id_tag = "rdlab";
+	name = "Research and Development Shutters"
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
+/obj/structure/cable{
+	icon_state = "0-2"
+	},
+/turf/simulated/floor/plating,
+/area/toxins/lab)
 "ezE" = (
 /obj/structure/sign/securearea,
 /turf/simulated/wall,
@@ -54869,8 +54842,12 @@
 "fjF" = (
 /obj/effect/spawner/window/reinforced,
 /obj/machinery/door/poddoor/shutters/preopen{
-	id_tag = "RoboDesk";
+	id_tag = "RoboPrivat";
 	name = "Robotics Privacy Shutter"
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plating,
 /area/assembly/robotics)
@@ -58875,7 +58852,7 @@
 /area/toxins/launch)
 "hDZ" = (
 /obj/machinery/door_control{
-	id = "robotics2";
+	id = "RoboPrivat";
 	name = "Robotics Lab Shutters Control";
 	pixel_x = 24;
 	req_access = list(29)
@@ -60623,6 +60600,10 @@
 	req_access = list(29)
 	},
 /obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -61019,13 +61000,6 @@
 	},
 /obj/structure/window/plasmareinforced{
 	dir = 4
-	},
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter";
-	opacity = 0
 	},
 /obj/structure/window/plasmareinforced{
 	dir = 8
@@ -61477,7 +61451,7 @@
 /obj/machinery/door/poddoor/shutters/preopen{
 	dir = 2;
 	id_tag = "rdlab";
-	name = "Research and Development Lab Shutters"
+	name = "Research and Development Shutters"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -62579,6 +62553,10 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "E.X.P.E.R.I-MENTOR Lab Maintenance";
 	req_access = list(47)
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/genetics)
@@ -64985,15 +64963,16 @@
 	name = "Genetics Research";
 	req_access = list(9,47)
 	},
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard_medi"
-	},
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -66287,10 +66266,6 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
 /obj/machinery/door/airlock/research{
 	name = "Research Division Access";
 	req_access = list(47)
@@ -67241,8 +67216,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/structure/disposalpipe/segment{
-	dir = 4;
-	icon_state = "pipe-c"
+	dir = 6
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -67702,6 +67676,10 @@
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -68484,6 +68462,10 @@
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
@@ -69324,11 +69306,11 @@
 /area/maintenance/apmaint)
 "nYz" = (
 /obj/structure/disposalpipe/segment,
+/obj/effect/spawner/window/reinforced/plasma,
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "RnDChem";
-	name = "Biohazard Shutter"
+	name = "Chamber Blast Doors"
 	},
-/obj/effect/spawner/window/reinforced/plasma,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "nYM" = (
@@ -70181,6 +70163,10 @@
 	dir = 2;
 	id_tag = "RoboPrivat";
 	name = "Robotics Privacy Shutter"
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plating,
 /area/assembly/robotics)
@@ -71434,11 +71420,11 @@
 	dir = 8;
 	pixel_x = 22
 	},
-/obj/item/storage/toolbox/mechanical,
 /obj/item/storage/toolbox/mechanical{
 	pixel_x = 3;
 	pixel_y = 3
 	},
+/obj/item/storage/toolbox/mechanical,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkpurple"
@@ -71454,11 +71440,11 @@
 /area/storage/tech)
 "pqs" = (
 /obj/machinery/atmospherics/pipe/simple/insulated,
+/obj/effect/spawner/window/reinforced/plasma,
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "RnDChem";
-	name = "Biohazard Shutter"
+	name = "Chamber Blast Doors"
 	},
-/obj/effect/spawner/window/reinforced/plasma,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "pqO" = (
@@ -71778,6 +71764,10 @@
 	},
 /obj/machinery/door/airlock/maintenance{
 	req_access = list(12)
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/genetics)
@@ -74223,13 +74213,6 @@
 /turf/simulated/floor/plasteel,
 /area/hallway/primary/central/sw)
 "qUd" = (
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
-	id_tag = "RnDChem";
-	name = "Biohazard Shutter";
-	opacity = 0
-	},
 /obj/machinery/door/airlock/research/glass{
 	name = "Test Chamber";
 	req_access = list(47)
@@ -74238,6 +74221,10 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/structure/cable{
 	icon_state = "1-2"
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "RnDChem";
+	name = "Chamber Blast Doors"
 	},
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
@@ -75972,17 +75959,17 @@
 /area/storage/tech)
 "rVQ" = (
 /obj/effect/spawner/window/reinforced,
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research and Development Lab Shutters"
-	},
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard";
 	name = "Biohazard Shutter"
 	},
 /obj/structure/cable{
 	icon_state = "0-2"
+	},
+/obj/machinery/door/poddoor/shutters/preopen{
+	dir = 2;
+	id_tag = "rdlab";
+	name = "Research and Development Shutters"
 	},
 /turf/simulated/floor/plating,
 /area/toxins/lab)
@@ -77793,13 +77780,6 @@
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
 "sVP" = (
-/obj/machinery/door/poddoor{
-	density = 0;
-	icon_state = "open";
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter";
-	opacity = 0
-	},
 /obj/effect/spawner/window/reinforced/plasma,
 /turf/simulated/floor/plating,
 /area/toxins/launch)
@@ -78482,14 +78462,14 @@
 	req_access = list(47)
 	},
 /obj/machinery/door/firedoor,
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research and Development Lab Shutters"
-	},
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard";
 	name = "Biohazard Shutter"
+	},
+/obj/machinery/door/poddoor/shutters/preopen{
+	dir = 2;
+	id_tag = "rdlab";
+	name = "Research and Development Shutters"
 	},
 /turf/simulated/floor/plating,
 /area/toxins/lab)
@@ -80175,6 +80155,10 @@
 	name = "Постановление о блокировке модуля"
 	},
 /obj/structure/disposalpipe/segment,
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard";
+	name = "Biohazard Shutter"
+	},
 /turf/simulated/floor/plasteel,
 /area/maintenance/xenozoo)
 "uwX" = (
@@ -84517,10 +84501,6 @@
 	name = "Mech Bay";
 	req_access = list(29)
 	},
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -85675,11 +85655,11 @@
 	},
 /area/maintenance/cafeteria)
 "xzB" = (
+/obj/effect/spawner/window/reinforced/plasma,
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "RnDChem";
-	name = "Biohazard Shutter"
+	name = "Chamber Blast Doors"
 	},
-/obj/effect/spawner/window/reinforced/plasma,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "xzQ" = (
@@ -86922,6 +86902,10 @@
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
+	},
+/obj/machinery/door/poddoor/preopen{
+	id_tag = "Biohazard_medi";
+	name = "Quarantine Lockdown"
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -133366,7 +133350,7 @@ cWJ
 bwv
 bFw
 bwv
-rVQ
+ezA
 jdw
 phw
 rPw
