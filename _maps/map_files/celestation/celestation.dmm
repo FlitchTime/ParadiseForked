@@ -1833,21 +1833,6 @@
 	},
 /turf/simulated/floor/glass,
 /area/hallway/primary/fore)
-"apL" = (
-/obj/structure/cable/orange{
-	icon_state = "2-4"
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 6
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 6
-	},
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "apM" = (
 /obj/machinery/chem_dispenser,
 /obj/structure/reagent_dispensers/fueltank/chem{
@@ -2599,6 +2584,20 @@
 	},
 /turf/simulated/floor/carpet/royalblack,
 /area/crew_quarters/captain/bedroom)
+"awi" = (
+/obj/structure/rack,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/obj/item/clothing/shoes/combat/riot,
+/turf/simulated/floor/plasteel{
+	dir = 9;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "awj" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -5036,12 +5035,6 @@
 	icon_state = "navybluealt"
 	},
 /area/bridge/meeting_room)
-"aQo" = (
-/obj/structure/closet/secure_closet/medical4,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkblue"
-	},
-/area/medical/surgery/north)
 "aQu" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -5918,6 +5911,14 @@
 	color = "gray"
 	},
 /area/crew_quarters/bar/atrium)
+"aWJ" = (
+/obj/machinery/door/firedoor/border_only{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/armory)
 "aWM" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Central Access"
@@ -7930,14 +7931,6 @@
 	icon_state = "darkyellow"
 	},
 /area/atmos/distribution)
-"bjK" = (
-/obj/structure/table,
-/obj/item/reagent_containers/spray/cleaner/medical,
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "whiteblue"
-	},
-/area/medical/surgery/north)
 "bjN" = (
 /obj/structure/table/wood,
 /obj/item/storage/fancy/donut_box,
@@ -8940,13 +8933,6 @@
 	icon_state = "neutral"
 	},
 /area/storage/primary)
-"bqf" = (
-/obj/effect/decal/warning_stripes/blue,
-/obj/machinery/iv_drip,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/medical/surgery/north)
 "bqn" = (
 /obj/machinery/power/apc{
 	dir = 8;
@@ -9675,17 +9661,6 @@
 	icon_state = "darkred"
 	},
 /area/security/podbay)
-"buI" = (
-/obj/effect/decal/warning_stripes/red,
-/obj/machinery/status_display{
-	pixel_x = 32
-	},
-/obj/structure/closet/l3closet/security,
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "buK" = (
 /obj/structure/cable/orange{
 	icon_state = "4-8"
@@ -12000,20 +11975,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/medical/research/shallway)
-"bHz" = (
-/obj/structure/rack,
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/item/clothing/shoes/combat/riot,
-/obj/item/clothing/shoes/combat/riot,
-/obj/item/clothing/shoes/combat/riot,
-/obj/item/clothing/shoes/combat/riot,
-/turf/simulated/floor/plasteel{
-	dir = 9;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "bHB" = (
 /obj/structure/flora/rock/jungle,
 /turf/simulated/floor/glass,
@@ -13421,6 +13382,17 @@
 	icon_state = "darkyellow"
 	},
 /area/atmos/distribution)
+"bPA" = (
+/obj/effect/decal/warning_stripes/red,
+/obj/machinery/newscaster/security_unit{
+	pixel_x = 32
+	},
+/obj/structure/closet/bombclosetsecurity,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "bPH" = (
 /obj/structure/table,
 /obj/structure/extinguisher_cabinet{
@@ -13630,6 +13602,14 @@
 /obj/effect/spawner/random_spawners/rock_50,
 /turf/simulated/floor/plating,
 /area/maintenance/genetics)
+"bRa" = (
+/obj/machinery/suit_storage_unit/security,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	dir = 10;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "bRf" = (
 /obj/structure/table/glass,
 /obj/item/deck/cards,
@@ -18439,6 +18419,42 @@
 	icon_state = "whiteblue"
 	},
 /area/medical/medbay)
+"cub" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/rack/gunrack,
+/obj/item/gun/energy/gun{
+	pixel_x = -6
+	},
+/obj/item/gun/energy/gun,
+/obj/item/gun/energy/gun{
+	pixel_x = 6
+	},
+/turf/simulated/floor/plasteel{
+	dir = 10;
+	icon_state = "darkred"
+	},
+/area/security/armory)
+"cue" = (
+/obj/machinery/camera/autoname,
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/item/radio/intercom{
+	pixel_y = 28
+	},
+/obj/structure/railing{
+	dir = 4
+	},
+/obj/machinery/door/firedoor/border_only{
+	dir = 4
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/flasher/portable,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "cuf" = (
 /obj/structure/stairs,
 /obj/structure/sign/directions/floor/alt{
@@ -19534,23 +19550,6 @@
 /obj/machinery/constructable_frame/machine_frame,
 /turf/simulated/floor/plating,
 /area/maintenance/cele/medbay)
-"cCG" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/structure/rack,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/obj/item/clothing/head/helmet/riot,
-/turf/simulated/floor/plasteel{
-	dir = 5;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "cCI" = (
 /obj/machinery/light/small{
 	dir = 4
@@ -22818,6 +22817,13 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /turf/simulated/floor/carpet/blue,
 /area/crew_quarters/heads/hop)
+"daI" = (
+/obj/effect/decal/warning_stripes/blue,
+/obj/machinery/iv_drip,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/medical/surgery/south)
 "daN" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
@@ -26941,20 +26947,6 @@
 	icon_state = "whiteyellow"
 	},
 /area/assembly/chargebay)
-"dLN" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/structure/rack,
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/head/helmet/alt,
-/obj/item/clothing/head/helmet/alt,
-/turf/simulated/floor/plasteel{
-	dir = 6;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "dLQ" = (
 /obj/structure/disposalpipe/trunk{
 	dir = 8
@@ -28257,13 +28249,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/maintenance/fsmaint3)
-"dZr" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/decal/warning_stripes/red,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "dZs" = (
 /turf/simulated/wall,
 /area/storage/tech)
@@ -29560,14 +29545,6 @@
 	icon_state = "whiteyellow"
 	},
 /area/medical/chemistry)
-"eoU" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 9
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkredaltstrip"
-	},
-/area/security/armory)
 "epb" = (
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -29624,14 +29601,6 @@
 	icon_state = "whiteyellow"
 	},
 /area/medical/medbay)
-"epV" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/vehicle/ridden/secway,
-/turf/simulated/floor/plasteel{
-	dir = 6;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "eqe" = (
 /obj/structure/chair/office/light{
 	dir = 1
@@ -31179,20 +31148,6 @@
 	icon_state = "neutralfull"
 	},
 /area/janitor)
-"eFT" = (
-/obj/structure/rack,
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/obj/item/clothing/suit/armor/riot,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "eGc" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -31698,6 +31653,18 @@
 /obj/effect/landmark/event/blobstart,
 /turf/simulated/floor/wood/fancy/oak,
 /area/maintenance/gambling_den2)
+"eLu" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/flasher/portable,
+/obj/machinery/alarm{
+	dir = 4;
+	pixel_x = -26
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "eLw" = (
 /obj/structure/railing/corner{
 	dir = 1
@@ -32463,14 +32430,6 @@
 	icon_state = "neutralfull"
 	},
 /area/hallway/secondary/entry/south)
-"eRY" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/flasher/portable,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "eSd" = (
 /obj/effect/spawner/window/reinforced,
 /obj/structure/transit_tube/horizontal,
@@ -32669,6 +32628,20 @@
 	icon_state = "browncorner"
 	},
 /area/quartermaster/lobby)
+"eUr" = (
+/obj/structure/rack,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/obj/item/clothing/gloves/combat/riot,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "eUs" = (
 /obj/machinery/atmospherics/pipe/manifold/visible{
 	dir = 1
@@ -33189,6 +33162,11 @@
 /obj/item/stack/sheet/metal/fifty,
 /turf/simulated/floor/plasteel,
 /area/storage/secure)
+"faK" = (
+/turf/simulated/floor/plasteel{
+	icon_state = "darkredfull"
+	},
+/area/security/armory)
 "faT" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating,
@@ -34676,6 +34654,12 @@
 	icon_state = "dark"
 	},
 /area/chapel/office)
+"fpm" = (
+/obj/structure/closet/secure_closet/medical4,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkblue"
+	},
+/area/medical/surgery/north)
 "fps" = (
 /obj/structure/chair/wood/wings{
 	dir = 1
@@ -37977,29 +37961,6 @@
 	},
 /turf/simulated/floor/plating,
 /area/medical/virology/lab)
-"fTs" = (
-/obj/item/gun/projectile/shotgun/riot{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/gun/projectile/shotgun/riot,
-/obj/item/gun/projectile/shotgun/riot{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Riot shotguns"
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/railing/corner{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	dir = 5;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "fTB" = (
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
@@ -38292,38 +38253,6 @@
 	icon_state = "neutral"
 	},
 /area/crew_quarters/fitness)
-"fWf" = (
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Magazines for SMG"
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = -4;
-	pixel_y = 4
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = -2;
-	pixel_y = 2
-	},
-/obj/item/ammo_box/magazine/wt550m9,
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = 2;
-	pixel_y = -2
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = 4;
-	pixel_y = -4
-	},
-/obj/item/ammo_box/magazine/wt550m9{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/turf/simulated/floor/plasteel{
-	dir = 9;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "fWi" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
@@ -39896,26 +39825,6 @@
 	icon_state = "dark"
 	},
 /area/chapel/office)
-"gkV" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/clothing/suit/armor/laserproof,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/item/gun/energy/ionrifle,
-/obj/structure/sign/poster/official/ion_rifle{
-	pixel_y = -32
-	},
-/obj/machinery/door/window{
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "gla" = (
 /obj/machinery/computer/med_data,
 /obj/machinery/camera{
@@ -42763,6 +42672,16 @@
 	icon_state = "red"
 	},
 /area/security/checkpoint/south)
+"gMZ" = (
+/obj/structure/rack,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
+/obj/item/clothing/gloves/color/black/ballistic,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "gNg" = (
 /obj/machinery/firealarm{
 	pixel_y = 26
@@ -42799,6 +42718,29 @@
 	icon_state = "dark"
 	},
 /area/bridge/meeting_room)
+"gNl" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/storage/box/barrier,
+/obj/item/storage/box/barrier{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grenade/barrier{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grenade/barrier{
+	pixel_x = 6;
+	pixel_y = -6
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "gNo" = (
 /obj/effect/spawner/window/reinforced,
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction,
@@ -43359,6 +43301,20 @@
 	icon_state = "navyblue"
 	},
 /area/turret_protected/aisat_interior)
+"gRM" = (
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/structure/rack,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
+/obj/item/clothing/head/helmet/alt,
+/turf/simulated/floor/plasteel{
+	dir = 6;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "gRS" = (
 /obj/machinery/station_map/directional/east,
 /turf/simulated/floor/plasteel{
@@ -43481,6 +43437,11 @@
 	},
 /turf/simulated/floor/carpet,
 /area/lawoffice)
+"gUG" = (
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/armory)
 "gUK" = (
 /obj/machinery/door/airlock/medical/glass{
 	name = "Isolator";
@@ -43814,6 +43775,14 @@
 	icon_state = "asteroidplating"
 	},
 /area/maintenance/cele/medbay)
+"gXW" = (
+/obj/machinery/suit_storage_unit/security,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "gYi" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 6
@@ -44355,6 +44324,40 @@
 	color = "gray"
 	},
 /area/ntrep)
+"hdw" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/flasher/portable,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
+"hdD" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/rack/gunrack,
+/obj/item/gun/projectile/automatic/sp91rc{
+	pixel_x = 7
+	},
+/obj/item/gun/projectile/automatic/sp91rc{
+	pixel_x = 2
+	},
+/obj/item/gun/projectile/automatic/sp91rc{
+	pixel_x = -2
+	},
+/obj/item/gun/projectile/automatic/sp91rc{
+	pixel_x = -7
+	},
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "hdF" = (
 /obj/machinery/status_display{
 	pixel_y = -32
@@ -44567,14 +44570,6 @@
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/glass,
 /area/atmos/control)
-"hgh" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 5
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/atmospherics/pipe/manifold/hidden/supply,
-/turf/simulated/floor/plating,
-/area/security/main)
 "hgm" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
@@ -44881,6 +44876,31 @@
 	icon_state = "whitepurple"
 	},
 /area/toxins/hallway)
+"hiV" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Magazines for SP-91-RC";
+	req_access = list(1)
+	},
+/obj/item/ammo_box/magazine/sp91rc{
+	pixel_x = 8
+	},
+/obj/item/ammo_box/magazine/sp91rc{
+	pixel_x = 4
+	},
+/obj/item/ammo_box/magazine/sp91rc,
+/obj/item/ammo_box/magazine/sp91rc{
+	pixel_x = -4
+	},
+/obj/item/radio/intercom{
+	pixel_y = 28
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "hiW" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -45152,6 +45172,14 @@
 	},
 /turf/simulated/floor/plating,
 /area/security/permabrig)
+"hkR" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 9
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkredaltstrip"
+	},
+/area/security/armory)
 "hkS" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -45439,6 +45467,23 @@
 	icon_state = "dark"
 	},
 /area/engineering/mechanic_workshop)
+"hnt" = (
+/obj/structure/rack/gunrack,
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/gun/energy/laser{
+	pixel_x = -6
+	},
+/obj/item/gun/energy/laser,
+/obj/item/gun/energy/laser{
+	pixel_x = 6
+	},
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "hnu" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/cable{
@@ -46846,29 +46891,6 @@
 	color = "gray"
 	},
 /area/ntrep)
-"hBx" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/storage/box/barrier,
-/obj/item/storage/box/barrier{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/barrier{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/barrier{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "hBz" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -48017,6 +48039,14 @@
 	icon_state = "darkyellow"
 	},
 /area/engineering/hardsuitstorage)
+"hNT" = (
+/obj/structure/table,
+/obj/item/reagent_containers/spray/cleaner/medical,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "whiteblue"
+	},
+/area/medical/surgery/south)
 "hNU" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 8
@@ -49213,14 +49243,6 @@
 	icon_state = "darkredfull"
 	},
 /area/security/prison/cell_block/A)
-"iaU" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/flasher/portable,
-/turf/simulated/floor/plasteel{
-	dir = 9;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "iaV" = (
 /obj/structure/table/wood,
 /obj/item/grown/log,
@@ -49709,6 +49731,37 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/mechanic_workshop/expedition)
+"ihU" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/ammo_box/magazine/enforcer/lethal{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/obj/item/ammo_box/magazine/enforcer/lethal{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/ammo_box/magazine/enforcer/lethal,
+/obj/item/ammo_box/magazine/enforcer/lethal{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Lethal Bullets"
+	},
+/obj/machinery/firealarm{
+	dir = 4;
+	pixel_x = 26
+	},
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "ihZ" = (
 /obj/machinery/power/tracker,
 /obj/structure/cable,
@@ -55534,6 +55587,23 @@
 	icon_state = "darkredalt"
 	},
 /area/security/armory)
+"jkT" = (
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/structure/rack,
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
+/obj/item/clothing/head/helmet/riot,
+/turf/simulated/floor/plasteel{
+	dir = 5;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "jkU" = (
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
@@ -56009,6 +56079,17 @@
 	icon_state = "asteroidplating"
 	},
 /area/maintenance/cele/servise)
+"jqJ" = (
+/obj/effect/decal/warning_stripes/red,
+/obj/machinery/status_display{
+	pixel_x = 32
+	},
+/obj/structure/closet/l3closet/security,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "jqP" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/yellow,
 /turf/simulated/floor/plasteel{
@@ -58585,13 +58666,6 @@
 	icon_state = "darkyellowfull"
 	},
 /area/engineering/engine)
-"jRu" = (
-/obj/effect/decal/warning_stripes/blue,
-/obj/machinery/iv_drip,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/medical/surgery/south)
 "jRH" = (
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
@@ -58979,15 +59053,6 @@
 	icon_state = "dark"
 	},
 /area/engineering/engine)
-"jVQ" = (
-/obj/structure/table/glass,
-/obj/item/soap/nanotrasen,
-/obj/item/reagent_containers/spray/cleaner,
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "whiteblue"
-	},
-/area/medical/cmostore)
 "jWi" = (
 /obj/machinery/bluespace_beacon,
 /obj/effect/turf_decal/caution/stand_clear,
@@ -59232,6 +59297,29 @@
 	icon_state = "neutral"
 	},
 /area/crew_quarters/locker)
+"jYf" = (
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Security SMG's"
+	},
+/obj/item/gun/projectile/automatic/wt550{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/gun/projectile/automatic/wt550,
+/obj/item/gun/projectile/automatic/wt550{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "jYi" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 8
@@ -59624,6 +59712,13 @@
 	},
 /turf/simulated/floor/plating,
 /area/quartermaster/qm)
+"kde" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/portable_atmospherics/canister/oxygen,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "kdf" = (
 /obj/structure/closet/secure_closet/personal/mining,
 /obj/effect/spawner/lootdrop/maintenance/double,
@@ -59632,6 +59727,21 @@
 	icon_state = "brown"
 	},
 /area/quartermaster/miningstorage)
+"kdk" = (
+/obj/structure/cable/orange{
+	icon_state = "2-4"
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 6
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 6
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "kdv" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -61453,6 +61563,14 @@
 	icon_state = "neutralcorner"
 	},
 /area/hallway/primary/fore/east)
+"kui" = (
+/obj/structure/table,
+/obj/item/reagent_containers/spray/cleaner/medical,
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "whiteblue"
+	},
+/area/medical/surgery/north)
 "kuj" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Medical Asteroid Maintenance";
@@ -61494,14 +61612,6 @@
 	icon_state = "darkyellow"
 	},
 /area/bridge)
-"kut" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/decal/warning_stripes/red,
-/turf/simulated/floor/plasteel{
-	dir = 6;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "kuA" = (
 /obj/effect/spawner/window/reinforced,
 /obj/machinery/door/poddoor/shutters/preopen{
@@ -62804,6 +62914,16 @@
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/disposal)
+"kGD" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/dispenser/oxygen,
+/obj/machinery/ai_status_display{
+	pixel_y = -32
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "kGH" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -62848,6 +62968,17 @@
 	icon_state = "darkbrown"
 	},
 /area/quartermaster/miningdock)
+"kGO" = (
+/obj/machinery/suit_storage_unit/security,
+/obj/effect/decal/warning_stripes/red,
+/obj/machinery/status_display{
+	pixel_x = -32
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "kGR" = (
 /obj/machinery/atmospherics/pipe/simple/visible,
 /obj/effect/decal/cleanable/dirt,
@@ -62962,25 +63093,6 @@
 	icon_state = "grimy"
 	},
 /area/security/detectives_office)
-"kIG" = (
-/obj/structure/closet/secure_closet/medical3,
-/obj/structure/cable/orange{
-	icon_state = "2-8"
-	},
-/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
-	dir = 4
-	},
-/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
-	dir = 4
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "whiteblue"
-	},
-/area/medical/cmostore)
 "kII" = (
 /obj/machinery/door/window/northleft{
 	req_access = list(55)
@@ -63076,6 +63188,12 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/crew_quarters/arcade)
+"kJH" = (
+/obj/structure/closet/secure_closet/medical3,
+/turf/simulated/floor/plasteel{
+	icon_state = "whiteblue"
+	},
+/area/medical/cmostore)
 "kJP" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -63271,6 +63389,29 @@
 	icon_state = "whitepurple"
 	},
 /area/medical/medbay)
+"kLS" = (
+/obj/item/gun/projectile/shotgun/riot{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/gun/projectile/shotgun/riot,
+/obj/item/gun/projectile/shotgun/riot{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Riot shotguns"
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/railing/corner{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 5;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "kLT" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -63315,21 +63456,6 @@
 /obj/machinery/seed_extractor,
 /turf/simulated/floor/grass,
 /area/hallway/secondary/garden)
-"kMt" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack/gunrack,
-/obj/item/gun/energy/gun{
-	pixel_x = -6
-	},
-/obj/item/gun/energy/gun,
-/obj/item/gun/energy/gun{
-	pixel_x = 6
-	},
-/turf/simulated/floor/plasteel{
-	dir = 10;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "kMx" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating/asteroid,
@@ -65198,6 +65324,19 @@
 /obj/effect/landmark/start/civilian,
 /turf/simulated/floor/carpet/cyan,
 /area/crew_quarters/fitness)
+"lfW" = (
+/obj/structure/sign/directions/floor/alt{
+	dir = 8;
+	pixel_y = 32
+	},
+/obj/structure/stairs{
+	dir = 4
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/armory)
 "lfX" = (
 /obj/structure/table,
 /obj/item/toy/figure/assistant,
@@ -65217,23 +65356,6 @@
 	icon_state = "purple"
 	},
 /area/medical/research)
-"lgi" = (
-/obj/structure/closet/secure_closet/medical3,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/machinery/light{
-	dir = 1
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/item/reagent_containers/food/drinks/mug/med,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "whiteblue"
-	},
-/area/medical/cmostore)
 "lgp" = (
 /obj/machinery/keycard_auth{
 	pixel_x = -26;
@@ -66120,6 +66242,14 @@
 	icon_state = "asteroidplating"
 	},
 /area/maintenance/genetics)
+"lpP" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/machinery/flasher/portable,
+/turf/simulated/floor/plasteel{
+	dir = 9;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "lqd" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -66766,6 +66896,38 @@
 	icon_state = "darkyellow"
 	},
 /area/engineering/supermatter)
+"lwM" = (
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Magazines for SMG"
+	},
+/obj/item/ammo_box/magazine/wt550m9{
+	pixel_x = -4;
+	pixel_y = 4
+	},
+/obj/item/ammo_box/magazine/wt550m9{
+	pixel_x = -2;
+	pixel_y = 2
+	},
+/obj/item/ammo_box/magazine/wt550m9,
+/obj/item/ammo_box/magazine/wt550m9{
+	pixel_x = 2;
+	pixel_y = -2
+	},
+/obj/item/ammo_box/magazine/wt550m9{
+	pixel_x = 4;
+	pixel_y = -4
+	},
+/obj/item/ammo_box/magazine/wt550m9{
+	pixel_x = 6;
+	pixel_y = -6
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/turf/simulated/floor/plasteel{
+	dir = 9;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "lwP" = (
 /obj/machinery/light/small{
 	dir = 8
@@ -67615,32 +67777,6 @@
 	icon_state = "navybluealt"
 	},
 /area/turret_protected/aisat)
-"lFV" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack/gunrack,
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = 7
-	},
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = 2
-	},
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = -2
-	},
-/obj/item/gun/projectile/automatic/sp91rc{
-	pixel_x = -7
-	},
-/obj/machinery/light{
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "lGa" = (
 /obj/structure/disposalpipe/trunk,
 /obj/machinery/disposal,
@@ -68177,13 +68313,6 @@
 	icon_state = "neutral"
 	},
 /area/hallway/primary/central)
-"lLa" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/portable_atmospherics/canister/oxygen,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "lLe" = (
 /obj/machinery/status_display{
 	pixel_x = 32
@@ -68960,6 +69089,15 @@
 "lUn" = (
 /turf/simulated/floor/plasteel/white,
 /area/toxins/hallway)
+"lUo" = (
+/obj/structure/table/glass,
+/obj/item/soap/nanotrasen,
+/obj/item/reagent_containers/spray/cleaner,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "whiteblue"
+	},
+/area/medical/cmostore)
 "lUq" = (
 /obj/structure/sign/poster/official/random{
 	pixel_x = -32
@@ -69027,20 +69165,6 @@
 	icon_state = "neutralfull"
 	},
 /area/hallway/primary/central)
-"lUQ" = (
-/obj/machinery/power/apc{
-	dir = 1;
-	pixel_y = 28
-	},
-/obj/structure/cable/orange{
-	icon_state = "0-2"
-	},
-/obj/machinery/camera/autoname,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "lVc" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -70874,37 +70998,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating,
 /area/medical/virology/lab)
-"mnq" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/ammo_box/magazine/enforcer/lethal,
-/obj/item/ammo_box/magazine/enforcer/lethal{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Lethal Bullets"
-	},
-/obj/machinery/firealarm{
-	dir = 4;
-	pixel_x = 26
-	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "mnD" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Barber Shop"
@@ -71104,14 +71197,6 @@
 "mpl" = (
 /turf/simulated/wall,
 /area/toxins/xenobiology)
-"mpt" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/decal/warning_stripes/red,
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "mpM" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
 /turf/simulated/floor/plasteel{
@@ -71767,20 +71852,6 @@
 	icon_state = "asteroidplating"
 	},
 /area/maintenance/genetics)
-"mxh" = (
-/obj/structure/rack,
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/item/clothing/gloves/combat/riot,
-/obj/item/clothing/gloves/combat/riot,
-/obj/item/clothing/gloves/combat/riot,
-/obj/item/clothing/gloves/combat/riot,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "mxl" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/cable/orange{
@@ -72341,6 +72412,32 @@
 	icon_state = "neutralcorner"
 	},
 /area/hallway/primary/port)
+"mCg" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/storage/box/teargas,
+/obj/item/storage/box/teargas{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grenade/chem_grenade/teargas{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grenade/chem_grenade/teargas{
+	pixel_x = 6;
+	pixel_y = -6
+	},
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "mCl" = (
 /obj/structure/transit_tube/curved/flipped{
 	dir = 8
@@ -72813,27 +72910,6 @@
 	icon_state = "whiteblue"
 	},
 /area/medical/cmostore)
-"mFZ" = (
-/obj/machinery/camera/autoname,
-/obj/machinery/light{
-	dir = 1
-	},
-/obj/item/radio/intercom{
-	pixel_y = 28
-	},
-/obj/structure/railing{
-	dir = 4
-	},
-/obj/machinery/door/firedoor/border_only{
-	dir = 4
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/flasher/portable,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "mGb" = (
 /obj/structure/ladder,
 /obj/structure/sign/directions/floor/alt{
@@ -73313,6 +73389,18 @@
 	icon_state = "whiteblue"
 	},
 /area/medical/sleeper)
+"mKm" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 10;
+	icon_state = "darkredaltstrip"
+	},
+/area/security/armory)
 "mKq" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -76575,29 +76663,6 @@
 	icon_state = "navybluealt"
 	},
 /area/teleporter/quantum/service)
-"nsn" = (
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Security SMG's"
-	},
-/obj/item/gun/projectile/automatic/wt550{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/gun/projectile/automatic/wt550,
-/obj/item/gun/projectile/automatic/wt550{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "nsp" = (
 /obj/structure/girder,
 /turf/simulated/floor/plating{
@@ -76686,6 +76751,13 @@
 	icon_state = "darkbrown"
 	},
 /area/quartermaster/storage)
+"nsW" = (
+/obj/effect/decal/warning_stripes/blue,
+/obj/machinery/iv_drip,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/medical/surgery/north)
 "nsZ" = (
 /obj/machinery/door/airlock/highsecurity{
 	name = "Secure Tech Storage";
@@ -76716,18 +76788,6 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/security/prison/cell_block/A)
-"ntC" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 10;
-	icon_state = "darkredaltstrip"
-	},
-/area/security/armory)
 "ntF" = (
 /turf/simulated/openspace,
 /area/engineering/mechanic_workshop)
@@ -77635,15 +77695,6 @@
 	icon_state = "white"
 	},
 /area/medical/virology/lab)
-"nBX" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "darkredalt"
-	},
-/area/security/armory)
 "nCg" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -80476,31 +80527,6 @@
 	icon_state = "neutral"
 	},
 /area/hallway/primary/starboard/north)
-"ohm" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Magazines for SP-91-RC";
-	req_access = list(1)
-	},
-/obj/item/ammo_box/magazine/sp91rc{
-	pixel_x = 8
-	},
-/obj/item/ammo_box/magazine/sp91rc{
-	pixel_x = 4
-	},
-/obj/item/ammo_box/magazine/sp91rc,
-/obj/item/ammo_box/magazine/sp91rc{
-	pixel_x = -4
-	},
-/obj/item/radio/intercom{
-	pixel_y = 28
-	},
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "ohn" = (
 /obj/machinery/light{
 	dir = 1
@@ -80511,17 +80537,6 @@
 	icon_state = "whiteblue"
 	},
 /area/medical/paramedic)
-"ohs" = (
-/obj/effect/decal/warning_stripes/red,
-/obj/machinery/newscaster/security_unit{
-	pixel_x = 32
-	},
-/obj/structure/closet/bombclosetsecurity,
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "ohH" = (
 /turf/simulated/mineral/ancient,
 /area/maintenance/cele/arrival)
@@ -80727,32 +80742,6 @@
 	icon_state = "neutral"
 	},
 /area/storage/primary)
-"ojR" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/storage/box/teargas,
-/obj/item/storage/box/teargas{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/chem_grenade/teargas{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/chem_grenade/teargas{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "okc" = (
 /obj/structure/showcase{
 	density = 0;
@@ -81822,16 +81811,6 @@
 	icon_state = "neutralfull"
 	},
 /area/medical/research)
-"owK" = (
-/obj/structure/rack,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/obj/item/clothing/suit/armor/bulletproof,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "owN" = (
 /obj/machinery/embedded_controller/radio/airlock/access_controller{
 	frequency = 1449;
@@ -82158,6 +82137,16 @@
 	icon_state = "purple"
 	},
 /area/medical/research)
+"ozB" = (
+/obj/structure/rack,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
+/obj/item/clothing/suit/armor/bulletproof,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "ozC" = (
 /obj/structure/closet/medical_wall{
 	pixel_x = 32
@@ -83674,23 +83663,6 @@
 	icon_state = "whitepurplecorner"
 	},
 /area/medical/research/shallway)
-"oNb" = (
-/obj/structure/rack/gunrack,
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/gun/energy/laser{
-	pixel_x = -6
-	},
-/obj/item/gun/energy/laser,
-/obj/item/gun/energy/laser{
-	pixel_x = 6
-	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "oNq" = (
 /obj/machinery/alarm{
 	dir = 4;
@@ -86868,6 +86840,14 @@
 	icon_state = "dark"
 	},
 /area/engineering/mechanic_workshop/hangar)
+"pqe" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/vehicle/ridden/secway,
+/turf/simulated/floor/plasteel{
+	dir = 6;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "pqg" = (
 /obj/structure/table/glass,
 /obj/item/grenade/chem_grenade,
@@ -86929,17 +86909,6 @@
 	icon_state = "whitepurple"
 	},
 /area/medical/genetics)
-"pqC" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 9
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkredaltstrip"
-	},
-/area/security/armory)
 "pqJ" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 4
@@ -87191,17 +87160,6 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/chiefs_office)
-"psi" = (
-/obj/structure/rack,
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/shoes/jackboots/armored,
-/obj/item/clothing/shoes/jackboots/armored,
-/turf/simulated/floor/plasteel{
-	dir = 10;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "psl" = (
 /obj/structure/cable/yellow{
 	icon_state = "2-8"
@@ -88085,6 +88043,40 @@
 	icon_state = "darkblue"
 	},
 /area/medical/morgue)
+"pBy" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/shield/riot{
+	pixel_x = -6;
+	pixel_y = -3
+	},
+/obj/item/shield/riot{
+	pixel_x = -3
+	},
+/obj/item/shield/riot{
+	pixel_y = 3
+	},
+/obj/item/shield/riot{
+	pixel_x = 3;
+	pixel_y = 6
+	},
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/structure/sign/poster/official/random{
+	pixel_x = 32
+	},
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "pBz" = (
 /obj/machinery/door/airlock{
 	name = "Custodial Closet";
@@ -88992,6 +88984,15 @@
 /obj/effect/spawner/lootdrop/maintenance/tripple,
 /turf/simulated/floor/plating,
 /area/maintenance/cele/engineering)
+"pKy" = (
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "darkredalt"
+	},
+/area/security/armory)
 "pKD" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable/orange{
@@ -89352,11 +89353,6 @@
 	icon_state = "neutral"
 	},
 /area/crew_quarters/locker)
-"pNL" = (
-/turf/simulated/floor/plasteel{
-	icon_state = "darkredfull"
-	},
-/area/security/armory)
 "pNP" = (
 /obj/structure/bed/dogbed{
 	pixel_x = 2
@@ -89407,6 +89403,12 @@
 /obj/effect/spawner/window/reinforced,
 /turf/simulated/floor/plating,
 /area/hallway/spacebridge/scidock)
+"pOj" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkredfull"
+	},
+/area/security/armory)
 "pOk" = (
 /turf/simulated/floor/plasteel{
 	icon_state = "red"
@@ -89835,6 +89837,12 @@
 	icon_state = "neutralcorner"
 	},
 /area/hallway/primary/port)
+"pTh" = (
+/obj/structure/closet/secure_closet/medical4,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkblue"
+	},
+/area/medical/surgery/south)
 "pTi" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -91329,6 +91337,25 @@
 	icon_state = "whitepurple"
 	},
 /area/toxins/test_chamber)
+"qig" = (
+/obj/structure/closet/secure_closet/medical3,
+/obj/structure/cable/orange{
+	icon_state = "2-8"
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "whiteblue"
+	},
+/area/medical/cmostore)
 "qim" = (
 /obj/machinery/status_display{
 	pixel_x = 32
@@ -92077,6 +92104,17 @@
 	icon_state = "darkred"
 	},
 /area/security/permabrig)
+"qqe" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 9
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkredaltstrip"
+	},
+/area/security/armory)
 "qqh" = (
 /obj/machinery/atmospherics/pipe/simple/visible/yellow{
 	desc = "Труба хранит в себе набор газов для смешивания";
@@ -92184,6 +92222,29 @@
 	icon_state = "brownfull"
 	},
 /area/quartermaster/miningdock)
+"qqU" = (
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/storage/box/flashbangs,
+/obj/item/storage/box/flashbangs{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grenade/flashbang{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grenade/flashbang{
+	pixel_x = 6;
+	pixel_y = -6
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "qqV" = (
 /obj/item/radio/intercom{
 	pixel_y = -28
@@ -93253,17 +93314,6 @@
 	icon_state = "whiteblue"
 	},
 /area/medical/patients_rooms)
-"qDi" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/decal/warning_stripes/red,
-/obj/machinery/status_display{
-	pixel_x = -32
-	},
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "qDv" = (
 /obj/machinery/camera/autoname{
 	dir = 8
@@ -93475,14 +93525,6 @@
 	icon_state = "blue"
 	},
 /area/hallway/primary/starboard/south)
-"qEK" = (
-/obj/machinery/door/firedoor/border_only{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/armory)
 "qEQ" = (
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 8
@@ -94693,6 +94735,14 @@
 	icon_state = "brown"
 	},
 /area/quartermaster/miningstorage)
+"qRQ" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 5
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply,
+/turf/simulated/floor/plating,
+/area/security/main)
 "qRS" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm{
@@ -95321,18 +95371,6 @@
 	icon_state = "redfull"
 	},
 /area/crew_quarters/kitchen)
-"qZs" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/machinery/flasher/portable,
-/obj/machinery/alarm{
-	dir = 4;
-	pixel_x = -26
-	},
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "qZu" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -96391,6 +96429,20 @@
 /obj/structure/lattice/catwalk,
 /turf/simulated/floor/plating/asteroid/airless,
 /area/mine/unexplored/cere/orbiting)
+"riY" = (
+/obj/structure/rack,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/obj/item/clothing/suit/armor/riot,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "rjc" = (
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -96493,15 +96545,26 @@
 /obj/machinery/suit_storage_unit/blueshield,
 /turf/simulated/floor/wood/fancy/light,
 /area/blueshield)
-"rkg" = (
-/turf/simulated/mineral/ancient/outer,
-/area/hallway/spacebridge/dockmed)
-"rki" = (
+"rjV" = (
 /obj/structure/closet/secure_closet/medical3,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/item/reagent_containers/food/drinks/mug/med,
 /turf/simulated/floor/plasteel{
+	dir = 1;
 	icon_state = "whiteblue"
 	},
 /area/medical/cmostore)
+"rkg" = (
+/turf/simulated/mineral/ancient/outer,
+/area/hallway/spacebridge/dockmed)
 "rkl" = (
 /obj/structure/cable/orange{
 	icon_state = "1-4"
@@ -98470,14 +98533,6 @@
 	icon_state = "darkbrown"
 	},
 /area/quartermaster/office)
-"rCR" = (
-/obj/structure/table,
-/obj/item/reagent_containers/spray/cleaner/medical,
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "whiteblue"
-	},
-/area/medical/surgery/south)
 "rCS" = (
 /obj/machinery/door/airlock{
 	name = "Vacant Office";
@@ -102097,35 +102152,6 @@
 	icon_state = "dark"
 	},
 /area/engineering/engine)
-"sqz" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/ammo_box/shotgun/buck{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/ammo_box/shotgun/buck,
-/obj/item/ammo_box/shotgun{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/structure/closet/secure_closet/guncabinet{
-	anchored = 1;
-	name = "Lethal Bullets"
-	},
-/obj/item/ammo_box/shotgun/beanbag,
-/obj/item/ammo_box/shotgun/beanbag{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/ammo_box/shotgun/tranquilizer{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "sqB" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 9
@@ -103973,6 +103999,12 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/security/checkpoint/south)
+"sIJ" = (
+/obj/machinery/hologram/holopad,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/security/armory)
 "sIT" = (
 /obj/structure/window/reinforced{
 	dir = 4
@@ -104634,19 +104666,6 @@
 	color = "gray"
 	},
 /area/crew_quarters/bar/atrium)
-"sOM" = (
-/obj/structure/sign/directions/floor/alt{
-	dir = 8;
-	pixel_y = 32
-	},
-/obj/structure/stairs{
-	dir = 4
-	},
-/obj/machinery/door/firedoor,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/armory)
 "sOP" = (
 /obj/structure/closet/crate,
 /obj/effect/spawner/lootdrop/maintenance/double,
@@ -105411,11 +105430,6 @@
 /obj/effect/spawner/window/reinforced,
 /turf/simulated/floor/plating,
 /area/storage/primary)
-"sWs" = (
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/armory)
 "sWC" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -106138,6 +106152,13 @@
 	icon_state = "red"
 	},
 /area/security/lobby)
+"tdJ" = (
+/obj/machinery/suit_storage_unit/security,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "tdK" = (
 /obj/structure/closet/secure_closet/brig{
 	id = "Cell 7";
@@ -106568,12 +106589,6 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/chiefs_office)
-"tih" = (
-/obj/machinery/hologram/holopad,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/security/armory)
 "tii" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small,
@@ -110052,16 +110067,6 @@
 "tOs" = (
 /turf/simulated/floor/plating,
 /area/storage/tech)
-"tOt" = (
-/obj/structure/rack,
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/item/clothing/gloves/color/black/ballistic,
-/obj/item/clothing/gloves/color/black/ballistic,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "tOx" = (
 /obj/machinery/atmospherics/pipe/simple/visible/cyan{
 	dir = 10
@@ -110080,12 +110085,6 @@
 	icon_state = "whitered"
 	},
 /area/crew_quarters/kitchen)
-"tOA" = (
-/obj/machinery/atmospherics/unary/vent_scrubber/on,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkredfull"
-	},
-/area/security/armory)
 "tOB" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 8
@@ -110161,16 +110160,6 @@
 	icon_state = "freezerfloor"
 	},
 /area/medical/virology/lab)
-"tPd" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/dispenser/oxygen,
-/obj/machinery/ai_status_display{
-	pixel_y = -32
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "tPh" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 8
@@ -115372,29 +115361,6 @@
 	icon_state = "white"
 	},
 /area/medical/medbreak)
-"uOr" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/storage/box/flashbangs,
-/obj/item/storage/box/flashbangs{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/flashbang{
-	pixel_x = 3;
-	pixel_y = -3
-	},
-/obj/item/grenade/flashbang{
-	pixel_x = 6;
-	pixel_y = -6
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "uOv" = (
 /obj/machinery/atmospherics/pipe/multiz{
 	dir = 4
@@ -117718,6 +117684,35 @@
 	icon_state = "neutralfull"
 	},
 /area/hallway/primary/fore/east)
+"vmH" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/ammo_box/shotgun/buck{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/ammo_box/shotgun/buck,
+/obj/item/ammo_box/shotgun{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/structure/closet/secure_closet/guncabinet{
+	anchored = 1;
+	name = "Lethal Bullets"
+	},
+/obj/item/ammo_box/shotgun/beanbag,
+/obj/item/ammo_box/shotgun/beanbag{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/ammo_box/shotgun/tranquilizer{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "vmI" = (
 /obj/structure/table/glass,
 /obj/item/stack/sheet/plasteel,
@@ -118114,6 +118109,20 @@
 	},
 /turf/simulated/floor/glass,
 /area/hallway/primary/central)
+"vrH" = (
+/obj/machinery/power/apc{
+	dir = 1;
+	pixel_y = 28
+	},
+/obj/structure/cable/orange{
+	icon_state = "0-2"
+	},
+/obj/machinery/camera/autoname,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "vrL" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -122795,40 +122804,6 @@
 	},
 /turf/simulated/floor/plating/airless,
 /area/solar/west)
-"wlE" = (
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/item/shield/riot{
-	pixel_x = -6;
-	pixel_y = -3
-	},
-/obj/item/shield/riot{
-	pixel_x = -3
-	},
-/obj/item/shield/riot{
-	pixel_y = 3
-	},
-/obj/item/shield/riot{
-	pixel_x = 3;
-	pixel_y = 6
-	},
-/obj/machinery/light{
-	dir = 4
-	},
-/obj/structure/sign/poster/official/random{
-	pixel_x = 32
-	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "wlI" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -123898,14 +123873,6 @@
 	icon_state = "navyblue"
 	},
 /area/aisat/maintenance)
-"wuY" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/decal/warning_stripes/red,
-/turf/simulated/floor/plasteel{
-	dir = 10;
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "wve" = (
 /obj/machinery/chem_heater,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -126525,12 +126492,6 @@
 	icon_state = "white"
 	},
 /area/toxins/mixing)
-"wWM" = (
-/obj/structure/closet/secure_closet/medical4,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkblue"
-	},
-/area/medical/surgery/south)
 "wWN" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -128006,6 +127967,14 @@
 /obj/item/storage/toolbox/electrical,
 /turf/simulated/floor/plating,
 /area/maintenance/west_solars)
+"xlx" = (
+/obj/machinery/suit_storage_unit/security,
+/obj/effect/decal/warning_stripes/red,
+/turf/simulated/floor/plasteel{
+	dir = 6;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "xlF" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 4
@@ -128132,31 +128101,6 @@
 	},
 /turf/simulated/floor/plating,
 /area/security/prison/cell_block/A)
-"xmN" = (
-/obj/effect/decal/warning_stripes/red/hollow,
-/obj/structure/rack{
-	dir = 8;
-	layer = 2.9
-	},
-/obj/item/storage/lockbox/mindshield,
-/obj/item/storage/box/trackimp,
-/obj/item/storage/box/chemimp{
-	pixel_x = 4;
-	pixel_y = 3
-	},
-/obj/item/lock_buster,
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/machinery/door/window{
-	dir = 1;
-	name = "Secure Armory";
-	req_access = list(1)
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "darkred"
-	},
-/area/security/armory)
 "xmT" = (
 /obj/structure/railing{
 	dir = 4
@@ -131236,6 +131180,26 @@
 	icon_state = "navyblue"
 	},
 /area/turret_protected/ai)
+"xPO" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/clothing/suit/armor/laserproof,
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/gun/energy/ionrifle,
+/obj/structure/sign/poster/official/ion_rifle{
+	pixel_y = -32
+	},
+/obj/machinery/door/window{
+	dir = 1;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "xQc" = (
 /obj/effect/decal/remains/mouse,
 /turf/simulated/floor/plating/asteroid,
@@ -132679,6 +132643,17 @@
 	icon_state = "whiteyellow"
 	},
 /area/medical/chemistry)
+"yed" = (
+/obj/structure/rack,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/obj/item/clothing/shoes/jackboots/armored,
+/turf/simulated/floor/plasteel{
+	dir = 10;
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "yel" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random_spawners/rock_50,
@@ -133335,6 +133310,31 @@
 "ykB" = (
 /turf/simulated/wall/r_wall,
 /area/security/interrogation)
+"ykJ" = (
+/obj/effect/decal/warning_stripes/red/hollow,
+/obj/structure/rack{
+	dir = 8;
+	layer = 2.9
+	},
+/obj/item/storage/lockbox/mindshield,
+/obj/item/storage/box/trackimp,
+/obj/item/storage/box/chemimp{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/lock_buster,
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/machinery/door/window{
+	dir = 1;
+	name = "Secure Armory";
+	req_access = list(1)
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "darkred"
+	},
+/area/security/armory)
 "ykM" = (
 /obj/machinery/atmospherics/pipe/simple/visible{
 	dir = 9
@@ -218330,14 +218330,14 @@ vfO
 hau
 szZ
 pNG
-fWf
-apL
+lwM
+kdk
 pUS
 doz
 fOk
 qAf
 pxd
-kMt
+cub
 pNG
 mWc
 pNG
@@ -218587,14 +218587,14 @@ bsG
 lxy
 wDe
 pNG
-nsn
+jYf
 qJm
 vpy
-nBX
-nBX
+pKy
+pKy
 ybD
 jkR
-oNb
+hnt
 pNG
 mWc
 pNG
@@ -218844,14 +218844,14 @@ mpg
 jdw
 rEc
 pNG
-ohm
+hiV
 jgB
-sWs
-psi
-bHz
-tih
+gUG
+yed
+awi
+sIJ
 eGv
-gkV
+xPO
 pNG
 mWc
 pNG
@@ -219101,14 +219101,14 @@ suP
 pNG
 pNG
 pNG
-lFV
+hdD
 jgB
-sWs
-tOt
-mxh
-sWs
+gUG
+gMZ
+eUr
+gUG
 eGv
-xmN
+ykJ
 pNG
 mWc
 pNG
@@ -219358,14 +219358,14 @@ buS
 pNG
 mWc
 pNG
-lUQ
+vrH
 fQm
-sWs
-owK
-eFT
-sWs
+gUG
+ozB
+riY
+gUG
 eGv
-uOr
+qqU
 pNG
 mWc
 pNG
@@ -219615,14 +219615,14 @@ buS
 pNG
 mWc
 pNG
-qEK
+aWJ
 jXb
-sWs
-dLN
-cCG
-sWs
+gUG
+gRM
+jkT
+gUG
 eGv
-hBx
+gNl
 pNG
 mWc
 pNG
@@ -219872,14 +219872,14 @@ qQo
 pNG
 mWc
 pNG
-sOM
+lfW
 mfT
 fbR
 ttu
 ttu
 vmo
 tbX
-ojR
+mCg
 pNG
 mWc
 pNG
@@ -220130,13 +220130,13 @@ pNG
 mWc
 pNG
 pNG
-fTs
-sqz
-mnq
-wlE
-sWs
+kLS
+vmH
+ihU
+pBy
+gUG
 iWY
-epV
+pqe
 pNG
 mWc
 pNG
@@ -252072,7 +252072,7 @@ prx
 lAD
 bXp
 rds
-bjK
+kui
 gKA
 cOE
 bmX
@@ -253100,7 +253100,7 @@ oGO
 lLe
 tXd
 rds
-aQo
+fpm
 lus
 pbU
 cPa
@@ -253614,7 +253614,7 @@ tmf
 qqj
 aLC
 rds
-bqf
+nsW
 wGW
 tNZ
 nUj
@@ -254128,7 +254128,7 @@ tmf
 moN
 lTd
 ljn
-jRu
+daI
 xeq
 tnt
 diq
@@ -254642,7 +254642,7 @@ uiM
 beA
 aLC
 ljn
-wWM
+pTh
 oSk
 cOM
 syk
@@ -255670,7 +255670,7 @@ sAk
 vNJ
 oCB
 ljn
-rCR
+hNT
 mcK
 vcx
 tgT
@@ -283870,7 +283870,7 @@ sPj
 lBY
 sPj
 sPj
-hgh
+qRQ
 ffK
 aeM
 aeM
@@ -284380,12 +284380,12 @@ aeM
 oOE
 hVW
 pNG
-iaU
-qZs
-qDi
-mpt
+lpP
+eLu
+kGO
+gXW
 xBi
-wuY
+bRa
 pNG
 aeM
 gUQ
@@ -284637,12 +284637,12 @@ aeM
 ffK
 ffK
 pNG
-eRY
+hdw
 xJl
 jRb
 jRb
-ntC
-dZr
+mKm
+tdJ
 pNG
 aeM
 aeM
@@ -284894,12 +284894,12 @@ aeM
 aeM
 aeM
 pNG
-mFZ
+cue
 ngV
-pNL
+faK
 kkI
-pqC
-tPd
+qqe
+kGD
 pNG
 aeM
 aeM
@@ -285154,9 +285154,9 @@ pNG
 xjn
 aym
 mZK
-tOA
-eoU
-lLa
+pOj
+hkR
+kde
 pNG
 aeM
 aeM
@@ -285413,7 +285413,7 @@ iUH
 ucp
 ucp
 aFu
-dZr
+tdJ
 pNG
 aeM
 aeM
@@ -285667,10 +285667,10 @@ aeM
 pNG
 rmd
 puS
-ohs
-buI
+bPA
+jqJ
 iWY
-kut
+xlx
 pNG
 aeM
 aeM
@@ -317886,7 +317886,7 @@ uaX
 oLR
 obg
 iVk
-kIG
+qig
 rrN
 jQR
 tVA
@@ -318143,7 +318143,7 @@ bHr
 paM
 fMh
 iVk
-lgi
+rjV
 yfZ
 dst
 cVL
@@ -318405,7 +318405,7 @@ kRb
 teW
 dRx
 tEi
-rki
+kJH
 xOs
 aeM
 oqZ
@@ -318662,7 +318662,7 @@ gaR
 rVW
 bJY
 rVW
-rki
+kJH
 xOs
 aeM
 oqZ
@@ -319687,7 +319687,7 @@ vlk
 xOs
 xUh
 qmN
-jVQ
+lUo
 gJJ
 vTn
 pHc
