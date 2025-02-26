@@ -26878,6 +26878,7 @@
 /area/maintenance/fpmaint)
 "bLj" = (
 /obj/machinery/power/apc{
+	dir = 4;
 	pixel_x = 26
 	},
 /obj/structure/cable{
@@ -31961,6 +31962,7 @@
 	c_tag = "Medbay Cloning"
 	},
 /obj/machinery/power/apc{
+	dir = 1;
 	pixel_y = 26
 	},
 /obj/structure/cable{
@@ -32992,6 +32994,7 @@
 /area/medical/sleeper)
 "ceK" = (
 /obj/machinery/power/apc{
+	dir = 8;
 	pixel_x = -28
 	},
 /obj/structure/cable{
@@ -57907,12 +57910,13 @@
 	},
 /area/security/customs)
 "fOP" = (
-/obj/machinery/power/apc{
-	pixel_x = -26
-	},
 /obj/structure/cable{
 	d2 = 4;
 	icon_state = "0-4"
+	},
+/obj/machinery/power/apc{
+	dir = 8;
+	pixel_x = -26
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -67711,11 +67715,12 @@
 /obj/item/extinguisher,
 /obj/item/clothing/mask/gas,
 /obj/item/grenade/chem_grenade/firefighting,
-/obj/machinery/power/apc{
-	pixel_y = 26
-	},
 /obj/structure/cable{
 	icon_state = "0-2"
+	},
+/obj/machinery/power/apc{
+	dir = 1;
+	pixel_y = 26
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -74129,6 +74134,7 @@
 	icon_state = "0-8"
 	},
 /obj/machinery/power/apc{
+	dir = 1;
 	pixel_y = 26
 	},
 /turf/simulated/floor/plasteel/dark,
@@ -75462,7 +75468,7 @@
 /obj/item/storage/briefcase,
 /obj/item/clothing/mask/gas,
 /obj/machinery/power/apc{
-	dir = 8;
+	dir = 4;
 	pixel_x = 28
 	},
 /obj/structure/cable{
@@ -82806,6 +82812,7 @@
 	icon_state = "0-2"
 	},
 /obj/machinery/power/apc{
+	dir = 1;
 	pixel_y = 26
 	},
 /turf/simulated/floor/plasteel{
@@ -84914,11 +84921,12 @@
 "wKS" = (
 /obj/structure/table/glass,
 /obj/item/storage/box/monkeycubes/farwacubes,
-/obj/machinery/power/apc{
-	pixel_y = 26
-	},
 /obj/structure/cable{
 	icon_state = "0-2"
+	},
+/obj/machinery/power/apc{
+	dir = 1;
+	pixel_y = 26
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
