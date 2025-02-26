@@ -14685,6 +14685,7 @@
 /obj/structure/morgue{
 	dir = 8
 	},
+/obj/effect/landmark/event/revenantspawn,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "vault"
@@ -72991,6 +72992,7 @@
 /area/security/lobby)
 "pLq" = (
 /obj/structure/morgue,
+/obj/effect/landmark/event/revenantspawn,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "vault"
