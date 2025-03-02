@@ -331,3 +331,11 @@
 		always_place = TRUE
 	else
 		unpickable = TRUE
+
+/datum/map_template/ruin/lavaland/bsa_base
+	name = "BSA Base"
+	id = "bsabase"
+	description = "База с двумя БСА, кажется она ещё функционирует."
+	suffix = "lavaland_surface_bsa_base.dmm"
+	allow_duplicates = FALSE
+	always_place = TRUE

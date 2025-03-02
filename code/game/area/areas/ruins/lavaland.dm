@@ -111,3 +111,24 @@
 /area/ruin/powered/pirateship
 	name = "Crashed Pirate Ship"
 	icon_state = "green"
+
+// bsa base
+/area/lavaland_surface_bsa_base
+	name = "BSA Base"
+	icon_state = "green"
+
+/area/lavaland_surface_bsa_base_north
+	name = "BSA Base North"
+	icon_state = "dk_yellow"
+
+/area/lavaland_surface_bsa_base_south
+	name = "BSA Base South"
+	icon_state = "dk_yellow"
+
+/area/lavaland_surface_bsa_base_north_cannon
+	name = "BSA Base North Cannon"
+	icon_state = "red"
+
+/area/lavaland_surface_bsa_base_south_cannon
+	name = "BSA Base South Cannon"
+	icon_state = "red"

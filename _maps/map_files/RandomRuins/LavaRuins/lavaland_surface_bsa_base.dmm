@@ -1,0 +1,3162 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"ad" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"ag" = (
+/obj/structure/bedsheetbin,
+/obj/structure/table,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"ai" = (
+/obj/structure/curtain/open/shower,
+/obj/machinery/shower{
+	dir = 4;
+	tag = null
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"ak" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/structure/sink{
+	pixel_y = 22
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"al" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"aA" = (
+/obj/machinery/washing_machine,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"aB" = (
+/obj/machinery/light{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 6
+	},
+/obj/machinery/alarm{
+	dir = 4;
+	pixel_x = -24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"aH" = (
+/obj/structure/toilet/secret{
+	dir = 4;
+	pixel_x = -6
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"aM" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 6
+	},
+/obj/structure/cable/yellow{
+	d1 = 1;
+	d2 = 2;
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"aO" = (
+/obj/machinery/power/terminal{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"aQ" = (
+/obj/machinery/power/terminal{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cf" = (
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"ch" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"co" = (
+/obj/machinery/door/airlock/alarmlock,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"cu" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"cw" = (
+/obj/structure/bed,
+/obj/item/bedsheet/blue,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"cz" = (
+/obj/structure/chair/comfy/shuttle/dark{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cA" = (
+/obj/structure/window/plasmareinforced{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cG" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cH" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 10
+	},
+/obj/structure/cable{
+	icon_state = "0-2"
+	},
+/obj/machinery/power/apc{
+	dir = 4;
+	pixel_x = 28
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"cK" = (
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cM" = (
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cQ" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"cR" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cT" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	d1 = 1;
+	d2 = 2;
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"cX" = (
+/turf/simulated/floor/plating/asteroid/basalt/lava_land_surface,
+/area/template_noop)
+"dg" = (
+/obj/machinery/door/airlock/alarmlock,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"dh" = (
+/obj/machinery/door/airlock/alarmlock,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"di" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/structure/cable/yellow{
+	d1 = 1;
+	d2 = 2;
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dj" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "2-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dl" = (
+/obj/machinery/power/smes,
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dm" = (
+/obj/structure/table,
+/obj/item/storage/box/donkpockets{
+	pixel_y = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"dr" = (
+/obj/machinery/alarm{
+	dir = 1;
+	pixel_y = -24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"dB" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"dC" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"dJ" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"dK" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/door/firedoor,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dO" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/machinery/power/port_gen/pacman,
+/obj/structure/cable/yellow{
+	icon_state = "2-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dS" = (
+/obj/machinery/atmospherics/pipe/manifold4w/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
+/obj/structure/cable{
+	icon_state = "2-4"
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"dT" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"dV" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"dX" = (
+/obj/machinery/light,
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dY" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"dZ" = (
+/obj/machinery/light,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"ea" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply,
+/obj/structure/cable/yellow{
+	d1 = 1;
+	d2 = 2;
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"eb" = (
+/turf/simulated/wall/mineral/plastitanium,
+/area/lavaland_surface_bsa_base_north_cannon)
+"ec" = (
+/obj/machinery/atmospherics/binary/pump/on{
+	dir = 8;
+	target_pressure = 303.325
+	},
+/obj/machinery/power/apc{
+	pixel_y = -26
+	},
+/obj/structure/cable{
+	icon_state = "0-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"ed" = (
+/obj/machinery/atmospherics/pipe/manifold/visible,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/structure/cable{
+	icon_state = "2-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"ee" = (
+/obj/machinery/atmospherics/pipe/manifold/visible,
+/obj/structure/cable{
+	icon_state = "0-8"
+	},
+/obj/structure/cable{
+	icon_state = "0-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"el" = (
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/obj/structure/table,
+/obj/item/stack/cable_coil,
+/obj/item/stack/cable_coil/yellow{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"er" = (
+/obj/item/twohanded/required/kirbyplants,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"es" = (
+/obj/machinery/atmospherics/unary/vent_pump/on,
+/obj/machinery/light_switch{
+	pixel_y = 24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"ex" = (
+/obj/machinery/power/port_gen/pacman,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"eA" = (
+/obj/structure/closet/wardrobe/red,
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"eB" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"eQ" = (
+/obj/structure/lattice/catwalk/mapping,
+/obj/structure/lattice/catwalk/mapping,
+/turf/simulated/floor/lava/lava_land_surface,
+/area/template_noop)
+"eR" = (
+/obj/structure/lattice/catwalk/mapping,
+/turf/simulated/floor/lava/lava_land_surface,
+/area/template_noop)
+"eX" = (
+/obj/structure/chair/stool,
+/obj/machinery/alarm{
+	dir = 4;
+	pixel_x = -24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"eY" = (
+/obj/effect/spawner/window/reinforced,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"fa" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 5
+	},
+/obj/machinery/suit_storage_unit/standard_unit,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"fb" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"fc" = (
+/obj/structure/window/plasmareinforced,
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"fd" = (
+/obj/structure/window/plasmareinforced,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"ff" = (
+/turf/simulated/wall/mineral/plastitanium,
+/area/lavaland_surface_bsa_base_north)
+"fg" = (
+/obj/machinery/power/port_gen/pacman,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"fi" = (
+/obj/machinery/light{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"fk" = (
+/obj/structure/rack{
+	dir = 1
+	},
+/obj/item/gun/projectile/automatic/proto{
+	dir = 1;
+	icon_state = "saber-21"
+	},
+/obj/item/gun/projectile/automatic/proto{
+	dir = 1;
+	icon_state = "saber-21"
+	},
+/obj/item/gun/projectile/automatic/proto{
+	dir = 1;
+	icon_state = "saber-21"
+	},
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"fn" = (
+/obj/structure/rack{
+	dir = 1
+	},
+/obj/item/gun/projectile/automatic/proto{
+	dir = 1;
+	icon_state = "saber-21"
+	},
+/obj/item/gun/projectile/automatic/proto{
+	dir = 1;
+	icon_state = "saber-21"
+	},
+/obj/item/gun/projectile/automatic/proto{
+	dir = 1;
+	icon_state = "saber-21"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"fs" = (
+/obj/effect/mapping_helpers/no_lava,
+/turf/simulated/floor/plating/asteroid/basalt/lava_land_surface,
+/area/template_noop)
+"fx" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"fy" = (
+/obj/machinery/computer{
+	desc = "A computer long since rendered non-functional due to lack of maintenance. Spitting out error messages.";
+	dir = 1;
+	name = "Broken Computer"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"fC" = (
+/turf/simulated/floor/lava/lava_land_surface,
+/area/template_noop)
+"fQ" = (
+/obj/machinery/power/terminal,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"fT" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"fX" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"gs" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"gE" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"ho" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"hy" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/machinery/atmospherics/unary/tank/air,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"hW" = (
+/obj/structure/chair/comfy/shuttle/dark{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"iF" = (
+/obj/machinery/power/smes,
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"iM" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"iR" = (
+/obj/machinery/power/smes,
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"iT" = (
+/obj/machinery/light,
+/obj/machinery/power/port_gen/pacman,
+/obj/structure/cable/yellow{
+	icon_state = "1-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"jd" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"jf" = (
+/obj/effect/landmark/event/lightsout,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"jp" = (
+/obj/structure/window/plasmareinforced,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"jr" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"jI" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"kc" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/door/firedoor,
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"kq" = (
+/obj/machinery/door/airlock/security,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"kt" = (
+/obj/structure/window/plasmareinforced,
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"kx" = (
+/obj/machinery/suit_storage_unit/standard_unit,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"kJ" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"li" = (
+/obj/item/twohanded/required/kirbyplants,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"lN" = (
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"lQ" = (
+/obj/machinery/power/terminal{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"mb" = (
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 9
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"mc" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"mO" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"nn" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"nt" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"nu" = (
+/obj/structure/rack{
+	dir = 1
+	},
+/obj/item/gun/energy/gun/nuclear,
+/obj/item/gun/energy/gun/nuclear,
+/obj/item/gun/energy/gun/nuclear,
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"nv" = (
+/obj/structure/chair/stool,
+/obj/machinery/firealarm{
+	dir = 8;
+	pixel_x = -26
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"ny" = (
+/obj/machinery/power/port_gen/pacman,
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"nP" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/visible,
+/obj/structure/cable{
+	icon_state = "2-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"on" = (
+/obj/effect/landmark/event/lightsout,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"oK" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"oQ" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"pd" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 9
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"pp" = (
+/obj/structure/bed,
+/obj/item/bedsheet/brown,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"qg" = (
+/obj/machinery/atmospherics/unary/tank/air,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"qB" = (
+/obj/machinery/power/terminal,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"ro" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/door/firedoor,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"rr" = (
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"sp" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 1
+	},
+/obj/structure/cable/yellow{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"sw" = (
+/obj/machinery/door/window/brigdoor{
+	color = "#0d8395";
+	dir = 8
+	},
+/obj/machinery/door/window/brigdoor{
+	color = "#0d8395"
+	},
+/obj/item/paper_bin{
+	dir = 4
+	},
+/obj/item/pen{
+	dir = 4
+	},
+/obj/structure/table/reinforced{
+	dir = 4;
+	icon_state = "reinforced_table-0"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"sG" = (
+/obj/machinery/light,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"tn" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"tr" = (
+/obj/structure/chair/stool,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"tC" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"tE" = (
+/obj/machinery/door/airlock/multi_tile{
+	dir = 8
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"ul" = (
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"uU" = (
+/obj/machinery/door/airlock/multi_tile{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"uY" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"vo" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"vw" = (
+/obj/machinery/computer{
+	desc = "A computer long since rendered non-functional due to lack of maintenance. Spitting out error messages.";
+	dir = 1;
+	name = "Broken Computer"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"vH" = (
+/obj/machinery/door/airlock/multi_tile{
+	dir = 2
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"vQ" = (
+/turf/simulated/wall/mineral/plastitanium,
+/area/lavaland_surface_bsa_base)
+"wh" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"wk" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"wp" = (
+/obj/machinery/light_switch{
+	pixel_y = -22
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"wR" = (
+/obj/structure/window/plasmareinforced,
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"xE" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 1
+	},
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"yl" = (
+/obj/machinery/firealarm{
+	pixel_y = 26
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"yq" = (
+/obj/structure/bed,
+/obj/item/bedsheet/red,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"yB" = (
+/obj/effect/mapping_helpers/no_lava,
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/turf/simulated/floor/plating/asteroid/basalt/lava_land_surface,
+/area/template_noop)
+"yE" = (
+/obj/machinery/computer/security{
+	dir = 4
+	},
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"yH" = (
+/obj/machinery/door/airlock/multi_tile,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"zd" = (
+/obj/structure/chair{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"zl" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"zy" = (
+/obj/machinery/atmospherics/pipe/manifold4w/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"zI" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"zK" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"zX" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Am" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/door/firedoor,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Ar" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"AW" = (
+/obj/item/twohanded/required/kirbyplants,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"Bg" = (
+/obj/machinery/power/apc{
+	pixel_y = -26
+	},
+/obj/structure/cable{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Bj" = (
+/obj/structure/closet/wardrobe/red,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"Bw" = (
+/obj/machinery/alarm{
+	dir = 1;
+	pixel_y = -24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Bx" = (
+/obj/machinery/suit_storage_unit/standard_unit,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Ci" = (
+/obj/machinery/power/smes,
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"CN" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"DB" = (
+/obj/structure/lattice/catwalk/mapping,
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/turf/simulated/floor/lava/lava_land_surface,
+/area/template_noop)
+"Ep" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"EL" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"Fz" = (
+/obj/item/twohanded/required/kirbyplants,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"FC" = (
+/obj/structure/rack{
+	dir = 1
+	},
+/obj/item/gun/energy/taser{
+	dir = 1
+	},
+/obj/item/gun/energy/taser{
+	dir = 1
+	},
+/obj/item/gun/energy/taser{
+	dir = 1
+	},
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"FG" = (
+/obj/structure/rack{
+	dir = 1
+	},
+/obj/item/gun/energy/gun/nuclear,
+/obj/item/gun/energy/gun/nuclear,
+/obj/item/gun/energy/gun/nuclear,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"FZ" = (
+/obj/machinery/light,
+/obj/machinery/atmospherics/pipe/simple/visible/universal{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Gk" = (
+/obj/machinery/light{
+	dir = 8
+	},
+/obj/structure/table,
+/obj/item/deck/cards/syndicate/black,
+/obj/structure/cable{
+	icon_state = "0-4"
+	},
+/obj/machinery/power/apc{
+	dir = 8;
+	pixel_x = -26
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"GS" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Hg" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/visible,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Hj" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Ho" = (
+/obj/structure/lattice/catwalk/mapping,
+/obj/machinery/atmospherics/unary/outlet_injector/on{
+	dir = 8;
+	name = "scrubber outlet"
+	},
+/turf/simulated/floor/lava/lava_land_surface,
+/area/template_noop)
+"Ht" = (
+/obj/structure/dresser,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"Hx" = (
+/obj/structure/table,
+/obj/item/paper_bin{
+	pixel_y = 5
+	},
+/obj/item/pen{
+	pixel_y = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"HM" = (
+/obj/machinery/light,
+/obj/machinery/power/terminal{
+	dir = 8
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"HS" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Ij" = (
+/obj/structure/table{
+	dir = 4;
+	icon_state = "table-0"
+	},
+/obj/machinery/recharger{
+	dir = 4;
+	icon_state = "rechargeroff"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"In" = (
+/obj/structure/window/full/shuttle/gray,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Ir" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	d1 = 1;
+	d2 = 2;
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Iy" = (
+/obj/machinery/alarm{
+	pixel_y = 24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"IC" = (
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"IZ" = (
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"JD" = (
+/obj/machinery/door/airlock/multi_tile,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"JP" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"JY" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 5
+	},
+/obj/structure/cable/yellow{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"JZ" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"KC" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"KV" = (
+/obj/machinery/light{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"KY" = (
+/obj/effect/spawner/window/reinforced,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"LI" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/machinery/light_switch{
+	pixel_x = 24
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"LS" = (
+/obj/machinery/door/airlock/multi_tile{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Mn" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Ms" = (
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Mv" = (
+/obj/machinery/door/airlock/multi_tile{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"MQ" = (
+/obj/machinery/bsa/full/east{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"MS" = (
+/obj/machinery/door/airlock/multi_tile{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Na" = (
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"NG" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 6
+	},
+/obj/machinery/suit_storage_unit/standard_unit,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"NJ" = (
+/obj/structure/window/full/shuttle/gray,
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"OM" = (
+/obj/structure/table,
+/obj/item/storage/fancy/cigarettes/cigpack_random{
+	pixel_y = 5
+	},
+/obj/item/storage/box/matches{
+	pixel_y = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"Pc" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Pm" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 1
+	},
+/obj/structure/cable{
+	icon_state = "2-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Pp" = (
+/obj/structure/dispenser/oxygen,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"PA" = (
+/obj/structure/window/plasmareinforced{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"PC" = (
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/obj/structure/table,
+/obj/item/stack/cable_coil,
+/obj/item/stack/cable_coil/yellow{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"QA" = (
+/obj/structure/chair{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"QU" = (
+/obj/structure/window/plasmareinforced{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Rm" = (
+/turf/simulated/wall/mineral/plastitanium,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Rn" = (
+/obj/structure/bed,
+/obj/item/bedsheet/green,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"Rt" = (
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"RN" = (
+/obj/machinery/power/terminal,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Sq" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/machinery/light_switch{
+	pixel_y = 24
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"SA" = (
+/obj/machinery/light_switch{
+	pixel_y = 24
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"SD" = (
+/obj/machinery/power/apc{
+	pixel_y = 26
+	},
+/obj/structure/cable{
+	icon_state = "0-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"SI" = (
+/obj/machinery/atmospherics/pipe/simple/visible/universal{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/simple/visible,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"SW" = (
+/obj/machinery/power/terminal,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-8"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"Tp" = (
+/obj/machinery/bsa/full/east{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Un" = (
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Uy" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"UH" = (
+/obj/machinery/light{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/firealarm{
+	dir = 8;
+	pixel_x = -26
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"UJ" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 6
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"UK" = (
+/obj/structure/cable,
+/obj/machinery/power/smes,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Vm" = (
+/turf/simulated/wall/mineral/plastitanium,
+/area/lavaland_surface_bsa_base_south)
+"Wd" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 6
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 8
+	},
+/obj/structure/cable{
+	icon_state = "2-4"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"Ws" = (
+/obj/structure/window/plasmareinforced,
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"WA" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"WF" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 4
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"WV" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"Xa" = (
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/obj/machinery/firealarm{
+	pixel_y = 26
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"Xr" = (
+/obj/effect/landmark/event/lightsout,
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 9
+	},
+/obj/structure/cable{
+	icon_state = "1-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"Xv" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 10
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+"Yl" = (
+/obj/machinery/firealarm{
+	dir = 1;
+	pixel_y = -26
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Yt" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 8
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"YF" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/structure/cable/yellow{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"YH" = (
+/obj/structure/dispenser/oxygen,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south_cannon)
+"YZ" = (
+/obj/machinery/power/terminal{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/structure/cable/yellow{
+	icon_state = "0-4"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "4-8"
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north_cannon)
+"Ze" = (
+/obj/structure/chair/stool,
+/obj/effect/landmark/event/lightsout,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_north)
+"Zp" = (
+/obj/machinery/door/airlock/security,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/machinery/door/firedoor,
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base)
+"ZC" = (
+/obj/structure/rack{
+	dir = 1
+	},
+/obj/item/gun/energy/taser{
+	dir = 1
+	},
+/obj/item/gun/energy/taser{
+	dir = 1
+	},
+/obj/item/gun/energy/taser{
+	dir = 1
+	},
+/turf/simulated/floor/pod,
+/area/lavaland_surface_bsa_base_south)
+
+(1,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+cX
+cX
+cX
+cX
+fs
+fs
+fs
+fs
+cX
+cX
+cX
+cX
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(2,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+cX
+cX
+cX
+fs
+fs
+fs
+fs
+fs
+fs
+cX
+cX
+cX
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(3,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+cX
+cX
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+cX
+cX
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(4,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+cX
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+cX
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(5,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(6,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eR
+eR
+vQ
+Un
+Mv
+vQ
+eR
+eR
+eR
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(7,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eQ
+eR
+fC
+vQ
+Un
+Un
+vQ
+fC
+eR
+eQ
+eR
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(8,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eR
+eR
+fC
+fC
+vQ
+eB
+sG
+vQ
+fC
+fC
+eR
+eQ
+eR
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(9,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eQ
+eR
+fC
+fC
+fC
+vQ
+Un
+WF
+vQ
+fC
+fC
+fC
+eR
+eQ
+eQ
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(10,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eQ
+eQ
+eR
+fC
+fC
+fC
+vQ
+Un
+nt
+vQ
+fC
+fC
+fC
+eR
+eQ
+eQ
+eR
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(11,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eQ
+eR
+eR
+eQ
+eR
+fC
+fC
+vQ
+Un
+nt
+vQ
+fC
+fC
+eR
+eQ
+eR
+eR
+eQ
+eR
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+"}
+(12,1,1) = {"
+fC
+fC
+fC
+fC
+fs
+fs
+eR
+eQ
+eR
+fC
+fC
+eR
+eQ
+eR
+fC
+vQ
+cu
+nt
+vQ
+fC
+eR
+eQ
+eR
+fC
+fC
+eR
+eQ
+eR
+fs
+fs
+fC
+fC
+fC
+fC
+"}
+(13,1,1) = {"
+fC
+fC
+fC
+fs
+fs
+eR
+eQ
+eR
+fC
+fC
+fC
+fC
+eR
+eQ
+eR
+vQ
+dV
+dZ
+vQ
+eR
+eQ
+eR
+fC
+fC
+fC
+fC
+eR
+eQ
+eR
+fs
+fs
+fC
+fC
+fC
+"}
+(14,1,1) = {"
+fC
+fC
+fC
+fs
+eR
+eR
+eR
+fC
+fC
+fC
+fC
+fC
+fC
+eR
+eR
+vQ
+fx
+nt
+vQ
+eR
+eR
+fC
+fC
+fC
+fC
+fC
+fC
+eR
+eQ
+eR
+fs
+fC
+fC
+fC
+"}
+(15,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+vQ
+dT
+LS
+vQ
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+fs
+fC
+fC
+fC
+"}
+(16,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+fi
+ul
+co
+ul
+aB
+mc
+dg
+mc
+UH
+jr
+MS
+GS
+HS
+vQ
+Fz
+KV
+IC
+nv
+Gk
+eX
+IC
+KV
+fk
+fn
+Vm
+fs
+fC
+fC
+fC
+"}
+(17,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+ag
+aA
+ff
+cw
+mO
+Rn
+ff
+dm
+tr
+mO
+Ms
+fx
+dZ
+vQ
+es
+Wd
+fT
+fT
+WA
+wh
+wh
+zK
+gs
+ho
+Vm
+fs
+fC
+fC
+fC
+"}
+(18,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+ff
+ff
+ff
+Ht
+ul
+Ht
+ff
+Hx
+Ze
+AW
+KY
+Pm
+xE
+Zp
+fT
+Xr
+Vm
+eY
+sw
+eY
+Vm
+EL
+FC
+ZC
+Vm
+fs
+fC
+fC
+fC
+"}
+(19,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+ai
+aH
+ff
+pp
+wk
+yq
+ff
+OM
+tr
+wk
+tE
+jI
+dZ
+vQ
+tn
+pd
+eY
+IC
+zd
+IC
+kq
+Xv
+WV
+CN
+Vm
+fs
+fC
+fC
+fC
+"}
+(20,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+ak
+ul
+co
+ul
+cH
+cQ
+dh
+cQ
+LI
+dB
+dJ
+zX
+nt
+vQ
+Bj
+eA
+eY
+Ij
+yE
+QA
+eY
+gE
+nu
+FG
+Vm
+fs
+fC
+fC
+fC
+"}
+(21,1,1) = {"
+fC
+fC
+fC
+fs
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+ff
+vQ
+vQ
+vQ
+vQ
+kc
+LS
+vQ
+vQ
+vQ
+vQ
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+Vm
+fs
+fC
+fC
+fC
+"}
+(22,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+er
+cf
+Bx
+Pp
+NG
+vo
+vo
+uU
+zI
+zI
+MS
+KC
+zy
+yH
+zI
+zI
+JD
+Pc
+Pc
+fa
+YH
+kx
+Na
+li
+Rm
+fs
+fC
+fC
+fC
+"}
+(23,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+fg
+cf
+UJ
+on
+fb
+cR
+dj
+dK
+ad
+dC
+ro
+dS
+jd
+ro
+dC
+ad
+Am
+Mn
+Rt
+oQ
+jf
+Ep
+Na
+ex
+Rm
+fs
+fC
+fC
+fC
+"}
+(24,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+dO
+aM
+Ir
+di
+ea
+cT
+dX
+vQ
+vQ
+vQ
+vQ
+kc
+vH
+vQ
+vQ
+vQ
+vQ
+Uy
+kJ
+sp
+YF
+tC
+JY
+iT
+Rm
+fs
+fC
+fC
+fC
+"}
+(25,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+el
+dY
+kt
+cz
+cK
+Ar
+Hj
+eb
+fs
+fs
+vQ
+jI
+nt
+vQ
+fs
+fs
+Rm
+oK
+zl
+fc
+hW
+IZ
+nn
+PC
+Rm
+fs
+fC
+fC
+fC
+"}
+(26,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+dl
+aO
+fd
+vw
+cM
+Ar
+wp
+eb
+fs
+fs
+vQ
+fX
+FZ
+vQ
+fs
+fs
+Rm
+SA
+zl
+jp
+fy
+QU
+RN
+Ci
+Rm
+fs
+fC
+fC
+fC
+"}
+(27,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+dl
+YZ
+fd
+cA
+cM
+Ar
+Bg
+eb
+fs
+vQ
+vQ
+Sq
+ec
+vQ
+vQ
+fs
+Rm
+SD
+zl
+jp
+PA
+QU
+qB
+Ci
+Rm
+fs
+fC
+fC
+fC
+"}
+(28,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+dl
+lQ
+fd
+cf
+cM
+Ar
+Bw
+eb
+fs
+vQ
+qg
+nP
+ed
+UK
+vQ
+fs
+Rm
+Iy
+zl
+jp
+Na
+QU
+SW
+Ci
+Rm
+fs
+fC
+fC
+fC
+"}
+(29,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+iF
+aQ
+fd
+cf
+cM
+Ar
+Yl
+eb
+fs
+vQ
+hy
+Hg
+ee
+HM
+vQ
+fs
+Rm
+yl
+zl
+jp
+Na
+QU
+fQ
+iR
+Rm
+fs
+fC
+fC
+fC
+"}
+(30,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+al
+dY
+fd
+cf
+cM
+Ar
+al
+eb
+fs
+vQ
+qg
+SI
+mb
+ny
+vQ
+fs
+Rm
+iM
+zl
+jp
+Na
+QU
+nn
+iM
+Rm
+fs
+fC
+fC
+fC
+"}
+(31,1,1) = {"
+fC
+fC
+fC
+fs
+eb
+eb
+cG
+fd
+cf
+cM
+JP
+eb
+eb
+fs
+vQ
+vQ
+Xa
+dr
+vQ
+vQ
+fs
+Rm
+Rm
+zl
+jp
+Na
+QU
+nn
+Rm
+Rm
+fs
+fC
+fC
+fC
+"}
+(32,1,1) = {"
+fC
+fC
+fC
+fs
+fs
+eb
+cf
+fd
+cf
+cM
+cf
+eb
+fs
+fs
+fs
+vQ
+NJ
+In
+vQ
+fs
+fs
+fs
+Rm
+Yt
+jp
+Na
+QU
+JZ
+Rm
+fs
+fs
+fC
+fC
+fC
+"}
+(33,1,1) = {"
+fC
+fC
+fC
+fC
+fs
+eb
+cf
+fd
+Tp
+cM
+cf
+eb
+fs
+fs
+fs
+fs
+yB
+fs
+fs
+fs
+fs
+fs
+Rm
+Na
+jp
+MQ
+QU
+Na
+Rm
+fs
+fC
+fC
+fC
+fC
+"}
+(34,1,1) = {"
+fC
+fC
+fC
+fC
+fs
+eb
+ch
+fd
+cf
+cM
+ch
+eb
+fs
+fC
+fC
+eR
+DB
+eR
+eR
+fC
+fC
+fs
+Rm
+uY
+jp
+Na
+QU
+uY
+Rm
+fs
+fC
+fC
+fC
+fC
+"}
+(35,1,1) = {"
+fC
+fC
+fC
+fC
+fs
+eb
+eb
+fd
+cf
+cM
+eb
+eb
+fs
+fC
+fC
+fC
+Ho
+eR
+fC
+fC
+fC
+fs
+Rm
+Rm
+jp
+Na
+QU
+Rm
+Rm
+fs
+fC
+fC
+fC
+fC
+"}
+(36,1,1) = {"
+fC
+fC
+fC
+fC
+fs
+fs
+eb
+fd
+cf
+cM
+eb
+fs
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+fs
+Rm
+jp
+Na
+QU
+Rm
+fs
+fs
+fC
+fC
+fC
+fC
+"}
+(37,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fs
+eb
+wR
+cf
+rr
+eb
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+Rm
+Ws
+Na
+lN
+Rm
+fs
+fC
+fC
+fC
+fC
+fC
+"}
+(38,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fs
+eb
+eb
+cf
+eb
+eb
+fs
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fs
+Rm
+Rm
+Na
+Rm
+Rm
+fs
+fC
+fC
+fC
+fC
+fC
+"}
+(39,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
+(40,1,1) = {"
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+fC
+"}
