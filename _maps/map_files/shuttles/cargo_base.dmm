@@ -38,14 +38,14 @@
 	tag = "icon-tube1 (EAST)"
 	},
 /obj/machinery/door_control{
-	id = "QMLoaddoor2";
+	id = "QMLoaddoor";
 	layer = 3;
 	name = "Loading Doors";
 	pixel_x = 24;
 	pixel_y = 8
 	},
 /obj/machinery/door_control{
-	id = "QMLoaddoor";
+	id = "QMLoaddoor2";
 	layer = 3;
 	name = "Loading Doors";
 	pixel_x = 24;
@@ -60,8 +60,8 @@
 	req_access = list(31)
 	},
 /obj/docking_port/mobile/supply{
-	timid = 1;
-	port_direction = 4
+	port_direction = 4;
+	timid = 1
 	},
 /turf/simulated/floor/shuttle,
 /area/shuttle/supply)
