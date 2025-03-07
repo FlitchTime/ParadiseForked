@@ -150,7 +150,6 @@ const ChemDispenserBeaker = (properties, context) => {
           buttons={(chemical) => (
             <>
               <Button
-                content=""
                 tooltip={
                   'Удаляет лишнее, округляя объём до ' +
                   Math.trunc(chemical.volume)
@@ -176,10 +175,7 @@ const ChemDispenserBeaker = (properties, context) => {
                 />
               ))}
               <Button
-                content=""
-                tooltip={
-                  'Удаляет остальные реагенты'
-                }
+                tooltip={'Удаляет остальные реагенты'}
                 icon="compress-arrows-alt"
                 onClick={() =>
                   act('remove', {
@@ -189,10 +185,7 @@ const ChemDispenserBeaker = (properties, context) => {
                 }
               />
               <Button
-                content=""
-                tooltip={
-                  'Удаляет этот реагент'
-                }
+                tooltip={'Удаляет этот реагент'}
                 icon="droplet-slash"
                 onClick={() =>
                   act('remove', {
