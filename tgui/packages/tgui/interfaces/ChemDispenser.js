@@ -89,19 +89,20 @@ const ChemDispenserChemicals = (properties, context) => {
         scrollable
         title={data.glass ? 'Синтез напитков' : 'Синтез реагентов'}
       >
-        {chemicals.map((c, i) => (
+        {chemicals.map((chemical, i) => (
           <Button
             m={0.1}
             key={i}
             width="32.5%"
-            icon="arrow-circle-down"
+            icon="tint"
+            iconColor={chemical.reagentColor}
             overflow="hidden"
             textOverflow="ellipsis"
-            content={c.title}
+            content={chemical.title}
             style={{ 'margin-left': '2px' }}
             onClick={() =>
               act('dispense', {
-                reagent: c.id,
+                reagent: chemical.id,
               })
             }
           />
