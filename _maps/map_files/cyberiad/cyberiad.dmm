@@ -5482,7 +5482,8 @@
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "darkpurplefull"
+	dir = 1;
+	icon_state = "darkpurple"
 	},
 /area/assembly/chargebay)
 "auy" = (
@@ -25856,8 +25857,7 @@
 "bHN" = (
 /obj/machinery/computer/roboquest,
 /turf/simulated/floor/plasteel{
-	dir = 6;
-	icon_state = "darkpurple"
+	icon_state = "dark"
 	},
 /area/assembly/chargebay)
 "bHO" = (
@@ -26264,9 +26264,7 @@
 /area/maintenance/livingcomplex)
 "bJo" = (
 /obj/effect/turf_decal/mech,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
+/turf/simulated/floor/bluegrid,
 /area/assembly/chargebay)
 "bJq" = (
 /obj/structure/chair/office/light{
@@ -27004,7 +27002,9 @@
 	dir = 8;
 	network = list("Research","SS13")
 	},
-/turf/simulated/floor/bluegrid,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkpurple"
+	},
 /area/assembly/chargebay)
 "bLP" = (
 /obj/structure/rack{
@@ -27850,7 +27850,8 @@
 /area/medical/morgue)
 "bOZ" = (
 /turf/simulated/floor/plasteel{
-	icon_state = "darkpurplefull"
+	dir = 1;
+	icon_state = "darkpurple"
 	},
 /area/assembly/chargebay)
 "bPa" = (
@@ -61643,6 +61644,7 @@
 /area/toxins/misc_lab)
 "itd" = (
 /obj/machinery/computer/mech_bay_power_console,
+/obj/effect/turf_decal/mech,
 /turf/simulated/floor/bluegrid,
 /area/assembly/chargebay)
 "itr" = (
@@ -66076,6 +66078,12 @@
 	icon_state = "black"
 	},
 /area/space)
+"lqB" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/chargebay)
 "lqG" = (
 /obj/machinery/light/small{
 	dir = 4
@@ -66431,7 +66439,8 @@
 	dir = 8
 	},
 /turf/simulated/floor/plasteel{
-	icon_state = "darkpurplefull"
+	dir = 1;
+	icon_state = "darkpurple"
 	},
 /area/assembly/chargebay)
 "lCi" = (
@@ -72879,7 +72888,9 @@
 /area/medical/surgery/north)
 "pGH" = (
 /obj/machinery/hologram/holopad,
-/turf/simulated/floor/bluegrid,
+/turf/simulated/floor/plasteel{
+	icon_state = "darkpurple"
+	},
 /area/assembly/chargebay)
 "pHd" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
@@ -76372,9 +76383,6 @@
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
-/area/assembly/chargebay)
-"rKD" = (
-/turf/simulated/floor/bluegrid,
 /area/assembly/chargebay)
 "rKO" = (
 /obj/machinery/light{
@@ -80728,9 +80736,7 @@
 /area/medical/virology/lab)
 "upo" = (
 /obj/machinery/mech_bay_recharge_port,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
+/turf/simulated/floor/bluegrid,
 /area/assembly/chargebay)
 "upq" = (
 /obj/structure/table/glass,
@@ -80851,7 +80857,7 @@
 "uty" = (
 /obj/machinery/roboquest_pad,
 /turf/simulated/floor/plasteel{
-	icon_state = "darkpurple"
+	icon_state = "dark"
 	},
 /area/assembly/chargebay)
 "uuF" = (
@@ -128651,8 +128657,8 @@ myq
 jLS
 gbH
 bFX
+lqB
 kCI
-nHW
 nHW
 kMi
 bQJ
@@ -128908,11 +128914,11 @@ bRh
 kUt
 jLS
 bFV
+jLS
 mGj
-rKD
 upo
 auw
-rKD
+mGj
 upo
 bRh
 wKS
@@ -129169,7 +129175,7 @@ uty
 pGH
 bJo
 lCh
-rKD
+mGj
 bJo
 bRh
 bWi
@@ -129426,7 +129432,7 @@ bHN
 bLN
 itd
 bOZ
-rKD
+mGj
 mSj
 bRh
 wMV
