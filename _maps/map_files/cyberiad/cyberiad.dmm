@@ -25989,20 +25989,6 @@
 	icon_state = "dark"
 	},
 /area/assembly/chargebay)
-"bIg" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 4
-	},
-/obj/structure/cable{
-	icon_state = "4-8"
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/assembly/robotics)
 "bIi" = (
 /turf/simulated/wall,
 /area/medical/research)
@@ -27854,17 +27840,6 @@
 	icon_state = "darkpurple"
 	},
 /area/assembly/chargebay)
-"bPa" = (
-/obj/machinery/hologram/holopad,
-/obj/structure/cable{
-	icon_state = "1-2"
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/assembly/robotics)
 "bPb" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
@@ -52165,11 +52140,11 @@
 /area/bridge)
 "dmu" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /turf/simulated/floor/plasteel{
 	icon_state = "dark"
 	},
@@ -56912,6 +56887,14 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/hallway/primary/starboard/east)
+"fnx" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "fnW" = (
 /turf/simulated/floor/wood,
 /area/maintenance/fsmaint2)
@@ -61886,6 +61869,19 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
+"iBg" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/structure/disposalpipe/segment,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "iBi" = (
 /obj/machinery/light/small{
 	dir = 4
@@ -64070,6 +64066,14 @@
 /obj/structure/fans/tiny,
 /turf/simulated/floor/plasteel,
 /area/quartermaster/miningdock)
+"kbL" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "kbZ" = (
 /obj/structure/rack,
 /obj/item/storage/firstaid/fire{
@@ -69939,8 +69943,9 @@
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
+/obj/item/twohanded/required/kirbyplants,
 /turf/simulated/floor/plasteel{
-	dir = 1;
+	dir = 5;
 	icon_state = "whitepurple"
 	},
 /area/toxins/misc_lab)
@@ -71820,6 +71825,14 @@
 	icon_state = "white"
 	},
 /area/medical/sleeper)
+"oYc" = (
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "oYp" = (
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plasteel{
@@ -72849,12 +72862,6 @@
 	icon_state = "darkblue"
 	},
 /area/medical/surgery/north)
-"pGH" = (
-/obj/machinery/hologram/holopad,
-/turf/simulated/floor/plasteel{
-	icon_state = "darkpurple"
-	},
-/area/assembly/chargebay)
 "pHd" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
@@ -74030,6 +74037,19 @@
 /obj/item/wrench,
 /turf/simulated/floor/plating/airless,
 /area/space)
+"qqj" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/disposalpipe/segment,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "qqB" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
@@ -78748,6 +78768,20 @@
 /obj/effect/spawner/window/reinforced,
 /turf/simulated/floor/plating,
 /area/maintenance/disposal)
+"teV" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "tfC" = (
 /obj/structure/chair{
 	dir = 8
@@ -79869,6 +79903,12 @@
 	icon_state = "whitepurple"
 	},
 /area/toxins/xenobiology)
+"tSw" = (
+/obj/machinery/hologram/holopad,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "tSH" = (
 /obj/machinery/button/windowtint{
 	id = "ceoffice";
@@ -81385,6 +81425,12 @@
 	icon_state = "dark"
 	},
 /area/security/permabrig)
+"uQP" = (
+/obj/machinery/hologram/holopad,
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/chargebay)
 "uQS" = (
 /obj/machinery/computer/general_air_control/large_tank_control{
 	input_tag = "o2_in";
@@ -82114,6 +82160,14 @@
 	icon_state = "whitebluecorner"
 	},
 /area/medical/medbay2)
+"voP" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "voQ" = (
 /obj/structure/bed,
 /obj/item/bedsheet/hop,
@@ -83473,6 +83527,21 @@
 	},
 /turf/simulated/floor/plating,
 /area/security/range)
+"wft" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
+	dir = 1;
+	initialize_directions = 11
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "dark"
+	},
+/area/assembly/robotics)
 "wfX" = (
 /turf/simulated/wall,
 /area/quartermaster/office)
@@ -128886,7 +128955,7 @@ bRh
 kUt
 jLS
 bFV
-jLS
+uQP
 mGj
 upo
 auw
@@ -129144,7 +129213,7 @@ bKa
 bGr
 nag
 uty
-pGH
+mGj
 bJo
 lCh
 mGj
@@ -129913,7 +129982,7 @@ bwv
 bEA
 kuy
 lHp
-bIg
+bBm
 bMU
 bLP
 bRi
@@ -130170,8 +130239,8 @@ bwv
 bEA
 bux
 bId
-bBm
-bId
+wft
+voP
 bId
 bRr
 bTW
@@ -130427,8 +130496,8 @@ bHP
 bEA
 ykL
 bId
-bBm
-bId
+teV
+oYc
 bId
 bRr
 bTW
@@ -130942,11 +131011,11 @@ iaJ
 kxm
 bId
 bBm
-bId
+tSw
 bId
 bRr
-bId
-bId
+kbL
+fnx
 bSW
 bUF
 mVo
@@ -131200,10 +131269,10 @@ kxS
 bId
 glB
 bNh
-bPa
+bNh
 qTV
-dmu
-dmu
+qqj
+iBg
 dmu
 crH
 wUz
