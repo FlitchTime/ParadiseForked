@@ -27428,17 +27428,6 @@
 	icon_state = "dark"
 	},
 /area/toxins/lab)
-"bNp" = (
-/obj/structure/cable{
-	icon_state = "4-8"
-	},
-/obj/structure/cable{
-	icon_state = "1-8"
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "dark"
-	},
-/area/toxins/lab)
 "bNq" = (
 /obj/structure/cable{
 	icon_state = "4-8"
@@ -57367,9 +57356,6 @@
 	},
 /area/crew_quarters/courtroom)
 "fCV" = (
-/obj/structure/cable{
-	icon_state = "1-4"
-	},
 /obj/item/twohanded/required/kirbyplants,
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -65181,9 +65167,6 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/structure/cable{
-	icon_state = "1-8"
-	},
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "darkpurple"
@@ -71115,28 +71098,6 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/hallway/primary/starboard/east)
-"oBC" = (
-/obj/machinery/door/firedoor,
-/obj/machinery/door/poddoor/preopen{
-	id_tag = "Biohazard";
-	name = "Biohazard Shutter"
-	},
-/obj/machinery/door/window/brigdoor{
-	dir = 1;
-	id = "Autolathe";
-	name = "Autolathe Access";
-	req_access = list(31)
-	},
-/obj/machinery/autolathe,
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 2;
-	id_tag = "rdlab";
-	name = "Research and Development Shutters"
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "white"
-	},
-/area/toxins/lab)
 "oBT" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/structure/disposalpipe/segment,
@@ -76995,12 +76956,7 @@
 	},
 /area/toxins/lab)
 "saN" = (
-/obj/structure/cable{
-	icon_state = "2-8"
-	},
-/obj/structure/cable{
-	icon_state = "2-4"
-	},
+/obj/machinery/autolathe,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -133831,7 +133787,7 @@ byZ
 bwv
 bFw
 bwv
-lcY
+bUQ
 fCV
 bMj
 nhb
@@ -134088,11 +134044,11 @@ cWJ
 bwv
 gkd
 bwv
-oBC
+bUQ
 saN
-tMs
-tMs
-bNp
+bMj
+bMj
+bNm
 bMj
 bMj
 bSz
@@ -134345,7 +134301,7 @@ uuV
 bcj
 dAN
 bcj
-lcY
+bUQ
 kJr
 bGL
 bPD
