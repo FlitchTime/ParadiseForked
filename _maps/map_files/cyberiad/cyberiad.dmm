@@ -39925,6 +39925,9 @@
 /turf/simulated/floor/engine,
 /area/toxins/test_chamber)
 "cBS" = (
+/obj/machinery/atmospherics/pipe/simple/insulated{
+	dir = 6
+	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whitepurplecorner"
@@ -39989,22 +39992,11 @@
 	icon_state = "dark"
 	},
 /area/construction)
-"cCb" = (
-/obj/machinery/disposal,
-/obj/structure/window/plasmareinforced{
-	dir = 8
-	},
-/obj/structure/window/plasmareinforced,
-/obj/structure/disposalpipe/trunk{
-	dir = 4
-	},
-/turf/simulated/floor/engine,
-/area/toxins/misc_lab)
 "cCc" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 10
 	},
-/obj/structure/disposalpipe/segment{
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
@@ -40371,14 +40363,12 @@
 	},
 /area/toxins/misc_lab)
 "cDs" = (
-/obj/machinery/atmospherics/unary/portables_connector{
-	dir = 8
-	},
 /obj/machinery/camera{
 	c_tag = "Research Test Lab East";
 	dir = 8;
 	network = list("Research","SS13")
 	},
+/obj/structure/closet/secure_closet/research_reagents,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -40394,8 +40384,8 @@
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
-/obj/structure/disposalpipe/junction{
-	dir = 8
+/obj/structure/disposalpipe/segment{
+	dir = 9
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -40472,11 +40462,10 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/manifold/hidden/supply,
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
-/obj/structure/disposalpipe/segment{
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
@@ -55607,7 +55596,6 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/machinery/atmospherics/unary/vent_pump/on,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -56493,14 +56481,6 @@
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel,
 /area/hallway/primary/central/se)
-"eTS" = (
-/obj/machinery/atmospherics/binary/pump{
-	dir = 8
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "white"
-	},
-/area/toxins/misc_lab)
 "eUd" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -60435,13 +60415,10 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
-	},
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
-/obj/structure/disposalpipe/segment{
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
@@ -62413,11 +62390,9 @@
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply,
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -65749,17 +65724,14 @@
 	},
 /area/quartermaster/office)
 "lfv" = (
-/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
-	dir = 4
+/obj/structure/cable{
+	icon_state = "2-8"
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
 	dir = 1
 	},
-/obj/structure/cable{
-	icon_state = "2-8"
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
+/obj/machinery/atmospherics/pipe/manifold/hidden/supply{
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -68057,13 +68029,10 @@
 /turf/simulated/floor/plasteel,
 /area/maintenance/turbine)
 "myd" = (
-/obj/machinery/chem_heater,
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/structure/window/plasmareinforced{
-	dir = 8
-	},
+/obj/machinery/chem_heater,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "myj" = (
@@ -70034,7 +70003,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
-/obj/structure/disposalpipe/segment{
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
 /turf/simulated/floor/plasteel{
@@ -71145,11 +71114,12 @@
 	},
 /area/quartermaster/storage)
 "oCD" = (
-/obj/structure/closet/secure_closet/research_reagents,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "whitepurple"
-	},
+/obj/structure/table/reinforced,
+/obj/machinery/reagentgrinder,
+/turf/simulated/floor/engine,
+/area/toxins/misc_lab)
+"oDj" = (
+/turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "oDq" = (
 /obj/structure/cable{
@@ -72119,14 +72089,7 @@
 /turf/simulated/floor/plating,
 /area/aisat/maintenance)
 "pic" = (
-/obj/machinery/disposal,
 /obj/structure/window/plasmareinforced,
-/obj/structure/window/plasmareinforced{
-	dir = 4
-	},
-/obj/structure/disposalpipe/trunk{
-	dir = 8
-	},
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "piq" = (
@@ -76384,6 +76347,14 @@
 	icon_state = "dark"
 	},
 /area/assembly/chargebay)
+"rKD" = (
+/obj/machinery/atmospherics/binary/valve{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "white"
+	},
+/area/toxins/misc_lab)
 "rKO" = (
 /obj/machinery/light{
 	dir = 4
@@ -77150,8 +77121,7 @@
 	},
 /area/hallway/secondary/exit)
 "shx" = (
-/obj/structure/table/reinforced,
-/obj/machinery/reagentgrinder,
+/obj/structure/closet/secure_closet/research_reagents,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whitepurple"
@@ -77405,7 +77375,9 @@
 /obj/machinery/computer/security/telescreen/test_chamber{
 	pixel_y = -32
 	},
-/obj/machinery/atmospherics/binary/valve,
+/obj/machinery/atmospherics/pipe/simple/insulated{
+	dir = 10
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -78508,14 +78480,8 @@
 	dir = 4;
 	network = list("Research","SS13")
 	},
-/obj/structure/table,
-/obj/item/extinguisher/mini{
-	pixel_x = 3;
-	pixel_y = 6
-	},
-/obj/item/extinguisher/mini{
-	pixel_x = -3;
-	pixel_y = 3
+/obj/machinery/atmospherics/unary/portables_connector{
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 10;
@@ -78953,6 +78919,15 @@
 	pixel_y = -32
 	},
 /obj/machinery/light,
+/obj/structure/table,
+/obj/item/extinguisher/mini{
+	pixel_x = 3;
+	pixel_y = 6
+	},
+/obj/item/extinguisher/mini{
+	pixel_x = -3;
+	pixel_y = 3
+	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whitepurple"
 	},
@@ -80947,12 +80922,11 @@
 /area/hallway/primary/starboard/west)
 "uxJ" = (
 /obj/structure/chair/office/light{
-	dir = 8
+	dir = 1;
+	pixel_y = 3
 	},
 /obj/effect/landmark/start/scientist,
-/obj/structure/disposalpipe/segment{
-	dir = 6
-	},
+/obj/structure/window/plasmareinforced,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "uyc" = (
@@ -81891,8 +81865,8 @@
 /turf/simulated/floor/plasteel,
 /area/engineering/engine)
 "vgV" = (
-/obj/structure/disposalpipe/segment{
-	dir = 9
+/obj/machinery/atmospherics/unary/vent_pump/on{
+	dir = 8
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
@@ -82352,17 +82326,6 @@
 	},
 /turf/simulated/floor/plating,
 /area/engineering/engine)
-"vwm" = (
-/obj/machinery/atmospherics/pipe/simple/insulated{
-	dir = 6
-	},
-/obj/machinery/atmospherics/unary/vent_scrubber/on{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "white"
-	},
-/area/toxins/misc_lab)
 "vwy" = (
 /obj/item/reagent_containers/food/snacks/dough{
 	desc = "A piece of dough. It looks moldy and is hard as a rock. Hope you're not planning on turning this into a pizza..";
@@ -82435,12 +82398,11 @@
 /area/aisat)
 "vzO" = (
 /obj/structure/chair/office/light{
-	dir = 4
+	dir = 1;
+	pixel_y = 3
 	},
 /obj/effect/landmark/start/student_sientist,
-/obj/structure/disposalpipe/segment{
-	dir = 10
-	},
+/obj/structure/window/plasmareinforced,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "vzU" = (
@@ -84455,9 +84417,6 @@
 /area/quartermaster/miningdock)
 "wEp" = (
 /obj/machinery/chem_heater,
-/obj/structure/window/plasmareinforced{
-	dir = 4
-	},
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "wEP" = (
@@ -86720,10 +86679,10 @@
 /area/maintenance/apmaint)
 "xXr" = (
 /obj/structure/table/reinforced,
-/obj/structure/window/plasmareinforced,
 /obj/structure/window/plasmareinforced{
 	dir = 8
 	},
+/obj/structure/window/plasmareinforced,
 /turf/simulated/floor/engine,
 /area/toxins/misc_lab)
 "xXs" = (
@@ -86759,6 +86718,19 @@
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint2)
+"xYx" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/machinery/atmospherics/binary/pump{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "white"
+	},
+/area/toxins/misc_lab)
 "xZm" = (
 /obj/structure/table/reinforced,
 /obj/machinery/cell_charger,
@@ -133567,7 +133539,7 @@ wEh
 tcv
 cAP
 wtn
-cDw
+lrp
 iOQ
 cEt
 vsk
@@ -134596,7 +134568,7 @@ lVG
 cAP
 iLZ
 uxJ
-cDu
+hBE
 orv
 tlI
 cAP
@@ -135109,10 +135081,10 @@ bzH
 lVG
 cAP
 oCD
-lrp
+oDj
 lfv
 rzt
-rzt
+xYx
 rzt
 wpJ
 eJh
@@ -135366,10 +135338,10 @@ bGG
 lVG
 cAP
 oCD
-cDw
+oDj
 nJG
 cDw
-cDw
+rKD
 sOY
 rVr
 lVb
@@ -135623,9 +135595,9 @@ wEh
 lCH
 cAP
 myd
-cCb
+pic
 cCc
-vwm
+cEt
 soD
 suX
 qhd
@@ -135882,7 +135854,7 @@ cAP
 klE
 vzO
 vgV
-eTS
+cDw
 imD
 eUk
 iZR
