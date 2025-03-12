@@ -25870,13 +25870,6 @@
 /obj/machinery/chem_heater,
 /turf/simulated/floor/plasteel,
 /area/medical/chemistry)
-"bHP" = (
-/obj/machinery/newscaster{
-	name = "south newscaster";
-	pixel_y = -31
-	},
-/turf/simulated/floor/plasteel,
-/area/hallway/primary/starboard/east)
 "bHQ" = (
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
@@ -30205,14 +30198,13 @@
 /turf/simulated/floor/plasteel,
 /area/quartermaster/storage)
 "bWN" = (
-/obj/machinery/vending/plasmaresearch,
 /obj/machinery/light{
 	dir = 1
 	},
 /obj/structure/sign/nosmoking_2{
 	pixel_y = 30
 	},
-/obj/structure/table/reinforced,
+/obj/structure/dispenser,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -55173,22 +55165,23 @@
 	},
 /area/medical/research/restroom)
 "ehC" = (
-/obj/item/assembly/signaler{
-	pixel_x = 8;
-	pixel_y = 5
-	},
-/obj/item/assembly/signaler{
-	pixel_y = 13
-	},
-/obj/item/assembly/signaler{
-	pixel_x = -8;
-	pixel_y = 5
-	},
-/obj/item/assembly/signaler,
 /obj/item/radio/intercom{
 	pixel_y = 24
 	},
 /obj/structure/table/reinforced,
+/obj/item/grenade/chem_grenade,
+/obj/item/grenade/chem_grenade{
+	pixel_x = -7;
+	pixel_y = 6
+	},
+/obj/item/grenade/chem_grenade{
+	pixel_x = 1;
+	pixel_y = 10
+	},
+/obj/item/grenade/chem_grenade{
+	pixel_x = 10;
+	pixel_y = 5
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -55734,6 +55727,18 @@
 /obj/effect/turf_decal/bot_white,
 /turf/simulated/floor/plasteel,
 /area/security/customs)
+"ezA" = (
+/obj/structure/table/reinforced,
+/obj/item/assembly/signaler{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/obj/item/assembly/signaler,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "whitepurple"
+	},
+/area/toxins/launch)
 "ezE" = (
 /obj/structure/sign/securearea,
 /turf/simulated/wall,
@@ -73274,6 +73279,9 @@
 /area/crew_quarters/dorms)
 "pWO" = (
 /obj/machinery/r_n_d/protolathe,
+/obj/item/radio/intercom{
+	pixel_y = 22
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -73551,26 +73559,13 @@
 /turf/simulated/floor/plasteel/airless,
 /area/toxins/test_area)
 "qec" = (
-/obj/structure/table/reinforced,
-/obj/item/grenade/chem_grenade,
-/obj/item/grenade/chem_grenade{
-	pixel_x = 10;
-	pixel_y = 5
-	},
-/obj/item/grenade/chem_grenade{
-	pixel_x = -7;
-	pixel_y = 6
-	},
-/obj/item/grenade/chem_grenade{
-	pixel_x = 1;
-	pixel_y = 10
-	},
 /obj/machinery/requests_console{
 	department = "Science";
 	departmentType = 2;
 	name = "Science Requests Console";
 	pixel_y = 30
 	},
+/obj/machinery/vending/plasmaresearch,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -78637,9 +78632,6 @@
 /area/security/securearmory)
 "tag" = (
 /obj/structure/table,
-/obj/item/radio/intercom{
-	pixel_x = 28
-	},
 /obj/item/mmi/robotic_brain{
 	pixel_x = 5;
 	pixel_y = 5
@@ -87154,6 +87146,9 @@
 /area/maintenance/apmaint)
 "ykL" = (
 /obj/machinery/computer/rdconsole/robotics,
+/obj/machinery/newscaster{
+	pixel_y = 32
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -130492,7 +130487,7 @@ dqE
 bau
 bwv
 bFr
-bHP
+bwv
 bEA
 ykL
 bId
@@ -140022,7 +140017,7 @@ uTI
 cgE
 mab
 lCp
-lCp
+ezA
 qAr
 fdz
 tvE
