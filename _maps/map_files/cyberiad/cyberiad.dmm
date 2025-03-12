@@ -22028,16 +22028,7 @@
 	name = "Robotics Requests Console";
 	pixel_y = 30
 	},
-/obj/structure/table,
-/obj/item/book/manual/robotics_cyborgs{
-	pixel_x = 2;
-	pixel_y = 9
-	},
-/obj/item/book/manual/sop_science{
-	pixel_x = -2;
-	pixel_y = 4
-	},
-/obj/item/folder/white,
+/obj/machinery/r_n_d/circuit_imprinter,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "darkpurple"
@@ -26986,12 +26977,10 @@
 /turf/simulated/wall/r_wall,
 /area/medical/biostorage)
 "bLL" = (
-/obj/structure/table,
-/obj/item/robotanalyzer,
-/obj/item/robotanalyzer,
 /obj/machinery/light{
 	dir = 4
 	},
+/obj/structure/closet/wardrobe/robotics_black,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkpurple"
@@ -28552,37 +28541,10 @@
 	},
 /area/assembly/robotics)
 "bRs" = (
-/obj/structure/table,
-/obj/item/storage/firstaid/regular/empty{
-	name = "First-Aid (empty)";
-	pixel_x = 5
-	},
-/obj/item/storage/firstaid/regular/empty{
-	name = "First-Aid (empty)";
-	pixel_x = 5
-	},
-/obj/item/storage/firstaid/regular/empty{
-	name = "First-Aid (empty)";
-	pixel_x = 5
-	},
-/obj/item/assembly/prox_sensor{
-	pixel_x = -8;
-	pixel_y = 4
-	},
-/obj/item/assembly/prox_sensor{
-	pixel_x = -8;
-	pixel_y = 4
-	},
-/obj/item/assembly/prox_sensor{
-	pixel_x = -8;
-	pixel_y = 4
-	},
-/obj/item/healthanalyzer,
-/obj/item/healthanalyzer,
-/obj/item/healthanalyzer,
 /obj/machinery/status_display{
 	pixel_x = 32
 	},
+/obj/structure/closet/secure_closet/roboticist,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkpurple"
@@ -59512,7 +59474,6 @@
 /area/hallway/primary/starboard/west)
 "gUw" = (
 /obj/machinery/power/apc{
-	dir = 1;
 	pixel_y = -26
 	},
 /obj/structure/cable,
@@ -64791,7 +64752,15 @@
 /turf/simulated/floor/plasteel,
 /area/quartermaster/qm)
 "kuy" = (
-/obj/structure/closet/wardrobe/robotics_black,
+/obj/structure/table,
+/obj/item/book/manual/robotics_cyborgs{
+	pixel_x = 2;
+	pixel_y = 9
+	},
+/obj/item/book/manual/sop_science{
+	pixel_x = -2;
+	pixel_y = 4
+	},
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "darkpurple"
@@ -64807,13 +64776,6 @@
 	},
 /turf/simulated/floor/plating,
 /area/maintenance/asmaint)
-"kuS" = (
-/obj/machinery/r_n_d/circuit_imprinter,
-/turf/simulated/floor/plasteel{
-	dir = 1;
-	icon_state = "darkpurple"
-	},
-/area/assembly/robotics)
 "kvv" = (
 /obj/structure/table_frame/wood,
 /obj/effect/turf_decal/siding/purple{
@@ -66620,7 +66582,6 @@
 /turf/simulated/floor/grass,
 /area/hydroponics)
 "lHp" = (
-/obj/structure/closet/secure_closet/roboticist,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkpurple"
@@ -73369,6 +73330,13 @@
 	icon_state = "caution"
 	},
 /area/crew_quarters/dorms)
+"pWO" = (
+/obj/machinery/r_n_d/protolathe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "darkpurple"
+	},
+/area/assembly/robotics)
 "pWW" = (
 /obj/structure/table/glass,
 /obj/item/reagent_containers/glass/beaker/cryoxadone{
@@ -78719,12 +78687,24 @@
 /area/security/securearmory)
 "tag" = (
 /obj/structure/table,
-/obj/item/mmi,
-/obj/item/mmi,
-/obj/item/mmi,
 /obj/item/radio/intercom{
 	pixel_x = 28
 	},
+/obj/item/mmi/robotic_brain{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/obj/item/mmi/robotic_brain{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/obj/item/mmi/robotic_brain{
+	pixel_x = 5;
+	pixel_y = 5
+	},
+/obj/item/mmi,
+/obj/item/mmi,
+/obj/item/mmi,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkpurple"
@@ -86503,9 +86483,33 @@
 /area/maintenance/fsmaint2)
 "xND" = (
 /obj/structure/table,
-/obj/item/mmi/robotic_brain,
-/obj/item/mmi/robotic_brain,
-/obj/item/mmi/robotic_brain,
+/obj/item/storage/firstaid/regular/empty{
+	name = "First-Aid (empty)";
+	pixel_x = 5
+	},
+/obj/item/storage/firstaid/regular/empty{
+	name = "First-Aid (empty)";
+	pixel_x = 5
+	},
+/obj/item/storage/firstaid/regular/empty{
+	name = "First-Aid (empty)";
+	pixel_x = 5
+	},
+/obj/item/assembly/prox_sensor{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/item/assembly/prox_sensor{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/item/assembly/prox_sensor{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/item/healthanalyzer,
+/obj/item/healthanalyzer,
+/obj/item/healthanalyzer,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "darkpurple"
@@ -130487,7 +130491,7 @@ bwv
 bFr
 bHP
 bEA
-kuS
+ykL
 bId
 bBm
 bId
@@ -130744,7 +130748,7 @@ fmX
 bFr
 gWM
 bEA
-ykL
+pWO
 lIQ
 bBm
 bNf
