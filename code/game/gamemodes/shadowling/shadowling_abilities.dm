@@ -506,7 +506,7 @@
 /obj/effect/proc_holder/spell/shadowling_blindness_smoke
 	name = "Blindness Smoke"
 	desc = "Выпускает облако чёрного дыма, которое лечит рабов."
-	base_cooldown = 10 SECONDS
+	base_cooldown = 30 SECONDS
 	clothes_req = FALSE
 	action_icon_state = "black_smoke"
 
