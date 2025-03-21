@@ -22,8 +22,8 @@
 		TRAIT_EMBEDIMMUNE,
 		TRAIT_NO_SLIP_ALL,
 	)
-	burn_mod = 1 // mod compensation for a deleted shadowling suit
-	heatmod = 1.25
+	burn_mod = 1.25
+	heatmod = 1.5
 	no_equip = list(ITEM_SLOT_HEAD, ITEM_SLOT_EYES, ITEM_SLOT_MASK, ITEM_SLOT_CLOTH_OUTER, ITEM_SLOT_GLOVES, ITEM_SLOT_FEET, ITEM_SLOT_CLOTH_INNER, ITEM_SLOT_SUITSTORE)
 	nojumpsuit = TRUE
 	silent_steps = 1
