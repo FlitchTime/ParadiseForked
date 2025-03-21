@@ -907,7 +907,7 @@
 		revert_cast(user)
 		return
 
-	user.visible_message("<span class='danger'>[user]'s markings flare as [user.p_they()] gesture[user.p_s()] at [target]!</span>", \ //Непереводимая хуйня
+	user.visible_message("<span class='danger'>[user]'s markings flare as [user.p_they()] gesture[user.p_s()] at [target]!</span>", \
 						"<span class='shadowling'>Ты направляешь копьё телекинетической энергии [target].</span>")
 	sleep(0.4 SECONDS)
 
