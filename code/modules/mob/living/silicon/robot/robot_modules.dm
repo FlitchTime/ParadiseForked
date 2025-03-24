@@ -276,6 +276,7 @@
 	modules += new /obj/item/bonesetter(src)
 	modules += new /obj/item/stack/medical/splint/cyborg(src)
 	modules += new /obj/item/stack/nanopaste/cyborg(src)
+	modules += new /obj/item/handheld_chem_dispenser(src)
 	modules += new /obj/item/reagent_containers/glass/beaker/large(src)
 	modules += new /obj/item/reagent_containers/dropper(src)
 	modules += new /obj/item/reagent_containers/syringe(src)
