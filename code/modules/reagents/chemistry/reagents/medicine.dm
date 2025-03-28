@@ -1188,12 +1188,12 @@
 
 /datum/reagent/medicine/syndicate_nanites/overdose_process(mob/living/M, severity)
 	var/update_flags = STATUS_UPDATE_NONE
-	update_flags |= M.adjustBruteLoss(3, FALSE)
-	update_flags |= M.adjustFireLoss(3, FALSE)
-	update_flags |= M.adjustOxyLoss(8, FALSE)
-	update_flags |= M.adjustToxLoss(3, FALSE)
-	update_flags |= M.adjustBrainLoss(8, FALSE)
-	update_flags |= M.adjustCloneLoss(2, FALSE)
+	update_flags |= M.adjustBruteLoss(5.5, FALSE)
+	update_flags |= M.adjustFireLoss(5.5, FALSE)
+	update_flags |= M.adjustOxyLoss(7.5, FALSE)
+	update_flags |= M.adjustToxLoss(2.5, FALSE)
+	update_flags |= M.adjustBrainLoss(8.5, FALSE)
+	update_flags |= M.adjustCloneLoss(2.5, FALSE)
 	if(prob(10))
 		M.AdjustWeakened(1 SECONDS)
 		M.AdjustConfused(5 SECONDS)
