@@ -1172,6 +1172,7 @@
 	description = "Миниатюрные медицинские роботы, которые быстро восстанавливают повреждения тела. Могут начать атаковать клетки своего хозяина в больших количествах."
 	reagent_state = SOLID
 	color = "#555555"
+	overdose_threshold = 30
 	can_synth = FALSE
 	taste_description = "нано-технологий"
 
@@ -1184,6 +1185,19 @@
 	update_flags |= M.adjustBrainLoss(-7.5, FALSE)
 	update_flags |= M.adjustCloneLoss(-1.5, FALSE)
 	return ..() | update_flags
+
+/datum/reagent/medicine/syndicate_nanites/overdose_process(mob/living/M, severity)
+	var/update_flags = STATUS_UPDATE_NONE
+	update_flags |= M.adjustBruteLoss(3, FALSE)
+	update_flags |= M.adjustFireLoss(3, FALSE)
+	update_flags |= M.adjustOxyLoss(8, FALSE)
+	update_flags |= M.adjustToxLoss(3, FALSE)
+	update_flags |= M.adjustBrainLoss(8, FALSE)
+	update_flags |= M.adjustCloneLoss(2, FALSE)
+	if(prob(10))
+		M.AdjustWeakened(1 SECONDS)
+		M.AdjustConfused(5 SECONDS)
+	return list(0, update_flags)
 
 /datum/reagent/medicine/omnizine_diluted
 	name = "Разбавленный омнизин"
