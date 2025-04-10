@@ -1110,7 +1110,9 @@
 			var/atom/movable/screen/screen_object = object
 			if(!screen_object.clear_with_screen)
 				continue
-		if(istype(object, /atom/movable/render_plane_relay) || istype(object, /atom/movable/screen/parallax_layer) || istype(object, /atom/movable/screen/plane_master/))
+		if( istype(object, /atom/movable/render_plane_relay) || \
+			istype(object, /atom/movable/screen/parallax_layer) || \
+			istype(object, /atom/movable/screen/plane_master/))
 			continue
 
 		screen -= object
@@ -1391,6 +1393,12 @@
 		return
 	var/atom/old_eye = eye
 	eye = new_eye
+
+	for(var/mob/dead/observer/observe in mob.orbiters)
+		if(!istype(observe) || !observe.client || !observe.orbit_menu.auto_observe)
+			continue
+		observe.client.eye = new_eye
+
 	SEND_SIGNAL(src, COMSIG_CLIENT_SET_EYE, old_eye, new_eye)
 
 /**

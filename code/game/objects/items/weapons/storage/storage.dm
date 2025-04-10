@@ -180,6 +180,11 @@
 	user.s_active = src
 	LAZYOR(mobs_viewing, user)
 
+	for(var/mob/dead/observer/observe in user.orbiters)
+		if(!istype(observe) || !observe.client || !observe.orbit_menu.auto_observe)
+			continue
+		show_to(observe)
+
 /obj/item/storage/proc/hide_from(mob/user)
 	LAZYREMOVE(mobs_viewing, user) // Remove clientless mobs too
 	if(!user.client)
@@ -190,6 +195,10 @@
 	if(user.s_active == src)
 		user.s_active = null
 
+	for(var/mob/dead/observer/observe in user.orbiters)
+		if(!istype(observe) || !observe.client || !observe.orbit_menu.auto_observe)
+			continue
+		hide_from(observe)
 
 /obj/item/storage/proc/hide_from_all_viewers()
 	if(!LAZYLEN(mobs_viewing))
@@ -212,8 +221,8 @@
 	if(user.s_active)
 		user.s_active.close(user)
 
-	if(user.hud_used.is_shown_robot_modules())
-		user.hud_used.toggle_show_robot_modules()
+	if(user?.hud_used?.is_shown_robot_modules())
+		user?.hud_used?.toggle_show_robot_modules()
 
 	show_to(user)
 
@@ -429,7 +438,9 @@
 		if(usr.client && usr.s_active != src)
 			usr.client.screen -= W
 
-		for(var/mob/dead/observe as anything in usr.orbiters)
+		for(var/mob/dead/observer/observe in usr.orbiters)
+			if(!istype(observe))
+				continue
 			if(observe.client && observe.s_active != src)
 				observe.client.screen -= W
 
