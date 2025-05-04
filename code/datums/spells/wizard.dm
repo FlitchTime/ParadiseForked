@@ -483,7 +483,7 @@
 	if(isliving(user))
 		if(!HAS_TRAIT(user, TRAIT_RESIST_HEAT))
 			ADD_TRAIT(user, TRAIT_RESIST_HEAT, MAGIC_TRAIT)
-			to_chat(user, "<span class='notice'>Ты стал огнестойким.</span>")
+			to_chat(user, span_notice("Ты стал огнестойким."))
 		var/mob/living/U = user
 		U.IgniteMob()
 
