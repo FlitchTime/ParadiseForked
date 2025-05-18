@@ -340,29 +340,27 @@ or something covering your eyes."
 
 
 /atom/movable/screen/alert/negative
-	name = "Negative Gravity"
-	desc = "You're getting pulled upwards. While you won't have to worry about falling down anymore, you may accidentally fall upwards!"
+	name = "Обратная гравитация"
+	desc = "Вас тянет вверх. Хоть падение вниз вам больше не грозит, вы всё ещё можете упасть вверх!"
 	icon_state = "negative"
 
 
 /atom/movable/screen/alert/weightless
-	name = "Weightless"
-	desc = "Gravity has ceased affecting you, and you're floating around aimlessly. You'll need something large and heavy, like a \
-wall or lattice, to push yourself off if you want to move. A jetpack would enable free range of motion. A pair of \
-magboots would let you walk around normally on the floor. Barring those, you can throw things, use a fire extinguisher, \
-or shoot a gun to move around via Newton's 3rd Law of Motion."
+	name = "Невесомость"
+	desc = "Гравитация перестала влиять на вас, и вы парите в пространстве. Чтобы двигаться, вы можете оттолкнуться от ближайших объектов, \
+кинуть что-то от себя или выстрелить в противоположную сторону. Для комфортного перемещения используйте специальное оборудование."
 	icon_state = "weightless"
 
 
 /atom/movable/screen/alert/highgravity
-	name = "High Gravity"
-	desc = "You're getting crushed by high gravity, picking up items and movement will be slowed."
+	name = "Повышенная гравитация"
+	desc = "На вас действует высокая гравитация. Двигаться в таком состоянии непросто."
 	icon_state = "paralysis"
 
 
 /atom/movable/screen/alert/veryhighgravity
-	name = "Crushing Gravity"
-	desc = "You're getting crushed by high gravity, picking up items and movement will be slowed. You'll also accumulate brute damage!"
+	name = "Сокрушительная гравитация"
+	desc = "На вас действует невероятно высокая гравитация. Ощущение, будто вас буквально разрывает на части!"
 	icon_state = "paralysis"
 
 
@@ -878,7 +876,7 @@ so as to remain in compliance with the most up-to-date laws."
 	if(paramslist["shift"]) // screen objects don't do the normal Click() stuff so we'll cheat
 		to_chat(usr, "<span class='boldnotice'>[name]</span> - <span class='info'>[desc]</span>")
 		return FALSE
-		
+
 	if(master)
 		return usr.client.Click(master, location, control, params)
 
