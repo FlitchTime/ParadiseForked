@@ -60759,7 +60759,7 @@
 /obj/structure/chair/office/dark{
 	dir = 8
 	},
-/obj/effect/landmark/start/shaft_miner,
+/obj/effect/landmark/start/mining_medic,
 /turf/simulated/floor/plasteel,
 /area/quartermaster/miningdock)
 "hzs" = (
@@ -67182,6 +67182,11 @@
 /obj/structure/disposalpipe/segment,
 /turf/simulated/floor/plating,
 /area/maintenance/engineering)
+"lOa" = (
+/mob/living/simple_animal/mouse/wooly/rep,
+/obj/structure/chair/comfy/mouse,
+/turf/simulated/floor/wood,
+/area/ntrep)
 "lOg" = (
 /obj/structure/chair/comfy/lime{
 	dir = 8
@@ -69421,6 +69426,7 @@
 /obj/structure/chair/office/dark{
 	dir = 8
 	},
+/obj/effect/landmark/start/mining_medic,
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "brown"
@@ -86592,9 +86598,11 @@
 	name = "Secure Armory";
 	req_access = list(1)
 	},
-/obj/item/clothing/suit/armor/laserproof,
-/obj/item/clothing/suit/armor/laserproof,
 /obj/effect/decal/warning_stripes/red/hollow,
+/obj/item/clothing/shoes/reflector,
+/obj/item/clothing/gloves/reflector,
+/obj/item/clothing/suit/armor/reflector,
+/obj/item/clothing/head/helmet/reflector,
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "darkred"
@@ -113288,7 +113296,7 @@ cdV
 cdN
 cgW
 ckI
-ccK
+lOa
 cmK
 com
 ncD
