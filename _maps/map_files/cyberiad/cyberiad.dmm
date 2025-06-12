@@ -70361,7 +70361,6 @@
 "okX" = (
 /obj/structure/cable,
 /obj/machinery/power/apc{
-	dir = 8;
 	pixel_y = -28
 	},
 /turf/simulated/floor/plasteel{
