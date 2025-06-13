@@ -61448,9 +61448,6 @@
 /turf/simulated/floor/plating,
 /area/maintenance/livingcomplex)
 "iqB" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
-	},
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
