@@ -26471,6 +26471,7 @@
 /obj/machinery/atmospherics/pipe/manifold/hidden{
 	dir = 1
 	},
+/obj/machinery/hologram/holopad,
 /turf/simulated/floor/plasteel{
 	icon_state = "freezerfloor"
 	},
@@ -57619,6 +57620,15 @@
 	},
 /turf/simulated/floor/plating,
 /area/storage/tech)
+"fRm" = (
+/obj/structure/cable{
+	icon_state = "4-8"
+	},
+/obj/machinery/hologram/holopad,
+/turf/simulated/floor/plasteel{
+	icon_state = "white"
+	},
+/area/medical/biostorage)
 "fRL" = (
 /obj/machinery/alarm{
 	dir = 4;
@@ -60598,6 +60608,7 @@
 "hKi" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/hologram/holopad,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
@@ -124843,7 +124854,7 @@ uwX
 bLK
 jVc
 hjB
-eaY
+fRm
 iWR
 bKc
 nFg
