@@ -207,6 +207,9 @@
 		"hallucigen:laugh:moan" = new /datum/disease/virus/advance/preset/pre_loyalty()
 	)
 
+	//Init BSA fire modes list
+	init_datum_subtypes(/datum/bluespace_cannon_fire_mode, GLOB.BSA_modes_list, null, "name")
+
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
 /proc/init_subtypes(prototype, list/L)
