@@ -895,6 +895,7 @@
 			Оснащена невероятно удобной рукоятью, которая обеспечивает надёжное удержание и исключает риск случайного выронить её во время работы."
 	item = /obj/item/twohanded/chainsaw
 	cost = 60
+	hijack_only = TRUE
 
 /datum/uplink_item/dangerous/rapier
 	name = "Рапира Синдиката"
