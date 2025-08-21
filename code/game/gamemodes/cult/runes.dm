@@ -29,7 +29,7 @@ To draw a rune, use a ritual dagger.
 	var/view_range = 7
 	invisibility = INVISIBILITY_RUNES
 	layer = SIGIL_LAYER
-	color = COLOR_BLOOD_BASE
+	color = RUNE_COLOR_RED
 
 	/// What is said by cultists when the rune is invoked
 	var/invocation = "Aiy ele-mayo!"
@@ -56,7 +56,7 @@ To draw a rune, use a ritual dagger.
 	/// How much damage cultists take when invoking it (This includes constructs)
 	var/invoke_damage = 0
 	/// The color of the rune. (Based on species blood color)
-	var/rune_blood_color = COLOR_BLOOD_BASE
+	var/rune_blood_color = RUNE_COLOR_RED
 
 /obj/effect/rune/New(loc, set_keyword)
 	..()
@@ -915,8 +915,10 @@ structure_check() searches for nearby cultist structures required for the invoca
 	qdel(shield)
 	ghosts--
 	if(new_human)
-		new_human.visible_message(span_warning("[new_human] suddenly dissolves into bones and ashes."),
-								  span_cultlarge("Your link to the world fades. Your form breaks apart."))
+		new_human.visible_message(
+			span_warning("[new_human] suddenly dissolves into bones and ashes."),
+			span_cultlarge("Your link to the world fades. Your form breaks apart.")
+		)
 		for(var/obj/item/I in new_human.get_all_slots())
 			new_human.drop_item_ground(I)
 		SSticker.mode.remove_cultist(new_human.mind, FALSE)
