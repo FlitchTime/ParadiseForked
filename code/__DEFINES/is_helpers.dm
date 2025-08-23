@@ -211,6 +211,10 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 /// in some situations we can't rely on dynamic typing and use if(statement)
 #define istrue(statement) (statement == TRUE)
 
+
+#define isbeachwater(A) (istype(A, /turf/simulated/floor/beach/water))
+#define isbeachwater_i(A) (istype(A, /turf/simulated/floor/indestructible/beach/water))
+
 #define isanimal(A)		(istype((A), /mob/living/simple_animal) || istype(A, /mob/living/basic))
 #define iscat(A)		(istype((A), /mob/living/simple_animal/pet/cat))
 #define isdog(A)		(istype((A), /mob/living/simple_animal/pet/dog))
@@ -302,3 +306,4 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isdrask(A) (is_species(A, /datum/species/drask))
 #define iswryn(A) (is_species(A, /datum/species/wryn))
 #define ismoth(A) (is_species(A, /datum/species/moth))
+
