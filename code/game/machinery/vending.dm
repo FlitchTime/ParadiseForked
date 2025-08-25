@@ -927,6 +927,12 @@
 				. = TRUE
 				return
 
+			if(issilicon(usr))
+				to_chat(usr, span_warning("[capitalize(declent_ru(NOMINATIVE))] отказывается продавать вам товар, поскольку вы не входите в его целевую аудиторию!"))
+				vend_ready = TRUE
+				. = TRUE
+				return
+
 			// --- THE REST OF THIS PROC IS JUST PAYMENT LOGIC ---
 			if(!GLOB.vendor_account || GLOB.vendor_account.suspended)
 				to_chat(usr, "Удалённый сервер торговых автоматов отключён. Не удается обработать операцию.")
