@@ -146,7 +146,7 @@ Difficulty: Very Hard
 	..()
 	if(!exploding)
 		return
-	playsound(src, 'sound/items/timer.ogg', 70, 0)
+	playsound(src, 'sound/items/timer.ogg', 70, FALSE)
 
 /mob/living/simple_animal/hostile/megafauna/ancient_robot/drop_loot()
 	var/core_type = null
@@ -325,7 +325,7 @@ Difficulty: Very Hard
 /mob/living/simple_animal/hostile/megafauna/ancient_robot/bullet_act(obj/projectile/P)
 	if(!body_shield_enabled)
 		return ..()
-	do_sparks(2, 1, src)
+	do_sparks(2, TRUE, src)
 	visible_message(span_danger("Щит [declent_ru(ACCUSATIVE)] отражает [P.declent_ru(ACCUSATIVE)] с искрами!"), span_userdanger("Вы отражаете снаряд!"), projectile_message = TRUE)
 	if(P.damage)
 		disable_shield()
@@ -336,7 +336,7 @@ Difficulty: Very Hard
 		return ..()
 
 	. = ATTACK_CHAIN_BLOCKED
-	do_sparks(2, 1, src)
+	do_sparks(2, TRUE, src)
 	visible_message(
 		span_danger("Щит [declent_ru(ACCUSATIVE)] отражает [I.declent_ru(ACCUSATIVE)] с искрами!"),
 		span_warning("Ваш щит отражает атаку!"),
@@ -480,7 +480,7 @@ Difficulty: Very Hard
 	say(pick("OTZKMXOZE LGORAXK, YKRL JKYZXAIZ GIZOBK", "RUYY IKXZGOT, KTMGMKOTM XKIUBKXE JKTOGR", "VUCKX IUXKY 8-12 HXKGINKJ, UBKXRUGJOTM XKSGOTOTM IUXKY", "KXXUX KXXUX KXXUX KXXUX KXX-", "-ROQK ZKGXY OT XGOT- - -ZOSK ZU JOK"))
 	visible_message(span_biggerdanger("[declent_ru(NOMINATIVE)] начинает перегружать своё ядро. Оно вот-вот взорвётся!"))
 	SSmove_manager.stop_looping(src)
-	playsound(src,'sound/machines/alarm.ogg',100,0,5)
+	playsound(src,'sound/machines/alarm.ogg',100, FALSE,5)
 	addtimer(CALLBACK(src, PROC_REF(kaboom)), 10 SECONDS)
 
 /mob/living/simple_animal/hostile/megafauna/ancient_robot/proc/kaboom()
@@ -594,8 +594,8 @@ Difficulty: Very Hard
 		if(VORTEX)
 			var/turf/T = get_turf(src)
 			for(var/atom/A in T)
-				A.ex_act(3) //Body is immune to explosions of this strength.
-			T.ex_act(3)
+				A.ex_act(EXPLODE_LIGHT) //Body is immune to explosions of this strength.
+			T.ex_act(EXPLODE_LIGHT)
 
 	if(beam && !QDELETED(beam))
 		beam.forceMove(get_turf(src))

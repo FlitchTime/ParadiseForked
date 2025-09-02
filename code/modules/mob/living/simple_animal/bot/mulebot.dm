@@ -716,7 +716,7 @@
 			loaddir = dir //The MULE will attempt to load a crate in whatever direction the MULE is "facing".
 			if(calling_ai)
 				to_chat(calling_ai, "<span class='notice'>[bicon(src)] [capitalize(declent_ru(NOMINATIVE))] удалённо проигрывает звук звонка!</span>")
-				playsound(calling_ai, 'sound/machines/chime.ogg',40, 0)
+				playsound(calling_ai, 'sound/machines/chime.ogg',40, FALSE)
 				calling_ai = null
 				radio_channel = AI_FREQ_NAME //Report on AI Private instead if the AI is controlling us.
 
@@ -960,10 +960,10 @@
 		cell.update_icon()
 		cell = null
 
-	do_sparks(3, 1, src)
+	do_sparks(3, TRUE, src)
 
 	new /obj/effect/decal/cleanable/blood/oil(loc)
-	..()
+	return ..()
 
 
 /mob/living/simple_animal/bot/mulebot/remove_air(amount) //To prevent riders suffocating
