@@ -31962,6 +31962,7 @@
 /turf/simulated/floor/plasteel,
 /area/quartermaster/storage)
 "dqz" = (
+/obj/machinery/vending/medical,
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "whiteblue"
