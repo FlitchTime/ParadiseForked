@@ -713,3 +713,4 @@
 	adm_query.warn_execute()
 	qdel(adm_query)
 
+#undef MAX_ADMIN_BANS_PER_ADMIN
