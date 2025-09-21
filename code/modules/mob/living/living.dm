@@ -703,6 +703,7 @@
 
 
 /mob/proc/get_contents()
+	return
 
 
 //Recursive function to find everything a mob is holding.
@@ -2136,6 +2137,7 @@
 /// Proc to append and redefine behavior to the change of the [/mob/living/var/resting] variable.
 /mob/living/proc/update_resting()
 	//update_rest_hud_icon()
+	return
 
 
 /// Change the [body_position] to [LYING_DOWN] and update associated behavior.

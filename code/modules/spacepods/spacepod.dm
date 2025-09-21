@@ -119,7 +119,6 @@
 			part_type = PAINT
 		if("Стекла")
 			part_type = WINDOW
-		else
 	var/coloradd = tgui_input_color(user, "Выберите цвет", "Цвет")
 	if(isnull(coloradd))
 		return
@@ -958,7 +957,7 @@
 	if(user.incapacitated() || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
 		return
 
-	if(user in passengers && user != pilot)
+	if((user in passengers) && user != pilot)
 		to_chat(user, span_notice("Вы не можете дотянуться до штурвала."))
 		return
 
