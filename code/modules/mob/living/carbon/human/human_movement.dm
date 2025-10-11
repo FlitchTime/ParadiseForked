@@ -249,8 +249,8 @@
 	if(m_intent != MOVE_INTENT_RUN)
 		return
 
-	to_chat(src, span_userdanger("Gravity exhausts you!"))
-	apply_damage(35, STAMINA)
+	to_chat(src, span_userdanger("Гравитация впечатывает вас в пол!"))
+	Knockdown(1 SECONDS)
 
 
 /mob/living/carbon/human/slip(weaken, obj/slipped_on, lube_flags, tilesSlipped)
