@@ -287,6 +287,8 @@ do { \
 /obj/item/storage/belt/chameleon
 	name = "toolbelt"
 	desc = "Holds tools."
+	max_combined_w_class = 18
+	max_w_class = WEIGHT_CLASS_NORMAL
 	actions_types = list(/datum/action/item_action/chameleon/change/belt)
 
 
