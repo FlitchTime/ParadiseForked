@@ -146,6 +146,11 @@
 	if(user.buckled && isobj(user.buckled) && !user.buckled.anchored)
 		var/movementdirection = REVERSE_DIR(direction)
 		addtimer(CALLBACK(src, PROC_REF(move_chair), user.buckled, movementdirection), 0.1 SECONDS)
+		if(prob(20))
+			user.buckled.unbuckle_mob(user)
+			var/mob/living/living = user
+			if(istype(living))
+				living.Knockdown(1 SECONDS)
 	else
 		user.newtonian_move(REVERSE_DIR(direction))
 
