@@ -21,7 +21,7 @@
 	attachable_offset = list(
 		ATTACHMENT_SLOT_MUZZLE = list("x" = 26, "y" = 1),
 		ATTACHMENT_SLOT_RAIL = list("x" = 6, "y" = 5),
-		ATTACHMENT_SLOT_UNDER = list("x" = 12, "y" = -4)
+		ATTACHMENT_SLOT_UNDER = list("x" = 12, "y" = -4),
 	)
 	recoil = GUN_RECOIL_MEGA
 	fire_modes = GUN_MODE_SINGLE_ONLY
@@ -55,7 +55,7 @@
 	attachable_offset = list(
 		ATTACHMENT_SLOT_MUZZLE = list("x" = 21, "y" = 1),
 		ATTACHMENT_SLOT_RAIL = list("x" = 6, "y" = 5),
-		ATTACHMENT_SLOT_UNDER = list("x" = 12, "y" = -4)
+		ATTACHMENT_SLOT_UNDER = list("x" = 12, "y" = -4),
 	)
 
 //Normal Boolets
@@ -468,7 +468,7 @@
 		DATIVE = "коробке снайперских патронов (.338)",
 		ACCUSATIVE = "коробку снайперских патронов (.338)",
 		INSTRUMENTAL = "коробкой снайперских патронов (.338)",
-		PREPOSITIONAL = "коробке снайперских патронов (.338)"
+		PREPOSITIONAL = "коробке снайперских патронов (.338)",
 	)
 
 /obj/item/ammo_box/a338/explosive
@@ -483,7 +483,7 @@
 		DATIVE = "коробке разрывных снайперских патронов (.338)",
 		ACCUSATIVE = "коробку разрывных снайперских патронов (.338)",
 		INSTRUMENTAL = "коробкой разрывных снайперских патронов (.338)",
-		PREPOSITIONAL = "коробке разрывных снайперских патронов (.338)"
+		PREPOSITIONAL = "коробке разрывных снайперских патронов (.338)",
 	)
 
 /obj/item/ammo_box/a338/penetrator
@@ -498,5 +498,5 @@
 		DATIVE = "коробке проникающих снайперских патронов (.338)",
 		ACCUSATIVE = "коробку проникающих снайперских патронов (.338)",
 		INSTRUMENTAL = "коробкой проникающих снайперских патронов (.338)",
-		PREPOSITIONAL = "коробке проникающих снайперских патронов (.338)"
+		PREPOSITIONAL = "коробке проникающих снайперских патронов (.338)",
 	)

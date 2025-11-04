@@ -106,7 +106,7 @@
 		DATIVE = "универсальному глушителю",
 		ACCUSATIVE = "универсальный глушитель",
 		INSTRUMENTAL = "универсальным глушителем",
-		PREPOSITIONAL = "универсальном глушителе"
+		PREPOSITIONAL = "универсальном глушителе",
 	)
 
 /obj/item/gun_module/muzzle/suppressor/on_attach(obj/item/gun/target_gun, mob/user)
@@ -184,7 +184,7 @@
 		DATIVE = "самодельному глушителю",
 		ACCUSATIVE = "самодельный глушитель",
 		INSTRUMENTAL = "самодельным глушителем",
-		PREPOSITIONAL = "самодельном глушителе"
+		PREPOSITIONAL = "самодельном глушителе",
 	)
 
 /obj/item/gun_module/muzzle/suppressor/handmade/on_attach(obj/item/gun/target_gun, mob/user)
@@ -227,7 +227,7 @@
 		DATIVE = "универсальному компенсатору",
 		ACCUSATIVE = "универсальный компенсатор",
 		INSTRUMENTAL = "универсальным компенсатором",
-		PREPOSITIONAL = "универсальном компенсаторе"
+		PREPOSITIONAL = "универсальном компенсаторе",
 	)
 
 /obj/item/gun_module/muzzle/compensator/on_attach(obj/item/gun/target_gun, mob/user)
@@ -331,7 +331,7 @@
 		DATIVE = "коллиматорному прицелу",
 		ACCUSATIVE = "коллиматорный прицел",
 		INSTRUMENTAL = "коллиматорным прицелом",
-		PREPOSITIONAL = "коллиматорном прицеле"
+		PREPOSITIONAL = "коллиматорном прицеле",
 	)
 
 /obj/item/gun_module/rail/scope/collimator/pistol
@@ -349,7 +349,7 @@
 		DATIVE = "пистолетному коллиматорному прицелу",
 		ACCUSATIVE = "пистолетный коллиматорный прицел",
 		INSTRUMENTAL = "пистолетным коллиматорным прицелом",
-		PREPOSITIONAL = "пистолетном коллиматорном прицеле"
+		PREPOSITIONAL = "пистолетном коллиматорном прицеле",
 	)
 
 /obj/item/gun_module/rail/scope/x4
@@ -372,7 +372,7 @@
 		DATIVE = "оптическому прицелу х4",
 		ACCUSATIVE = "оптический прицел х4",
 		INSTRUMENTAL = "оптическим прицелом х4",
-		PREPOSITIONAL = "оптическом прицеле х4"
+		PREPOSITIONAL = "оптическом прицеле х4",
 	)
 
 /obj/item/gun_module/rail/scope/x8
@@ -394,7 +394,7 @@
 		DATIVE = "оптическому прицелу х8",
 		ACCUSATIVE = "оптический прицел х8",
 		INSTRUMENTAL = "оптическим прицелом х8",
-		PREPOSITIONAL = "оптическом прицеле х8"
+		PREPOSITIONAL = "оптическом прицеле х8",
 	)
 
 /obj/item/gun_module/rail/scope/x16
@@ -417,7 +417,7 @@
 		DATIVE = "оптическому прицелу х16",
 		ACCUSATIVE = "оптический прицел х16",
 		INSTRUMENTAL = "оптическим прицелом х16",
-		PREPOSITIONAL = "оптическом прицеле х16"
+		PREPOSITIONAL = "оптическом прицеле х16",
 	)
 
 /obj/item/gun_module/rail/hud
@@ -487,7 +487,7 @@
 		DATIVE = "коллиматору с медицинским ИЛС",
 		ACCUSATIVE = "коллиматорс медицинским ИЛС",
 		INSTRUMENTAL = "коллиматором с медицинским ИЛС",
-		PREPOSITIONAL = "коллиматоре с медицинским ИЛС"
+		PREPOSITIONAL = "коллиматоре с медицинским ИЛС",
 	)
 
 /obj/item/gun_module/rail/hud/security
@@ -508,7 +508,7 @@
 		DATIVE = "коллиматору с охранным ИЛС",
 		ACCUSATIVE = "коллиматор с охранным ИЛС",
 		INSTRUMENTAL = "коллиматором с охранным ИЛС",
-		PREPOSITIONAL = "коллиматоре с охранным ИЛС"
+		PREPOSITIONAL = "коллиматоре с охранным ИЛС",
 	)
 
 /**
@@ -585,7 +585,7 @@
 		DATIVE = "подствольному фонарю для пистолетов",
 		ACCUSATIVE = "подствольный фонарь для пистолетов",
 		INSTRUMENTAL = "подствольным фонарём для пистолетов",
-		PREPOSITIONAL = "подствольном фонаре для пистолетов"
+		PREPOSITIONAL = "подствольном фонаре для пистолетов",
 	)
 
 /obj/item/gun_module/under/flashlight/rifle
@@ -604,7 +604,7 @@
 		DATIVE = "подствольному фонарю",
 		ACCUSATIVE = "подствольный фонарь",
 		INSTRUMENTAL = "подствольным фонарём",
-		PREPOSITIONAL = "подствольном фонаре"
+		PREPOSITIONAL = "подствольном фонаре",
 	)
 
 /obj/item/gun_module/under/hand
@@ -643,7 +643,7 @@
 		DATIVE = "прямой рукоятке",
 		ACCUSATIVE = "прямая рукоятка",
 		INSTRUMENTAL = "прямой рукояткой",
-		PREPOSITIONAL = "прямой рукоятке"
+		PREPOSITIONAL = "прямой рукоятке",
 	)
 
 /obj/item/gun_module/under/hand/angle
@@ -663,7 +663,7 @@
 		DATIVE = "угловой рукоятке",
 		ACCUSATIVE = "угловая рукоятка",
 		INSTRUMENTAL = "угловой рукояткой",
-		PREPOSITIONAL = "угловой рукоятке"
+		PREPOSITIONAL = "угловой рукоятке",
 	)
 
 /obj/item/gun_module/under/laser
@@ -743,7 +743,7 @@
 		DATIVE = "лазерному целеуказателю (луч)",
 		ACCUSATIVE = "лазерный целеуказатель (луч)",
 		INSTRUMENTAL = "лазерным целеуказателем (луч)",
-		PREPOSITIONAL = "лазерном целеуказателе (луч)"
+		PREPOSITIONAL = "лазерном целеуказателе (луч)",
 	)
 
 /obj/item/gun_module/under/laser/point
@@ -757,5 +757,5 @@
 		DATIVE = "лазерному целеуказателю (точка)",
 		ACCUSATIVE = "лазерный целеуказатель (точка)",
 		INSTRUMENTAL = "лазерным целеуказателем (точка)",
-		PREPOSITIONAL = "лазерном целеуказателе (точка)"
+		PREPOSITIONAL = "лазерном целеуказателе (точка)",
 	)
