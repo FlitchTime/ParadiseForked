@@ -1212,6 +1212,9 @@
 	caliber = CALIBER_LASER
 	max_ammo = 12
 
+/obj/item/ammo_box/magazine/lr30mag/empty
+	start_empty = TRUE
+
 /obj/item/ammo_box/magazine/lr30mag/get_ru_names()
 	return list(
 		NOMINATIVE = "автоматный магазин LR-30 (лазерный)",
