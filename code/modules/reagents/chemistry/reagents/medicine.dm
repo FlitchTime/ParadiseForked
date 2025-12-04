@@ -145,14 +145,23 @@
 			C.setBlood(min(C.blood_volume + round(volume, 0.1), BLOOD_VOLUME_NORMAL))
 			C.reagents.del_reagent(id)
 
+	if(iscarbon(M))
+		data["method"] = method
+		if(method == REAGENT_INGEST && M.bodytemperature < TCRYO)
+			to_chat(M, span_warning("Всё внутри вас замерзает!"))
+	..()
+
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/M)
 	var/update_flags = STATUS_UPDATE_NONE
-	if(iscarbon(M) && M.bodytemperature < TCRYO)
-		update_flags |= M.adjustCloneLoss(-1, FALSE)
-		update_flags |= M.adjustOxyLoss(-2, FALSE)
-		update_flags |= M.adjustToxLoss(-0.5, FALSE)
-		update_flags |= M.adjustBruteLoss(-2, FALSE, affect_robotic = FALSE)
-		update_flags |= M.adjustFireLoss(-4, FALSE, affect_robotic = FALSE)
+	if(M.bodytemperature < TCRYO && data["method"] == REAGENT_TOUCH)
+		update_flags |= M.adjustCloneLoss(-4, FALSE)
+		update_flags |= M.adjustOxyLoss(-10, FALSE)
+		update_flags |= M.adjustToxLoss(-03, FALSE)
+		update_flags |= M.adjustBruteLoss(-12, FALSE, affect_robotic = FALSE)
+		update_flags |= M.adjustFireLoss(-12, FALSE, affect_robotic = FALSE)
+		M.Stun(4 SECONDS)
+		if(M.stat == CONSCIOUS && prob(25))
+			to_chat(M, span_warning("Ваши мышцы свело судуругой, вы не можете пошевелиться!"))
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			var/obj/item/organ/external/head/head = H.get_organ(BODY_ZONE_HEAD)
