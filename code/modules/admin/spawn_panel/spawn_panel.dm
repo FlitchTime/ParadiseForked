@@ -1,20 +1,3 @@
-#define WHERE_FLOOR_BELOW_MOB "Current location"
-#define WHERE_SUPPLY_BELOW_MOB "Current location (droppod)"
-#define WHERE_MOB_HAND "In own mob's hand"
-#define WHERE_MARKED_OBJECT "At a marked object"
-#define WHERE_IN_MARKED_OBJECT "In the marked object"
-#define WHERE_TARGETED_LOCATION "Targeted location"
-#define WHERE_TARGETED_LOCATION_POD "Targeted location (droppod)"
-#define WHERE_TARGETED_MOB_HAND "In targeted mob's hand"
-
-#define PRECISE_MODE_OFF "Off"
-#define PRECISE_MODE_TARGET "Target"
-#define PRECISE_MODE_MARK "Mark"
-#define PRECISE_MODE_COPY "Copy"
-
-#define OFFSET_ABSOLUTE "Absolute offset"
-#define OFFSET_RELATIVE "Relative offset"
-
 /*
 	An instance of a /tg/UI™ Spawn Panel. Stores preferences, spawns things, controls the UI. Unique for each user (their ckey).
 */
@@ -72,7 +55,7 @@
 
 	switch(action)
 		if("select-new-DMI")
-			var/icon/new_icon = input("Select a new icon file:", "Icon") as null|icon
+			var/icon/new_icon = input("Выберите новый файл иконки:", "Иконка") as null|icon
 			if(new_icon)
 				selected_atom_icon = new_icon
 				available_icon_states = icon_states(selected_atom_icon)
@@ -253,12 +236,12 @@
 		if(PRECISE_MODE_MARK)
 			var/client/admin_client = user.client
 			admin_client.mark_datum(target)
-			to_chat(user, span_notice("Marked object: [icon2html(target, user)] [span_bold("[target]")]"))
+			to_chat(user, span_notice("Отмеченный объект: [icon2html(target, user)] [span_bold("[target]")]"))
 			toggle_precise_mode(PRECISE_MODE_OFF)
 			SStgui.update_uis(src)
 
 		if(PRECISE_MODE_COPY)
-			to_chat(user, span_notice("Picked object: [icon2html(target, user)] [span_bold("[target]")]"))
+			to_chat(user, span_notice("Выбранный объект: [icon2html(target, user)] [span_bold("[target]")]"))
 			selected_atom = target
 			toggle_precise_mode(PRECISE_MODE_OFF)
 			SStgui.update_uis(src)
@@ -284,21 +267,6 @@
 	return list(
 		get_asset_datum(/datum/asset/json/spawnpanel),
 	)
-
-#undef WHERE_FLOOR_BELOW_MOB
-#undef WHERE_SUPPLY_BELOW_MOB
-#undef WHERE_MOB_HAND
-#undef WHERE_MARKED_OBJECT
-#undef WHERE_IN_MARKED_OBJECT
-#undef WHERE_TARGETED_LOCATION
-#undef WHERE_TARGETED_LOCATION_POD
-#undef WHERE_TARGETED_MOB_HAND
-#undef PRECISE_MODE_OFF
-#undef PRECISE_MODE_TARGET
-#undef PRECISE_MODE_MARK
-#undef PRECISE_MODE_COPY
-#undef OFFSET_ABSOLUTE
-#undef OFFSET_RELATIVE
 
 ADMIN_VERB(spawn_panel, R_SPAWN, "Spawn Panel", "Spawn Panel (TGUI).", ADMIN_CATEGORY_EVENTS)
 	var/datum/spawnpanel/panel = user.holder.spawn_panel
