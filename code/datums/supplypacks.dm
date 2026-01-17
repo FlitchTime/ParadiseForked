@@ -2189,6 +2189,38 @@ GLOBAL_LIST_INIT(all_supply_groups, list(SUPPLY_EMERGENCY,SUPPLY_SECURITY,SUPPLY
 	)
 	access = ACCESS_CE
 
+/datum/supply_packs/engineering/industrialtols
+	name = "Продвинутые инструменты"
+	containername = "ящик продвинутых инструментов"
+	contains = list(
+		/obj/item/weldingtool/hugetank,
+		/obj/item/weldingtool/hugetank,
+		/obj/item/weldingtool/hugetank,
+		/obj/item/wrench/industrial,
+		/obj/item/wrench/industrial,
+		/obj/item/wrench/industrial,
+		/obj/item/crowbar/industrial,
+		/obj/item/crowbar/industrial,
+		/obj/item/crowbar/industrial,
+		/obj/item/wirecutters/industrial,
+		/obj/item/wirecutters/industrial,
+		/obj/item/wirecutters/industrial,
+		/obj/item/screwdriver/industrial,
+		/obj/item/screwdriver/industrial,
+		/obj/item/screwdriver/industrial,
+	)
+	cost = 60
+	containertype = /obj/structure/closet/crate/secure/engineering
+	containername = "ящик продвинутых инструментов"
+	container_ru_names = list(
+		NOMINATIVE = "ящик продвинутых инструментов",
+		GENITIVE = "ящика продвинутых инструментов",
+		DATIVE = "ящику продвинутых инструментов",
+		ACCUSATIVE = "ящик продвинутых инструментов",
+		INSTRUMENTAL = "ящиком продвинутых инструментов",
+		PREPOSITIONAL = "ящике продвинутых инструментов",
+	)
+
 ///////////// Station Goals
 
 /datum/supply_packs/misc/station_goal
@@ -3375,15 +3407,15 @@ GLOBAL_LIST_INIT(all_supply_groups, list(SUPPLY_EMERGENCY,SUPPLY_SECURITY,SUPPLY
 	required_tech = list(RESEARCH_TREE_POWERSTORAGE = 6, RESEARCH_TREE_MATERIALS = 6, RESEARCH_TREE_ENGINEERING = 5, RESEARCH_TREE_BLUESPACE = 5,)
 
 /datum/supply_packs/science/adv_tools
-	name = "Продвинутые инструменты"
-	containername = "ящик продвинутых инструментов"
+	name = "Технологичные инструменты"
+	containername = "ящик технологичных инструментов"
 	container_ru_names = list(
-		NOMINATIVE = "ящик продвинутых инструментов",
-		GENITIVE = "ящика продвинутых инструментов",
-		DATIVE = "ящику продвинутых инструментов",
-		ACCUSATIVE = "ящик продвинутых инструментов",
-		INSTRUMENTAL = "ящиком продвинутых инструментов",
-		PREPOSITIONAL = "ящике продвинутых инструментов",
+		NOMINATIVE = "ящик технологичных инструментов",
+		GENITIVE = "ящика технологичных инструментов",
+		DATIVE = "ящику технологичных инструментов",
+		ACCUSATIVE = "ящик технологичных инструментов",
+		INSTRUMENTAL = "ящиком технологичных инструментов",
+		PREPOSITIONAL = "ящике технологичных инструментов",
 	)
 	cost = 200
 	contains = list(
