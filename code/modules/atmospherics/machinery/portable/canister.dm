@@ -194,7 +194,7 @@
 	var/datum/gas_mixture/mixture = return_obj_air()
 	if(mixture && mixture.volume > 0)
 		return mixture.temperature()
-	return
+	return 0
 
 /obj/machinery/portable_atmospherics/canister/proc/return_pressure()
 	var/datum/gas_mixture/mixture = return_obj_air()
