@@ -27,6 +27,7 @@
 
 /obj/item/organ/internal/cyberimp/arm/Destroy()
 	QDEL_NULL(active_item)
+	QDEL_LIST(items_list)
 	hand = null
 	return ..()
 
@@ -300,7 +301,8 @@
 
 /obj/item/organ/internal/cyberimp/arm/flash/Extend(obj/item/item)
 	. = ..()
-	active_item.set_light(7, l_on = TRUE)
+	active_item.set_light_range(7)
+	active_item.set_light_on(TRUE)
 
 /obj/item/organ/internal/cyberimp/arm/flash/Retract()
 	if(!active_item || (active_item in src))
