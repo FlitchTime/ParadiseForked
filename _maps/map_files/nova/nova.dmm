@@ -98919,11 +98919,11 @@
 /obj/item/reagent_containers/spray/cleaner/medical{
 	pixel_x = -5
 	},
-/obj/machinery/newscaster{
-	pixel_y = 32
-	},
 /obj/item/reagent_containers/spray/cleaner/medical{
 	pixel_x = 5
+	},
+/obj/structure/reagent_dispensers/spacecleanertank{
+	pixel_y = 31
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -146280,6 +146280,9 @@
 /obj/item/reagent_containers/hypospray/safety,
 /obj/item/storage/belt/medical,
 /obj/item/clothing/glasses/hud/health,
+/obj/machinery/newscaster{
+	pixel_x = -32
+	},
 /turf/simulated/floor/plasteel{
 	dir = 10;
 	icon_state = "whiteblue"
