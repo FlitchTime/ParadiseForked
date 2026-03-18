@@ -1,4 +1,0 @@
-author: "littleboobs"
-delete-after: True
-changes:
-  - server: "Фикс компиляции cl (PR #8698)"
