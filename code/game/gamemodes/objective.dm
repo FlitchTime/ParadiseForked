@@ -1737,6 +1737,23 @@ GLOBAL_LIST_EMPTY(admin_objective_list)
 	needs_target = FALSE
 	explanation_text = "Убивайте всех, кто не является ксеноморфом. Утопите станцию в крови!"
 
+/datum/objective/bingle_lord
+	needs_target = FALSE
+	antag_menu_name = "Создать яму"
+	explanation_text = "Найдите на станции укромное место, где вы сможете быстро напитать вашу яму."
+
+/datum/objective/bingle
+	needs_target = FALSE
+	antag_menu_name = "Защищайте и наращивайте вашу яму."
+	explanation_text = "Тащите в яму всё, что попадётся под ноги."
+
+// If there is any hole with max-size, then the goal is completed
+/datum/objective/bingle/check_completion()
+	if(!team)
+		return FALSE
+	var/datum/team/bingles/bingle_team = team
+	return bingle_team.goal_size_achieved
+
 /datum/objective/serve
 	name = "Служить"
 	antag_menu_name = "Служить"
