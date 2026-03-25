@@ -83217,6 +83217,7 @@
 /obj/machinery/newscaster/security_unit{
 	pixel_y = -28
 	},
+/obj/machinery/station_map/security/directional/south,
 /turf/simulated/floor/wood,
 /area/security/hos)
 "oAp" = (
@@ -83440,10 +83441,10 @@
 /area/security/checkpoint/south)
 "oCG" = (
 /obj/machinery/light,
+/obj/machinery/papershredder,
 /obj/structure/sign/poster/official/random{
 	pixel_y = -32
 	},
-/obj/machinery/papershredder,
 /turf/simulated/floor/wood,
 /area/security/hos)
 "oDd" = (
@@ -102241,9 +102242,6 @@
 /area/aisat/maintenance)
 "sLr" = (
 /obj/machinery/light,
-/obj/structure/sign/poster/official/random{
-	pixel_y = -32
-	},
 /obj/machinery/alarm{
 	dir = 8;
 	pixel_x = 22
