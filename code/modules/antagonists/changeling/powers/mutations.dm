@@ -152,7 +152,6 @@
 	w_class = WEIGHT_CLASS_HUGE
 	sharp = TRUE
 	force = 35
-	armour_penetration = 0
 	block_chance = 75
 	block_type = MELEE_ATTACKS
 	hitsound = 'sound/weapons/armblade.ogg'
@@ -244,7 +243,6 @@
 	item_flags = ABSTRACT|DROPDEL
 	w_class = WEIGHT_CLASS_HUGE
 	force = 35
-	armour_penetration = 0
 	hitsound = SFX_SWING_HIT
 	throw_range = 0
 	throw_speed = 0

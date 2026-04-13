@@ -265,7 +265,6 @@
 	button_icon_state = "sting_cryo"
 	sting_icon = "sting_cryo"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 1
 
 /datum/action/changeling/sting/cryo/sting_action(mob/user, mob/target)
 	add_attack_logs(user, target, "Cryo sting (changeling)")
