@@ -93,7 +93,7 @@
  */
 /datum/action/changeling/sting/extract_dna
 	name = "Хоботок извлечения"
-	desc = "Мы скрытно уколим жертву и украдём её ДНК. Требует 5 химикатов."
+	desc = "Мы скрытно уколим жертву и украдём её ДНК."
 	helptext = "Украдёт ДНК жертвы, позволяя трансформироваться в неё."
 	button_icon_state = "sting_extract"
 	sting_icon = "sting_extract"
@@ -216,7 +216,7 @@
  */
 /datum/action/changeling/sting/blind
 	name = "Хоботок слепоты"
-	desc = "Мы скрытно уколим жертву и она временно ослепнет. Требует 25 химикатов."
+	desc = "Мы скрытно уколим жертву и она временно ослепнет. Требует 20 химикатов."
 	helptext = "На 40 секунд полностью ослепит жертву и на 80 секунд оставит размытое зрение."
 	button_icon_state = "sting_blind"
 	sting_icon = "sting_blind"
@@ -239,7 +239,7 @@
  */
 /datum/action/changeling/sting/LSD
 	name = "Хоботок галлюцинаций"
-	desc = "Мы скрытно уколим жертву и посеем ужас в ней. Требует 10 химикатов."
+	desc = "Мы скрытно уколим жертву и посеем ужас в ней. Требует 20 химикатов."
 	helptext = "Через 30-60 секунд у жертвы начнутся галлюцинации на 400 секунд."
 	button_icon_state = "sting_lsd"
 	sting_icon = "sting_lsd"
@@ -260,7 +260,7 @@
  */
 /datum/action/changeling/sting/cryo //Enable when mob cooling is fixed so that frostoil actually makes you cold, instead of mostly just hungry.
 	name = "Криогенный хоботок"
-	desc = "Мы скрытно уколим жертву коктелем, который будет замораживать её изнутри. Требует 15 химикатов."
+	desc = "Мы скрытно уколим жертву коктелем, который будет замораживать её изнутри. Требует 20 химикатов."
 	helptext = "Укол незаметный, но жертва начнёт быстро замерзать, что будет заметно."
 	button_icon_state = "sting_cryo"
 	sting_icon = "sting_cryo"
