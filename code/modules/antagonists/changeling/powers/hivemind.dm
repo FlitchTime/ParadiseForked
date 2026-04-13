@@ -3,7 +3,7 @@ GLOBAL_LIST_EMPTY(hivemind_bank)
 
 /datum/action/changeling/hivemind_pick
 	name = "Коллективная сеть"
-	desc = "Позволяет обмениваться ДНК на расстоянии. Требует 10 химикатов."
+	desc = "Позволяет обмениваться ДНК на расстоянии."
 	helptext = "Сеть позволяет дистанционно поделиться или поглотить ДНК и говорить с другими генокрадами."
 	button_icon_state = "hive_absorb"
 	power_type = CHANGELING_INNATE_POWER
