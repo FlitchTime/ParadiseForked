@@ -39,9 +39,9 @@
 	user.put_in_hands(weapon)
 	cling.chem_recharge_slowdown += recharge_slowdown
 
-	user.visible_message(span_warning("С ужастным хрустом рука [user] превращается в [weapon_name_simple]!"),
+	user.visible_message(span_warning("[user] с ужасным хрустом превращает руку в [weapon_name_simple]!"),
 								span_notice("Мы трансформируем руку в [weapon_name_simple]."),
-								span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
+								span_warning("Вы слышите ужасный хруст и хлёст ораники!"))
 
 	RegisterSignal(user, COMSIG_MOB_KEY_DROP_ITEM_DOWN, PROC_REF(retract), override = TRUE)
 	RegisterSignal(user, COMSIG_MOB_WEAPON_APPEARS, PROC_REF(retract), override = TRUE)
@@ -72,9 +72,9 @@
 		cling.chem_recharge_slowdown -= recharge_slowdown
 		if(!silent)
 			playsound(owner.loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
-			user.visible_message(span_warning("С ужастным хрустом [weapon_name_simple] [user] превращается в обычную руку!"),
+			user.visible_message(span_warning("[user] с ужасным хрустом превращает [weapon_name_simple] в обычную руку!"),
 								span_notice("Мы трансформируем [weapon_name_simple] в руку."),
-								span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
+								span_warning("Вы слышите ужасный хруст и хлёст ораники!"))
 
 //Parent to space suits and armor.
 /datum/action/changeling/suit
@@ -96,9 +96,9 @@
 		return FALSE
 
 	if(istype(user.wear_suit, suit_type) || istype(user.head, helmet_type))
-		user.visible_message(span_warning("[suit_name_simple] [user] превращается в кожу!"),
+		user.visible_message(span_warning("[user] трансформирует [suit_name_simple] в кожу!"),
 							span_warning("Мы трансформируем [suit_name_simple][genetic_damage > 0 ? " и наш геном временно нестабилен!" : "."]"),
-							span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
+							span_warning("Вы слышите ужасный хруст и хлёст ораники!"))
 		playsound(owner.loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
 		qdel(user.wear_suit)
 		qdel(user.head)
@@ -141,7 +141,7 @@
 	power_type = CHANGELING_PURCHASABLE_POWER
 	weapon_type = /obj/item/melee/changeling/arm_blade
 	weapon_check_type = /obj/item/melee/changeling
-	weapon_name_simple = "рука-клинок"
+	weapon_name_simple = "клинок из кости"
 
 /obj/item/melee/changeling/arm_blade
 	name = "arm blade"
@@ -210,12 +210,11 @@
 			return
 
 		if(airlock.arePowerSystemsOn())
-			user.balloon_alert_to_viewers("открывает шлюз [declent_ru(INSTRUMENTAL)]", "открываем шлюз")
+			user.balloon_alert_to_viewers("открывает шлюз клинком", "открываем шлюз")
 			playsound(airlock, 'sound/machines/airlock_alien_prying.ogg', 150, TRUE)
 			if(!do_after(user, 3 SECONDS, airlock))
 				return
 
-		user.balloon_alert_to_viewers("открыл шлюз [declent_ru(INSTRUMENTAL)]", "шлюз открыт")
 		airlock.open(2)
 
 	if(ishuman(target))
@@ -368,9 +367,9 @@
 	parent_action = new_parent_action
 	if(ismob(loc))
 		if(!silent)
-			loc.visible_message(span_warning("С ужастным хрустом рука [loc.name] превращается мясное щупальце!"), \
+			loc.visible_message(span_warning("[loc.name] с ужасным хрустом превращает руку в мясное щупальце!"), \
 								span_notice("Мы трансформируем руку в мясное щупальце."), \
-								span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
+								span_italics("Вы слышите ужасный хруст и хлёст ораники!"))
 			playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 		else
 			to_chat(loc, span_notice("Мы готовы вытянуть щупальце."))
@@ -403,7 +402,7 @@
 	genetic_damage = 5
 	weapon_type = /obj/item/shield/changeling
 	weapon_check_type = /obj/item/shield/changeling
-	weapon_name_simple = "shield"
+	weapon_name_simple = "костянной щит"
 
 /datum/action/changeling/weapon/shield/sting_action(mob/user)
 	var/obj/item/shield/changeling/shield = ..(user)
@@ -424,18 +423,18 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
-		loc.visible_message(span_warning("С ужастным хрустом рука [loc.name] превращается в костянной щит!"),
+		loc.visible_message(span_warning("[loc.name] с ужасным хрустом превращает руку в костянной щит!"),
 							span_notice("Мы трансформируем руку в костянной щит."),
-							span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
+							span_italics("Вы слышите ужасный хруст и хлёст ораники!"))
 		playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 
 /obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = ITEM_ATTACK)
 	if(remaining_uses < 1)
 		if(ishuman(loc))
 			var/mob/living/carbon/human/user = loc
-			user.visible_message(span_warning("С ужастным хрустом костянной щит [user] превращается в обычную руку!"),
+			user.visible_message(span_warning("[user] с ужасным хрустом превращается костянной щит в обычную руку!"),
 								span_notice("Мы трансформируем костянной щит в руку."),
-								span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
+								span_warning("Вы слышите ужасный хруст и хлёст ораники!"))
 			playsound(loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
 			user.temporarily_remove_item_from_inventory(src, force = TRUE)
 		qdel(src)
@@ -458,8 +457,8 @@
 	recharge_slowdown = 1
 	suit_type = /obj/item/clothing/suit/space/changeling
 	helmet_type = /obj/item/clothing/head/helmet/space/changeling
-	suit_name_simple = "flesh shell"
-	helmet_name_simple = "space helmet"
+	suit_name_simple = "органический скафандр"
+	helmet_name_simple = "органический шлем"
 
 /obj/item/clothing/suit/space/changeling
 	name = "flesh mass"
@@ -485,7 +484,7 @@
 	if(ismob(loc))
 		loc.visible_message(span_warning("Плоть [loc.name] быстро раздувается и образует органический скафандр!"),
 							span_notice("Мы раздуваем плоть, чтобы создать органический скафандр."),
-							span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
+							span_italics("Вы слышите ужасный хруст и хлёст ораники!"))
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/space/changeling/process()
@@ -525,8 +524,8 @@
 	power_type = CHANGELING_PURCHASABLE_POWER
 	suit_type = /obj/item/clothing/suit/armor/changeling
 	helmet_type = /obj/item/clothing/head/helmet/changeling
-	suit_name_simple = "armor"
-	helmet_name_simple = "helmet"
+	suit_name_simple = "хитиновоя броня"
+	helmet_name_simple = "хитиновый шлем"
 
 /obj/item/clothing/suit/armor/changeling
 	name = "chitinous mass"
@@ -555,7 +554,7 @@
 	if(ismob(loc))
 		loc.visible_message(span_warning("Плоть [loc.name] быстро темнеет и образует хитиновое покрытие!"),
 							span_notice("Мы трансформируем плоть, чтобы создать хитиновую броню."),
-							span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
+							span_italics("Вы слышите ужасный хруст и хлёст ораники!"))
 		playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 
 /obj/item/clothing/head/helmet/changeling

@@ -48,7 +48,7 @@ const EvolutionPoints = (props: unknown) => {
             icon="sync"
             onClick={() => act('readapt')}
           >
-            Реадаптаци
+            Реадаптация
           </Button>
           <Button
             tooltip="Поглотив жертву мы получаем возможность перестроить выбранные нами очки эволюции."
