@@ -44,7 +44,8 @@ GLOBAL_LIST_INIT(changeling_mutations, list(
 	var/active = FALSE
 	/// If this power can be used while the changeling has the `TRAIT_FAKE_DEATH` trait.
 	var/bypass_fake_death = FALSE
-
+	/// If this power used castoff blood.
+	var/blood_on_castoff = FALSE
 /**
  * Changeling code relies on on_purchase to grant powers.
  * The same goes for Remove(). if you override Remove(), call parent or else your power wont be removed on respec
@@ -72,7 +73,7 @@ GLOBAL_LIST_INIT(changeling_mutations, list(
 /datum/action/changeling/Trigger(mob/clicker, trigger_flags)
 	try_to_sting(owner)
 
-/datum/action/changeling/proc/try_to_sting(mob/user, mob/target)
+/datum/action/changeling/proc/try_to_sting(mob/living/carbon/human/user, mob/target)
 	user.changeNext_click(5)
 	if(!can_sting(user, target))
 		return
@@ -80,6 +81,10 @@ GLOBAL_LIST_INIT(changeling_mutations, list(
 	if(sting_action(user, target))
 		sting_feedback(user, target)
 		take_chemical_cost()
+
+	if(blood_on_castoff)
+		user.add_splatter_floor()
+		playsound(user.loc, 'sound/effects/splat.ogg', 50, TRUE)
 
 /datum/action/changeling/proc/sting_action(mob/user)
 	return FALSE
@@ -102,23 +107,24 @@ GLOBAL_LIST_INIT(changeling_mutations, list(
 		return FALSE
 
 	if(cling.chem_charges < chemical_cost)
-		to_chat(user, span_warning("We require at least [chemical_cost] unit\s of chemicals to do that!"))
+		user.balloon_alert(user, "нужно [chemical_cost] химикатов")
 		return FALSE
 
 	if(cling.absorbed_count < req_dna)
+		user.balloon_alert(user, "нужно [req_dna] днк")
 		to_chat(user, span_warning("We require at least [req_dna] sample\s of compatible DNA."))
 		return FALSE
 
 	if(req_stat < user.stat)
-		to_chat(user, span_warning("We are incapacitated."))
+		user.balloon_alert(user, "недееспособны")
 		return FALSE
 
 	if(cling.genetic_damage > max_genetic_damage)
-		to_chat(user, span_warning("Our genomes are still reassembling. We need time to recover first."))
+		user.balloon_alert(user, "геном ещё перестраивается")
 		return FALSE
 
 	if(HAS_TRAIT(user, TRAIT_FAKEDEATH) && !bypass_fake_death)
-		to_chat(user, span_warning("We are incapacitated."))
+		user.balloon_alert(user, "недееспособны")
 		return FALSE
 
 	return TRUE

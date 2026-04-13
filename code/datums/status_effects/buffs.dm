@@ -404,7 +404,7 @@
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = /atom/movable/screen/alert/status_effect/fleshmend
 	/// This diminishes the healing of fleshmend the higher it is.
-	var/tolerance = 1
+	var/tolerance = 0
 	/// This diminishes the healing of fleshmend if the user is cold when it is activated
 	var/freezing = FALSE
 	/// Number of heal ticks.
@@ -430,7 +430,7 @@
 
 /datum/status_effect/fleshmend/tick(seconds_between_ticks)
 	if(LAZYLEN(active_instances) >= 1)
-		var/heal_amount = (length(active_instances) / tolerance) * (freezing ? 2 : 10)
+		var/heal_amount = (length(active_instances) / tolerance) * (freezing ? 5 : 15)
 		var/blood_restore = 30 * length(active_instances)
 		var/update = NONE
 
@@ -453,13 +453,12 @@
 
 		active_instances -= expired_instances
 
-	tolerance = max(tolerance - 0.05, 1)
+	tolerance = max(tolerance - 0.1, 1)
 	if(tolerance <= 1 && length(active_instances) == 0)
 		qdel(src)
 
 /datum/status_effect/speedlegs
 	id = "gottagofast"
-	tick_interval = 4 SECONDS
 	alert_type = null
 	var/stacks = 0
 	/// A reference to the changeling's changeling antag datum.
@@ -471,34 +470,25 @@
 	return TRUE
 
 /datum/status_effect/speedlegs/tick(seconds_between_ticks)
-	if(owner.body_position == LYING_DOWN)
-		to_chat(owner, span_danger("Мы не можем использовать наши ноги, пока лежим!"))
-		qdel(src)
-	else if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) * 3)
-		to_chat(owner, span_danger("Наши мышцы расслабляются, не имея энергии для напряжения."))
-		owner.Weaken(6 SECONDS)
+	if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) / 6)
+		owner.balloon_alert(owner, "ноги ужасно болят")
+		owner.Knockdown(6 SECONDS)
 		qdel(src)
 	else
 		stacks++
-		cling.chem_charges -= stacks * 3 //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
-		if(stacks == 7) //Warning message that the stacks are getting too high
-			to_chat(owner, span_warning("Наши ноги начинают сильно болеть..."))
-
-/datum/status_effect/speedlegs/before_remove()
-	if(stacks < 3 && !(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) * 3)) //We don't want people to turn it on and off fast, however, we need it forced off if the 3 later conditions are met.
-		to_chat(owner, span_notice("Наши мышцы только что напряглись, они не расслабятся так быстро."))
-		return FALSE
-	return TRUE
+		if(stacks == 30)
+			owner.balloon_alert(owner, "ноги начали болеть")
+		else if(stacks > 30) //Warning message that the stacks are getting too high
+			cling.chem_charges -= stacks / 6 //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
 
 /datum/status_effect/speedlegs/on_remove()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/strained_muscles)
-	if(!owner.IsWeakened())
-		to_chat(owner, span_notice("Наши мышцы расслабляются."))
-		if(stacks >= 7)
-			to_chat(owner, span_danger("Мы падаем от истощения."))
-			owner.Weaken(6 SECONDS)
-			owner.emote("gasp")
-	cling.genetic_damage += stacks
+	if(stacks >= 30)
+		owner.balloon_alert(owner, "наши мышцы истощены")
+		owner.Knockdown(6 SECONDS)
+		owner.emote("gasp")
+	else
+		owner.balloon_alert(owner, "наши мышцы расслабляются")
 	cling = null
 
 /datum/status_effect/panacea

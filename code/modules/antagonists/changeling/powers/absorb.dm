@@ -1,6 +1,6 @@
 /datum/action/changeling/absorbDNA
-	name = "Absorb DNA"
-	desc = "Absorb the DNA of our victim. Requires us to strangle them."
+	name = "Поглощение ДНК"
+	desc = "Поглощение ДНК нашей жертвы. Для этого потребуется душить её."
 	button_icon_state = "absorb_dna"
 	power_type = CHANGELING_INNATE_POWER
 	req_human = TRUE
@@ -10,15 +10,15 @@
 		return FALSE
 
 	if(cling.is_absorbing && !ignore_absorbing)
-		to_chat(user, span_warning("We are already absorbing!"))
+		user.balloon_alert(user, "уже поглощаем")
 		return FALSE
 
 	if(!user.pulling || user.pull_hand != user.hand)
-		to_chat(user, span_warning("We must be grabbing a creature in our active hand to absorb them."))
+		user.balloon_alert(user, "этой рукой некого")
 		return FALSE
 
 	if(user.grab_state <= GRAB_NECK)
-		to_chat(user, span_warning("We must have a tighter grip to absorb this creature."))
+		user.balloon_alert(user, "нужно схватить крепче")
 		return FALSE
 
 	return cling.can_absorb_dna(user.pulling)
@@ -30,24 +30,19 @@
 	for(var/stage in 1 to 3)
 		switch(stage)
 			if(1)
-				to_chat(user, span_notice("This creature is compatible. We must hold still..."))
-
+				to_chat(user, span_notice("[target] нам подходит. Во время поглощения нам нельзя двигаться."))
 			if(2)
-				user.visible_message(span_warning("[user] extends a proboscis!"), span_notice("We extend a proboscis."))
-
+				user.balloon_alert_to_viewers("вытягивает хоботок", "мы вытягиваем хоботок")
 			if(3)
-				user.visible_message(span_danger("[user] stabs [target] with the proboscis!"), span_notice("We stab [target] with the proboscis."))
-				to_chat(target, span_danger("You feel a sharp stabbing pain!"))
+				user.balloon_alert_to_viewers("уколол хоботком [target]", "мы воткнули хоботок")
 				target.take_overall_damage(40)
 
 		SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("Absorb DNA", "[stage]"))
 		if(!do_after(user, 15 SECONDS, target, NONE) || !can_sting(user, TRUE))
-			to_chat(user, span_warning("Our absorption of [target] has been interrupted!"))
+			user.balloon_alert(user, "поглощение прервано")
 			cling.is_absorbing = FALSE
 			return FALSE
-
-	user.visible_message(span_danger("[user] sucks the fluids from [target]!"), span_notice("We have absorbed [target]!"))
-	to_chat(target, span_danger("You have been absorbed by the changeling!"))
+	user.balloon_alert_to_viewers("[user] достал хоботок", "мы поглотили днк")
 
 	if(!cling.get_dna(target.dna))
 		cling.absorb_dna(target)
@@ -70,13 +65,13 @@
 			recent_speech = target.say_log.Copy()
 
 		if(recent_speech)
-			user.mind.store_memory("<b>Some of [target]'s speech patterns. We should study these to better impersonate [target.p_them()]!</b>")
-			to_chat(user, span_boldnotice("Some of [target]'s speech patterns. We should study these to better impersonate [target.p_them()]!"))
+			user.mind.store_memory("<b>Последние мысли [target].</b>")
+			to_chat(user, span_boldnotice("Последние мысли [target]."))
 			for(var/spoken_memory in recent_speech)
 				user.mind.store_memory("\"[spoken_memory]\"")
 				to_chat(user, span_notice("\"[spoken_memory]\""))
-			user.mind.store_memory("<b>We have no more knowledge of [target]'s speech patterns.</b>")
-			to_chat(user, span_boldnotice("We have no more knowledge of [target]'s speech patterns."))
+			user.mind.store_memory("<b>Мы забыли последние слова [target].</b>")
+			to_chat(user, span_boldnotice("Мы забыли последние слова [target]."))
 
 		var/datum/antagonist/changeling/target_cling = target?.mind?.has_antag_datum(/datum/antagonist/changeling)
 		if(target_cling)//If the target was a changeling, suck out their extra juice and objective points!

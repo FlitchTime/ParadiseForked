@@ -11,15 +11,17 @@
 /datum/action/changeling/weapon
 	abstract_type = /datum/action/changeling/weapon
 	name = "Organic Weapon"
-	desc = "Go tell a coder if you see this"
-	helptext = "Yell at coderbus"
-	chemical_cost = 1000
-	genetic_damage = 1000
+	desc = "Напишите баг-репорт, если вы увидели это"
+	helptext = "Это точно был Зюзя!"
+	dna_cost = 2
+	genetic_damage = 10
 	req_human = TRUE
+	blood_on_castoff = TRUE
 	var/silent = FALSE
 	var/weapon_type
 	var/weapon_check_type
 	var/weapon_name_simple
+	var/recharge_slowdown = 2
 
 /datum/action/changeling/weapon/try_to_sting(mob/user, mob/target)
 	if(istype(user.get_active_hand(), weapon_check_type) || istype(user.get_inactive_hand(), weapon_check_type))
@@ -30,11 +32,16 @@
 /datum/action/changeling/weapon/sting_action(mob/user)
 	SEND_SIGNAL(user, COMSIG_MOB_WEAPON_APPEARS)
 	if(!user.can_unEquip(user.get_active_hand(), silent = TRUE))
-		to_chat(user, "[user.get_active_hand()] is stuck to your hand, you cannot grow a [weapon_name_simple] over it!")
+		user.balloon_alert(user, "[weapon_name_simple] не трансформировать")
 		return FALSE
 
 	var/obj/item/weapon = new weapon_type(user, silent, src)
 	user.put_in_hands(weapon)
+	cling.chem_recharge_slowdown += recharge_slowdown
+
+	user.visible_message(span_warning("С ужастным хрустом рука [user] превращается в [weapon_name_simple]!"),
+								span_notice("Мы трансформируем руку в [weapon_name_simple]."),
+								span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
 
 	RegisterSignal(user, COMSIG_MOB_KEY_DROP_ITEM_DOWN, PROC_REF(retract), override = TRUE)
 	RegisterSignal(user, COMSIG_MOB_WEAPON_APPEARS, PROC_REF(retract), override = TRUE)
@@ -62,32 +69,36 @@
 
 	if(done)
 		. = COMPONENT_CANCEL_DROP
+		cling.chem_recharge_slowdown -= recharge_slowdown
 		if(!silent)
 			playsound(owner.loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
-			user.visible_message(span_warning("With a sickening crunch, [user] reforms [user.p_their()] [weapon_name_simple] into an arm!"),
-								span_notice("We assimilate the [weapon_name_simple] back into our body."),
-								span_warning("You hear organic matter ripping and tearing!"))
+			user.visible_message(span_warning("С ужастным хрустом [weapon_name_simple] [user] превращается в обычную руку!"),
+								span_notice("Мы трансформируем [weapon_name_simple] в руку."),
+								span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
 
 //Parent to space suits and armor.
 /datum/action/changeling/suit
 	name = "Organic Suit"
-	desc = "Go tell a coder if you see this"
-	helptext = "Yell at coderbus"
-	chemical_cost = 1000
+	desc = "Напишите баг-репорт, если вы увидели это"
+	helptext = "Это точно был Зюзя!"
+	dna_cost = 2
+	genetic_damage = 20
 	req_human = TRUE
+	blood_on_castoff = TRUE
 	var/helmet_type = /obj/item
 	var/suit_type = /obj/item
 	var/suit_name_simple = "    "
 	var/helmet_name_simple = "     "
-	var/recharge_slowdown = 0
-	var/blood_on_castoff = FALSE
+	var/recharge_slowdown = 2
 
 /datum/action/changeling/suit/try_to_sting(mob/living/carbon/human/user, mob/target)
 	if(!istype(user))
 		return FALSE
 
 	if(istype(user.wear_suit, suit_type) || istype(user.head, helmet_type))
-		user.visible_message(span_warning("[user] casts off [user.p_their()] [suit_name_simple]!"), span_warning("We cast off our [suit_name_simple][genetic_damage > 0 ? ", temporarily weakening our genomes." : "."]"), span_warning("You hear the organic matter ripping and tearing!"))
+		user.visible_message(span_warning("[suit_name_simple] [user] превращается в кожу!"),
+							span_warning("Мы трансформируем [suit_name_simple][genetic_damage > 0 ? " и наш геном временно нестабилен!" : "."]"),
+							span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
 		playsound(owner.loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
 		qdel(user.wear_suit)
 		qdel(user.head)
@@ -96,21 +107,17 @@
 		user.update_hair()
 		user.update_fhair()
 
-		if(blood_on_castoff)
-			user.add_splatter_floor()
-			playsound(user.loc, 'sound/effects/splat.ogg', 50, TRUE) //So real sounds
-
 		cling.chem_recharge_slowdown -= recharge_slowdown
 		return FALSE
 	..(user, target)
 
 /datum/action/changeling/suit/sting_action(mob/living/carbon/human/user)
 	if(!user.can_unEquip(user.wear_suit))
-		to_chat(user, "\the [user.wear_suit] is stuck to your body, you cannot grow a [suit_name_simple] over it!")
+		user.balloon_alert(user, "[suit_name_simple] не трансформировать")
 		return FALSE
 
 	if(!user.can_unEquip(user.head))
-		to_chat(user, "\the [user.head] is stuck on your head, you cannot grow a [helmet_name_simple] over it!")
+		user.balloon_alert(user, "[helmet_name_simple] не трансформировать")
 		return FALSE
 
 	user.drop_item_ground(user.head)
@@ -127,30 +134,26 @@
 |***************ARM BLADE***************|
 \***************************************/
 /datum/action/changeling/weapon/arm_blade
-	name = "Arm Blade"
-	desc = "We reform one of our arms into a deadly blade. Costs 10 chemicals."
-	helptext = "We may retract our armblade in the same manner as we form it. Cannot be used while in lesser form."
+	name = "Рука-клинок"
+	desc = "Мы трансформируем свою руку в опасный клинок. Дестабилизирует геном на 10 секунд."
+	helptext = "Вернуть руку можно той же способностью, что и вызван клинок. Оставляет после себя лужу крови. Снижает производство химикатов на 2."
 	button_icon_state = "armblade"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	chemical_cost = 10
-	genetic_damage = 10
-	max_genetic_damage = 20
 	weapon_type = /obj/item/melee/changeling/arm_blade
-	weapon_check_type = /obj/item/melee/changeling // so we can't have maul and armblade at the same time
-	weapon_name_simple = "blade"
+	weapon_check_type = /obj/item/melee/changeling
+	weapon_name_simple = "рука-клинок"
 
 /obj/item/melee/changeling/arm_blade
 	name = "arm blade"
-	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter"
+	desc = "Уродливый клинок из костей и плоти, что режет людей, как масло."
 	icon_state = "arm_blade"
 	item_state = "arm_blade"
 	item_flags = ABSTRACT|DROPDEL
 	w_class = WEIGHT_CLASS_HUGE
 	sharp = TRUE
-	force = 45
-	armour_penetration = -30
-	block_chance = 50
+	force = 35
+	armour_penetration = 0
+	block_chance = 75
 	block_type = MELEE_ATTACKS
 	hitsound = 'sound/weapons/armblade.ogg'
 	throw_range = 0
@@ -203,56 +206,46 @@
 			return
 
 		if(airlock.locked)
-			to_chat(user, span_notice("The airlock's bolts prevent it from being forced."))
+			balloon_alert(user, "болты мешают открыть!")
 			return
 
 		if(airlock.arePowerSystemsOn())
-			user.visible_message(span_warning("[user] jams [src] into the airlock and starts prying it open!"), \
-								span_warning("We start forcing the airlock open."), \
-								span_italics("You hear a metal screeching sound."))
-
+			user.balloon_alert_to_viewers("открывает шлюз [declent_ru(INSTRUMENTAL)]", "открываем шлюз")
 			playsound(airlock, 'sound/machines/airlock_alien_prying.ogg', 150, TRUE)
 			if(!do_after(user, 3 SECONDS, airlock))
 				return
 
-		//user.say("Heeeeeeeeeerrre's Johnny!")
-		user.visible_message(span_warning("[user] forces the airlock to open with [user.p_their()] [name]!"), \
-							span_warning("We force the airlock to open."), \
-							span_warning("You hear a metal screeching sound."))
+		user.balloon_alert_to_viewers("открыл шлюз [declent_ru(INSTRUMENTAL)]", "шлюз открыт")
 		airlock.open(2)
 
 	if(ishuman(target))
-		var/mob/living/carbon/human/H = target
-		var/obj/item/organ/external/O = H.get_organ(user.zone_selected)
-		if(O && O.brute_dam >= 50)
-			O.droplimb()
+		var/mob/living/carbon/human/human = target
+		var/obj/item/organ/external/organ = human.get_organ(user.zone_selected)
+		if(organ && organ.brute_dam >= 50)
+			organ.droplimb()
 
 /***************************************\
 |**************FLESHY MAUL**************|
 \***************************************/
 /datum/action/changeling/weapon/fleshy_maul
-	name = "Fleshy Maul"
-	desc = "We reform one of our arms into a enourmous maul. Costs 10 chemicals."
-	helptext = "We may retract our maul in the same manner as we form it. Cannot be used while in lesser form."
+	name = "Молот плоти"
+	desc = "Мы трансформируем свою руку в огромный молот. Дестабилизирует геном на 10 секунд."
+	helptext = "Вернуть руку можно той же способностью, что и вызван молот. Оставляет после себя лужу крови. Снижает производство химикатов на 2."
 	button_icon_state = "flesh_maul"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	chemical_cost = 10
-	genetic_damage = 10
-	max_genetic_damage = 20
 	weapon_type = /obj/item/melee/changeling/fleshy_maul
 	weapon_check_type = /obj/item/melee/changeling
-	weapon_name_simple = "maul"
+	weapon_name_simple = "молот плоти"
 
 /obj/item/melee/changeling/fleshy_maul
 	name = "fleshy maul"
-	desc = "An enormous maul made out of bone and flesh that crushes limbs in the dust"
+	desc = "Огромный молот из костей и плоти, что давит кости в пыль."
 	icon_state = "flesh_maul"
 	item_state = "flesh_maul"
 	item_flags = ABSTRACT|DROPDEL
 	w_class = WEIGHT_CLASS_HUGE
-	force = 25
-	armour_penetration = 35
+	force = 35
+	armour_penetration = 0
 	hitsound = SFX_SWING_HIT
 	throw_range = 0
 	throw_speed = 0
@@ -280,7 +273,8 @@
 		/datum/component/cleave_attack, \
 		arc_size = 180, \
 		swing_speed_mod = 2, \
-		afterswing_slowdown = 0.3, \
+		afterswing_slowdown = 5, \
+		slowdown_duration = 2 SECONDS, \
 		no_multi_hit = TRUE, \
 		swing_sound = SFX_BLUNT_SWING_HEAVY, \
 	)
@@ -302,32 +296,32 @@
 		return
 
 	if(isstructure(target))
-		var/obj/structure/S = target
-		if(!QDELETED(S))
-			S.attack_generic(user, 80, BRUTE, MELEE, 0)
+		var/obj/structure/structure = target
+		if(!QDELETED(structure))
+			structure.attack_generic(user, 80, BRUTE, MELEE, 0)
 
 	else if(iswallturf(target))
 		var/turf/simulated/wall/wall = target
 		user.do_attack_animation(wall)
 		user.changeNext_move(attack_speed)
-		wall.take_damage(30)
+		wall.take_damage(35)
 		playsound(src, 'sound/weapons/smash.ogg', 50, TRUE)
 
 	else if(isliving(target))
-		var/mob/living/M = target
-		M.Slowed(2 SECONDS, 5)
-		var/atom/throw_target = get_edge_target_turf(M, user.dir)
-		RegisterSignal(M, COMSIG_MOVABLE_IMPACT, PROC_REF(bump_impact))
-		M.throw_at(throw_target, 1, 14, user, callback = CALLBACK(src, PROC_REF(unregister_bump_impact), M))
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			var/obj/item/organ/external/O = H.get_organ(user.zone_selected)
-			if(O.brute_dam > 20)
-				O.fracture()
+		var/mob/living/mob = target
+		var/atom/throw_target = get_edge_target_turf(mob, user.dir)
+		RegisterSignal(mob, COMSIG_MOVABLE_IMPACT, PROC_REF(bump_impact))
+		mob.throw_at(throw_target, 1, 14, user, callback = CALLBACK(src, PROC_REF(unregister_bump_impact), mob))
+		user.Slowed(2 SECONDS, 5)
+		if(ishuman(mob))
+			var/mob/living/carbon/human/human = mob
+			var/obj/item/organ/external/organ = human.get_organ(user.zone_selected)
+			if(organ.brute_dam > 50)
+				organ.fracture()
 
 /obj/item/melee/changeling/fleshy_maul/proc/bump_impact(mob/living/target, atom/hit_atom, throwingdatum)
 	if(target && !iscarbon(hit_atom) && hit_atom.density)
-		target.Weaken(1 SECONDS)
+		target.Knockdown(1 SECONDS)
 
 /obj/item/melee/changeling/fleshy_maul/proc/unregister_bump_impact(mob/living/target)
 	UnregisterSignal(target, COMSIG_MOVABLE_IMPACT)
@@ -336,25 +330,22 @@
 |***********COMBAT TENTACLES*************|
 \***************************************/
 /datum/action/changeling/weapon/tentacle
-	name = "Tentacle"
-	desc = "We ready a tentacle to grab items or victims with. Costs 10 chemicals."
-	helptext = "We can use it once to retrieve a distant item. If used on living creatures, the effect depends on the intent: \
-	Help will simply drag them closer, Disarm will grab whatever they are holding instead of them, Grab will put the victim in our hold after catching it, \
-	and Harm will stun it, and stab it if we are also holding a sharp weapon. Cannot be used while in lesser form."
+	name = "Мясное щупальце"
+	desc = "Мы трансформируем руку в мясное щупальце. Дестабилизирует геном на 5 секунд."
+	helptext = "Можно один раз запустить щупальце. Эффект будет зависить от интента: В интенте ПОМОЩИ будет подтягивать жертву. В интенте ОБЕЗАРУЖИВАНИЯ будет хватать вещи с активной руки жертвы. В интенте ОБЕЗАРУЖИВАНИЯ будет подтягивать и хватать жертву в захват. В интенте ВРЕДА будет подтягивать и атаковать жертву, если есть острое оружие во второй руке. Оставляет после себя лужу крови."
 	button_icon_state = "tentacle"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	chemical_cost = 10
+	dna_cost = 1
 	genetic_damage = 5
-	max_genetic_damage = 10
+	recharge_slowdown = 0
 	weapon_type = /obj/item/gun/magic/tentacle
 	weapon_check_type = /obj/item/gun/magic/tentacle
-	weapon_name_simple = "tentacle"
+	weapon_name_simple = "мясное щупальце"
 	silent = TRUE
 
 /obj/item/gun/magic/tentacle
 	name = "tentacle"
-	desc = "A fleshy tentacle that can stretch out and grab things or people."
+	desc = "Мясистое щупальце, что может хватать людей или предметы."
 	icon = 'icons/obj/items.dmi'
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
@@ -377,12 +368,12 @@
 	parent_action = new_parent_action
 	if(ismob(loc))
 		if(!silent)
-			loc.visible_message(span_warning("[loc.name]\'s arm starts stretching inhumanly!"), \
-								span_warning("Our arm twists and mutates, transforming it into a tentacle."), \
-								span_italics("You hear organic matter ripping and tearing!"))
+			loc.visible_message(span_warning("С ужастным хрустом рука [loc.name] превращается мясное щупальце!"), \
+								span_notice("Мы трансформируем руку в мясное щупальце."), \
+								span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
 			playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 		else
-			to_chat(loc, span_notice("You prepare to extend a tentacle."))
+			to_chat(loc, span_notice("Мы готовы вытянуть щупальце."))
 
 /obj/item/gun/magic/tentacle/Destroy()
 	if(parent_action)
@@ -393,25 +384,23 @@
 	return ..()
 
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	to_chat(user, span_warning("The [name] is not ready yet."))
+	balloon_alert(user, "щупальце не готово")
 
 /obj/item/gun/magic/tentacle/suicide_act(mob/user)
-	user.visible_message(span_suicide("[user] coils [src] tightly around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide."))
+	user.visible_message(span_suicide("[user] обвивает щею мясным щупальцем! Это выглядит, как суицид."))
 	return OXYLOSS
 
 /***************************************\
 |****************SHIELD*****************|
 \***************************************/
 /datum/action/changeling/weapon/shield
-	name = "Organic Shield"
-	desc = "We reform one of our arms into a hard shield. Costs 20 chemicals."
-	helptext = "Organic tissue cannot resist damage forever. The shield will break after it is hit too much. The more genomes we absorb, the stronger it is. Cannot be used while in lesser form."
+	name = "Костянной щит"
+	desc = "Мы трансформируем свою руку в твёрдый щит. Дестабилизирует геном на 5 секунд."
+	helptext = "Выдержит 3 атаки за каждого поглощенного после чего превратится обратно в руку. Оставляет после себя лужу крови. Снижает производство химикатов на 2."
 	button_icon_state = "organic_shield"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	chemical_cost = 20
 	dna_cost = 1
-	genetic_damage = 12
-	max_genetic_damage = 20
+	genetic_damage = 5
 	weapon_type = /obj/item/shield/changeling
 	weapon_check_type = /obj/item/shield/changeling
 	weapon_name_simple = "shield"
@@ -426,7 +415,7 @@
 
 /obj/item/shield/changeling
 	name = "shield-like mass"
-	desc = "A mass of tough, boney tissue. You can still see the fingers as a twisted pattern in the shield."
+	desc = "Щит из плотной костянной ткани. На нём ещё видны пальцы в виде витого узора."
 	item_flags = DROPDEL
 	icon_state = "ling_shield"
 	var/remaining_uses //Set by the changeling ability.
@@ -435,18 +424,18 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
-		loc.visible_message(span_warning("The end of [loc.name]\'s hand inflates rapidly, forming a huge shield-like mass!"), \
-							span_warning("We inflate our hand into a strong shield."), \
-							span_italics("You hear organic matter ripping and tearing!"))
+		loc.visible_message(span_warning("С ужастным хрустом рука [loc.name] превращается в костянной щит!"),
+							span_notice("Мы трансформируем руку в костянной щит."),
+							span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
 		playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 
 /obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = ITEM_ATTACK)
 	if(remaining_uses < 1)
 		if(ishuman(loc))
 			var/mob/living/carbon/human/user = loc
-			user.visible_message(span_warning("With a sickening crunch, [user] reforms [user.p_their()] shield into an arm!"), \
-								span_notice("We assimilate our shield into our body."), \
-								span_italics("You hear organic matter ripping and tearing!"))
+			user.visible_message(span_warning("С ужастным хрустом костянной щит [user] превращается в обычную руку!"),
+								span_notice("Мы трансформируем костянной щит в руку."),
+								span_warning("Вы слышите ужастный хруст и хлёст ораники!"))
 			playsound(loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
 			user.temporarily_remove_item_from_inventory(src, force = TRUE)
 		qdel(src)
@@ -459,31 +448,28 @@
 |*********SPACE SUIT + HELMET***********|
 \***************************************/
 /datum/action/changeling/suit/organic_space_suit
-	name = "Organic Space Suit"
-	desc = "We grow an organic suit to protect ourselves from space exposure. Costs 20 chemicals."
-	helptext = "We must constantly repair our form to make it space proof, reducing chemical production while we are protected. Cannot be used in lesser form."
+	name = "Органический скафандр"
+	desc = "Мы отращиваем органический скафандр, что защищает от космоса. Дестабилизирует геном на 10 секунд."
+	helptext = "Оставляет после себя лужу крови. Снижает производство химикатов на 1."
 	button_icon_state = "organic_suit"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	chemical_cost = 20
-	genetic_damage = 8
-	max_genetic_damage = 20
+	dna_cost = 1
+	genetic_damage = 10
+	recharge_slowdown = 1
 	suit_type = /obj/item/clothing/suit/space/changeling
 	helmet_type = /obj/item/clothing/head/helmet/space/changeling
 	suit_name_simple = "flesh shell"
 	helmet_name_simple = "space helmet"
-	recharge_slowdown = 0.5
-	blood_on_castoff = TRUE
 
 /obj/item/clothing/suit/space/changeling
 	name = "flesh mass"
+	desc = "Огромная масса плоти, что видимо даёт защиту от давления и температуры."
 	icon_state = "lingspacesuit"
-	desc = "A huge, bulky mass of pressure and temperature-resistant organic tissue, evolved to facilitate space travel."
 	clothing_flags = STOPSPRESSUREDAMAGE
 	flags_inv = HIDETAIL
 	item_flags = DROPDEL
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90) //No armor at all
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 0, ACID = 0) //No armor at all
 	species_restricted = null
 	faction_restricted = null
 	sprite_sheets = list(
@@ -497,9 +483,9 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
-		loc.visible_message(span_warning("[loc.name]\'s flesh rapidly inflates, forming a bloated mass around [loc.p_their()] body!"), \
-							span_warning("We inflate our flesh, creating a spaceproof suit!"), \
-							span_italics("You hear organic matter ripping and tearing!"))
+		loc.visible_message(span_warning("Плоть [loc.name] быстро раздувается и образует органический скафандр!"),
+							span_notice("Мы раздуваем плоть, чтобы создать органический скафандр."),
+							span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/space/changeling/process()
@@ -509,8 +495,8 @@
 
 /obj/item/clothing/head/helmet/space/changeling
 	name = "flesh mass"
+	desc = "Масса плоти, что видимо даёт защиту от давления и температуры, с стекловидным хитиновым покрытием спереди."
 	icon_state = "lingspacehelmet"
-	desc = "A covering of pressure and temperature-resistant organic tissue with a glass-like chitin front."
 	clothing_flags = STOPSPRESSUREDAMAGE
 	flags_inv = HIDEHEADSETS|HIDEGLASSES|HIDEHAIR
 	item_flags = DROPDEL
@@ -532,28 +518,23 @@
 |*****************ARMOR*****************|
 \***************************************/
 /datum/action/changeling/suit/armor
-	name = "Chitinous Armor"
-	desc = "We turn our skin into tough chitin to protect us from damage. Costs 25 chemicals."
-	helptext = "Upkeep of the armor requires a low expenditure of chemicals. The armor is strong against brute force, but does not provide much protection from lasers. Cannot be used in lesser form."
+	name = "Хитиновая броня"
+	desc = "Мы трансформируем нашу кожу в прочный хитин, что отлично защищает. Дестабилизирует геном на 20 секунд."
+	helptext = "Оставляет после себя лужу крови. Снижает производство химикатов на 2."
 	button_icon_state = "chitinous_armor"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	chemical_cost = 25
-	genetic_damage = 11
-	max_genetic_damage = 20
 	suit_type = /obj/item/clothing/suit/armor/changeling
 	helmet_type = /obj/item/clothing/head/helmet/changeling
 	suit_name_simple = "armor"
 	helmet_name_simple = "helmet"
-	recharge_slowdown = 0.25
 
 /obj/item/clothing/suit/armor/changeling
 	name = "chitinous mass"
-	desc = "A tough, hard covering of black chitin."
+	desc = "Твёрдоре покрытие из чёрного хитина."
 	icon_state = "lingarmor"
 	item_flags = DROPDEL
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 20, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 20, BOMB = 10, BIO = 0, FIRE = 0, ACID = 0)
 	flags_inv = HIDEJUMPSUIT
 	cold_protection = 0
 	heat_protection = 0
@@ -572,19 +553,19 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
-		loc.visible_message(span_warning("[loc.name]\'s flesh turns black, quickly transforming into a hard, chitinous mass!"), \
-							span_warning("We harden our flesh, creating a suit of armor!"), \
-							span_italics("You hear organic matter ripping and tearing!"))
+		loc.visible_message(span_warning("Плоть [loc.name] быстро темнеет и образует хитиновое покрытие!"),
+							span_notice("Мы трансформируем плоть, чтобы создать хитиновую броню."),
+							span_italics("Вы слышите ужастный хруст и хлёст ораники!"))
 		playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 
 /obj/item/clothing/head/helmet/changeling
 	name = "chitinous mass"
-	desc = "A tough, hard covering of black chitin with transparent chitin in front."
+	desc = "Твёрдоре покрытие из чёрного хитина с прозрачной оболочкой спереди."
 	icon_state = "lingarmorhelmet"
 	flags_inv = HIDEHEADSETS|HIDEHAIR
 	item_flags = DROPDEL
 	flags_cover = MASKCOVERSEYES|MASKCOVERSMOUTH
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 20, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 20, BOMB = 10, BIO = 0, FIRE = 0, ACID = 0)
 	species_restricted = null
 	faction_restricted = null
 

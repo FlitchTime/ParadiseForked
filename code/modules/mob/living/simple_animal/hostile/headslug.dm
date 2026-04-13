@@ -1,9 +1,9 @@
-#define EGG_INCUBATION_DEAD_TIME 120
+#define EGG_INCUBATION_DEAD_TIME 60
 #define EGG_INCUBATION_LIVING_TIME 200
 
 /mob/living/simple_animal/hostile/headslug
 	name = "headslug"
-	desc = "Absolutely not de-beaked or harmless. Keep away from corpses."
+	desc = "Абсолютно точно без клюва и безвреден. Держите подальше от трупов."
 	icon_state = "headslug"
 	icon_living = "headslug"
 	icon_dead = "headslug_dead"
@@ -34,7 +34,7 @@
 /mob/living/simple_animal/hostile/headslug/examine(mob/user)
 	. = ..()
 	if(stat == DEAD)
-		. += span_deadsay("It appears to be dead.")
+		. += span_deadsay("Выглядит мертвым.")
 
 /mob/living/simple_animal/hostile/headslug/proc/Infect(mob/living/carbon/victim)
 	var/obj/item/organ/internal/body_egg/changeling_egg/egg = new(victim)
@@ -45,8 +45,7 @@
 	else if(mind) // Let's make this a feature
 		egg.origin = mind
 
-	visible_message(span_warning("[src] plants something in [victim]'s flesh!"), \
-					span_danger("We inject our egg into [victim]'s body!"))
+	balloon_alert_to_viewers("впивается в [victim]", "мы ввели яйцо")
 
 /mob/living/simple_animal/hostile/headslug/AltClickOn(mob/living/carbon/carbon_target)
 	if(egg_layed || !istype(carbon_target) || carbon_target.stat != DEAD || !Adjacent(carbon_target) || is_monkeybasic(carbon_target))
@@ -55,7 +54,7 @@
 	changeNext_move(CLICK_CD_MELEE)
 
 	if(carbon_target.stat != DEAD)
-		to_chat(src, span_warning("Our target should be dead to infest it!"))
+		balloon_alert(src, "нужен мертвый сосуд")
 		return
 
 	if(!do_after(src, 5 SECONDS, carbon_target, NONE))
@@ -65,14 +64,11 @@
 		return
 
 	if(carbon_target.stat != DEAD)
-		to_chat(src, span_warning("Our target is not dead anymore!"))
+		balloon_alert(src, "сосуд ожил")
 		return
 
-	if(HAS_TRAIT(carbon_target, TRAIT_XENO_HOST))
-		to_chat(src, span_userdanger("A foreign presence repels us from this body. Perhaps we should try to infest another body?"))
-		return
-	if(HAS_TRAIT(carbon_target, TRAIT_LEGION_TUMOUR))
-		to_chat(src, span_userdanger("A disgusting tendrills repels us from this body. Perhaps we should try to infest another body?"))
+	if(HAS_TRAIT(carbon_target, TRAIT_XENO_HOST) || HAS_TRAIT(carbon_target, TRAIT_LEGION_TUMOUR))
+		balloon_alert(src, "сосуд уже занят")
 		return
 
 	face_atom(carbon_target)
@@ -80,7 +76,7 @@
 	playsound(src.loc, 'sound/creatures/terrorspiders/spit2.ogg', 30, TRUE)
 	Infect(carbon_target)
 	to_chat(src, span_userdanger("With our egg laid, our death approaches rapidly..."))
-	addtimer(CALLBACK(src, PROC_REF(death)), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(death)), 30 SECONDS)
 
 /obj/item/organ/internal/body_egg/changeling_egg
 	name = "changeling egg"
@@ -97,12 +93,12 @@
 		owner.bleed(5)
 
 	if(time >= 60 && prob(5))
-		to_chat(owner, pick(span_danger("We feel great!"), span_danger("Something hurts for a moment but it's gone now."), \
-							span_danger("You feel like you should go to a dark place."), span_danger("You feel really tired.")))
+		to_chat(owner, pick(span_danger("Вы чувствуете себя прекрасно"), span_danger("Вы почуствовали боль, но она уже прошла."), \
+							span_danger("Вы неожиданно захотели в тёмную комнату."), span_danger("Вы почувствовали себя очень усташвим.")))
 
 	if(time >= 90 && prob(5))
-		to_chat(owner, pick(span_danger("Something hurts."), span_danger("Someone is thinking, but it's not you."), \
-							span_danger("You feel at peace."), span_danger("Close your eyes.")))
+		to_chat(owner, pick(span_danger("Что-то опять заболело."), span_danger("Какие-то голоса в голове, но это не ты."), \
+							span_danger("Вы чувствуете покой."), span_danger("Вы захотели закрыть глаза.")))
 		owner.adjustToxLoss(5)
 
 	if((time >= EGG_INCUBATION_DEAD_TIME && owner.stat == DEAD) || time >= EGG_INCUBATION_LIVING_TIME)

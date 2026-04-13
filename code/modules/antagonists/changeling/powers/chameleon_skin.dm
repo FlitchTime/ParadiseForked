@@ -1,11 +1,11 @@
 /datum/action/changeling/chameleon_skin
-	name = "Chameleon Skin"
-	desc = "Our skin pigmentation rapidly changes to suit our current environment. Costs 25 chemicals."
-	helptext = "Allows us to become invisible after a few seconds of standing still. Can be toggled on and off."
+	name = "Кожа-Хамелеон"
+	desc = "Меняем пигменты кожи, чтобы сливаться с окружением. Дестабилизирует геном на 10 секунд."
+	helptext = "Позволяет становится невидимым, если не двигаться пару секунд. Можно включать и выключать."
 	button_icon_state = "chameleon_skin"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	chemical_cost = 25
+	dna_cost = 1
+	genetic_damage = 10
 	req_human = TRUE
 
 /datum/action/changeling/chameleon_skin/sting_action(mob/user)
@@ -14,6 +14,7 @@
 		return FALSE
 
 	h_owner.force_gene_block(GLOB.chameleonblock, !h_owner.dna.GetSEState(GLOB.chameleonblock))
+	user.balloon_alert(user, "[!h_owner.dna.GetSEState(GLOB.chameleonblock) ? "кожа снова видна" : "кожа становится прозрачной"]")
 
 	SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("[name]"))
 	return TRUE

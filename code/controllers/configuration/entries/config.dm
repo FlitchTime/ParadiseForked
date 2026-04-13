@@ -453,7 +453,7 @@
 		ROLE_TRAITOR = 60,
 		ROLE_THIEF = 0,
 		ROLE_VAMPIRE = 20,
-		ROLE_CHANGELING = 0,
+		ROLE_CHANGELING = 20,
 	)
 
 /datum/config_entry/keyed_list/antag_paradise_double_antags_weights

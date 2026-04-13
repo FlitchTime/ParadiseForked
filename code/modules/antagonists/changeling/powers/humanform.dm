@@ -1,11 +1,11 @@
 /datum/action/changeling/humanform
-	name = "Human form"
-	desc = "We change into a human. Costs 5 chemicals."
+	name = "Гуманоидная форма"
+	desc = "Мы трансофрмируемся в гуманоида. Дестабилизирует геном на 20 секунд."
+	helptext = "Оставляет после себя лужу крови."
 	button_icon_state = "human_form"
 	req_dna = 1
-	genetic_damage = 3
-	max_genetic_damage = 3
-	chemical_cost = 5
+	genetic_damage = 20
+	blood_on_castoff = TRUE
 
 /**
  * Transform into a human.
@@ -14,13 +14,12 @@
 	if(HAS_TRAIT(user, TRAIT_NO_TRANSFORM))
 		return FALSE
 
-	var/datum/dna/chosen_dna = cling.select_dna("Select the target DNA: ", "Target DNA")
+	var/datum/dna/chosen_dna = cling.select_dna("Какое ДНК использовать?: ", "Выбор ДНК")
 	if(!chosen_dna || !user)
 		return FALSE
 
 	// Notify players about transform.
-	user.visible_message(span_warning("[user] transforms!"), span_notice("We transform our appearance."))
-
+	user.visible_message(span_warning("[user] трансформируется в гуманоида!"), span_notice("Наш геном временно нестабилен."))
 	user.force_gene_block(GLOB.monkeyblock, FALSE)
 
 	if(istype(user))

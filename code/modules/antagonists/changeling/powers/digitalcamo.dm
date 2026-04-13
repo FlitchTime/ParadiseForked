@@ -1,10 +1,11 @@
 /datum/action/changeling/digitalcamo
-	name = "Digital Camouflage"
-	desc = "By evolving the ability to distort our form and proprotions, we defeat common altgorithms used to detect lifeforms on cameras."
-	helptext = "We cannot be tracked by camera while using this skill. However, humans looking at us will find us... uncanny."
+	name = "Цифровой камуфляж"
+	desc = "Развиваем способность изменять свой силуэт, чтобы избегать поисковые алгоритмы камер. Можно использовать в низшей форме. Дестабилизирует геном на 10 секунд."
+	helptext = "Нас нельзя отследить камерами, но присмотревшись к нам можно заметить странности."
 	button_icon_state = "digital_camo"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
+	genetic_damage = 10
 
 /datum/action/changeling/digitalcamo/Remove(mob/user)
 	REMOVE_TRAIT(user, TRAIT_AI_UNTRACKABLE, CHANGELING_TRAIT)
@@ -16,10 +17,10 @@
 /datum/action/changeling/digitalcamo/sting_action(mob/user)
 	if(HAS_TRAIT_FROM(user, TRAIT_AI_UNTRACKABLE, CHANGELING_TRAIT))
 		REMOVE_TRAIT(user, TRAIT_AI_UNTRACKABLE, CHANGELING_TRAIT)
-		to_chat(user, span_notice("We return to normal."))
+		user.balloon_alert(user, "нас можно отслеживать")
 	else
 		ADD_TRAIT(user, TRAIT_AI_UNTRACKABLE, CHANGELING_TRAIT)
-		to_chat(user, span_notice("We distort our form to prevent AI-tracking."))
+		user.balloon_alert(user, "невидимы для камер")
 
 	SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("[name]"))
 	return TRUE

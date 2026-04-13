@@ -3,12 +3,13 @@
  * Possible todo: make a custom message for directing a penlight/flashlight at the eyes - not sure what would display though.
  */
 /datum/action/changeling/augmented_eyesight
-	name = "Augmented Eyesight"
-	desc = "Creates heat receptors in our eyes and dramatically increases light sensing ability."
-	helptext = "Grants us thermal vision or flash protection. We will become a lot more vulnerable to flash based devices while thermal vision is active."
+	name = "Продвинутое зрение"
+	desc = "Создаём рецепторы и мембраны. Дестабилизирует геном на 5 секунд."
+	helptext = "Рецепторы дают нам видеть во тьме и улавливать тепло, но делает нас уязвимыми ко вспышкам, а мембраны защищают от вспышек и лечат поврежения глаз. Они видны на сканерах. Можно использовать в низшей форме."
 	button_icon_state = "augmented_eyesight"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 2
+	genetic_damage = 5
 
 /datum/action/changeling/augmented_eyesight/on_purchase(mob/user, /datum/antagonist/changeling/antag)
 	if(!..())
@@ -24,9 +25,11 @@
 	var/obj/item/organ/internal/cyberimp/eyes/eyes
 	if(active)
 		eyes = new /obj/item/organ/internal/cyberimp/eyes/shield/ling(null)
+		user.balloon_alert(user, "защитная мембрана")
 		active = FALSE
 	else
 		eyes = new /obj/item/organ/internal/cyberimp/eyes/thermals/ling(null)
+		user.balloon_alert(user, "тепловой рецептор")
 		active = TRUE
 
 	eyes.insert(user)
@@ -34,12 +37,22 @@
 
 /obj/item/organ/internal/cyberimp/eyes/shield/ling
 	name = "protective membranes"
-	desc = "These variable transparency organic membranes will protect you from welders and flashes and heal your eye damage."
+	desc = "Эти защитные мембраны с переменной прозрачностью защитят вас от сварочных работ и вспышек, а также помогут восстановить поврежденные глаза."
 	icon_state = "ling_eyeshield"
 	implant_overlay = null
 	slot = INTERNAL_ORGAN_EYE_LING
 	status = NONE
-	aug_message = "We adjust our eyes to protect them from bright lights."
+	aug_message = "Мембраны приспосабливаются для защиты глаз от яркого света."
+
+/obj/item/organ/internal/cyberimp/eyes/shield/ling/get_ru_names()
+	return list(
+		NOMINATIVE = "защитная мембрана",
+		GENITIVE = "защитной мембраны",
+		DATIVE = "защитной мембране",
+		ACCUSATIVE = "защитную мембрану",
+		INSTRUMENTAL = "защитной мембраной",
+		PREPOSITIONAL = "защитной мембране",
+	)
 
 /obj/item/organ/internal/cyberimp/eyes/shield/ling/emp_act(severity)
 	return
@@ -68,13 +81,23 @@
 
 /obj/item/organ/internal/cyberimp/eyes/thermals/ling
 	name = "heat receptors"
-	desc = "These heat receptors dramatically increases eyes light sensing ability."
+	desc = "Эти тепловые рецепторы повысят вашу чувствительность к свету и теплу."
 	icon_state = "ling_thermal"
 	eye_colour = "#000000"
 	implant_overlay = null
 	slot = INTERNAL_ORGAN_EYE_LING
 	status = NONE
-	aug_message = "We adjust our eyes to sense prey through walls."
+	aug_message = "Рецепторы фокусируются и позволяют видеть в темноте и тепло сквозь стены."
+
+/obj/item/organ/internal/cyberimp/eyes/thermals/ling/get_ru_names()
+	return list(
+		NOMINATIVE = "тепловой рецептор",
+		GENITIVE = "теплового рецептора",
+		DATIVE = "тепловому рецептору",
+		ACCUSATIVE = "тепловой рецептор",
+		INSTRUMENTAL = "тепловым рецептором",
+		PREPOSITIONAL = "тепловом рецепторе",
+	)
 
 /obj/item/organ/internal/cyberimp/eyes/thermals/ling/emp_act(severity)
 	return
