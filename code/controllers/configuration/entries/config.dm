@@ -444,6 +444,7 @@
 	default = list(
 		ROLE_TRAITOR,
 		ROLE_VAMPIRE,
+		ROLE_CHANGELING,
 	)
 
 /datum/config_entry/keyed_list/antag_paradise_single_antags_weights
