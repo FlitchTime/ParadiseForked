@@ -21,6 +21,9 @@
 	return ..()
 
 /datum/action/changeling/sting/Trigger(mob/clicker, trigger_flags)
+	if(!..())
+		return
+
 	if(!ischangeling(owner) || !ishuman(owner))
 		owner.balloon_alert(owner, "не подходящая форма")
 		return

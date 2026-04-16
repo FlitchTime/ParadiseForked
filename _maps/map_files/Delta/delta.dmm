@@ -3420,11 +3420,6 @@
 /area/hallway/secondary/entry/additional)
 "aCE" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/decal/cleanable/blood/tracks{
-	basecolor = "#030303";
-	desc = "It's black and greasy. Looks like Beepsky made another mess.";
-	drydesc = "It's dry and crusty. Someone is not doing their job."
-	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "brown"
@@ -10574,7 +10569,6 @@
 /area/civilian/vacantoffice)
 "bxD" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/decal/cleanable/blood/oil,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate{
 	icon_state = "crateopen";
@@ -11044,7 +11038,7 @@
 "bzC" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "High Sec Zone";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel{
@@ -22997,15 +22991,6 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/security/main)
-"cKH" = (
-/obj/structure/chair/comfy/teal{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "whiteblue"
-	},
-/area/medical/reception)
 "cKI" = (
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard_medi";
@@ -25338,13 +25323,6 @@
 	icon_state = "dark"
 	},
 /area/toxins/lab)
-"cVy" = (
-/obj/structure/chair/comfy/teal,
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "whiteblue"
-	},
-/area/medical/reception)
 "cVz" = (
 /obj/machinery/chem_heater,
 /obj/effect/decal/warning_stripes/southeast,
@@ -25710,10 +25688,11 @@
 	},
 /area/medical/reception)
 "cWR" = (
-/obj/structure/table,
-/obj/item/storage/box/cups,
 /obj/machinery/light{
 	dir = 4
+	},
+/obj/structure/chair/comfy/teal{
+	dir = 8
 	},
 /turf/simulated/floor/plasteel{
 	dir = 4;
@@ -26757,7 +26736,7 @@
 	},
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Reception";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel,
@@ -27805,6 +27784,13 @@
 /obj/machinery/photocopier/faxmachine/longrange{
 	department = "Quartermaster's Office"
 	},
+/obj/machinery/light_switch/directional/north,
+/obj/machinery/button/windowtint{
+	dir = 1;
+	id = "qm";
+	pixel_x = 8;
+	pixel_y = 24
+	},
 /turf/simulated/floor/plasteel{
 	dir = 9;
 	icon_state = "brown"
@@ -28661,7 +28647,7 @@
 /area/crew_quarters/hor)
 "dkK" = (
 /obj/machinery/door/airlock/maintenance{
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
@@ -29025,7 +29011,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Reception";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel,
 /area/security/reception)
@@ -30058,11 +30044,6 @@
 "dri" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/decal/warning_stripes/north,
-/obj/effect/decal/cleanable/blood/tracks{
-	basecolor = "#030303";
-	desc = "It's black and greasy. Looks like Beepsky made another mess.";
-	drydesc = "It's dry and crusty. Someone is not doing their job."
-	},
 /turf/simulated/floor/plasteel,
 /area/quartermaster/storage)
 "drl" = (
@@ -33387,7 +33368,7 @@
 	},
 /obj/machinery/door/airlock/security/glass{
 	name = "Staff room";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/structure/cable{
 	icon_state = "2-4"
@@ -39625,7 +39606,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Customs";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -40820,8 +40801,9 @@
 /turf/simulated/floor/plasteel,
 /area/atmos)
 "eLX" = (
-/obj/structure/chair/sofa/bench/corner{
-	dir = 1
+/obj/machinery/vending/cart{
+	pixel_x = -1;
+	pixel_y = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 10;
@@ -43250,14 +43232,6 @@
 	name = "Holodeck Projector Floor"
 	},
 /area/holodeck/alphadeck)
-"fok" = (
-/obj/machinery/computer/merch{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "brown"
-	},
-/area/quartermaster/office)
 "fos" = (
 /obj/machinery/atmospherics/pipe/simple/visible/cyan{
 	desc = "Труба содержит дыхательную смесь для подачи на станцию";
@@ -44360,9 +44334,6 @@
 /area/medical/research/nhallway)
 "fEm" = (
 /obj/effect/landmark/start/doctor,
-/obj/structure/chair/comfy/teal{
-	dir = 8
-	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -47592,9 +47563,6 @@
 /area/toxins/xenobiology)
 "gsd" = (
 /obj/effect/landmark/start/intern,
-/obj/structure/chair/comfy/teal{
-	dir = 8
-	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -48705,15 +48673,6 @@
 	icon_state = "darkred"
 	},
 /area/security/securearmory)
-"gET" = (
-/obj/structure/chair/stool{
-	dir = 4
-	},
-/turf/simulated/floor/plasteel{
-	dir = 4;
-	icon_state = "whiteblue"
-	},
-/area/medical/reception)
 "gFa" = (
 /obj/item/twohanded/required/kirbyplants,
 /obj/machinery/camera{
@@ -49909,7 +49868,7 @@
 	},
 /obj/machinery/door/airlock/security/glass{
 	name = "Shooting Range";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel,
@@ -51044,7 +51003,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "High Sec Zone";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -53546,7 +53505,6 @@
 	},
 /area/crew_quarters/fitness)
 "hHK" = (
-/obj/structure/table,
 /obj/machinery/light{
 	dir = 4
 	},
@@ -69260,7 +69218,7 @@
 	},
 /obj/machinery/door/airlock/security/glass{
 	name = "Briefing Room";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel,
@@ -69279,9 +69237,6 @@
 /area/maintenance/kitchen)
 "lqP" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/chair/comfy/teal{
-	dir = 1
-	},
 /turf/simulated/floor/plasteel{
 	icon_state = "whiteblue"
 	},
@@ -71012,15 +70967,6 @@
 /obj/effect/spawner/lootdrop/maintenance/tripple,
 /turf/simulated/floor/plating,
 /area/maintenance/fore)
-"lPl" = (
-/obj/effect/landmark/start/civilian,
-/obj/structure/chair/sofa/bench/left{
-	dir = 1
-	},
-/turf/simulated/floor/plasteel{
-	icon_state = "brown"
-	},
-/area/quartermaster/office)
 "lPv" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 1
@@ -74136,7 +74082,7 @@
 "mzW" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Briefing Room";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel{
@@ -75061,9 +75007,6 @@
 /area/maintenance/library)
 "mJx" = (
 /obj/effect/landmark/start/doctor,
-/obj/structure/chair/comfy/teal{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteblue"
@@ -75925,9 +75868,6 @@
 /area/quartermaster/miningdock)
 "mRV" = (
 /obj/effect/landmark/start/intern,
-/obj/structure/chair/comfy/teal{
-	dir = 4
-	},
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "whiteblue"
@@ -77487,7 +77427,7 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Customs";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/structure/cable{
 	icon_state = "2-8"
@@ -79124,7 +79064,7 @@
 "nDy" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Storage";
-	req_access = list(63)
+	req_access = list(2)
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/cable{
@@ -82268,8 +82208,9 @@
 	},
 /area/bridge/vip)
 "oqi" = (
-/obj/structure/chair/comfy/teal,
 /obj/item/radio/intercom/directional/east,
+/obj/structure/table,
+/obj/item/storage/box/cups,
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "whiteblue"
@@ -83981,7 +83922,7 @@
 "oIN" = (
 /obj/machinery/door/airlock/security{
 	name = "Restroom";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel{
@@ -84729,7 +84670,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Customs";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
 	dir = 8;
@@ -88666,7 +88607,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "High Sec Zone";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel,
 /area/security/permahallway)
@@ -90658,7 +90599,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "High Sec Zone";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /turf/simulated/floor/plasteel{
 	icon_state = "red"
@@ -91376,7 +91317,7 @@
 	},
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Reception";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel,
@@ -95726,16 +95667,6 @@
 	icon_state = "redyellowfull"
 	},
 /area/engineering/break_room)
-"rmC" = (
-/obj/structure/chair/sofa/bench/right{
-	dir = 4
-	},
-/obj/effect/landmark/start/civilian,
-/turf/simulated/floor/plasteel{
-	dir = 8;
-	icon_state = "brown"
-	},
-/area/quartermaster/office)
 "rmK" = (
 /obj/effect/decal/warning_stripes/north,
 /turf/simulated/floor/bluegrid,
@@ -103627,9 +103558,8 @@
 	},
 /area/security/detectives_office)
 "tcj" = (
-/obj/machinery/vending/cart{
-	pixel_x = -1;
-	pixel_y = 1
+/obj/machinery/computer/merch{
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 6;
@@ -105960,11 +105890,6 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "Cargo Bay Maintenance";
 	req_access = list(31)
-	},
-/obj/effect/decal/cleanable/blood/tracks{
-	basecolor = "#030303";
-	desc = "It's black and greasy. Looks like Beepsky made another mess.";
-	drydesc = "It's dry and crusty. Someone is not doing their job."
 	},
 /obj/machinery/door/poddoor/preopen{
 	id_tag = "Biohazard_cargo";
@@ -108849,7 +108774,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security{
 	name = "Evidence Storage";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -112235,7 +112160,7 @@
 	id = "visiting room";
 	id_tag = "visiting room";
 	name = "Visiting Room";
-	req_access = list(63)
+	req_access = list(2)
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plasteel{
@@ -112874,15 +112799,11 @@
 /turf/simulated/floor/plating,
 /area/crew_quarters/theatre)
 "vbx" = (
-/obj/machinery/button/windowtint{
-	dir = 1;
-	id = "qm";
-	pixel_x = 8;
-	pixel_y = 24
-	},
 /obj/structure/disposalpipe/trunk,
 /obj/machinery/disposal,
-/obj/machinery/light_switch/directional/north,
+/obj/machinery/computer/guestpass{
+	pixel_y = 28
+	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
 	icon_state = "brown"
@@ -113123,7 +113044,7 @@
 "vfb" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Briefing Room";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel{
@@ -119771,7 +119692,7 @@
 /turf/simulated/floor/plating,
 /area/maintenance/tourist)
 "wCY" = (
-/obj/structure/closet/sechammercabinet{
+/obj/structure/closet/gun_stand/sechammer{
 	pixel_y = -30
 	},
 /turf/simulated/floor/plasteel{
@@ -123459,7 +123380,7 @@
 	},
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Customs";
-	req_access = list(63)
+	req_access = list(1)
 	},
 /obj/machinery/door/firedoor,
 /turf/simulated/floor/plasteel,
@@ -125068,8 +124989,8 @@
 /area/maintenance/library)
 "xJY" = (
 /obj/machinery/atmospherics/unary/vent_pump/on,
-/obj/machinery/computer/guestpass{
-	pixel_y = 28
+/obj/structure/closet/gun_stand/cargo_defender{
+	pixel_y = 30
 	},
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -165941,7 +165862,7 @@ hQG
 dPk
 dPk
 jEJ
-rmC
+dPk
 eLX
 fgk
 bnc
@@ -166199,7 +166120,7 @@ qaz
 dLX
 fVO
 qaz
-lPl
+dZg
 fgk
 bnc
 jya
@@ -167021,9 +166942,9 @@ liV
 xYU
 oqi
 cWR
-cKH
-gET
-cVy
+cRg
+cRg
+cRg
 hHK
 cRg
 iBT
@@ -167741,7 +167662,7 @@ qaz
 dLX
 kmb
 qaz
-lCN
+dZg
 fgk
 bnc
 jya
@@ -167998,7 +167919,7 @@ dLX
 dLX
 dUs
 dLX
-fok
+lCN
 fgk
 bnc
 jya
