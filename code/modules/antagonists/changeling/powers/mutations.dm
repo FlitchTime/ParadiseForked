@@ -306,10 +306,11 @@
 
 	else if(isliving(target))
 		var/mob/living/mob = target
+		var/mob/living/ling = user
 		var/atom/throw_target = get_edge_target_turf(mob, user.dir)
 		RegisterSignal(mob, COMSIG_MOVABLE_IMPACT, PROC_REF(bump_impact))
 		mob.throw_at(throw_target, 1, 14, user, callback = CALLBACK(src, PROC_REF(unregister_bump_impact), mob))
-		user.Slowed(2 SECONDS, 5)
+		ling.Slowed(2 SECONDS, 5)
 		if(ishuman(mob))
 			var/mob/living/carbon/human/human = mob
 			var/obj/item/organ/external/organ = human.get_organ(user.zone_selected)
