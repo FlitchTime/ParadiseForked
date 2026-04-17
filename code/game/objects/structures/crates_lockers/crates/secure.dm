@@ -19,6 +19,7 @@
 	can_be_emaged = TRUE
 	overlay_lightmask = "securecrate_lightmask"
 	can_be_emissive = TRUE
+	secure = TRUE
 
 	var/tamperproof = 0
 	/// Overlay for crate with broken lock
@@ -48,9 +49,6 @@
 	explosion(get_turf(src), heavy_impact_range = 1, light_impact_range = 5, flash_range = 5, cause = src)
 	qdel(src)
 
-/obj/structure/closet/crate/secure/click_alt(mob/living/user)
-	togglelock(user)
-	return CLICK_ACTION_SUCCESS
 
 /obj/structure/closet/crate/secure/closed_item_click(mob/user)
 	togglelock(user)

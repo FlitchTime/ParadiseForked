@@ -55,17 +55,6 @@
 /obj/structure/closet/secure_closet/closed_item_click(mob/user)
 	togglelock(user)
 
-/obj/structure/closet/secure_closet/click_alt(mob/user)
-	togglelock(user)
-	return CLICK_ACTION_SUCCESS
-
-/obj/structure/closet/secure_closet/attack_hand(mob/user)
-	if(locked)
-		togglelock(user)
-	else
-		add_fingerprint(user)
-		toggle(user)
-
 /obj/structure/closet/secure_closet/update_overlays()
 	. = ..()
 
