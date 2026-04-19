@@ -1,10 +1,9 @@
 /datum/action/changeling/fakedeath
 	name = "Регенеративный стазис"
-	desc = "Мы рухнем в стазис, что позволит регенерировать и обмануть наших врагов. Требует 20 химикатов."
+	desc = "Мы рухнем в стазис, что позволит регенерировать и обмануть наших врагов."
 	button_icon_state = "fake_death"
 	power_type = CHANGELING_INNATE_POWER
 	req_dna = 1
-	chemical_cost = 20
 	req_stat = DEAD
 
 /**

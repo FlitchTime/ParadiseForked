@@ -5,7 +5,7 @@
 	button_icon_state = "adrenaline"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 2
-	chemical_cost = 40
+	chemical_cost = 30
 	req_stat = UNCONSCIOUS
 
 /datum/action/changeling/epinephrine/sting_action(mob/living/user)

@@ -431,7 +431,7 @@
 
 /datum/status_effect/fleshmend/tick(seconds_between_ticks)
 	if(LAZYLEN(active_instances) >= 1)
-		var/heal_amount = (length(active_instances) / tolerance) * (freezing ? 5 : 15)
+		var/heal_amount = (length(active_instances) / tolerance) * (freezing ? 2 : 10)
 		var/blood_restore = 30 * length(active_instances)
 		var/update = NONE
 
@@ -471,7 +471,7 @@
 	return TRUE
 
 /datum/status_effect/speedlegs/tick(seconds_between_ticks)
-	if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) / 6)
+	if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) / 10)
 		owner.balloon_alert(owner, "ноги ужасно болят")
 		owner.Knockdown(6 SECONDS)
 		qdel(src)
@@ -480,7 +480,7 @@
 		if(stacks == 30)
 			owner.balloon_alert(owner, "ноги начали болеть")
 		else if(stacks > 30) //Warning message that the stacks are getting too high
-			cling.chem_charges -= stacks / 6 //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
+			cling.chem_charges -= stacks / 10 //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
 
 /datum/status_effect/speedlegs/on_remove()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/strained_muscles)

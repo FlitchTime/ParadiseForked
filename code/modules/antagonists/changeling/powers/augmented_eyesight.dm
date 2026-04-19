@@ -6,10 +6,9 @@
 	name = "Продвинутое зрение"
 	desc = "Создаём рецепторы и мембраны. Дестабилизирует геном на 5 секунд."
 	helptext = "Рецепторы дают нам видеть во тьме и улавливать тепло, но делает нас уязвимыми ко вспышкам, а мембраны защищают от вспышек и лечат поврежения глаз. Они видны на сканерах. Можно использовать в низшей форме."
+	dna_cost = 1
 	button_icon_state = "augmented_eyesight"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 2
-	genetic_damage = 5
 
 /datum/action/changeling/augmented_eyesight/on_purchase(mob/user, /datum/antagonist/changeling/antag)
 	if(!..())

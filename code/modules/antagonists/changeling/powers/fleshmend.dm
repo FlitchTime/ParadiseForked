@@ -5,7 +5,7 @@
 	button_icon_state = "fleshmend"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 2
-	chemical_cost = 40
+	chemical_cost = 20
 	req_stat = UNCONSCIOUS
 
 /**

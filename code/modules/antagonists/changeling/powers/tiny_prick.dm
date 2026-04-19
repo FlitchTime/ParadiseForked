@@ -1,8 +1,6 @@
 /datum/action/changeling/sting
 	name = "Маленький хоботок"
 	desc = "Уколоть"
-	dna_cost = 1
-	chemical_cost = 20
 	req_human = TRUE
 	var/sting_icon = null
 	/// A middle click override used to intercept changeling stings performed on a target.
@@ -101,8 +99,6 @@
 	button_icon_state = "sting_extract"
 	sting_icon = "sting_extract"
 	power_type = CHANGELING_INNATE_POWER
-	dna_cost = 0
-	chemical_cost = 0
 
 /datum/action/changeling/sting/extract_dna/can_sting(mob/user, mob/target)
 	if(..())
@@ -204,6 +200,8 @@
 	name = "Хоботок безмолвия"
 	desc = "Мы скрытно уколим жертву и она полностью лишится возможности говорить на короткое время. Требует 20 химикатов."
 	helptext = "Не даёт понять жертве о том, что она не может говорить, пока она не попытается сделать это."
+	dna_cost = 1
+	chemical_cost = 20
 	button_icon_state = "sting_mute"
 	sting_icon = "sting_mute"
 	power_type = CHANGELING_PURCHASABLE_POWER
@@ -221,6 +219,8 @@
 	name = "Хоботок слепоты"
 	desc = "Мы скрытно уколим жертву и она временно ослепнет. Требует 20 химикатов."
 	helptext = "На 40 секунд полностью ослепит жертву и на 80 секунд оставит размытое зрение."
+	dna_cost = 1
+	chemical_cost = 20
 	button_icon_state = "sting_blind"
 	sting_icon = "sting_blind"
 	power_type = CHANGELING_PURCHASABLE_POWER
@@ -244,6 +244,8 @@
 	name = "Хоботок галлюцинаций"
 	desc = "Мы скрытно уколим жертву и посеем ужас в ней. Требует 20 химикатов."
 	helptext = "Через 30-60 секунд у жертвы начнутся галлюцинации на 400 секунд."
+	dna_cost = 1
+	chemical_cost = 20
 	button_icon_state = "sting_lsd"
 	sting_icon = "sting_lsd"
 	power_type = CHANGELING_PURCHASABLE_POWER
@@ -265,6 +267,8 @@
 	name = "Криогенный хоботок"
 	desc = "Мы скрытно уколим жертву коктелем, который будет замораживать её изнутри. Требует 20 химикатов."
 	helptext = "Укол незаметный, но жертва начнёт быстро замерзать, что будет заметно."
+	dna_cost = 1
+	chemical_cost = 20
 	button_icon_state = "sting_cryo"
 	sting_icon = "sting_cryo"
 	power_type = CHANGELING_PURCHASABLE_POWER

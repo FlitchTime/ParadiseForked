@@ -5,7 +5,6 @@
 	button_icon_state = "last_resort"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
-	chemical_cost = 20
 	req_stat = DEAD
 	bypass_fake_death = TRUE
 
