@@ -4,7 +4,7 @@
 	helptext = "Постоянно увеличивает скорость химического синтеза на 50%."
 	button_icon_state = "chemical_synthesis"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 1
+	dna_cost = 2
 	var/recharge_bonus = 0.5
 
 /datum/action/changeling/chemical_synthesis/on_purchase(mob/user)

@@ -321,7 +321,7 @@
 	button_icon_state = "tentacle"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
-	genetic_damage = 5
+	chemical_cost = 10
 	weapon_type = /obj/item/gun/magic/tentacle
 	weapon_check_type = /obj/item/gun/magic/tentacle
 	weapon_name_simple = "мясное щупальце"
