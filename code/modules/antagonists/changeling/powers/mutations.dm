@@ -132,10 +132,10 @@
 /datum/action/changeling/weapon/arm_blade
 	name = "Рука-клинок"
 	desc = "Мы трансформируем свою руку в опасный клинок. Дестабилизирует геном на 10 секунд."
-	helptext = "Вернуть руку можно той же способностью, что и вызван клинок. Оставляет после себя лужу крови. Снижает производство химикатов на 0.25."
-	dna_cost = 1
+	helptext = "Вернуть руку можно той же способностью, что и вызван клинок. Оставляет после себя лужу крови. Снижает производство химикатов на 1."
+	dna_cost = 2
 	genetic_damage = 10
-	recharge_slowdown = 0.25
+	recharge_slowdown = 1
 	button_icon_state = "armblade"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	weapon_type = /obj/item/melee/changeling/arm_blade
@@ -151,8 +151,8 @@
 	w_class = WEIGHT_CLASS_HUGE
 	sharp = TRUE
 	force = 45
-	armour_penetration = -30
-	block_chance = 50
+	armour_penetration = -15
+	block_chance = 75
 	block_type = MELEE_ATTACKS
 	hitsound = 'sound/weapons/armblade.ogg'
 	throw_range = 0
@@ -228,10 +228,10 @@
 /datum/action/changeling/weapon/fleshy_maul
 	name = "Молот плоти"
 	desc = "Мы трансформируем свою руку в огромный молот. Дестабилизирует геном на 10 секунд."
-	helptext = "Вернуть руку можно той же способностью, что и вызван молот. Оставляет после себя лужу крови. Снижает производство химикатов на 0.25."
+	helptext = "Вернуть руку можно той же способностью, что и вызван молот. Оставляет после себя лужу крови. Снижает производство химикатов на 1."
 	dna_cost = 2
 	genetic_damage = 10
-	recharge_slowdown = 0.25
+	recharge_slowdown = 1
 	button_icon_state = "flesh_maul"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	weapon_type = /obj/item/melee/changeling/fleshy_maul
@@ -245,8 +245,8 @@
 	item_state = "flesh_maul"
 	item_flags = ABSTRACT|DROPDEL
 	w_class = WEIGHT_CLASS_HUGE
-	force = 25
-	armour_penetration = 35
+	force = 40
+	armour_penetration = 30
 	hitsound = SFX_SWING_HIT
 	throw_range = 0
 	throw_speed = 0
@@ -307,9 +307,14 @@
 		wall.take_damage(35)
 		playsound(src, 'sound/weapons/smash.ogg', 50, TRUE)
 
-	else if(isliving(target))
-		var/mob/living/mob = target
-		mob.Knockdown(1 SECONDS)
+	else if(ishuman(target))
+		var/mob/living/carbon/human/human = target
+		var/obj/item/organ/external/organ = human.get_organ(user.zone_selected)
+		if(organ.brute_dam >= 60)
+			organ.fracture()
+		if(isliving(target))
+			human.Knockdown(1 SECONDS)
+
 
 /***************************************\
 |***********COMBAT TENTACLES*************|
@@ -317,11 +322,12 @@
 /datum/action/changeling/weapon/tentacle
 	name = "Мясное щупальце"
 	desc = "Мы трансформируем руку в мясное щупальце. Дестабилизирует геном на 5 секунд."
-	helptext = "Можно один раз запустить щупальце. Эффект будет зависить от интента: В интенте ПОМОЩИ будет подтягивать жертву. В интенте ОБЕЗАРУЖИВАНИЯ будет хватать вещи с активной руки жертвы. В интенте ОБЕЗАРУЖИВАНИЯ будет подтягивать и хватать жертву в захват. В интенте ВРЕДА будет подтягивать и атаковать жертву, если есть острое оружие во второй руке. Оставляет после себя лужу крови."
+	helptext = "Можно один раз запустить щупальце. Эффект будет зависить от интента. Оставляет после себя лужу крови."
 	button_icon_state = "tentacle"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
-	chemical_cost = 10
+	genetic_damage = 10
+	max_genetic_damage = 30
 	weapon_type = /obj/item/gun/magic/tentacle
 	weapon_check_type = /obj/item/gun/magic/tentacle
 	weapon_name_simple = "мясное щупальце"
@@ -380,12 +386,12 @@
 /datum/action/changeling/weapon/shield
 	name = "Костянной щит"
 	desc = "Мы трансформируем свою руку в твёрдый щит. Дестабилизирует геном на 5 секунд."
-	helptext = "Выдержит 3 атаки за каждого поглощенного после чего превратится обратно в руку. Оставляет после себя лужу крови. Снижает производство химикатов на 0.25."
+	helptext = "Выдержит 3 атаки за каждого поглощенного после чего превратится обратно в руку. Оставляет после себя лужу крови."
 	button_icon_state = "organic_shield"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
-	genetic_damage = 5
-	recharge_slowdown = 0.25
+	genetic_damage = 10
+	max_genetic_damage = 30
 	weapon_type = /obj/item/shield/changeling
 	weapon_check_type = /obj/item/shield/changeling
 	weapon_name_simple = "костянной щит"
@@ -504,10 +510,10 @@
 /datum/action/changeling/suit/armor
 	name = "Хитиновая броня"
 	desc = "Мы трансформируем нашу кожу в прочный хитин, что отлично защищает. Дестабилизирует геном на 20 секунд."
-	helptext = "Оставляет после себя лужу крови. Снижает производство химикатов на 0.25."
+	helptext = "Оставляет после себя лужу крови. Снижает производство химикатов на 2."
 	dna_cost = 2
 	genetic_damage = 20
-	recharge_slowdown = 0.25
+	recharge_slowdown = 2
 	button_icon_state = "chitinous_armor"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	suit_type = /obj/item/clothing/suit/armor/changeling

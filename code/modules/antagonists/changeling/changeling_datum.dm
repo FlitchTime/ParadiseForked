@@ -35,11 +35,11 @@ GLOBAL_LIST_INIT(possible_changeling_IDs, list("Alpha","Beta","Gamma","Delta","E
 	/// The current amount of chemicals the changeling has stored.
 	var/chem_charges = 20
 	/// The amount of chemicals that recharges per `Life()` call.
-	var/chem_recharge_rate = 1
+	var/chem_recharge_rate = 3
 	/// Amount of chemical recharge slowdown, calculated as `chem_recharge_rate - chem_recharge_slowdown`
 	var/chem_recharge_slowdown = 0
 	/// The total amount of chemicals able to be stored.
-	var/chem_storage = 100
+	var/chem_storage = 60
 	/// The range of changeling stings.
 	var/sting_range = 2
 	/// The changeling's identifier when speaking in the hivemind, i.e. "Mr. Delta 123".

@@ -471,20 +471,20 @@
 	return TRUE
 
 /datum/status_effect/speedlegs/tick(seconds_between_ticks)
-	if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= 6)
+	if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks / 10) + 4)
 		owner.balloon_alert(owner, "ноги ужасно болят")
 		owner.Knockdown(6 SECONDS)
 		qdel(src)
 	else
 		stacks++
-		if(stacks == 30)
+		if(stacks == 10)
 			owner.balloon_alert(owner, "ноги начали болеть")
-		else if(stacks > 30) //Warning message that the stacks are getting too high
-			cling.chem_charges -= 5 //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
+		else if(stacks > 10) //Warning message that the stacks are getting too high
+			cling.chem_charges -= (stacks / 10) + 3  //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
 
 /datum/status_effect/speedlegs/on_remove()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/strained_muscles)
-	if(stacks >= 30)
+	if(stacks >= 10)
 		owner.balloon_alert(owner, "наши мышцы истощены")
 		owner.Knockdown(6 SECONDS)
 		owner.emote("gasp")

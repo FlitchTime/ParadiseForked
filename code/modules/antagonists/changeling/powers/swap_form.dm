@@ -45,7 +45,7 @@
 	user.Jitter(10 SECONDS)
 
 	if(!do_after(user, 10 SECONDS, target, NONE))
-		user.balloon_alert(user, "смена сасуда прервана")
+		user.balloon_alert(user, "смена сосуда прервана")
 		return FALSE
 
 	if(!can_sting(user))

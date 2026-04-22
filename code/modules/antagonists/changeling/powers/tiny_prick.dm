@@ -121,8 +121,8 @@
 	button_icon_state = "sting_transform"
 	sting_icon = "sting_transform"
 	power_type = CHANGELING_PURCHASABLE_POWER
-	dna_cost = 3
-	chemical_cost = 50
+	dna_cost = 2
+	chemical_cost = 30
 	genetic_damage = 60
 	max_genetic_damage = 30
 	/// Currently selected DNA

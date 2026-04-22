@@ -1,11 +1,11 @@
 /datum/action/changeling/fleshmend
 	name = "Регенерация плоти"
-	desc = "Наша плоть начинает быстро регенерировать. Требует 20 химикатов."
+	desc = "Наша плоть начинает быстро регенерировать. Требует 30 химикатов."
 	helptext = "Помогает с порезами, ожогами, удушьем, кровопотерей, но не отращивает конечности. Можно использовать будучи бессознания. Можно использовать в низшей форме."
 	button_icon_state = "fleshmend"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 2
-	chemical_cost = 20
+	chemical_cost = 30
 	req_stat = UNCONSCIOUS
 
 /**

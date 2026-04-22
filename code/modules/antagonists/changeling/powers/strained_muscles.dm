@@ -10,7 +10,6 @@
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
 	genetic_damage = 10
-	max_genetic_damage = 30
 
 /datum/action/changeling/strained_muscles/Remove(mob/living/user)
 	user.remove_status_effect(STATUS_EFFECT_SPEEDLEGS)
