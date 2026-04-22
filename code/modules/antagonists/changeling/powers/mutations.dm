@@ -245,8 +245,8 @@
 	item_state = "flesh_maul"
 	item_flags = ABSTRACT|DROPDEL
 	w_class = WEIGHT_CLASS_HUGE
-	force = 40
-	armour_penetration = 30
+	force = 30
+	armour_penetration = 40
 	hitsound = SFX_SWING_HIT
 	throw_range = 0
 	throw_speed = 0
