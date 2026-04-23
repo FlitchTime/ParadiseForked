@@ -348,3 +348,6 @@
 
 /// Called after placing item on table. (mob/user, obj/structure/table)
 #define COMSIG_ITEM_PLACED_ON_TABLE "item_placed_on_table"
+
+
+#define COMSIG_ITEM_RECALL "item_recall"

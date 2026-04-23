@@ -1531,3 +1531,9 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 /obj/item/proc/on_tripwire_trigger(obj/item/tripwire/base, mob/user)
 	SIGNAL_HANDLER
 	return
+
+/obj/item/proc/try_catch(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+	if(user.put_in_active_hand(src))
+		return

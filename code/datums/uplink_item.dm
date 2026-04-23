@@ -1767,6 +1767,14 @@
 	item = /obj/item/storage/box/syndie_kit/chameleon_counter
 	cost = 6
 
+/datum/uplink_item/stealthy_tools/midichlorian_injector
+	name = "Инъектор мидихлориан"
+	desc = "Инъектор, при введении которого делает организм единым с силой и повышает мастерство владения энергетическим мечом. \
+			Энергетический меч в комплекте не идёт."
+	item = /obj/item/midichlorian_injector
+	cost = 60
+	excludefrom = list(UPLINK_TYPE_NUCLEAR, UPLINK_TYPE_SST)
+
 /**
  * MARK: Devices & Tools
  */

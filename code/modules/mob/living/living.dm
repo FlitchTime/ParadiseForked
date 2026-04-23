@@ -1588,6 +1588,8 @@
 	update_pull_movespeed()
 
 /mob/living/proc/set_pull_offsets(mob/living/target, grab_state_to_offset = GRAB_PASSIVE)
+	if(HAS_TRAIT(target, TRAIT_FORCE_GRASPED))
+		return // Force Grab should not rotate or pixel-shift the victim.
 	if(target.buckled)
 		return //don't make them change direction or offset them if they're buckled into something.
 	var/offset = 0

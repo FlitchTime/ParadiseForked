@@ -380,7 +380,8 @@
  */
 /atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
 	if(pulling)
-		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))
+		var/is_force_grasp = HAS_TRAIT(pulling, TRAIT_FORCE_GRASPED)
+		if((!is_force_grasp && get_dist(src, pulling) > 1) || (is_force_grasp && get_dist(src, pulling) > 4) || (z != pulling.z && !z_allowed))
 			stop_pulling()
 		else if(!isturf(loc))
 			stop_pulling()
@@ -389,7 +390,7 @@
 			stop_pulling()
 		else if(pulling.anchored || pulling.move_resist > move_force)
 			stop_pulling()
-	if(!only_pulling && pulledby && moving_diagonally != FIRST_DIAG_STEP && (!in_range(src, pulledby) || (z != pulledby.z && !z_allowed))) //separated from our puller and not in the middle of a diagonal move.
+	if(!only_pulling && pulledby && moving_diagonally != FIRST_DIAG_STEP && (((!HAS_TRAIT(src, TRAIT_FORCE_GRASPED) && !in_range(src, pulledby)) || (HAS_TRAIT(src, TRAIT_FORCE_GRASPED) && get_dist(src, pulledby) > 4)) || (z != pulledby.z && !z_allowed))) //separated from our puller and not in the middle of a diagonal move.
 		pulledby.stop_pulling()
 
 /atom/movable/proc/can_be_pulled(atom/movable/puller, grab_state, force, supress_message)
@@ -649,6 +650,8 @@
 	if(. && pulling && pulling == pullee && pulling != moving_from_pull)
 		if(pulling.anchored)
 			stop_pulling()
+		else if(HAS_TRAIT(pulling, TRAIT_FORCE_GRASPED))
+			check_pulling()
 		else
 			// Puller and pullee more than one tile away or in diagonal position and whatever the pullee is pulling
 			// isn't already moving from a pull as it'll most likely result in an infinite loop a la ouroborus.

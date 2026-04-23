@@ -736,5 +736,50 @@
 		return
 	icon_state = "combo"
 
+/obj/item/midichlorian_injector
+	name = "midichlorian injector"
+	desc = "Странный автоинъектор, наполненный странной светящейся жидкостью. Да прибудет с тобой сила."
+	icon = 'icons/obj/ninjaobjects.dmi'
+	icon_state = "injector"
+	attack_verb = list("jabbed")
+	var/used = FALSE
+
+/obj/item/midichlorian_injector/get_ru_names()
+	return list(
+		NOMINATIVE = "инъектор мидихлориан",
+		GENITIVE = "инъектора мидихлориан",
+		DATIVE = "инъектору мидихлориан",
+		ACCUSATIVE = "инъектор мидихлориан",
+		INSTRUMENTAL = "инъектором мидихлориан",
+		PREPOSITIONAL = "инъекторе мидихлориан",
+	)
+	
+
+/obj/item/midichlorian_injector/update_icon_state()
+	icon_state = used ? "injector-used" : "injector"
+
+/obj/item/midichlorian_injector/attack_self(mob/living/carbon/human/user)
+	if(!istype(user))
+		return TRUE
+
+	if(used)
+		to_chat(user, span_warning("В [declent_ru(PREPOSITIONAL)] больше ничего не осталось."))
+		return TRUE
+
+	user.visible_message(
+		span_warning("[user] вкалывает себе что-то [declent_ru(INSTRUMENTAL)]."),
+		span_warning("Вы вводите себе содержимое [declent_ru(GENITIVE)].")
+	)
+
+	var/datum/martial_art/force/F = new
+	F.teach(user)
+
+	ADD_TRAIT(user, TRAIT_TELEKINESIS, UNIQUE_TRAIT_SOURCE(src))
+
+	used = TRUE
+	update_icon(UPDATE_ICON_STATE)
+	desc = "Пустой автоинъектор."
+	return FALSE
+
 #undef HAS_COMBOS
 #undef COMBO_ALIVE_TIME
