@@ -197,7 +197,7 @@
 								/obj/item/clothing/shoes/chameleon/noslip = 1,								// 10 TK
 								/obj/item/clothing/mask/chameleon = 1,										// 0-20 TK
 								/obj/item/encryptionkey/syndicate = 1,										// 0-2 TK
-								/obj/item/midichlorian_injector = 1											// 60 TK
+								/obj/item/midichlorian_injector = 1											// 40 TK
 							),
 			"Professional" = list("Name" = "'Professional' Bundle",	// 180-187 TK
 								"Desc" = "Suit up and handle yourself like a professional with a long-distance sniper rifle, additional .50 standard and penetrator rounds and thermal glasses to easily scope out your target.",

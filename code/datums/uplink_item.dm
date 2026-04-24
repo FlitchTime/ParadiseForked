@@ -1772,7 +1772,7 @@
 	desc = "Инъектор, при введении которого делает организм единым с силой и повышает мастерство владения энергетическим мечом. \
 			Энергетический меч в комплекте не идёт."
 	item = /obj/item/midichlorian_injector
-	cost = 60
+	cost = 40
 	excludefrom = list(UPLINK_TYPE_NUCLEAR, UPLINK_TYPE_SST)
 
 /**

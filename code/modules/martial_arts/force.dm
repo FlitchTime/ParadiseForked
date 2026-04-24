@@ -158,10 +158,13 @@
 		user.balloon_alert(user, "не готово!")
 		return COMSIG_MOB_CANCEL_CLICKON
 
-	COOLDOWN_START(src, force_grab, 1 SECONDS)
-
-	try_force_grab(user, victim)
+	INVOKE_ASYNC(src, PROC_REF(handle_force_grab_async), user, victim)
+	
 	return COMSIG_MOB_CANCEL_CLICKON
+
+/datum/martial_art/force/proc/handle_force_grab_async(mob/living/carbon/human/user, mob/living/victim)
+	COOLDOWN_START(src, force_grab, 1 SECONDS)
+	try_force_grab(user, victim)
 
 /datum/martial_art/force/proc/try_force_grab(mob/living/carbon/human/user, mob/living/victim)
 	if(QDELETED(user) || QDELETED(victim) || user.mind?.martial_art != src)
