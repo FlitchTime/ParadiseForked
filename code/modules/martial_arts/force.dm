@@ -7,7 +7,7 @@
 	name = "Force Arts"
 	weight = 11
 	has_explaination_verb = TRUE
-	has_dirslash = TRUE
+	has_dirslash = FALSE
 
 	combos = list(
 		/datum/martial_combo/force/leg_sweep,
@@ -389,9 +389,7 @@
 /datum/action/innate/force_esword_pull
 	name = "Призыв меча"
 	desc = "Связывает энергетический меч или двойной меч в руках с вашей аурой, либо призывает связанный меч обратно в руку."
-	button_icon = 'icons/mob/actions/actions.dmi'
 	button_icon_state = "summons"
-	background_icon_state = ACTION_BUTTON_DEFAULT_BACKGROUND
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED
 
 /datum/action/innate/force_esword_pull/Activate()
