@@ -1,6 +1,4 @@
 #define ATTACK_WITH_HAND "hand"
-#define SWORD_INACTIVE 0
-#define SWORD_ACTIVE 1
 #define ATTACK_WRONG_STEP "wrong"
 
 // MARK: Force martial art
@@ -310,21 +308,21 @@
 		return ATTACK_WITH_HAND
 	if(istype(weapon, /obj/item/melee/energy/sword))
 		var/obj/item/melee/energy/sword/esword = weapon
-		return esword.active ? SWORD_ACTIVE : SWORD_INACTIVE
+		return esword.active ? FORCE_ARTS_SWORD_ACTIVE : FORCE_ARTS_SWORD_INACTIVE
 	if(istype(weapon, /obj/item/twohanded/dualsaber))
-		return HAS_TRAIT(weapon, TRAIT_WIELDED) ? SWORD_ACTIVE : SWORD_INACTIVE
+		return HAS_TRAIT(weapon, TRAIT_WIELDED) ? FORCE_ARTS_SWORD_ACTIVE : FORCE_ARTS_SWORD_INACTIVE
 	return ATTACK_WRONG_STEP
 
 /datum/martial_art/force/harm_act(mob/living/carbon/human/attacker, mob/living/carbon/human/defender)
 	var/status = get_sword_status(attacker)
-	if(status == SWORD_ACTIVE)
+	if(status == FORCE_ARTS_SWORD_ACTIVE)
 		return act(MARTIAL_COMBO_STEP_HARM, attacker, defender)
 	return FALSE
 
 /datum/martial_art/force/disarm_act(mob/living/carbon/human/attacker, mob/living/carbon/human/defender)
 	var/status = get_sword_status(attacker)
 
-	if(status == SWORD_ACTIVE || status == SWORD_INACTIVE)
+	if(status == FORCE_ARTS_SWORD_ACTIVE || status == FORCE_ARTS_SWORD_INACTIVE)
 		return act(MARTIAL_COMBO_STEP_DISARM, attacker, defender)
 	
 	return ..()
@@ -347,7 +345,7 @@
 	if(status == ATTACK_WRONG_STEP)
 		return
 
-	if(status == SWORD_INACTIVE && attacker.a_intent == INTENT_HARM)
+	if(status == FORCE_ARTS_SWORD_INACTIVE && attacker.a_intent == INTENT_HARM)
 		if(attacker.pulling == defender && attacker.grab_state >= GRAB_AGGRESSIVE)
 			INVOKE_ASYNC(src, PROC_REF(try_force_pierce), attacker, defender)
 			return COMPONENT_SKIP_ATTACK

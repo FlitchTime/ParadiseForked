@@ -27,6 +27,6 @@
 		return FALSE
 
 	if(step == MARTIAL_COMBO_STEP_DISARM)
-		if(MA.get_sword_status(user) != SWORD_ACTIVE)
+		if(MA.get_sword_status(user) != FORCE_ARTS_SWORD_ACTIVE)
 			return FALSE
 	return TRUE
