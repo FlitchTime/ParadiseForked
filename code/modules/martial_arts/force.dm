@@ -371,7 +371,7 @@
 	last_pierce_time = world.time
 
 	user.visible_message(span_danger("[user] вонзает рукоять в грудь [target] и активирует лезвие!"), \
-						 span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"))
+						span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"))
 	
 	if(istype(weapon, /obj/item/melee/energy/sword))
 		var/obj/item/melee/energy/sword/esword = weapon
