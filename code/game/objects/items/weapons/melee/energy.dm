@@ -169,7 +169,7 @@
 			var/mob/living/carbon/human/human_thrower = thrower
 			if(istype(human_thrower.mind?.martial_art, /datum/martial_art/force))
 				var/zone = throwingdatum.target_zone
-				if(zone && zone != BODY_ZONE_HEAD && zone != BODY_ZONE_CHEST && zone != BODY_ZONE_PRECISE_GROIN)
+				if(!(zone in list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN)))
 					if(prob(30))
 						var/obj/item/organ/external/limb = victim.get_organ(zone)
 						if(limb && !limb.cannot_amputate)
@@ -194,6 +194,7 @@
 
 	var/distance = get_dist(user, src)
 	throw_at(user, distance + 1, throw_speed)
+	addtimer(CALLBACK(src, PROC_REF(clear_recall_target)), 3 SECONDS)
 
 /obj/item/melee/energy/sword/cyborg
 	var/hitcost = 50

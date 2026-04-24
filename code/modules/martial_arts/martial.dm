@@ -112,8 +112,8 @@
 	. = FALSE
 	for(var/thing in current_combos)
 		var/datum/martial_combo/MC = thing
-		if(!MC.check_combo(step, target))
-			current_combos -= MC	// It failed so remove it
+		if(!MC.check_combo(step, target, user, src))
+			current_combos -= MC
 		else
 			switch(MC.progress_combo(user, target, src))
 				if(MARTIAL_COMBO_FAIL)

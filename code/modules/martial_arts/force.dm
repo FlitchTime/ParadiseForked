@@ -1,3 +1,8 @@
+#define ATTACK_WITH_HAND "hand"
+#define SWORD_INACTIVE 0
+#define SWORD_ACTIVE 1
+#define ATTACK_WRONG_STEP "wrong"
+
 // MARK: Force martial art
 
 /datum/martial_art/force
@@ -18,12 +23,11 @@
 	var/setting_force_grab = FALSE
 	var/mob/living/force_grab_target
 
-	var/used_inactive_hilt = FALSE
 	var/last_pierce_time = 0
 
 	COOLDOWN_DECLARE(force_lightning_cd)
 	COOLDOWN_DECLARE(force_pierce_cd)
-	COOLDOWN_DECLARE(force_esword_pull_cd)
+	COOLDOWN_DECLARE(force_grab)
 
 /datum/martial_art/force/teach(mob/living/carbon/human/H, make_temporary = FALSE)
 	. = ..()
@@ -40,9 +44,6 @@
 	esword_pull_action.Grant(H)
 
 	to_chat(H, span_notice("Вы чувствуете странное спокойствие. Вы постигли Путь Силы."))
-	to_chat(H, span_notice("Призыв меча: свяжите энергетический меч или двойной энергетический меч в руках со своей аурой, чтобы затем призывать его обратно в руку."))
-	to_chat(H, span_notice("Силовой захват: в режиме GRAB нажмите на цель в пределах 4 тайлов, чтобы схватить её на расстоянии."))
-	to_chat(H, span_notice("Силовая молния: в режиме DISARM нажмите правой кнопкой мыши в пределах 4 тайлов. Перезарядка: 15 секунд."))
 
 /datum/martial_art/force/remove(mob/living/carbon/human/H)
 	. = ..()
@@ -67,14 +68,11 @@
 	to_chat(user, "<b><i>Вы сосредотачиваетесь и чувствуете, как Сила течет сквозь вас...</i></b>")
 
 /datum/martial_art/force/explaination_combos(user)
-	to_chat(user, span_notice("Комбо с мечом (энергетический меч / двойной энергетический меч):"))
-	to_chat(user, span_notice(" - Подсечка: HARM мечом, DISARM мечом, HARM мечом -> сбивает с ног + отрубает одну ногу ногу."))
-	to_chat(user, span_notice(" - Рассекающий удар: HARM мечом, HARM мечом -> 40% шанс отрубить выбранную конечность (кроме головы/груди/паха)."))
-	to_chat(user, span_notice(" - Финт рукоятью: HARM мечом, DISARM рукоятью меча, GRAB рукой -> мгновенно переходит в захват за шею."))
+	. = ..()
 	to_chat(user, span_notice("Особое:"))
-	to_chat(user, span_notice(" - Силовой захват: в режиме GRAB нажмите на цель в пределах 4 тайлов, чтобы схватить её на расстоянии."))
-	to_chat(user, span_notice(" - Силовая молния: в режиме DISARM нажмите правой кнопкой мыши в пределах 4 тайлов. На 5 секунд оглушает цель шоком, игнорируя защиту от тока. Перезарядка: 15 секунд."))
-	to_chat(user, span_notice(" - Пронзание: удерживая цель за шею или в удушающем захвате, ударьте цель выключенным мечом в режиме HARM -> активирует лезвие внутри цели и наносит 70 урона груди (игнорирует броню). Перезарядка: 5 сек."))
+	to_chat(user, "[span_notice("Силовой захват")]: в режиме [span_yellow("Grab")] нажмите на цель в пределах 4 тайлов, чтобы схватить её на расстоянии.")
+	to_chat(user, "[span_notice("Силовая молния")]: в режиме [span_blue("Disarm")] нажмите правой кнопкой мыши в пределах 4 тайлов. На 5 секунд оглушает цель шоком, игнорируя защиту от тока. Перезарядка: 15 секунд.")
+	to_chat(user, "[span_notice("Пронзание")]: удерживая цель за шею или в удушающем захвате, ударьте цель выключенным мечом в режиме [span_red("Harm")]. Активирует лезвие внутри цели и наносит 70 урона груди (игнорирует броню). Перезарядка: 5 сек.")
 
 /datum/martial_art/force/explaination_footer(user)
 	to_chat(user, "<b><i>Используйте свои способности с умом.</i></b>")
@@ -156,7 +154,13 @@
 		to_chat(user, span_warning("Вы уже кого-то держите."))
 		return COMSIG_MOB_CANCEL_CLICKON
 
-	INVOKE_ASYNC(src, PROC_REF(try_force_grab), user, victim)
+	if(!COOLDOWN_FINISHED(src, force_grab))
+		user.balloon_alert(user, "не готово!")
+		return COMSIG_MOB_CANCEL_CLICKON
+
+	COOLDOWN_START(src, force_grab, 1 SECONDS)
+
+	try_force_grab(user, victim)
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /datum/martial_art/force/proc/try_force_grab(mob/living/carbon/human/user, mob/living/victim)
@@ -255,9 +259,7 @@
 		return
 	if(user.a_intent != INTENT_DISARM)
 		return
-	if(!target)
-		return
-	if(get_dist(user, target) > 4)
+	if(!target || !isliving(target))
 		return
 	if(user.z != target.z)
 		return
@@ -291,7 +293,7 @@
 
 	if(primary_mob)
 		if(ishuman(primary_mob) || iscarbon(primary_mob))
-			primary_mob.electrocute_act(25, user, flags = SHOCK_IGNORE_IMMUNITY, stun_duration = 6 SECONDS)
+			primary_mob.electrocute_act(25, user, flags = SHOCK_IGNORE_IMMUNITY, stun_duration = 3 SECONDS)
 		else
 			primary_mob.electrocute_act(25, user, stun_duration = 1 SECONDS)
 
@@ -302,36 +304,32 @@
 /datum/martial_art/force/proc/get_sword_status(mob/living/carbon/human/attacker)
 	var/obj/item/weapon = attacker.get_active_hand()
 	if(!weapon)
-		return "hand"
+		return ATTACK_WITH_HAND
 	if(istype(weapon, /obj/item/melee/energy/sword))
-		var/obj/item/melee/energy/sword/S = weapon
-		return S.active ? "active" : "inactive"
+		var/obj/item/melee/energy/sword/esword = weapon
+		return esword.active ? SWORD_ACTIVE : SWORD_INACTIVE
 	if(istype(weapon, /obj/item/twohanded/dualsaber))
-		return HAS_TRAIT(weapon, TRAIT_WIELDED) ? "active" : "inactive"
-	return "wrong"
+		return HAS_TRAIT(weapon, TRAIT_WIELDED) ? SWORD_ACTIVE : SWORD_INACTIVE
+	return ATTACK_WRONG_STEP
 
-/datum/martial_art/force/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
-	var/status = get_sword_status(A)
-	if(status == "active")
-		return act(MARTIAL_COMBO_STEP_HARM, A, D)
+/datum/martial_art/force/harm_act(mob/living/carbon/human/attacker, mob/living/carbon/human/defender)
+	var/status = get_sword_status(attacker)
+	if(status == SWORD_ACTIVE)
+		return act(MARTIAL_COMBO_STEP_HARM, attacker, defender)
 	return FALSE
 
-/datum/martial_art/force/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
-	var/status = get_sword_status(A)
+/datum/martial_art/force/disarm_act(mob/living/carbon/human/attacker, mob/living/carbon/human/defender)
+	var/status = get_sword_status(attacker)
 
-	if(status == "inactive")
-		used_inactive_hilt = TRUE
-	else
-		used_inactive_hilt = FALSE
-
-	if(status == "active" || status == "inactive")
-		return act(MARTIAL_COMBO_STEP_DISARM, A, D)
+	if(status == SWORD_ACTIVE || status == SWORD_INACTIVE)
+		return act(MARTIAL_COMBO_STEP_DISARM, attacker, defender)
 	
 	return ..()
 
-/datum/martial_art/force/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
-	if(!A.get_active_hand())
-		return act(MARTIAL_COMBO_STEP_GRAB, A, D)
+/datum/martial_art/force/grab_act(mob/living/carbon/human/attacker, mob/living/carbon/human/defender)
+	if(!attacker.get_active_hand())
+		if(act(MARTIAL_COMBO_STEP_GRAB, attacker, defender))
+			return TRUE
 	return FALSE
 
 /datum/martial_art/force/proc/on_mob_item_attack(mob/living/source, mob/living/target, list/modifiers, def_zone)
@@ -343,27 +341,30 @@
 		return
 
 	var/status = get_sword_status(attacker)
-	if(status == "wrong")
+	if(status == ATTACK_WRONG_STEP)
 		return
 
-	if(status == "inactive" && attacker.a_intent == INTENT_HARM)
+	if(status == SWORD_INACTIVE && attacker.a_intent == INTENT_HARM)
 		if(attacker.pulling == defender && attacker.grab_state >= GRAB_AGGRESSIVE)
-			if(try_force_pierce(attacker, defender))
-				return COMPONENT_SKIP_ATTACK
+			INVOKE_ASYNC(src, PROC_REF(try_force_pierce), attacker, defender)
+			return COMPONENT_SKIP_ATTACK
 
-	var/combo_result = FALSE
-	if(attacker.a_intent == INTENT_HARM)
-		combo_result = harm_act(attacker, defender)
-	else if(attacker.a_intent == INTENT_DISARM)
-		combo_result = disarm_act(attacker, defender)
-
-	if(combo_result)
+	if(attacker.a_intent == INTENT_HARM || attacker.a_intent == INTENT_DISARM)
+		INVOKE_ASYNC(src, PROC_REF(handle_combo_async), attacker, defender, attacker.a_intent)
 		return COMPONENT_SKIP_ATTACK
 
+/datum/martial_art/force/proc/handle_combo_async(mob/living/carbon/human/attacker, mob/living/carbon/human/defender, intent) // linter sosi
+	if(intent == INTENT_HARM)
+		harm_act(attacker, defender)
+	else if(intent == INTENT_DISARM)
+		disarm_act(attacker, defender)
+
 /datum/martial_art/force/proc/try_force_pierce(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	if(world.time < last_pierce_time + 5 SECONDS)
+	if(!COOLDOWN_FINISHED(src, force_pierce_cd))
 		user.balloon_alert(user, "не готово!")
 		return FALSE
+
+	COOLDOWN_START(src, force_pierce_cd, 5 SECONDS)
 	
 	var/obj/item/weapon = user.get_active_hand()
 	last_pierce_time = world.time
@@ -372,8 +373,8 @@
 						 span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"))
 	
 	if(istype(weapon, /obj/item/melee/energy/sword))
-		var/obj/item/melee/energy/sword/S = weapon
-		S.attack_self(user)
+		var/obj/item/melee/energy/sword/esword = weapon
+		esword.attack_self(user)
 	
 	playsound(target, 'sound/weapons/blade1.ogg', 50, TRUE)
 	
@@ -394,8 +395,8 @@
 
 /datum/action/innate/force_esword_pull/Activate()
 	var/mob/living/carbon/human/user = owner
-	var/datum/martial_art/force/F = target
-	if(!istype(user) || !istype(F))
+	var/datum/martial_art/force/force_art = target
+	if(!istype(user) || !istype(force_art))
 		return
 
 	var/obj/item/held = user.get_active_hand()
@@ -403,8 +404,12 @@
 		held = user.get_inactive_hand()
 
 	if(istype(held, /obj/item/melee/energy/sword) || istype(held, /obj/item/twohanded/dualsaber))
-		if(held != F.bound_esword)
-			F.bind_esword(held, user)
+		if(held != force_art.bound_esword)
+			force_art.bind_esword(held, user)
 			return
 
-	F.try_recall_bound_esword(user)
+	force_art.try_recall_bound_esword(user)
+
+
+#undef ATTACK_WITH_HAND
+#undef ATTACK_WRONG_STEP
