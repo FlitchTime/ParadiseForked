@@ -390,8 +390,18 @@
 			stop_pulling()
 		else if(pulling.anchored || pulling.move_resist > move_force)
 			stop_pulling()
-	if(!only_pulling && pulledby && moving_diagonally != FIRST_DIAG_STEP && (((!HAS_TRAIT(src, TRAIT_FORCE_GRASPED) && !in_range(src, pulledby)) || (HAS_TRAIT(src, TRAIT_FORCE_GRASPED) && get_dist(src, pulledby) > 4)) || (z != pulledby.z && !z_allowed))) //separated from our puller and not in the middle of a diagonal move.
-		pulledby.stop_pulling()
+	if(!only_pulling && pulledby && moving_diagonally != FIRST_DIAG_STEP)
+		var/dist = get_dist(src, pulledby)
+		var/too_far = FALSE
+		if(HAS_TRAIT(src, TRAIT_FORCE_GRASPED))
+			if(dist > 4)
+				too_far = TRUE
+		else
+			if(!in_range(src, pulledby))
+				too_far = TRUE
+		var/z_diff = (z != pulledby.z && !z_allowed)
+		if(too_far || z_diff)
+			pulledby.stop_pulling()
 
 /atom/movable/proc/can_be_pulled(atom/movable/puller, grab_state, force, supress_message)
 	if(src == puller || !isturf(loc))
@@ -1263,7 +1273,9 @@
 //called when src is thrown into hit_atom
 /atom/movable/proc/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	set waitfor = FALSE
-	SEND_SIGNAL(src, COMSIG_MOVABLE_IMPACT, hit_atom, throwingdatum)
+	var/cancel_impact = SEND_SIGNAL(src, COMSIG_MOVABLE_IMPACT, hit_atom, throwingdatum)
+	if(cancel_impact) 
+		return
 	if(!QDELETED(hit_atom))
 		return hit_atom.hitby(src, throwingdatum = throwingdatum)
 

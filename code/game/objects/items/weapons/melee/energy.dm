@@ -132,11 +132,6 @@
 	block_chance = 50
 	sharp = 1
 	var/hacked = FALSE
-	var/mob/living/recall_target
-
-/obj/item/melee/energy/sword/Initialize(mapload)
-	. = ..()
-	RegisterSignal(src, COMSIG_ITEM_RECALL, PROC_REF(on_recall))
 
 /obj/item/melee/energy/sword/ComponentInitialize()
 	. = ..()
@@ -157,44 +152,26 @@
 	return 0
 
 /obj/item/melee/energy/sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	if(recall_target && hit_atom == recall_target)
-		try_catch(recall_target)
-		recall_target = null
-		return
+	if(!active || !throwingdatum || !ishuman(hit_atom))
+		return ..()
+	var/mob/living/carbon/human/victim = hit_atom
+	var/mob/thrower = throwingdatum.thrower
+	if(!ishuman(thrower))
+		return ..()
+	if(victim == thrower)
+		return ..()
+	var/zone = throwingdatum.target_zone
+	var/list/vital_zones = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_PRECISE_EYES, BODY_ZONE_PRECISE_MOUTH)
+	if(zone in vital_zones)
+		return ..()
+	if(!prob(30))
+		return ..()
+	var/obj/item/organ/external/limb = victim.get_organ(zone)
+	if(!limb || limb.cannot_amputate)
+		return ..()
+	limb.droplimb()
 
-	if(active && throwingdatum && ishuman(hit_atom))
-		var/mob/living/carbon/human/victim = hit_atom
-		var/mob/thrower = throwingdatum.thrower
-		if(ishuman(thrower))
-			var/mob/living/carbon/human/human_thrower = thrower
-			if(istype(human_thrower.mind?.martial_art, /datum/martial_art/force))
-				var/zone = throwingdatum.target_zone
-				if(!(zone in list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN)))
-					if(prob(30))
-						var/obj/item/organ/external/limb = victim.get_organ(zone)
-						if(limb && !limb.cannot_amputate)
-							limb.droplimb(TRUE, DROPLIMB_SHARP, FALSE, TRUE)
-
-	..()
-
-/obj/item/melee/energy/sword/proc/clear_recall_target()
-	recall_target = null
-
-/obj/item/melee/energy/sword/proc/on_recall(datum/source, mob/living/carbon/human/user)
-	SIGNAL_HANDLER
-
-	if(src in user)
-		return
-
-	if(loc == user.loc)
-		try_catch(user)
-		return
-
-	recall_target = user
-
-	var/distance = get_dist(user, src)
-	throw_at(user, distance + 1, throw_speed)
-	addtimer(CALLBACK(src, PROC_REF(clear_recall_target)), 3 SECONDS)
+	return ..()
 
 /obj/item/melee/energy/sword/cyborg
 	var/hitcost = 50

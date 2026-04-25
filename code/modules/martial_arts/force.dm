@@ -1,5 +1,7 @@
 #define ATTACK_WITH_HAND "hand"
 #define ATTACK_WRONG_STEP "wrong"
+#define FORCE_GRAB_MAX_DISTANCE 4
+#define FORCE_LIGHTNING_MAX_DISTANCE 4
 
 // MARK: Force martial art
 
@@ -27,30 +29,30 @@
 	COOLDOWN_DECLARE(force_pierce_cd)
 	COOLDOWN_DECLARE(force_grab)
 
-/datum/martial_art/force/teach(mob/living/carbon/human/H, make_temporary = FALSE)
+/datum/martial_art/force/teach(mob/living/carbon/human/user, make_temporary = FALSE)
 	. = ..()
 	if(!.)
 		return
 
-	RegisterSignal(H, COMSIG_MOB_ATTACK_RANGED_SECONDARY, PROC_REF(on_ranged_secondary_attack))
-	RegisterSignal(H, COMSIG_MOB_ITEM_ATTACK, PROC_REF(on_mob_item_attack))
-	RegisterSignal(H, COMSIG_LIVING_START_PULL, PROC_REF(on_start_pull))
-	RegisterSignal(H, COMSIG_ATOM_NO_LONGER_PULLING, PROC_REF(on_no_longer_pulling))
-	RegisterSignal(H, COMSIG_MOB_CLICKON, PROC_REF(on_clickon))
+	RegisterSignal(user, COMSIG_MOB_ATTACK_RANGED_SECONDARY, PROC_REF(on_ranged_secondary_attack))
+	RegisterSignal(user, COMSIG_MOB_ITEM_ATTACK, PROC_REF(on_mob_item_attack))
+	RegisterSignal(user, COMSIG_LIVING_START_PULL, PROC_REF(on_start_pull))
+	RegisterSignal(user, COMSIG_ATOM_NO_LONGER_PULLING, PROC_REF(on_no_longer_pulling))
+	RegisterSignal(user, COMSIG_MOB_CLICKON, PROC_REF(on_clickon))
 
 	esword_pull_action = new(src)
-	esword_pull_action.Grant(H)
+	esword_pull_action.Grant(user)
 
-	to_chat(H, span_notice("Вы чувствуете странное спокойствие. Вы постигли Путь Силы."))
+	to_chat(user, span_notice("Вы чувствуете странное спокойствие. Вы постигли Путь Силы."))
 
-/datum/martial_art/force/remove(mob/living/carbon/human/H)
+/datum/martial_art/force/remove(mob/living/carbon/human/user)
 	. = ..()
-	if(!istype(H))
+	if(!istype(user))
 		return .
 
-	clear_force_grab(H)
+	clear_force_grab(user)
 
-	UnregisterSignal(H, list(
+	UnregisterSignal(user, list(
 		COMSIG_MOB_ATTACK_RANGED_SECONDARY,
 		COMSIG_MOB_ITEM_ATTACK,
 		COMSIG_LIVING_START_PULL,
@@ -58,6 +60,7 @@
 		COMSIG_MOB_CLICKON
 	))
 
+	esword_pull_action.Remove()
 	QDEL_NULL(esword_pull_action)
 	clear_bound_esword()
 	return .
@@ -82,18 +85,20 @@
 
 /datum/martial_art/force/proc/clear_bound_esword()
 	if(bound_esword)
+		bound_esword.RemoveElement(/datum/element/force_recall)
 		UnregisterSignal(bound_esword, COMSIG_QDELETING)
 	bound_esword = null
 
-/datum/martial_art/force/proc/bind_esword(obj/item/I, mob/living/carbon/human/user)
-	if(!I || !user)
+/datum/martial_art/force/proc/bind_esword(obj/item/item, mob/living/carbon/human/user)
+	if(!item || !user)
 		return FALSE
-	if(!(istype(I, /obj/item/melee/energy/sword) || istype(I, /obj/item/twohanded/dualsaber)))
+	if(!(is_esword(item) || is_dualsaber(item)))
 		return FALSE
 
 	clear_bound_esword()
-	bound_esword = I
+	bound_esword = item
 	RegisterSignal(bound_esword, COMSIG_QDELETING, PROC_REF(on_bound_esword_qdel))
+	bound_esword.AddElement(/datum/element/force_recall)
 	to_chat(user, span_notice("Вы связываете [bound_esword] с вашей волей."))
 	return TRUE
 
@@ -142,11 +147,9 @@
 	var/dist = get_dist(user, victim)
 	if(dist <= 1)
 		return
-	if(dist > 4)
-		return
 	if(user.z != victim.z)
 		return
-	if(!user.can_see(victim, 4))
+	if(!user.can_see(victim, FORCE_GRAB_MAX_DISTANCE))
 		return
 	if(user.pulling)
 		to_chat(user, span_warning("Вы уже кого-то держите."))
@@ -170,9 +173,9 @@
 	if(user.a_intent != INTENT_GRAB)
 		return
 	var/dist = get_dist(user, victim)
-	if(dist <= 1 || dist > 4)
+	if(dist <= 1 || dist > FORCE_GRAB_MAX_DISTANCE)
 		return
-	if(!user.can_see(victim, 4))
+	if(!user.can_see(victim, FORCE_GRAB_MAX_DISTANCE))
 		return
 	if(user.pulling)
 		to_chat(user, span_warning("Вы уже кого-то держите."))
@@ -235,10 +238,6 @@
 	var/mob/living/carbon/human/user = source
 	if(!istype(user) || user.mind?.martial_art != src)
 		return
-	if(isliving(pulled) && pulled == force_grab_target)
-		var/mob/living/victim = pulled
-		ADD_TRAIT(victim, TRAIT_FORCE_GRASPED, UNIQUE_TRAIT_SOURCE(src))
-		ADD_TRAIT(victim, TRAIT_MOVE_FLYING, UNIQUE_TRAIT_SOURCE(src))
 
 /datum/martial_art/force/proc/on_no_longer_pulling(mob/living/source, atom/movable/old_pulling)
 	SIGNAL_HANDLER
@@ -264,7 +263,7 @@
 		return
 	if(user.z != target.z)
 		return
-	if(!user.can_see(target, 4))
+	if(!user.can_see(target, FORCE_LIGHTNING_MAX_DISTANCE))
 		return
 
 	if(!COOLDOWN_FINISHED(src, force_lightning_cd))
@@ -306,10 +305,10 @@
 	var/obj/item/weapon = attacker.get_active_hand()
 	if(!weapon)
 		return ATTACK_WITH_HAND
-	if(istype(weapon, /obj/item/melee/energy/sword))
+	if(is_esword(weapon))
 		var/obj/item/melee/energy/sword/esword = weapon
 		return esword.active ? FORCE_ARTS_SWORD_ACTIVE : FORCE_ARTS_SWORD_INACTIVE
-	if(istype(weapon, /obj/item/twohanded/dualsaber))
+	if(is_dualsaber(weapon))
 		return HAS_TRAIT(weapon, TRAIT_WIELDED) ? FORCE_ARTS_SWORD_ACTIVE : FORCE_ARTS_SWORD_INACTIVE
 	return ATTACK_WRONG_STEP
 
@@ -354,7 +353,7 @@
 		INVOKE_ASYNC(src, PROC_REF(handle_combo_async), attacker, defender, attacker.a_intent)
 		return COMPONENT_SKIP_ATTACK
 
-/datum/martial_art/force/proc/handle_combo_async(mob/living/carbon/human/attacker, mob/living/carbon/human/defender, intent) // linter sosi
+/datum/martial_art/force/proc/handle_combo_async(mob/living/carbon/human/attacker, mob/living/carbon/human/defender, intent)
 	if(intent == INTENT_HARM)
 		harm_act(attacker, defender)
 	else if(intent == INTENT_DISARM)
@@ -373,7 +372,7 @@
 	user.visible_message(span_danger("[user] вонзает рукоять в грудь [target] и активирует лезвие!"), \
 						span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"))
 	
-	if(istype(weapon, /obj/item/melee/energy/sword))
+	if(is_esword(weapon))
 		var/obj/item/melee/energy/sword/esword = weapon
 		esword.attack_self(user)
 	
@@ -402,7 +401,7 @@
 	if(!held)
 		held = user.get_inactive_hand()
 
-	if(istype(held, /obj/item/melee/energy/sword) || istype(held, /obj/item/twohanded/dualsaber))
+	if((is_esword(held) || is_dualsaber(held)) && held != force_art.bound_esword)
 		if(held != force_art.bound_esword)
 			force_art.bind_esword(held, user)
 			return
@@ -412,3 +411,5 @@
 
 #undef ATTACK_WITH_HAND
 #undef ATTACK_WRONG_STEP
+#undef FORCE_GRAB_MAX_DISTANCE 
+#undef FORCE_LIGHTNING_MAX_DISTANCE

@@ -418,3 +418,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define is_cargo_shelf(A) (istype(A, /obj/structure/cargo_shelf))
 #define is_crate(A) (istype(A, /obj/structure/closet/crate))
+
+#define is_esword(A) (istype(A, /obj/item/melee/energy/sword))
+#define is_dualsaber(A) (istype(A, /obj/item/twohanded/dualsaber))

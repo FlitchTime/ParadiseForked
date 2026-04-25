@@ -741,7 +741,6 @@
 	desc = "Странный автоинъектор, наполненный странной светящейся жидкостью. Да прибудет с тобой сила."
 	icon = 'icons/obj/ninjaobjects.dmi'
 	icon_state = "injector"
-	attack_verb = list("jabbed")
 	var/used = FALSE
 
 /obj/item/midichlorian_injector/get_ru_names()
@@ -771,8 +770,8 @@
 		span_warning("Вы вводите себе содержимое [declent_ru(GENITIVE)].")
 	)
 
-	var/datum/martial_art/force/F = new
-	F.teach(user)
+	var/datum/martial_art/force/force_art = new
+	force_art.teach(user)
 
 	ADD_TRAIT(user, TRAIT_TELEKINESIS, UNIQUE_TRAIT_SOURCE(src))
 

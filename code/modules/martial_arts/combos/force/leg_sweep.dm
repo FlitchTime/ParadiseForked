@@ -10,7 +10,6 @@
 	if(!ishuman(target))
 		return MARTIAL_COMBO_FAIL
 	target.Knockdown(4 SECONDS)
-	target.Stun(1 SECONDS)
 
 	var/mob/living/carbon/human/human_target = target
 	var/obj/item/organ/external/leg = human_target.get_organ(pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))

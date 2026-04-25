@@ -9,7 +9,6 @@
 /datum/martial_combo/force/hilt_feint/check_combo(step, mob/living/target, mob/living/carbon/human/user, datum/martial_art/force/MA)
 	if(!..())
 		return FALSE
-
 	if(step == MARTIAL_COMBO_STEP_DISARM)
 		if(MA.get_sword_status(user) != FORCE_ARTS_SWORD_INACTIVE)
 			return FALSE
@@ -18,11 +17,8 @@
 /datum/martial_combo/force/hilt_feint/perform_combo(mob/living/carbon/human/user, mob/living/target, datum/martial_art/martial_art)
 	if(!target || !user || !ishuman(target))
 		return MARTIAL_COMBO_FAIL
-
 	var/mob/living/carbon/human/human_target = target
-
 	var/grab_success = human_target.grabbedby(user, supress_message = TRUE)
-	
 	if(!grab_success)
 		return MARTIAL_COMBO_FAIL
 
@@ -31,8 +27,6 @@
 		span_danger("[user] обманывает [human_target] движением рукояти и мгновенно перехватывает его за шею!"),
 		span_userdanger("[user] финтит рукоятью и хватает вас за горло!")
 		)
-
-
 	var/datum/martial_art/force/force_art = martial_art
 	if(istype(force_art) && force_art.force_grab_target == human_target)
 		force_art.clear_force_grab(user)

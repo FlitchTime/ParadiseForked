@@ -292,13 +292,11 @@
 	light_on = FALSE
 	light_system = MOVABLE_LIGHT
 	needs_permit = TRUE
-	var/mob/living/recall_target
 	var/static/list/colormap = list(red=COLOR_SOFT_RED, blue=LIGHT_COLOR_BLUE, green=LIGHT_COLOR_GREEN, purple=LIGHT_COLOR_PURPLE, yellow=LIGHT_COLOR_BRIGHT_YELLOW, pink =LIGHT_COLOR_PURPLE, orange =LIGHT_COLOR_ORANGE, darkblue=LIGHT_COLOR_BLUE, rainbow=LIGHT_COLOR_DEFAULT)
 
 /obj/item/twohanded/dualsaber/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))	//We need to listen for item wield
-	RegisterSignal(src, COMSIG_ITEM_RECALL, PROC_REF(on_recall))
 	if(!blade_color)
 		blade_color = pick("red", "blue", "green", "purple", "yellow", "pink", "orange", "darkblue")
 
@@ -364,33 +362,6 @@
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
 		return ..()
 	return FALSE
-
-
-/obj/item/twohanded/dualsaber/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	if(recall_target && hit_atom == recall_target)
-		try_catch(recall_target)
-		recall_target = null
-		return
-
-	..()
-
-/obj/item/twohanded/dualsaber/proc/clear_recall_target()
-	recall_target = null
-
-/obj/item/twohanded/dualsaber/proc/on_recall(datum/source, mob/living/carbon/human/user)
-	SIGNAL_HANDLER
-
-	if(src in user)
-		return
-
-	if(loc == user.loc)
-		try_catch(user)
-		return
-
-	recall_target = user
-	var/distance = get_dist(user, src)
-	throw_at(user, distance + 1, throw_speed)
-	addtimer(CALLBACK(src, PROC_REF(clear_recall_target)), 3 SECONDS)
 
 /obj/item/twohanded/dualsaber/green
 	blade_color = "green"

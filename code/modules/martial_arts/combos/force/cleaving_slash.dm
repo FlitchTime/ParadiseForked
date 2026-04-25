@@ -13,7 +13,7 @@
 		return MARTIAL_COMBO_DONE_BASIC_HIT
 
 	var/zone = user.zone_selected
-	if(zone == BODY_ZONE_HEAD || zone == BODY_ZONE_CHEST || zone == BODY_ZONE_PRECISE_GROIN)
+	if(zone in list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_PRECISE_EYES, BODY_ZONE_PRECISE_MOUTH))
 		return MARTIAL_COMBO_DONE_BASIC_HIT
 
 	var/mob/living/carbon/human/human_target = target
