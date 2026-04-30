@@ -1661,7 +1661,6 @@
 	id = "noradrenaline"
 	description = "Мощный стимулятор, который делает вас невосприимчивым к оглушению на некоторое время."
 	color = "#C8A5DC"
-	metabolization_rate = 0.4
 	overdose_threshold = 2.1
 	shock_reduction = 200
 	can_synth = FALSE
