@@ -3,7 +3,7 @@
 	desc = "Мы создаём частичку коллективной сети в чужом разуме."
 	helptext = "Если мы найдём подходящий сосуд, то мы сможем наделить его коллективной сетью для связи с нами."
 	button_icon_state = "hivemind_link"
-	power_type = CHANGELING_INNATE_POWER
+	power_type = CHANGELING_PURCHASABLE_POWER
 	req_human = TRUE
 
 /datum/action/changeling/linglink/can_sting(mob/living/carbon/user, ignore_linking = FALSE)
@@ -52,7 +52,8 @@
 
 	if(isnull(time) || time == 0)
 		to_chat(user, span_danger("Мы отказались от идеи связать ваши разумы."))
-		return FALSE
+		cling?.is_linking = FALSE
+		return
 
 	time = clamp(time, 1, 120)
 

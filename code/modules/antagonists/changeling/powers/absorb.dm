@@ -59,8 +59,8 @@
 		var/list/recent_speech
 
 		var/say_log_len = LAZYLEN(target.say_log)
-		if(say_log_len > LING_ABSORB_RECENT_SPEECH)
-			recent_speech = target.say_log.Copy(say_log_len - LING_ABSORB_RECENT_SPEECH + 1, 0) //0 so len-LING_ARS+1 to end of list
+		if(say_log_len > CLING_ABSORB_RECENT_SPEECH)
+			recent_speech = target.say_log.Copy(say_log_len - CLING_ABSORB_RECENT_SPEECH + 1, 0) //0 so len-LING_ARS+1 to end of list
 		else if(say_log_len)
 			recent_speech = target.say_log.Copy()
 
@@ -92,5 +92,5 @@
 	target.Drain()
 	return TRUE
 
-#undef LING_ABSORB_RECENT_SPEECH
+#undef CLING_ABSORB_RECENT_SPEECH
 

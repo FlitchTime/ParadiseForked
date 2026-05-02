@@ -46,7 +46,7 @@ GLOBAL_LIST_INIT(possible_changeling_IDs, list("Alpha","Beta","Gamma","Delta","E
 	var/changelingID = "Changeling"
 	/// The current amount of genetic damage incurred from power use.
 	var/genetic_damage = 0
-	/// This variable is applied to default [LING_FAKEDEATH_TIME]
+	/// This variable is applied to default [CLING_FAKEDEATH_TIME]
 	var/fakedeath_delay = 0 SECONDS
 	/// If the changeling is in the process of absorbing someone.
 	var/is_absorbing = FALSE
@@ -243,7 +243,7 @@ GLOBAL_LIST_INIT(possible_changeling_IDs, list("Alpha","Beta","Gamma","Delta","E
 
 	if(h_owner.stat == DEAD)
 		chem_charges = clamp(0, chem_charges + chem_recharge_rate - chem_recharge_slowdown, chem_storage * 0.5)
-		genetic_damage = directional_bounded_sum(genetic_damage, -1, LING_DEAD_GENETIC_DAMAGE_HEAL_CAP, 0)
+		genetic_damage = directional_bounded_sum(genetic_damage, -1, CLING_DEAD_GENETIC_DAMAGE_HEAL_CAP, 0)
 
 	else // Not dead? no chem/genetic_damage caps.
 		chem_charges = clamp(0, chem_charges + chem_recharge_rate - chem_recharge_slowdown, chem_storage)
