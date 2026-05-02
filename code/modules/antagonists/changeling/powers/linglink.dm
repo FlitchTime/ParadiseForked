@@ -75,7 +75,7 @@
 
 	user.balloon_alert(user, "поделились частичкой сети")
 	target.balloon_alert(target, "вы чувствуете сеть")
-	to_chat(target, "[span_boldannounceic("Вы часть коллективной сети, общайтесь в ней с помощью [get_language_prefix(LANGUAGE_HIVE_CHANGELING)].")]")
+	to_chat(target, "[span_changeling("Вы часть коллективной сети, общайтесь в ней с помощью [get_language_prefix(LANGUAGE_HIVE_CHANGELING)].")]")
 
 	for(var/mob/ling in GLOB.mob_list)
 		if(LAZYIN(ling.languages, GLOB.all_languages[LANGUAGE_HIVE_CHANGELING]))
