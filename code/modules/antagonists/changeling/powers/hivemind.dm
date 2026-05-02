@@ -1,3 +1,6 @@
+#define CLING_HIVEMIND_UPLOAD "Поделиться"
+#define CLING_HIVEMIND_ABSORB "Поглотить"
+
 /// HIVE MIND UPLOAD/DOWNLOAD DNA
 GLOBAL_LIST_EMPTY(hivemind_bank)
 
@@ -61,12 +64,12 @@ GLOBAL_LIST_EMPTY(hivemind_bank)
 	return ..()
 
 /datum/action/changeling/hivemind_pick/sting_action(mob/user)
-	var/channel_pick = tgui_alert(user, "Поделиться или поглотить ДНК?", "Коллективная сеть", list("Поделиться", "Поглотить"))
+	var/channel_pick = tgui_alert(user, "Поделиться или поглотить ДНК?", "Коллективная сеть", list(CLING_HIVEMIND_UPLOAD, CLING_HIVEMIND_ABSORB))
 
-	if(channel_pick == "Поделиться")
+	if(channel_pick == CLING_HIVEMIND_UPLOAD)
 		dna_upload(user)
 
-	if(channel_pick == "Поглотить")
+	if(channel_pick == CLING_HIVEMIND_ABSORB)
 		if(cling.using_stale_dna())//If our current DNA is the stalest, we gotta ditch it.
 			user.balloon_alert(user, "сначала нужно трансформироваться")
 			return FALSE
@@ -106,3 +109,5 @@ GLOBAL_LIST_EMPTY(hivemind_bank)
 	SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("[name]"))
 	return TRUE
 
+#undef CLING_HIVEMIND_UPLOAD
+#undef  CLING_HIVEMIND_ABSORB

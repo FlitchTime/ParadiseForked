@@ -86,9 +86,9 @@ GLOBAL_LIST_INIT(changeling_mutations, list(
 		sting_feedback(user, target)
 		take_chemical_cost()
 
-	if(blood_on_castoff)
-		user.add_splatter_floor()
-		playsound(user.loc, 'sound/effects/splat.ogg', 50, TRUE)
+		if(blood_on_castoff)
+			user.add_splatter_floor()
+			playsound(user.loc, 'sound/effects/splat.ogg', 50, TRUE)
 
 /datum/action/changeling/proc/sting_action(mob/user)
 	return FALSE

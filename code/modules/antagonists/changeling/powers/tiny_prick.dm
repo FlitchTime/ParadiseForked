@@ -116,14 +116,14 @@
  */
 /datum/action/changeling/sting/transformation
 	name = "Хоботок трансформации"
-	desc = "Мы скрытно уколим гуманоида и введём ретровирус, который заставляет его трансформироваться. Требует 50 химикатов и дестабилизирует геном на 50 секунд."
-	helptext = "Жертва трансформируется подобно нам. Последствия будут очевидны для жертвы."
+	desc = "Мы скрытно уколим гуманоида и введём ретровирус, который заставляет его трансформироваться. Требует 50 химикатов, дестабилизирует 50 генома."
+	helptext = "Жертва трансформируется подобно нам. Последствия будут очевидны для жертвы. Нельзя использовать при дестаблизации 30 генома."
 	button_icon_state = "sting_transform"
 	sting_icon = "sting_transform"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 2
 	chemical_cost = 30
-	genetic_damage = 60
+	genetic_damage = 50
 	max_genetic_damage = 30
 	/// Currently selected DNA
 	var/datum/dna/selected_dna = null

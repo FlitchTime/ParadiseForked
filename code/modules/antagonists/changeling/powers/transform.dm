@@ -1,6 +1,6 @@
 /datum/action/changeling/transform
 	name = "Трансформация"
-	desc = "Мы принимаем облик и голос из поглощенных ДНК. Дестабилизирует геном на 20 секунд."
+	desc = "Мы принимаем облик и голос из поглощенных ДНК. Дестабилизирует 20 генома."
 	button_icon_state = "transform"
 	power_type = CHANGELING_INNATE_POWER
 	req_dna = 1

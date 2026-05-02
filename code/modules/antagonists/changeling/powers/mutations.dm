@@ -131,7 +131,7 @@
 \***************************************/
 /datum/action/changeling/weapon/arm_blade
 	name = "Рука-клинок"
-	desc = "Мы трансформируем свою руку в опасный клинок. Дестабилизирует геном на 10 секунд."
+	desc = "Мы трансформируем свою руку в опасный клинок. Дестабилизирует 10 генома."
 	helptext = "Вернуть руку можно той же способностью, что и вызван клинок. Оставляет после себя лужу крови. Снижает производство химикатов на 1."
 	dna_cost = 2
 	genetic_damage = 10
@@ -227,7 +227,7 @@
 \***************************************/
 /datum/action/changeling/weapon/fleshy_maul
 	name = "Молот плоти"
-	desc = "Мы трансформируем свою руку в огромный молот. Дестабилизирует геном на 10 секунд."
+	desc = "Мы трансформируем свою руку в огромный молот. Дестабилизирует 10 генома."
 	helptext = "Вернуть руку можно той же способностью, что и вызван молот. Оставляет после себя лужу крови. Снижает производство химикатов на 1."
 	dna_cost = 2
 	genetic_damage = 10
@@ -321,13 +321,13 @@
 \***************************************/
 /datum/action/changeling/weapon/tentacle
 	name = "Мясное щупальце"
-	desc = "Мы трансформируем руку в мясное щупальце. Дестабилизирует геном на 5 секунд."
-	helptext = "Можно один раз запустить щупальце. Эффект будет зависить от интента. Оставляет после себя лужу крови."
+	desc = "Мы трансформируем руку в мясное щупальце. Дестабилизирует 15 генома."
+	helptext = "Можно один раз запустить щупальце. Эффект будет зависить от интента. Оставляет после себя лужу крови. Нельзя использовать при дестаблизации 10 генома."
 	button_icon_state = "tentacle"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
-	genetic_damage = 10
-	max_genetic_damage = 30
+	genetic_damage = 15
+	max_genetic_damage = 10
 	weapon_type = /obj/item/gun/magic/tentacle
 	weapon_check_type = /obj/item/gun/magic/tentacle
 	weapon_name_simple = "мясное щупальце"
@@ -385,13 +385,13 @@
 \***************************************/
 /datum/action/changeling/weapon/shield
 	name = "Костянной щит"
-	desc = "Мы трансформируем свою руку в твёрдый щит. Дестабилизирует геном на 5 секунд."
-	helptext = "Выдержит 3 атаки за каждого поглощенного после чего превратится обратно в руку. Оставляет после себя лужу крови."
+	desc = "Мы трансформируем свою руку в твёрдый щит. Дестабилизирует 10 генома."
+	helptext = "Оставляет после себя лужу крови. Снижает производство химикатов на 1."
 	button_icon_state = "organic_shield"
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
 	genetic_damage = 10
-	max_genetic_damage = 30
+	recharge_slowdown = 1
 	weapon_type = /obj/item/shield/changeling
 	weapon_check_type = /obj/item/shield/changeling
 	weapon_name_simple = "костянной щит"
@@ -420,27 +420,12 @@
 							span_italics("Вы слышите ужасный хруст и хлёст ораники!"))
 		playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
 
-/obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = ITEM_ATTACK)
-	if(remaining_uses < 1)
-		if(ishuman(loc))
-			var/mob/living/carbon/human/user = loc
-			user.visible_message(span_warning("[user] с ужасным хрустом превращается костянной щит в обычную руку!"),
-								span_notice("Мы трансформируем костянной щит в руку."),
-								span_warning("Вы слышите ужасный хруст и хлёст ораники!"))
-			playsound(loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
-			user.temporarily_remove_item_from_inventory(src, force = TRUE)
-		qdel(src)
-		return FALSE
-	else
-		remaining_uses--
-		return ..()
-
 /***************************************\
 |*********SPACE SUIT + HELMET***********|
 \***************************************/
 /datum/action/changeling/suit/organic_space_suit
 	name = "Органический скафандр"
-	desc = "Мы отращиваем органический скафандр, что защищает от космоса. Дестабилизирует геном на 10 секунд."
+	desc = "Мы отращиваем органический скафандр, что защищает от космоса. Дестабилизирует 10 генома."
 	helptext = "Оставляет после себя лужу крови."
 	button_icon_state = "organic_suit"
 	power_type = CHANGELING_PURCHASABLE_POWER
@@ -509,7 +494,7 @@
 \***************************************/
 /datum/action/changeling/suit/armor
 	name = "Хитиновая броня"
-	desc = "Мы трансформируем нашу кожу в прочный хитин, что отлично защищает. Дестабилизирует геном на 20 секунд."
+	desc = "Мы трансформируем нашу кожу в прочный хитин, что отлично защищает. Дестабилизирует 20 генома."
 	helptext = "Оставляет после себя лужу крови. Снижает производство химикатов на 2."
 	dna_cost = 2
 	genetic_damage = 20
