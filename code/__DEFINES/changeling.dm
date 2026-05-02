@@ -10,6 +10,10 @@
 #define CLING_DEAD_GENETIC_DAMAGE_HEAL_CAP 50
 /// The amount of recent spoken lines to gain on absorbing a mob
 #define CLING_ABSORB_RECENT_SPEECH 8
+/// How long headslug egg will wait until gib body and create monkey with ling
+#define CLING_EGG_INCUBATION_DEAD_TIME 60
+/// How long headslug egg will living in living body before died
+#define CLING_EGG_INCUBATION_LIVING_TIME 200
 /// Denotes that this power is free and should be given to all changelings by default.
 #define CHANGELING_INNATE_POWER "changeling_innate_power"
 /// Denotes that this power can only be obtained by purchasing it.

@@ -1,6 +1,3 @@
-#define EGG_INCUBATION_DEAD_TIME 60
-#define EGG_INCUBATION_LIVING_TIME 200
-
 /mob/living/simple_animal/hostile/headslug
 	name = "headslug"
 	desc = "Абсолютно точно без клюва и безвреден. Держите подальше от трупов."
@@ -101,7 +98,7 @@
 							span_danger("Вы чувствуете покой."), span_danger("Вы захотели закрыть глаза.")))
 		owner.adjustToxLoss(5)
 
-	if((time >= EGG_INCUBATION_DEAD_TIME && owner.stat == DEAD) || time >= EGG_INCUBATION_LIVING_TIME)
+	if((time >= CLING_EGG_INCUBATION_DEAD_TIME && owner.stat == DEAD) || time >= CLING_EGG_INCUBATION_LIVING_TIME)
 		STOP_PROCESSING(SSobj, src)
 		Pop()
 		qdel(src)
@@ -130,6 +127,3 @@
 			var/mob/living/carbon/human/rand_dna = new
 			cling.absorb_dna(rand_dna)
 	owner.gib()
-
-#undef EGG_INCUBATION_DEAD_TIME
-#undef EGG_INCUBATION_LIVING_TIME
