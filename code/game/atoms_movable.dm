@@ -381,7 +381,7 @@
 /atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
 	if(pulling)
 		var/is_force_grasp = HAS_TRAIT(pulling, TRAIT_FORCE_GRASPED)
-		if((!is_force_grasp && get_dist(src, pulling) > 1) || (is_force_grasp && get_dist(src, pulling) > 4) || (z != pulling.z && !z_allowed))
+		if((!is_force_grasp && get_dist(src, pulling) > 1) || (is_force_grasp && get_dist(src, pulling) > FORCE_GRAB_MAX_DISTANCE) || (z != pulling.z && !z_allowed))
 			stop_pulling()
 		else if(!isturf(loc))
 			stop_pulling()
@@ -394,7 +394,7 @@
 		var/dist = get_dist(src, pulledby)
 		var/too_far = FALSE
 		if(HAS_TRAIT(src, TRAIT_FORCE_GRASPED))
-			if(dist > 4)
+			if(dist > FORCE_GRAB_MAX_DISTANCE)
 				too_far = TRUE
 		else
 			if(!in_range(src, pulledby))

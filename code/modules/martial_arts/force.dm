@@ -1,7 +1,5 @@
 #define ATTACK_WITH_HAND "hand"
 #define ATTACK_WRONG_STEP "wrong"
-#define FORCE_GRAB_MAX_DISTANCE 4
-#define FORCE_LIGHTNING_MAX_DISTANCE 4
 
 // MARK: Force martial art
 
@@ -411,5 +409,3 @@
 
 #undef ATTACK_WITH_HAND
 #undef ATTACK_WRONG_STEP
-#undef FORCE_GRAB_MAX_DISTANCE 
-#undef FORCE_LIGHTNING_MAX_DISTANCE

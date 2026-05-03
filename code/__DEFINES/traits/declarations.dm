@@ -514,4 +514,5 @@
 /// An item is ALWAYS considered baseline reachable and will pipe into CanBeReached().
 #define TRAIT_SKIP_BASIC_REACH_CHECK "skip_basic_reach_check"
 
+/// If a mob is grasped with force grab
 #define TRAIT_FORCE_GRASPED "force_grasped"

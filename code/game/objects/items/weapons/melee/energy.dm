@@ -149,28 +149,27 @@
 /obj/item/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = ITEM_ATTACK)
 	if(active)
 		return ..()
+	
 	return 0
 
 /obj/item/melee/energy/sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(!active || !throwingdatum || !ishuman(hit_atom))
 		return ..()
+
 	var/mob/living/carbon/human/victim = hit_atom
 	var/mob/thrower = throwingdatum.thrower
-	if(!ishuman(thrower))
+	if(!ishuman(thrower) || victim == thrower)
 		return ..()
-	if(victim == thrower)
-		return ..()
+
 	var/zone = throwingdatum.target_zone
 	var/list/vital_zones = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_PRECISE_EYES, BODY_ZONE_PRECISE_MOUTH)
-	if(zone in vital_zones)
+	if((zone in vital_zones) || !prob(30))
 		return ..()
-	if(!prob(30))
-		return ..()
+
 	var/obj/item/organ/external/limb = victim.get_organ(zone)
 	if(!limb || limb.cannot_amputate)
 		return ..()
 	limb.droplimb()
-
 	return ..()
 
 /obj/item/melee/energy/sword/cyborg
@@ -430,3 +429,4 @@
 				melee_attack_chain(user, mob, modifiers)
 	swiping = FALSE
 	return ATTACK_CHAIN_BLOCKED_ALL
+
