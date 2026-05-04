@@ -1,7 +1,7 @@
 /datum/martial_combo/force/hilt_feint
 	name = "Финт рукоятью"
 	steps = list(MARTIAL_COMBO_STEP_HARM, MARTIAL_COMBO_STEP_DISARM, MARTIAL_COMBO_STEP_GRAB)
-	explaination_text = "Обманывает противника рукоятью меча, захватывая его за шею."
+	explaination_text = "Обманный манёвр рукоятью меча, позволяющий взять противника в захват."
 
 /datum/martial_combo/force/hilt_feint/New()
 	combo_text_override = "[span_red("Harm мечом")], [span_blue("Disarm рукоятью меча")], [span_yellow("Grab рукой")]"
@@ -24,8 +24,8 @@
 
 	human_target.grippedby(user, grab_state_override = GRAB_NECK)
 	human_target.visible_message(
-		span_danger("[user] обманывает [human_target] движением рукояти и мгновенно перехватывает его за шею!"),
-		span_userdanger("[user] финтит рукоятью и хватает вас за горло!")
+		span_danger("[user] делает финт рукоятью меча и мгновенно хватает [human_target] за шею!"),
+		span_userdanger("[user] делает финт рукоятью и хватает вас за горло!")
 		)
 	var/datum/martial_art/force/force_art = martial_art
 	if(istype(force_art) && force_art.force_grab_target == human_target)

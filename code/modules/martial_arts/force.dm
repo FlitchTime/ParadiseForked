@@ -70,8 +70,8 @@
 	. = ..()
 	to_chat(user, span_notice("Особое:"))
 	to_chat(user, "[span_notice("Силовой захват")]: в режиме [span_yellow("Grab")] нажмите на цель в пределах 4 тайлов, чтобы схватить её на расстоянии.")
-	to_chat(user, "[span_notice("Силовая молния")]: в режиме [span_blue("Disarm")] нажмите правой кнопкой мыши в пределах 4 тайлов. На 5 секунд оглушает цель шоком, игнорируя защиту от тока. Перезарядка: 15 секунд.")
-	to_chat(user, "[span_notice("Пронзание")]: удерживая цель за шею или в удушающем захвате, ударьте цель выключенным мечом в режиме [span_red("Harm")]. Активирует лезвие внутри цели и наносит 70 урона груди (игнорирует броню). Перезарядка: 5 сек.")
+	to_chat(user, "[span_notice("Силовая молния")]: в режиме [span_blue("Disarm")] нажмите правой кнопкой мыши в пределах 4 тайлов. Поражает цель молнией, оглушая её на [FORCE_LIGHTNING_STUN_DURATION] секунд. Игнорирует защиту от тока. Перезарядка: [FORCE_LIGHTNING_COOLDOWN] секунд.")
+	to_chat(user, "[span_notice("Пронзание")]: удерживая цель за шею или в удушающем захвате, ударьте цель выключенным мечом в режиме [span_red("Harm")]. Активирует лезвие внутри цели и наносит [FORCE_PIERCE_DAMAGE] урона груди (игнорирует броню). Перезарядка: [FORCE_PIERCE_COOLDOWN] сек.")
 
 /datum/martial_art/force/explaination_footer(user)
 	to_chat(user, "<b><i>Используйте свои способности с умом.</i></b>")
@@ -162,7 +162,7 @@
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /datum/martial_art/force/proc/handle_force_grab_async(mob/living/carbon/human/user, mob/living/victim)
-	COOLDOWN_START(src, force_grab, 1 SECONDS)
+	COOLDOWN_START(src, force_grab, FORCE_GRAB_COOLDOWN)
 	try_force_grab(user, victim)
 
 /datum/martial_art/force/proc/try_force_grab(mob/living/carbon/human/user, mob/living/victim)
@@ -268,7 +268,7 @@
 		user.balloon_alert(user, "не готово!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
-	COOLDOWN_START(src, force_lightning_cd, 15 SECONDS)
+	COOLDOWN_START(src, force_lightning_cd, FORCE_LIGHTNING_COOLDOWN)
 
 	playsound(get_turf(user), 'sound/magic/lightningbolt.ogg', 50, TRUE, -1)
 
@@ -287,13 +287,13 @@
 				continue
 			if(primary_mob && target_mob == primary_mob)
 				continue
-			target_mob.electrocute_act(15, user, flags = SHOCK_NOSTUN)
+			target_mob.electrocute_act(FORCE_LIGHTNING_CHAIN_POWER, user, flags = SHOCK_NOSTUN)
 
 	if(primary_mob)
 		if(ishuman(primary_mob) || iscarbon(primary_mob))
-			primary_mob.electrocute_act(25, user, flags = SHOCK_IGNORE_IMMUNITY, stun_duration = 3 SECONDS)
+			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = SHOCK_IGNORE_IMMUNITY, stun_duration = FORCE_LIGHTNING_STUN_DURATION)
 		else
-			primary_mob.electrocute_act(25, user, stun_duration = 1 SECONDS)
+			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user)
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -362,13 +362,15 @@
 		user.balloon_alert(user, "не готово!")
 		return FALSE
 
-	COOLDOWN_START(src, force_pierce_cd, 5 SECONDS)
+	COOLDOWN_START(src, force_pierce_cd, FORCE_PIERCE_COOLDOWN)
 	
 	var/obj/item/weapon = user.get_active_hand()
 	last_pierce_time = world.time
 
-	user.visible_message(span_danger("[user] вонзает рукоять в грудь [target] и активирует лезвие!"), \
-						span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"))
+	user.visible_message(
+		span_danger("[user] вонзает рукоять в грудь [target] и активирует лезвие!"),
+		span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"),
+	)
 	
 	if(is_esword(weapon))
 		var/obj/item/melee/energy/sword/esword = weapon
@@ -376,7 +378,7 @@
 	
 	playsound(target, 'sound/weapons/blade1.ogg', 50, TRUE)
 	
-	target.apply_damage(70, BRUTE, BODY_ZONE_CHEST, forced = TRUE) 
+	target.apply_damage(FORCE_PIERCE_DAMAGE, BRUTE, BODY_ZONE_CHEST, forced = TRUE) 
 	
 	add_attack_logs(user, target, "Force Arts: Pierce", ATKLOG_ALL)
 	return TRUE
@@ -385,7 +387,7 @@
 
 /datum/action/innate/force_esword_pull
 	name = "Призыв меча"
-	desc = "Связывает энергетический меч или двойной меч в руках с вашей аурой, либо призывает связанный меч обратно в руку."
+	desc = "Привязывает к вам одиночный либо двойной энергетический меч, позволяя призывать его в руку."
 	button_icon_state = "summons"
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED
 
