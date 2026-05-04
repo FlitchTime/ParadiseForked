@@ -111,16 +111,16 @@
 /datum/martial_art/proc/check_combos(step, mob/living/carbon/human/user, mob/living/carbon/human/target, could_start_new_combo = TRUE)
 	. = FALSE
 	for(var/thing in current_combos)
-		var/datum/martial_combo/MC = thing
-		if(!MC.check_combo(step, target, user, src))
-			current_combos -= MC
+		var/datum/martial_combo/combo = thing
+		if(!combo.check_combo(step, target, user, src))
+			current_combos -= combo
 		else
-			switch(MC.progress_combo(user, target, src))
+			switch(combo.progress_combo(user, target, src))
 				if(MARTIAL_COMBO_FAIL)
-					current_combos -= MC
+					current_combos -= combo
 				if(MARTIAL_COMBO_DONE_NO_CLEAR)
 					. = TRUE
-					current_combos -= MC
+					current_combos -= combo
 				if(MARTIAL_COMBO_DONE)
 					reset_combos()
 					return TRUE
