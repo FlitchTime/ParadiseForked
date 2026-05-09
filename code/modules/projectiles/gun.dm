@@ -364,6 +364,12 @@
 	if(modifiers[RIGHT_CLICK])
 		return
 
+	if(modifiers[ALT_CLICK])
+		return
+
+	if(modifiers[CTRL_CLICK])
+		return
+
 	if(user.in_throw_mode)
 		return
 
