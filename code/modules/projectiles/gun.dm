@@ -56,7 +56,7 @@
 	///How many shots can the weapon shoot in burst? Anything less than 2 and you cannot toggle burst.
 	var/burst_amount = 1
 	///The delay in between shots. Lower = less delay = faster.
-	var/burst_delay = 0.1 SECONDS
+	var/burst_delay = 0.15 SECONDS
 	///When burst-firing, this number is extra time before the weapon can fire again. Depends on number of rounds fired.
 	var/extra_delay = 0
 	///when autobursting, this is the total amount of time before the weapon fires again. If no amount is specified, defaults to fire_delay + extra_delay
@@ -376,7 +376,7 @@
 	if(object.IsReachableBy(user, reach) && start_attack_chain_check(user, object)) //Dealt with by attack code
 		return
 
-	if(user.hand && !isgun(user.l_hand) || !user.hand && !isgun(user.r_hand)) // If the object in our active hand is not a gun, abort
+	if((user.hand && !isgun(user.l_hand) || !user.hand && !isgun(user.r_hand)) && !isrobot(user)) // If the object in our active hand is not a gun, abort
 		return
 
 	if(!HAS_TRAIT(user, TRAIT_BADASS) && weapon_weight == WEAPON_HEAVY && (user.get_inactive_hand() || !user.has_inactive_hand() || (user.pulling && user.pull_hand != PULL_WITHOUT_HANDS)))
