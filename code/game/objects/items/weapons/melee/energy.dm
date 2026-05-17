@@ -153,24 +153,25 @@
 	return 0
 
 /obj/item/melee/energy/sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
 	if(!active || !throwingdatum || !ishuman(hit_atom))
-		return ..()
+		return
 
 	var/mob/living/carbon/human/victim = hit_atom
 	var/mob/thrower = throwingdatum.thrower
 	if(!ishuman(thrower) || victim == thrower)
-		return ..()
+		return
 
 	var/zone = throwingdatum.target_zone
 	var/list/vital_zones = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_PRECISE_GROIN, BODY_ZONE_PRECISE_EYES, BODY_ZONE_PRECISE_MOUTH)
 	if((zone in vital_zones) || !prob(30))
-		return ..()
+		return
 
 	var/obj/item/organ/external/limb = victim.get_organ(zone)
 	if(!limb || limb.cannot_amputate)
-		return ..()
+		return
+
 	limb.droplimb()
-	return ..()
 
 /obj/item/melee/energy/sword/cyborg
 	var/hitcost = 50
