@@ -9123,7 +9123,7 @@
 /turf/simulated/floor/plating,
 /area/coldcolony/malta/maintenance/kitchen)
 "dno" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 4;
 	id = "QMLoad"
@@ -22174,7 +22174,7 @@
 	},
 /area/coldcolony/ruin/sm_chamber)
 "irc" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 8;
 	id = "QMLoad2"
@@ -26798,7 +26798,7 @@
 	dir = 8;
 	id = "QMLoad2"
 	},
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/effect/spawner/lootdrop/maintenance/double,
 /turf/simulated/floor/plasteel,
 /area/coldcolony/malta/quartermaster/storage)
@@ -29581,7 +29581,7 @@
 	},
 /area/coldcolony/malta/hallway/cargo_escape/entrance)
 "kWn" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 4;
 	id = "QMLoad"
@@ -47689,7 +47689,7 @@
 /turf/simulated/floor/plating/asteroid/snow,
 /area/ruin/unpowered/coldcolony_outside)
 "rMD" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 8;
 	id = "QMLoad2"
@@ -56717,7 +56717,7 @@
 	dir = 4;
 	id = "QMLoad"
 	},
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /turf/simulated/floor/plasteel,
 /area/coldcolony/malta/quartermaster/storage)
 "vmW" = (

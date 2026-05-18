@@ -10224,7 +10224,7 @@
 	},
 /area/shuttle/funeral)
 "eQj" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/door/poddoor{
 	id_tag = "CC_supply_space";
 	locked = 2;
@@ -24669,7 +24669,7 @@
 /turf/simulated/floor/indestructible/abductor,
 /area/abductor_ship)
 "lLm" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 1;
 	id = "QMLoad"
@@ -29633,7 +29633,7 @@
 	},
 /area/centcom/jail)
 "nSo" = (
-/obj/structure/plasticflaps/mining{
+/obj/structure/plasticflaps{
 	color = "red"
 	},
 /obj/machinery/conveyor{
@@ -30351,7 +30351,7 @@
 	},
 /area/ninja/outpost)
 "oiH" = (
-/obj/structure/plasticflaps/mining{
+/obj/structure/plasticflaps{
 	color = "red"
 	},
 /obj/machinery/conveyor{
@@ -47651,7 +47651,7 @@
 	},
 /area/shuttle/syndicate)
 "waE" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	id = "QMLoad2"
 	},

@@ -26383,7 +26383,7 @@
 /turf/simulated/floor/plating,
 /area/syndicate/unpowered/syndicate_space_base/cargo/storage)
 "xpu" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 1;
 	id = "SQMLoad2"
@@ -26909,7 +26909,7 @@
 	},
 /area/syndicate/unpowered/syndicate_space_base/cargo)
 "xHf" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 1;
 	id = "SQMLoad2"

@@ -7432,7 +7432,7 @@
 /turf/simulated/floor/plasteel,
 /area/awaymission/spacebattle/sec_storage)
 "wG" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/structure/closet/crate/secure/engineering,
 /obj/item/flashlight,
 /obj/item/flashlight/emp,
@@ -7477,7 +7477,7 @@
 /turf/simulated/floor/plasteel,
 /area/awaymission/spacebattle/prhallway4)
 "wM" = (
-/obj/structure/plasticflaps/mining,
+/obj/structure/plasticflaps,
 /obj/machinery/conveyor{
 	dir = 1;
 	id = "cargodeliverySB"
