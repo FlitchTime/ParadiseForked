@@ -1,0 +1,4 @@
+author: "SCPfollower"
+delete-after: True
+changes:
+  - map: "Удалены префабы проводов с d1 d2 и префабы полов с бесполезными dir (PR #9273)"
