@@ -447,7 +447,7 @@
 
 	. = do_unEquip(I, force, drop_location(), FALSE, invdrop, silent)
 
-	if(!. || !I)
+	if(!. || QDELETED(I))
 		return
 
 	I.do_pickup_animation(newloc)
@@ -470,7 +470,7 @@
 
 	. = do_unEquip(I, force, drop_location(), FALSE, invdrop, silent)
 
-	if(!. || !I) //ensure the item exists and that it was dropped properly.
+	if(!. || QDELETED(I)) //ensure the item exists and that it was dropped properly.
 		return
 
 	var/shift_max = ICON_SIZE_X / 2
@@ -502,6 +502,8 @@
  */
 /mob/proc/transfer_item_to_loc(obj/item/I, atom/newloc, force = FALSE, invdrop = TRUE, silent = FALSE)
 	. = do_unEquip(I, force, newloc, FALSE, invdrop, silent)
+	if(!. || QDELETED(I))
+		return
 	I.do_drop_animation(src)
 	I.dir = dir
 

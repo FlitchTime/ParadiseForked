@@ -158,7 +158,7 @@
 		return COMSIG_MOB_CANCEL_CLICKON
 
 	INVOKE_ASYNC(src, PROC_REF(handle_force_grab_async), user, victim)
-	
+
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /datum/martial_art/force/proc/handle_force_grab_async(mob/living/carbon/human/user, mob/living/victim)
@@ -291,9 +291,9 @@
 
 	if(primary_mob)
 		if(ishuman(primary_mob) || iscarbon(primary_mob))
-			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = SHOCK_IGNORE_IMMUNITY, stun_duration = FORCE_LIGHTNING_STUN_DURATION)
+			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = list(SHOCK_IGNORE_IMMUNITY, SHOCK_NOGLOVES), stun_duration = FORCE_LIGHTNING_STUN_DURATION)
 		else
-			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user)
+			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = list(SHOCK_IGNORE_IMMUNITY, SHOCK_NOGLOVES), stun_duration = FORCE_LIGHTNING_STUN_DURATION)
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -321,7 +321,7 @@
 
 	if(status == FORCE_ARTS_SWORD_ACTIVE || status == FORCE_ARTS_SWORD_INACTIVE)
 		return act(MARTIAL_COMBO_STEP_DISARM, attacker, defender)
-	
+
 	return ..()
 
 /datum/martial_art/force/grab_act(mob/living/carbon/human/attacker, mob/living/carbon/human/defender)
@@ -334,7 +334,7 @@
 	SIGNAL_HANDLER
 	var/mob/living/carbon/human/attacker = source
 	var/mob/living/carbon/human/defender = target
-	
+
 	if(!istype(attacker) || !istype(defender) || attacker.mind?.martial_art != src)
 		return
 
@@ -363,7 +363,7 @@
 		return FALSE
 
 	COOLDOWN_START(src, force_pierce_cd, FORCE_PIERCE_COOLDOWN)
-	
+
 	var/obj/item/weapon = user.get_active_hand()
 	last_pierce_time = world.time
 
@@ -371,15 +371,15 @@
 		span_danger("[user] вонзает рукоять в грудь [target] и активирует лезвие!"),
 		span_danger("Вы вонзаете рукоять в грудь [target] и активируете меч!"),
 	)
-	
+
 	if(is_esword(weapon))
 		var/obj/item/melee/energy/sword/esword = weapon
 		esword.attack_self(user)
-	
+
 	playsound(target, 'sound/weapons/blade1.ogg', 50, TRUE)
-	
-	target.apply_damage(FORCE_PIERCE_DAMAGE, BRUTE, BODY_ZONE_CHEST, forced = TRUE) 
-	
+
+	target.apply_damage(FORCE_PIERCE_DAMAGE, BRUTE, BODY_ZONE_CHEST, forced = TRUE)
+
 	add_attack_logs(user, target, "Force Arts: Pierce", ATKLOG_ALL)
 	return TRUE
 

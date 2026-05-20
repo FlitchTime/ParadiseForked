@@ -37,7 +37,5 @@
 	recall_target = null
 	if(!H.put_in_active_hand(source))
 		source.forceMove(H.loc)
-	if(source.throwing)
-		var/datum/thrownthing/thrown_thing = source.throwing
-		thrown_thing.thrownthing = null 
-	return TRUE
+	// Stops /obj/item/throw_impact from calling hitby() and applying throw damage to the summoner.
+	return COMPONENT_MOVABLE_IMPACT_NEVERMIND
