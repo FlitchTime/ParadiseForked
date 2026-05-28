@@ -20,6 +20,12 @@
 		user.put_in_active_hand(source)
 		return
 
+	if(!(source in view(user)))
+		source.forceMove(get_turf(user))
+		if(!user.put_in_active_hand(source))
+			source.forceMove(user.loc)
+		return
+
 	recall_target = user
 	var/distance = get_dist(user, source)
 	source.throw_at(user, distance + 1, source.throw_speed)
