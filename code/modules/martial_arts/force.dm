@@ -290,10 +290,7 @@
 			target_mob.electrocute_act(FORCE_LIGHTNING_CHAIN_POWER, user, flags = SHOCK_NOSTUN)
 
 	if(primary_mob)
-		if(ishuman(primary_mob) || iscarbon(primary_mob))
-			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = list(SHOCK_IGNORE_IMMUNITY, SHOCK_NOGLOVES), stun_duration = FORCE_LIGHTNING_STUN_DURATION)
-		else
-			primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = list(SHOCK_IGNORE_IMMUNITY, SHOCK_NOGLOVES), stun_duration = FORCE_LIGHTNING_STUN_DURATION)
+		primary_mob.electrocute_act(FORCE_LIGHTNING_PRIMARY_POWER, user, flags = SHOCK_NOGLOVES, stun_duration = FORCE_LIGHTNING_STUN_DURATION)
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
