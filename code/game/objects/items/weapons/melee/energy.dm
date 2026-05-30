@@ -125,7 +125,7 @@
 	throw_speed = 3
 	throw_range = 5
 	hitsound = SFX_SWING_HIT
-	embed_chance = 75
+	embed_chance = 0
 	embedded_impact_pain_multiplier = 10
 	armour_penetration = 35
 	origin_tech = "combat=3;magnets=4;syndicate=4"
