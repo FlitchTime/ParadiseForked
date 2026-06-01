@@ -22,6 +22,7 @@
 	armor = list(MELEE = 40, BULLET = 30, LASER = 20,ENERGY = 30, BOMB = 30, BIO = 100, FIRE = 100, ACID = 100)
 	strip_delay = 12
 	permeability_coefficient = 1
+	clothing_flags = STOPSPRESSUREDAMAGE
 	flags_inv = HIDEGLOVES|HIDEJUMPSUIT|HIDETAIL
 	flags_inv_transparent = HIDEGLOVES|HIDEJUMPSUIT
 	actions = list()
