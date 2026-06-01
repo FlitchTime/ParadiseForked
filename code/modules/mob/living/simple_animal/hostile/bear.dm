@@ -7,9 +7,9 @@
 	icon_dead = "bear_dead"
 	icon_gib = "bear_gib"
 	speak = list("RAWR!","Rawr!","GRR!","Growl!")
-	speak_emote = list("growls", "roars")
-	emote_hear = list("rawrs","grumbles","grawls")
-	emote_see = list("stares ferociously", "stomps")
+	speak_emote = list("фырчит", "рычит")
+	emote_hear = list("рычит", "ревёт", "фыркает")
+	emote_see = list("свирепо осматривается", "топчется на месте")
 	tts_seed = "Shaker"
 	speak_chance = 1
 	turns_per_move = 5
@@ -18,7 +18,6 @@
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "hits"
-	stop_automated_movement_when_pulled = 0
 	maxHealth = 60
 	health = 60
 	blood_volume = BLOOD_VOLUME_NORMAL
@@ -49,15 +48,15 @@
 
 /mob/living/simple_animal/hostile/bear/handle_automated_movement()
 	if(..())
-		playsound(src, src.trigger_sound, 40, 1)
+		playsound(src, src.trigger_sound, 40, TRUE)
 
 //SPACE BEARS! SQUEEEEEEEE~     OW! FUCK! IT BIT MY HAND OFF!!
 /mob/living/simple_animal/hostile/bear/Hudson
 	name = "Hudson"
 	desc = "Feared outlaw, this guy is one bad news bear." //I'm sorry...
 
-/mob/living/simple_animal/hostile/bear/Hudson/New()
-	..()
+/mob/living/simple_animal/hostile/bear/Hudson/Initialize(mapload)
+	. = ..()
 	var/unbearable_pun = pick("He's unbearably cute.", "It looks like he is a bearer of bad news.", "Sadly, he is bearly able to comprehend puns.")
 	desc = "That's Hudson. " +  unbearable_pun// I am not sorry for this.
 

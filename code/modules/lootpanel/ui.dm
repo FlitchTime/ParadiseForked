@@ -13,10 +13,10 @@
 
 	return items
 
-
 /// Clicks an object from the contents. Validates the object and the user
 /datum/lootpanel/proc/grab(mob/user, list/params)
 	var/uid = params["uid"]
+
 	if(isnull(uid))
 		return FALSE
 
@@ -24,8 +24,9 @@
 		reset_contents()
 		return FALSE
 
-	var/datum/search_object/index = locate(uid) in contents
+	var/datum/search_object/index = locateUID(uid)
 	var/atom/thing = index?.item
+
 	if(QDELETED(index) || QDELETED(thing)) // Obj is gone
 		return FALSE
 
@@ -36,6 +37,8 @@
 	var/modifiers = ""
 	if(params["ctrl"])
 		modifiers += "ctrl=1;"
+	if(params["alt"])
+		modifiers += "alt=1;"
 	if(params["middle"])
 		modifiers += "middle=1;"
 	if(params["shift"])

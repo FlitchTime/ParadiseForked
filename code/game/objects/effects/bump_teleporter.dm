@@ -7,12 +7,11 @@ GLOBAL_LIST_EMPTY(bump_teleporters)
 	var/id = null	// id of this bump_teleporter.
 	var/id_target = null	// id of bump_teleporter which this moves you to.
 	invisibility = INVISIBILITY_ABSTRACT	// nope, can't see this
-	anchored = TRUE
 	density = TRUE
-	opacity = FALSE
 
-/obj/effect/bump_teleporter/New()
-	..()
+/obj/effect/bump_teleporter/Initialize(mapload)
+	. = ..()
+
 	GLOB.bump_teleporters += src
 
 /obj/effect/bump_teleporter/Destroy()
@@ -22,9 +21,8 @@ GLOBAL_LIST_EMPTY(bump_teleporters)
 /obj/effect/bump_teleporter/singularity_act()
 	return
 
-/obj/effect/bump_teleporter/singularity_pull()
+/obj/effect/bump_teleporter/singularity_pull(atom/singularity, current_size)
 	return
-
 
 /obj/effect/bump_teleporter/Bumped(atom/movable/moving_atom)
 	. = ..()
@@ -36,7 +34,6 @@ GLOBAL_LIST_EMPTY(bump_teleporters)
 			moving_atom.forceMove(teleporter.loc)
 			process_special_effects(moving_atom)
 			break
-
 
 ///Special effects for teleporter. Supposed to be overriden.
 /obj/effect/bump_teleporter/proc/process_special_effects(mob/living/target)

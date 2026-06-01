@@ -1,5 +1,3 @@
-///////////////////////////Veil Render//////////////////////
-
 /obj/item/veilrender
 	name = "veil render"
 	desc = "A wicked curved blade of alien origin, recovered from the ruins of a vast city."
@@ -8,22 +6,20 @@
 	item_state = "render"
 	force = 15
 	throwforce = 10
-	w_class = WEIGHT_CLASS_NORMAL
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	var/charged = 1
-	var/spawn_type = /obj/singularity/god/narsie/wizard
+	var/charges = 1
+	var/spawn_type = /obj/tear_in_reality
 	var/spawn_amt = 1
 	var/activate_descriptor = "reality"
 	var/rend_desc = "You should run now."
 
-/obj/item/veilrender/attack_self(mob/user as mob)
-	if(charged)
+/obj/item/veilrender/attack_self(mob/user)
+	if(charges > 0)
 		new /obj/effect/rend(get_turf(user), spawn_type, spawn_amt, rend_desc)
-		charged = 0
-		user.visible_message(span_userdanger("[src] hums with power as [user] deals a blow to [activate_descriptor] itself!"))
+		charges--
+		user.visible_message(span_bolddanger("[src] hums with power as [user] deals a blow to [activate_descriptor] itself!"))
 	else
 		to_chat(user, span_danger("The unearthly energies that powered the blade are now dormant."))
-
 
 /obj/effect/rend
 	name = "tear in the fabric of reality"
@@ -31,45 +27,41 @@
 	icon = 'icons/obj/biomass.dmi'
 	icon_state = "rift"
 	density = TRUE
-	anchored = TRUE
 	var/spawn_path = /mob/living/simple_animal/cow //defaulty cows to prevent unintentional narsies
 	var/spawn_amt_left = 20
 
-/obj/effect/rend/New(loc, var/spawn_type, var/spawn_amt, var/desc)
-	..()
+/obj/effect/rend/Initialize(mapload, spawn_type, spawn_amt, desc)
+	. = ..()
 	src.spawn_path = spawn_type
 	src.spawn_amt_left = spawn_amt
 	src.desc = desc
-
 	START_PROCESSING(SSobj, src)
-	//return
 
 /obj/effect/rend/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/rend/process()
-	for(var/mob/M in loc)
+	for(var/mob/target in loc)
 		return
 	new spawn_path(loc)
 	spawn_amt_left--
 	if(spawn_amt_left <= 0)
 		qdel(src)
+		return PROCESS_KILL
 
+/obj/effect/rend/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/nullrod))
+		return NONE
+	add_fingerprint(user)
+	user.visible_message(span_danger("[user] seals [src] with [tool]."))
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
-/obj/effect/rend/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/nullrod))
-		add_fingerprint(user)
-		user.visible_message(span_danger("[user] seals [src] with [I]."))
-		qdel(src)
-		return ATTACK_CHAIN_BLOCKED_ALL
-	return ..()
-
-
-/obj/effect/rend/singularity_pull()
+/obj/effect/rend/singularity_act()
 	return
 
-/obj/effect/rend/singularity_pull()
+/obj/effect/rend/singularity_pull(atom/singularity, current_size)
 	return
 
 /obj/item/veilrender/vealrender
@@ -89,7 +81,6 @@
 	rend_desc = "Gently wafting with the sounds of endless laughter."
 	icon_state = "clownrender"
 
-
 /obj/item/veilrender/crabrender
 	name = "crab render"
 	desc = "A wicked curved blade of alien origin, recovered from the ruins of a vast aquarium."
@@ -98,12 +89,62 @@
 	activate_descriptor = "sea life"
 	rend_desc = "Gently wafting with the sounds of endless clacking."
 
+#define TEAR_IN_REALITY_CONSUME_RANGE 3
+#define TEAR_IN_REALITY_SINGULARITY_SIZE STAGE_FOUR
+
+/// Tear in reality, spawned by the veil render
+/obj/tear_in_reality
+	name = "tear in the fabric of reality"
+	desc = "This isn't right."
+	icon = 'icons/effects/224x224.dmi'
+	icon_state = "reality"
+	pixel_x = -96
+	pixel_y = -96
+	anchored = TRUE
+	density = TRUE
+	move_resist = INFINITY
+	plane = ABOVE_LIGHTING_PLANE
+	light_range = 6
+	appearance_flags = LONG_GLIDE
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
+	obj_flags = DANGEROUS_POSSESSION
+
+/obj/tear_in_reality/Initialize(mapload)
+	. = ..()
+
+	AddComponent(
+		/datum/component/singularity, \
+		consume_range = TEAR_IN_REALITY_CONSUME_RANGE, \
+		notify_admins = !mapload, \
+		roaming = FALSE, \
+		singularity_size = TEAR_IN_REALITY_SINGULARITY_SIZE, \
+	)
+
+/obj/tear_in_reality/attack_tk(mob/user)
+	if(!iscarbon(user))
+		return
+	. = COMPONENT_CANCEL_ATTACK_CHAIN
+	var/mob/living/carbon/jedi = user
+	to_chat(jedi, span_userdanger("OH GOD! NONE OF IT IS REAL! NONE OF IT IS REEEEEEEEEEEEEEEEEEEEEEEEAL!"))
+	addtimer(CALLBACK(src, PROC_REF(deranged), jedi), 10 SECONDS)
+
+/obj/tear_in_reality/proc/deranged(mob/living/carbon/carbon)
+	if(!carbon || carbon.stat == DEAD)
+		return
+	carbon.vomit(mode = VOMIT_BLOOD, lost_nutrition = 0, distance = 3)
+	carbon.spew_organ(3, 2)
+	carbon.investigate_log("has died from using telekinesis on a tear in reality.", INVESTIGATE_DEATHS)
+	carbon.death()
+
+#undef TEAR_IN_REALITY_CONSUME_RANGE
+#undef TEAR_IN_REALITY_SINGULARITY_SIZE
+
 /////////////////////////////////////////Scrying///////////////////
 
 /obj/item/scrying
 	name = "scrying orb"
 	desc = "An incandescent orb of otherworldly energy, staring into it gives you vision beyond mortal means."
-	icon = 'icons/obj/weapons/projectiles.dmi'
+	icon = 'icons/obj/weapons/guns/projectiles.dmi'
 	icon_state ="bluespace"
 	throw_speed = 7
 	throw_range = 15
@@ -142,22 +183,19 @@ GLOBAL_LIST_EMPTY(multiverse)
 	var/duplicate_self = 0 //Do we want the species randomized along with equipment should the user be duplicated in their entirety?
 	var/sword_type = /obj/item/multisword //type of sword to equip.
 
-/obj/item/multisword/New()
-	..()
+/obj/item/multisword/Initialize(mapload)
+	. = ..()
 	GLOB.multiverse |= src
-
 
 /obj/item/multisword/Destroy()
 	GLOB.multiverse.Remove(src)
 	return ..()
-
 
 /obj/item/multisword/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	if(target.real_name == user.real_name)	//to prevent accidental friendly fire or out and out grief.
 		to_chat(user, span_warning("The [name] detects benevolent energies in your target and redirects your attack!"))
 		return ATTACK_CHAIN_PROCEED
 	return ..()
-
 
 /obj/item/multisword/attack_self(mob/user)
 	if(user.mind.special_role == SPECIAL_ROLE_WIZARD_APPRENTICE)
@@ -205,7 +243,11 @@ GLOBAL_LIST_EMPTY(multiverse)
 
 			var/image/source = image('icons/obj/cardboard_cutout.dmi', "cutout_wizard")
 			var/list/candidates = SSghost_spawns.poll_candidates("Do you want to play as the wizard apprentice of [user.real_name]?", ROLE_WIZARD, TRUE, 10 SECONDS, source = source)
-			if(candidates.len)
+
+			if(QDELETED(user))
+				return
+
+			if(length(candidates))
 				var/mob/C = pick(candidates)
 				spawn_copy(C.client, get_turf(user.loc), user)
 				to_chat(user, span_warning("<b>The sword flashes, and you find yourself face to face with...you!</b>"))
@@ -215,14 +257,13 @@ GLOBAL_LIST_EMPTY(multiverse)
 	else
 		to_chat(user, span_warning("<b>[src] is recharging! Keep in mind it shares a cooldown with the swords wielded by your copies."))
 
-
-/obj/item/multisword/proc/spawn_copy(var/client/C, var/turf/T, mob/user)
+/obj/item/multisword/proc/spawn_copy(client/C, turf/T, mob/user)
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(T)
 	if(duplicate_self)
 		user.client.prefs.copy_to(M)
 	else
 		C.prefs.copy_to(M)
-	M.key = C.key
+	M.possess_by_player(C.key)
 	M.mind.name = user.real_name
 	to_chat(M, "<b>You are an alternate version of [user.real_name] from another universe! Help [user.p_them()] accomplish [user.p_their()] goals at all costs.</b>")
 	M.faction = list("[user.real_name]")
@@ -263,7 +304,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 		M.mind.special_role = SPECIAL_ROLE_MULTIVERSE
 		add_game_logs("[M.key] was made a multiverse traveller with the objective to help [usr.real_name] protect the station.", M)
 
-/obj/item/multisword/proc/equip_copy(var/mob/living/carbon/human/M)
+/obj/item/multisword/proc/equip_copy(mob/living/carbon/human/M)
 
 	var/obj/item/multisword/sword = new sword_type
 	sword.assigned = assigned
@@ -387,7 +428,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 			if("assistant")
 				M.equip_to_slot_or_del(new /obj/item/clothing/under/color/grey(M), ITEM_SLOT_CLOTH_INNER)
 				M.equip_to_slot_or_del(new /obj/item/radio/headset(M), ITEM_SLOT_EAR_LEFT)
-				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(M), ITEM_SLOT_FEET)
+				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/color/black(M), ITEM_SLOT_FEET)
 				M.equip_to_slot_or_del(sword, ITEM_SLOT_HAND_RIGHT)
 
 			if("animu")
@@ -420,7 +461,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 
 			if("killer")
 				M.equip_to_slot_or_del(new /obj/item/clothing/under/overalls(M), ITEM_SLOT_CLOTH_INNER)
-				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/white(M), ITEM_SLOT_FEET)
+				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/color/white(M), ITEM_SLOT_FEET)
 				M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/latex(M), ITEM_SLOT_GLOVES)
 				M.equip_to_slot_or_del(new /obj/item/clothing/mask/surgical(M), ITEM_SLOT_MASK)
 				M.equip_to_slot_or_del(new /obj/item/clothing/head/welding(M), ITEM_SLOT_HEAD)
@@ -435,7 +476,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 
 			if("pirate")
 				M.equip_to_slot_or_del(new /obj/item/clothing/under/pirate(M), ITEM_SLOT_CLOTH_INNER)
-				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/brown(M), ITEM_SLOT_FEET)
+				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/color/brown(M), ITEM_SLOT_FEET)
 				M.equip_to_slot_or_del(new /obj/item/clothing/head/bandana(M), ITEM_SLOT_HEAD)
 				M.equip_to_slot_or_del(new /obj/item/clothing/glasses/eyepatch(M), ITEM_SLOT_EYES)
 				M.equip_to_slot_or_del(new /obj/item/radio/headset(M), ITEM_SLOT_EAR_LEFT)
@@ -467,7 +508,6 @@ GLOBAL_LIST_EMPTY(multiverse)
 				M.equip_to_slot_or_del(new /obj/item/radio/headset(M), ITEM_SLOT_EAR_LEFT)
 				M.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(M), ITEM_SLOT_FEET)
 				M.equip_to_slot_or_del(sword, ITEM_SLOT_HAND_RIGHT)
-
 
 			else
 				return
@@ -511,7 +551,6 @@ GLOBAL_LIST_EMPTY(multiverse)
 	duplicate_self = 1
 	sword_type = /obj/item/multisword/pike
 
-
 /////////////////////////////////////////Necromantic Stone///////////////////
 
 /obj/item/necromantic_stone
@@ -548,7 +587,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 
 	check_spooky()//clean out/refresh the list
 
-	if(spooky_scaries.len >= 3 && !unlimited)
+	if(length(spooky_scaries) >= 3 && !unlimited)
 		to_chat(user, span_warning("This artifact can only affect three undead at a time!"))
 		return .
 
@@ -565,8 +604,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 	spooky_scaries |= target
 	to_chat(target, "[span_userdanger("You have been revived by ")]<b>[user.real_name]!</b>")
 	to_chat(target, span_userdanger("[user.p_theyre(TRUE)] your master now, assist them even if it costs you your new life!"))
-	desc = "A shard capable of resurrecting humans as skeleton thralls[unlimited ? "." : ", [spooky_scaries.len]/3 active thralls."]"
-
+	desc = "A shard capable of resurrecting humans as skeleton thralls[unlimited ? "." : ", [length(spooky_scaries)]/3 active thralls."]"
 
 /obj/item/necromantic_stone/proc/check_spooky()
 	if(unlimited) //no point, the list isn't used.
@@ -579,7 +617,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 		if(H.stat == DEAD)
 			spooky_scaries.Remove(X)
 			continue
-	listclearnulls(spooky_scaries)
+	list_clear_nulls(spooky_scaries)
 
 //Funny gimmick, skeletons always seem to wear roman/ancient armour
 //Voodoo Zombie Pirates added for paradise
@@ -650,7 +688,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 	H.equip_to_slot_or_del(new /obj/item/melee/katana(H), ITEM_SLOT_HAND_RIGHT)
 	H.equip_to_slot_or_del(new /obj/item/shield/riot/roman(H), ITEM_SLOT_HAND_LEFT)
 	H.equip_to_slot_or_del(new /obj/item/twohanded/spear(H), ITEM_SLOT_BACK)
-	if(!H.real_name || H.real_name == "unknown")
+	if(!H.real_name || H.real_name == UNKNOWN_NAME_RUS)
 		H.real_name = "Neko-chan"
 	else
 		H.real_name = "[H.name]-chan"
@@ -659,45 +697,41 @@ GLOBAL_LIST_EMPTY(multiverse)
 /obj/item/necromantic_stone/nya
 	name = "nya-cromantic stone"
 	desc = "A shard capable of resurrecting humans as creatures of Vile Heresy. Even the Wizard Federation fears it.."
-	icon = 'icons/obj/wizard.dmi'
 	icon_state = "nyacrostone"
-	item_state = "electronic"
-	origin_tech = "bluespace=4;materials=4"
-	w_class = WEIGHT_CLASS_TINY
 	heresy = 1
 	unlimited = 1
 
 /////////////////////////////////////////Voodoo///////////////////
 
-
 /obj/item/voodoo
 	name = "wicker doll"
 	desc = "Выглядит зловеще."
-	ru_names = list(
-		NOMINATIVE = "плетёная кукла",
-		GENITIVE = "плетёной куклы",
-		DATIVE = "плетёной кукле",
-		ACCUSATIVE = "плетёную куклу",
-		INSTRUMENTAL = "плетёной куклой",
-		PREPOSITIONAL = "плетёной кукле"
-	)
 	gender = FEMALE
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "voodoo"
 	item_state = "electronic"
 	var/mob/living/carbon/human/target = null
-	var/list/mob/living/carbon/human/possible = list()
+	var/list/mob/living/carbon/human/possible
 	var/obj/item/link = null
 	var/cooldown_time = 3 SECONDS
 	COOLDOWN_DECLARE(cooldown)
 	max_integrity = 10
 	resistance_flags = FLAMMABLE
 
+/obj/item/voodoo/get_ru_names()
+	return list(
+		NOMINATIVE = "плетёная кукла",
+		GENITIVE = "плетёной куклы",
+		DATIVE = "плетёной кукле",
+		ACCUSATIVE = "плетёную куклу",
+		INSTRUMENTAL = "плетёной куклой",
+		PREPOSITIONAL = "плетёной кукле",
+	)
 
 /obj/item/voodoo/attackby(obj/item/I, mob/user, params)
 	if(target && COOLDOWN_FINISHED(src, cooldown))
 		add_fingerprint(user)
-		if(I.get_heat())
+		if(I.get_temperature())
 			to_chat(target, span_userdanger("You suddenly feel very hot."))
 			target.adjust_bodytemperature(50)
 		else if(is_pointed(I))
@@ -722,14 +756,13 @@ GLOBAL_LIST_EMPTY(multiverse)
 
 	return ..()
 
-
 /obj/item/voodoo/check_eye(mob/user)
 	if(loc != user)
 		user.reset_perspective(null)
 		user.unset_machine()
 
 /obj/item/voodoo/attack_self(mob/user as mob)
-	if(!target && possible.len)
+	if(!target && LAZYLEN(possible))
 		target = tgui_input_list(user, "Select your victim!", "Voodoo", possible)
 		return
 
@@ -745,7 +778,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 	if(target && cooldown < world.time)
 		switch(user.zone_selected)
 			if(BODY_ZONE_PRECISE_MOUTH)
-				var/wgw =  sanitize(input(user, "What would you like the victim to say", "Voodoo", null)  as text)
+				var/wgw = tgui_input_text(user, "What would you like the victim to say", "Voodoo", null)
 				target.say(wgw)
 				add_attack_logs(user, target, "force say ([wgw]) with a voodoo doll.")
 				add_say_logs(target, wgw, src)
@@ -765,7 +798,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 				for(var/mob/living/L in range(1,target))
 					if(L!=target)
 						nearby_mobs |= L
-				if(nearby_mobs.len)
+				if(length(nearby_mobs))
 					var/mob/living/T = pick(nearby_mobs)
 					add_attack_logs(user, target, "force click on [T] with a voodoo doll.")
 					target.ClickOn(T)
@@ -778,13 +811,15 @@ GLOBAL_LIST_EMPTY(multiverse)
 		cooldown = world.time + cooldown_time
 
 /obj/item/voodoo/proc/update_targets()
-	possible = list()
+	LAZYCLEARLIST(possible)
+
 	if(!link)
 		return
+
 	for(var/thing in GLOB.human_list)
 		var/mob/living/carbon/human/H = thing
-		if(H.stat != DEAD && (md5(H.dna.uni_identity) in link.fingerprints))
-			possible |= H
+		if(H.stat != DEAD && (H.real_name in link.interactors))
+			LAZYOR(possible, H)
 
 /obj/item/voodoo/proc/GiveHint(mob/victim,force=0)
 	if(prob(50) || force)
@@ -794,7 +829,7 @@ GLOBAL_LIST_EMPTY(multiverse)
 		var/area/A = get_area(src)
 		to_chat(victim, span_notice("You feel a dark presence from [A.name]"))
 
-/obj/item/voodoo/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = TRUE)
+/obj/item/voodoo/fire_act(exposed_temperature, exposed_volume)
 	if(target)
 		target.adjust_fire_stacks(20)
 		target.IgniteMob()

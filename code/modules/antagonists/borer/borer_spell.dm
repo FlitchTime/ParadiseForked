@@ -5,8 +5,8 @@
 	clothes_req = FALSE
 	action_icon_state = "infest"
 	action_background_icon_state = "bg_alien"
-	selection_activated_message = span_notice("Вы приготовились заразить жертву. <b>Left-click чтобы применить способность!</b>")
-	selection_deactivated_message = span_notice("Вы прекратили свои попытки заразить жертву.")
+	selection_activated_message = span_notice_alt("Вы приготовились заразить жертву. <b>Left-click чтобы применить способность!</b>")
+	selection_deactivated_message = span_notice_alt("Вы прекратили свои попытки заразить жертву.")
 	need_active_overlay = TRUE
 	human_req = FALSE
 	var/infesting = FALSE
@@ -20,13 +20,13 @@
 
 /obj/effect/proc_holder/spell/borer_infest/can_cast(mob/living/user, charge_check = TRUE, show_message = FALSE)
 
-	if (is_ventcrawling(user) || !src || user.stat || infesting)
+	if(is_ventcrawling(user) || !src || user.stat || infesting)
 		return FALSE
 
 	. = ..()
 
 /obj/effect/proc_holder/spell/borer_infest/valid_target(mob/living/carbon/human/target, user)
-	return istype(target) && target.stat != DEAD && !ismachineperson(target)
+	return istype(target) && target.stat != DEAD && !ismachineperson(target) && !isdevilantag(target)
 
 /obj/effect/proc_holder/spell/borer_infest/cast(list/targets, mob/living/simple_animal/borer/user)
 	var/mob/living/carbon/human/target = targets[1]
@@ -35,7 +35,7 @@
 		return
 
 	infesting = TRUE
-	to_chat(user, "Вы подползаете к [target] и начинаете искать [genderize_ru(target.gender,"его","её","его","их" )] слуховой проход...")
+	to_chat(user, "Вы подползаете к [target] и начинаете искать [GEND_HIS_HER(target)] слуховой проход...")
 
 	if(!do_after(user, cast_time, target, NONE))
 		to_chat(user, "Как только [target] отходит, вы срываетесь и падаете на пол.")
@@ -68,8 +68,8 @@
 	clothes_req = FALSE
 	action_icon_state = "genetic_cryo"
 	action_background_icon_state = "bg_alien"
-	selection_activated_message = span_notice("Вы приготовились поразить жертву. <b>Left-click чтобы применить способность!</b>")
-	selection_deactivated_message = span_notice("Вы решили дать своей жертве шанс. Пока что.")
+	selection_activated_message = span_notice_alt("Вы приготовились поразить жертву. <b>Left-click чтобы применить способность!</b>")
+	selection_deactivated_message = span_notice_alt("Вы решили дать своей жертве шанс. Пока что.")
 	need_active_overlay = TRUE
 	human_req = FALSE
 
@@ -82,7 +82,7 @@
 	return T
 
 /obj/effect/proc_holder/spell/borer_dominate/can_cast(mob/living/user, charge_check = TRUE, show_message = FALSE)
-	if (is_ventcrawling(user) || !src || user.stat)
+	if(is_ventcrawling(user) || !src || user.stat)
 		return FALSE
 
 	. = ..()
@@ -97,7 +97,7 @@
 		to_chat(user, span_warning("Вы не можете позволить себе сделать это с тем, кто уже заражён.."))
 		return
 
-	to_chat(user, span_warning("Вы пронзили разум [target] пси-потоком, парализуя [genderize_ru(target.gender,"его","её","его","их" )] конечности волной первородного ужаса!"))
+	to_chat(user, span_warning("Вы пронзили разум [target] пси-потоком, парализуя [GEND_HIS_HER(target)] конечности волной первородного ужаса!"))
 	to_chat(target, span_warning("Вы чувствуете, как на вас наваливается жуткое чувство страха, леденящее конечности и заставляющее сердце бешено колотиться."))
 	target.Weaken(weaken_time)
 
@@ -119,7 +119,7 @@
 	return new /datum/spell_targeting/self
 
 /obj/effect/proc_holder/spell/borer_force_say/can_cast(mob/living/simple_animal/borer/user, charge_check = TRUE, show_message = FALSE)
-	if (user.stat || user.host?.stat)
+	if(user.stat || user.host?.stat)
 		return FALSE
 
 	. = ..()

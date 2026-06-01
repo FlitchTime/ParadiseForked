@@ -1,6 +1,7 @@
 //STRIKE TEAMS
 
 #define COMMANDOS_POSSIBLE 6 //if more Commandos are needed in the future
+
 GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 
 /client/proc/strike_team()
@@ -8,7 +9,7 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 		to_chat(src, span_userdanger("Игра ещё не началась!"))
 		return
 	if(GLOB.sent_strike_team)
-		to_chat(src, span_userdanger("Центральное Командование уже отправило один отряд."))
+		to_chat(src, span_userdanger("Центральное командование уже отправило один отряд."))
 		if(tgui_alert(src, "Вы хотите послать ещё один?","Подтверждение", list("Да","Нет")) != "Да")
 			return
 	else if(tgui_alert(src, "Вы хотите отправить отряд смерти Центрального Коммандования? После согласия это необратимо.", "Подтверждение", list("Да","Нет")) != "Да")
@@ -25,18 +26,12 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 				return
 
 	// Find the nuclear auth code
-	var/nuke_code
-	var/temp_code
-	for(var/obj/machinery/nuclearbomb/N in GLOB.machines)
-		temp_code = text2num(N.r_code)
-		if(temp_code)//if it's actually a number. It won't convert any non-numericals.
-			nuke_code = N.r_code
-			break
+	var/nuke_code = GLOB.nuke_codes[/obj/machinery/nuclearbomb]
 
 	// Find ghosts willing to be DS
 	var/image/source = image('icons/obj/cardboard_cutout.dmi', "cutout_deathsquad")
 	var/list/commando_ghosts = pick_candidates_all_types(src, COMMANDOS_POSSIBLE, "Присоединиться к Отряду Смерти?", , 21, 60 SECONDS, TRUE, GLOB.role_playtime_requirements[ROLE_DEATHSQUAD], TRUE, FALSE, source, "Отряд Смерти", input)
-	if(!commando_ghosts.len)
+	if(!length(commando_ghosts))
 		to_chat(src, span_userdanger("Никто не вызвался присоединиться к Отряду Смерти."))
 		return
 
@@ -52,7 +47,7 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 
 		if(L.name == "Commando")
 
-			if(!commando_ghosts.len)
+			if(!length(commando_ghosts))
 				break
 
 			var/use_ds_borg = FALSE
@@ -86,22 +81,22 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 				if(!(R.mind in SSticker.minds))
 					SSticker.minds += R.mind
 				SSticker.mode.deathsquad |= R.mind
-				R.key = ghost_mob.key
+				R.possess_by_player(ghost_mob.key)
 				if(nuke_code)
-					R.mind.store_memory("<b>Коды от боеголовки:</b> <span class='warning'>[nuke_code].</span>")
-				R.mind.store_memory("<b>Миссия:</b> <span class='warning'>[input].</span>")
-				to_chat(R, span_userdanger("Вы борг отдела Специальных Операций, подчиняющийся Центральному Командованию. \nВаша миссия: <span class='danger'>[input]</span>"))
+					R.mind.store_memory("<b>Коды от боеголовки:</b> [span_warning("[nuke_code].")]")
+				R.mind.store_memory("<b>Миссия:</b> [span_warning("[input].")]")
+				to_chat(R, span_userdanger("Вы борг отдела Специальных Операций, подчиняющийся Центральному Командованию. \nВаша миссия: [span_danger("[input]")]"))
 			else
 				var/mob/living/carbon/human/new_commando = create_death_commando(L, is_leader)
 				new_commando.mind.key = ghost_mob.key
-				new_commando.key = ghost_mob.key
+				new_commando.possess_by_player(ghost_mob.key)
 				new_commando.internal = new_commando.s_store
 				new_commando.update_action_buttons_icon()
 				new_commando.change_voice()
 				if(nuke_code)
-					new_commando.mind.store_memory("<b>Коды от боеголовки:</b> <span class='warning'>[nuke_code].</span>")
-				new_commando.mind.store_memory("<b>Миссия:</b> <span class='warning'>[input].</span>")
-				to_chat(new_commando, span_userdanger("Вы [is_leader ? "<b>КОМАНДИР</b>" : "боец"] отряда Специальных Операций, подчиняющийся Центральному Командованию. \nВаша миссия: <span class='danger'>[input]</span>"))
+					new_commando.mind.store_memory("<b>Коды от боеголовки:</b> [span_warning("[nuke_code].")]")
+				new_commando.mind.store_memory("<b>Миссия:</b> [span_warning("[input].")]")
+				to_chat(new_commando, span_userdanger("Вы [is_leader ? "<b>КОМАНДИР</b>" : "боец"] отряда Специальных Операций, подчиняющийся Центральному Командованию. \nВаша миссия: [span_danger("[input]")]"))
 
 			is_leader = FALSE
 			commando_number--
@@ -120,8 +115,8 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 			#3 Не оставляй свидетелей.<br>\
 			Ты полностью экипирован и подготовлен к миссии — перед отправкой на шаттле Специальных операций\
 			севернее, убедись, что все бойцы готовы.\
-			Фактическая цель миссии будет передана тебе Центральным Командованием через гарнитуру.<br>\
-			Если это будет сочтено уместным, Центральное Командование также позволит членам твоей команды экипироваться штурмовыми мехами для миссии. \
+			Фактическая цель миссии будет передана тебе Центральным командованием через гарнитуру.<br>\
+			Если это будет сочтено уместным, Центральное командование также позволит членам твоей команды экипироваться штурмовыми мехами для миссии. \
 			Ты найдешь оружейную с ними на западе от твоей позиции.  \
 			Когда будешь готов к отправке, используй консоль специального оперативного шаттла и переключи двери корпуса через другую консоль.</p>\
 			<p>В случае, если команда не выполнит поставленную задачу вовремя или не найдет другого способа её выполнить, ниже приведены инструкции по эксплуатации ядерного устройства Nanotrasen. \
@@ -163,7 +158,7 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 	var/mob/living/carbon/human/new_commando = new(spawn_location.loc)
 	var/commando_leader_rank = pick("Лейтенант", "Капитан", "Майор")
 	var/commando_rank = pick("Младший Сержант", "Сержант", "Старший Сержант", "Старшина", "Прапорщик", "Старший Прапорщик")
-	var/commando_name = pick(GLOB.last_names)
+	var/commando_name = pick(GLOB.last_names_male)
 
 	var/datum/preferences/A = new()//Randomize appearance for the commando.
 	if(is_leader)
@@ -173,16 +168,18 @@ GLOBAL_VAR_INIT(sent_strike_team, FALSE)
 		A.real_name = "[commando_rank] [A.gender==FEMALE ? pick(GLOB.last_names_female) : commando_name]"
 	A.copy_to(new_commando)
 
-
 	new_commando.dna.ready_dna(new_commando)//Creates DNA.
 
 	//Creates mind stuff.
 	new_commando.mind_initialize()
 	new_commando.mind.assigned_role = SPECIAL_ROLE_DEATHSQUAD
 	new_commando.mind.special_role = SPECIAL_ROLE_DEATHSQUAD
-	SSticker.mode.traitors |= new_commando.mind//Adds them to current traitor list. Which is really the extra antagonist list.
+	new_commando.mind.offstation_role = TRUE
+	SSticker.mode.deathsquad |= new_commando.mind
 	if(is_leader)
 		new_commando.equipOutfit(/datum/outfit/admin/death_commando/officer)
 	else
 		new_commando.equipOutfit(/datum/outfit/admin/death_commando)
 	return new_commando
+
+#undef COMMANDOS_POSSIBLE

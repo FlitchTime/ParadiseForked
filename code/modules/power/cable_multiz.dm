@@ -25,13 +25,12 @@
 		new/obj/item/stack/cable_coil(get_turf(src), 10, TRUE, color)
 	qdel(src)
 
-
 /obj/structure/cable/multiz/attackby(obj/item/I, mob/user, params)
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return ATTACK_CHAIN_BLOCKED_ALL
 
-	if((our_turf.transparent_floor == TURF_TRANSPARENT) || our_turf.intact)
+	if(HAS_TRAIT(src, TRAIT_UNDERFLOOR))
 		to_chat(user, span_danger("You cannot interact with something that's under the floor!"))
 		return ATTACK_CHAIN_BLOCKED_ALL
 
@@ -50,10 +49,8 @@
 
 	return ATTACK_CHAIN_PROCEED
 
-
 /obj/structure/cable/multiz/wirecutter_act(mob/user, obj/item/I)
 	. = ..()
-
 
 /obj/structure/cable/multiz/mergeDiagonalsNetworks(direction)
 	return
@@ -124,7 +121,7 @@
 		P_list += below	// and below...
 	P_list += power_list(loc, src, 0, 0, cable_only = 1)//... and on turf ourselves
 
-	if(P_list.len == 0 && !above && !below)//If we so happened to be alone cable, not connected to anything, including above and below.
+	if(length(P_list) == 0 && !above && !below)//If we so happened to be alone cable, not connected to anything, including above and below.
 		powernet.remove_cable(src) // So we gonna just delete ourself
 		return
 	var/obj/O = P_list[1]

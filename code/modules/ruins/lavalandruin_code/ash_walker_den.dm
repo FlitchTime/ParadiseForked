@@ -1,16 +1,9 @@
 #define ASH_WALKER_SPAWN_THRESHOLD 2
+
 //The ash walker den consumes corpses or unconscious mobs to create ash walker eggs. For more info on those, check ghost_role_spawners.dm
 /obj/structure/lavaland/ash_walker
 	name = "necropolis tendril nest"
 	desc = "Щупальце искажённой злобы. Вокруг него обустроено гнездо, полное быстро растущих яиц..."
-	ru_names = list(
-		NOMINATIVE = "гнездо некрополя",
-		GENITIVE = "гнезда некрополя",
-		DATIVE = "гнезду некрополя",
-		ACCUSATIVE = "гнездо некрополя",
-		INSTRUMENTAL = "гнездом некрополя",
-		PREPOSITIONAL = "гнезде некрополя"
-	)
 	icon = 'icons/mob/nest.dmi'
 	icon_state = "ash_walker_nest"
 
@@ -24,7 +17,17 @@
 	var/faction = list("ashwalker")
 	var/meat_counter = 6
 
-/obj/structure/lavaland/ash_walker/Initialize()
+/obj/structure/lavaland/ash_walker/get_ru_names()
+	return list(
+		NOMINATIVE = "гнездо некрополя",
+		GENITIVE = "гнезда некрополя",
+		DATIVE = "гнезду некрополя",
+		ACCUSATIVE = "гнездо некрополя",
+		INSTRUMENTAL = "гнездом некрополя",
+		PREPOSITIONAL = "гнезде некрополя",
+	)
+
+/obj/structure/lavaland/ash_walker/Initialize(mapload)
 	. = ..()
 	AddComponent( \
 			/datum/component/aura_healing, \
@@ -58,8 +61,8 @@
 /obj/structure/lavaland/ash_walker/proc/consume()
 	for(var/mob/living/H in view(src, 1)) //Only for corpse right next to/on same tile
 		if(H.stat)
-			visible_message(span_warning("Шипастые усики жадно подтаскивают тело [H] и разрывают его на куски, окропляя кровью растущие яйца."))
-			playsound(get_turf(src),'sound/magic/demon_consume.ogg', 100, 1)
+			visible_message(span_warning("Шипастые усики жадно подтаскивают тело [H.declent_ru(GENITIVE)] и разрывают его на куски, окропляя кровью растущие яйца."))
+			playsound(get_turf(src),'sound/magic/demon_consume.ogg', 100, TRUE)
 			for(var/obj/item/W in H)
 				if(!H.drop_item_ground(W))
 					qdel(W)
@@ -68,7 +71,7 @@
 			else
 				meat_counter++
 			H.gib()
-			obj_integrity = min(obj_integrity + max_integrity*0.05,max_integrity)//restores 5% hp of tendril
+			repair_damage(max_integrity * 0.05)//restores 5% hp of tendril
 
 /obj/structure/lavaland/ash_walker/proc/spawn_mob()
 	if(meat_counter >= ASH_WALKER_SPAWN_THRESHOLD)
@@ -87,19 +90,11 @@
 			new /obj/effect/mob_spawn/human/ash_walker/shaman(get_step(loc, pick(GLOB.alldirs)))
 		else
 			new /obj/effect/mob_spawn/human/ash_walker(get_step(loc, pick(GLOB.alldirs)))
-		visible_message("<span class='danger'>Одно из яиц вырастает до огромных размеров и открепляется от щупальца. Оно готово к вылуплению!</span>")
+		visible_message(span_danger("Одно из яиц вырастает до огромных размеров и открепляется от щупальца. Оно готово к вылуплению!"))
 		meat_counter -= ASH_WALKER_SPAWN_THRESHOLD
 
 /obj/effect/mob_spawn/human/ash_walker
-	name = "ash walker egg"
-	ru_names = list(
-		NOMINATIVE = "яйцо пеплоходца",
-		GENITIVE = "яйца пеплоходца",
-		DATIVE = "яйцу пеплоходца",
-		ACCUSATIVE = "яйцо пеплоходца",
-		INSTRUMENTAL = "яйцом пеплоходца",
-		PREPOSITIONAL = "яйце пеплоходца"
-	)
+	name = "Ash walker egg"
 	desc = "Жёлтое яйцо размером с человека, порождённое каким-то непостижимым существом. Внутри проглядывает гуманоидный силуэт."
 	mob_name = "an ash walker"
 	icon = 'icons/mob/lavaland/lavaland_monsters.dmi'
@@ -112,45 +107,57 @@
 	anchored = FALSE
 	move_resist = MOVE_FORCE_NORMAL
 	density = FALSE
-	important_info = "Не покидайте Лаваленд без разрешения администратора. Нападать на шахтёрский аванпост можно только в ответ на агрессию."
-	description = "Вы — пеплоходец, дикарь из племени коренных обитателей Лаваленда. Выживайте, охотьтесь и защищайте своё гнездо. Пользуйтесь примитивными племенными технологиями. Скармливайте трупы щупальцу в гнезде, дабы оно порождало яйца новых пеплоходцев. Вам разрешено атаковать шахтёров и других чужаков."
-	flavour_text = "Ваше племя поклоняется Некрополю. Пустоши для вас — священные земли, а местные чудища — их щедрые дары умелым охотникам. \
-	Вы видели вдали огни… Они предвещают прибытие чужаков, желающих разорить ваши земли и даже сам Некрополь. Но для вас они — лишь очередные подношения для гнезда."
+	important_info = "Не покидайте Лазис без разрешения администратора. Нападать на шахтёрский аванпост можно только в ответ на агрессию."
+	description = "Вы — пеплоходец, дикарь из племени коренных обитателей Лазиса. Выживайте, охотьтесь и защищайте своё гнездо. Пользуйтесь примитивными племенными технологиями. Скармливайте трупы щупальцу в гнезде, дабы оно порождало яйца новых пеплоходцев. Вам разрешено атаковать шахтёров и других чужаков."
+	flavour_text = "Ваше племя поклоняется Некрополю.\nПустоши для вас — священные земли, а местные чудища — их щедрые дары умелым охотникам.\n\
+					Вы видели вдали огни... Они предвещают прибытие чужаков, желающих разорить ваши земли и даже сам Некрополь.\n\
+					Но для вас они — лишь очередные подношения для гнезда.\n\n\
+					Добывайте для гнезда трупы гуманоидов и зверей. Щупальце поглотит их, порождая яйца новых пеплоходцев. Слава Некрополю!"
 	assignedrole = "Ash Walker"
 	respawn_cooldown = 10 MINUTES
 	var/eggtype = "пеплоходца"
 
+/obj/effect/mob_spawn/human/ash_walker/get_ru_names()
+	return list(
+		NOMINATIVE = "яйцо пеплоходца",
+		GENITIVE = "яйца пеплоходца",
+		DATIVE = "яйцу пеплоходца",
+		ACCUSATIVE = "яйцо пеплоходца",
+		INSTRUMENTAL = "яйцом пеплоходца",
+		PREPOSITIONAL = "яйце пеплоходца",
+	)
+
 /obj/effect/mob_spawn/human/ash_walker/special(mob/living/carbon/human/new_spawn)
 	new_spawn.rename_character(new_spawn.real_name, new_spawn.dna.species.get_random_name(new_spawn.gender))
 	new_spawn.faction += "ashwalker"
-	to_chat(new_spawn, "<b>Добывайте для гнезда трупы гуманоидов и зверей. Щупальце поглотит их, порождая яйца новых пеплоходцев. Слава Некрополю!</b>")
 
-/obj/effect/mob_spawn/human/ash_walker/New()
+/obj/effect/mob_spawn/human/ash_walker/Initialize(mapload)
 	. = ..()
 	var/area/A = get_area(src)
 	if(A)
 		notify_ghosts("Яйцо [eggtype] готово вылупиться в [A.name].", source = src, action = NOTIFY_ATTACK, flashwindow = FALSE)
 
-
 //Ash walker shaman eggs: Spawns in ash walker dens in lavaland. Only one can exist at a time, they are squishier than regular ashwalkers, and have the sole purpose of keeping other ashwalkers alive.
 /obj/effect/mob_spawn/human/ash_walker/shaman
-	name = "ash walker shaman egg"
-	ru_names = list(
-		NOMINATIVE = "яйцо шамана пеплоходцев",
-		GENITIVE = "яйца шамана пеплоходцев",
-		DATIVE = "яйцу шамана пеплоходцев",
-		ACCUSATIVE = "яйцо шамана пеплоходцев",
-		INSTRUMENTAL = "яйцом шамана пеплоходцев",
-		PREPOSITIONAL = "яйце шамана пеплоходцев"
-	)
+	name = "Ash walker shaman egg"
 	desc = "Янтарное яйцо размером с человека, порождённое каким-то непостижимым существом. Внутри проглядывает гуманоидный силуэт."
 	icon_state = "shaman_egg"
 	mob_name = "an ash walker shaman"
 	mob_species = /datum/species/unathi/ashwalker/shaman
 	outfit = /datum/outfit/ashwalker/shaman //might be OP, but the flavour is there
-	description = "Вы - шаман племени пеплоходцев. Ваше племя поклоняется некрополю. Обеспечьте выживание и лечение подконтрольных вам пеплоходцев. Проводите обряды, направленные на исцеление тела и души, обеспечивайте охотников пропитанием."
+	description = "Вы — шаман племени пеплоходцев. Ваше племя поклоняется некрополю. Обеспечьте выживание и лечение подконтрольных вам пеплоходцев. Проводите обряды, направленные на исцеление тела и души, обеспечивайте охотников пропитанием."
 	assignedrole = "Ash Walker Shaman"
 	eggtype = "шамана пеплоходцев"
+
+/obj/effect/mob_spawn/human/ash_walker/shaman/get_ru_names()
+	return list(
+		NOMINATIVE = "яйцо шамана пеплоходцев",
+		GENITIVE = "яйца шамана пеплоходцев",
+		DATIVE = "яйцу шамана пеплоходцев",
+		ACCUSATIVE = "яйцо шамана пеплоходцев",
+		INSTRUMENTAL = "яйцом шамана пеплоходцев",
+		PREPOSITIONAL = "яйце шамана пеплоходцев",
+	)
 
 /datum/outfit/ashwalker
 	name ="Ashwalker"
@@ -189,3 +196,5 @@ Use about 3 tiles before lava river and 9 to 10 lava river tiles under this land
 	map.load(spawn_area, TRUE)
 
 	qdel(src, force=TRUE)
+
+#undef ASH_WALKER_SPAWN_THRESHOLD

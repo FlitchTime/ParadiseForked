@@ -1,5 +1,4 @@
 /obj/effect/proc_holder/spell/area_teleport
-	name = "Area teleport"
 	desc = "This spell teleports you to a type of area of your selection."
 	nonabstract_req = TRUE
 
@@ -14,30 +13,27 @@
 	/// Currently selected area.
 	var/area/selected_area
 
-
 /obj/effect/proc_holder/spell/area_teleport/before_cast(list/targets, mob/user)
 	..()
 	selected_area = null // Reset it
 	var/A
 
 	if(!randomise_selection)
-		A = tgui_input_list(user, "Area to teleport to", "Teleport", GLOB.teleportlocs)
+		A = tgui_input_list(user, "Area to teleport to", "Teleport", SSmapping.teleportlocs)
 	else
-		A = pick(GLOB.teleportlocs)
+		A = pick(SSmapping.teleportlocs)
 
 	if(!A)
 		smoke_type = SMOKE_NONE
 		return
 
-	var/area/thearea = GLOB.teleportlocs[A]
+	var/area/thearea = SSmapping.teleportlocs[A]
 
 	if(thearea.tele_proof && !istype(thearea, /area/wizard_station))
 		to_chat(user, "A mysterious force disrupts your arcane spell matrix, and you remain where you are.")
 		return
 
 	selected_area = thearea
-
-
 
 /obj/effect/proc_holder/spell/area_teleport/cast(list/targets, mob/living/user)
 	if(!selected_area)
@@ -85,7 +81,6 @@
 			playsound(get_turf(user), sound_out, 50, TRUE)
 
 		user.update_action_buttons_icon()  //Update action buttons as some spells might now be castable
-
 
 /obj/effect/proc_holder/spell/area_teleport/invocation(mob/user)
 	if(!invocation_area || !selected_area)

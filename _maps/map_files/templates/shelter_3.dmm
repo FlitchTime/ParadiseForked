@@ -29,8 +29,7 @@
 /area/survivalpod)
 "f" = (
 /obj/structure/sign/mining/survival{
-	dir = 4;
-	tag = "icon-survival (EAST)"
+	dir = 4
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 9
@@ -39,8 +38,7 @@
 /area/survivalpod)
 "g" = (
 /obj/structure/sign/mining/survival{
-	dir = 4;
-	tag = "icon-survival (EAST)"
+	dir = 4
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 1
@@ -123,8 +121,7 @@
 	dir = 8
 	},
 /obj/machinery/light/small{
-	dir = 4;
-	tag = "icon-bulb1 (EAST)"
+	dir = 4
 	},
 /turf/simulated/floor/pod,
 /area/survivalpod)
@@ -134,8 +131,7 @@
 /area/survivalpod)
 "y" = (
 /obj/structure/sign/mining/survival{
-	dir = 4;
-	tag = "icon-survival (EAST)"
+	dir = 4
 	},
 /obj/structure/disposalpipe/junction{
 	dir = 4
@@ -213,11 +209,6 @@
 /obj/item/toy/figure/bartender,
 /turf/simulated/floor/pod,
 /area/survivalpod)
-"S" = (
-/obj/structure/window/shuttle/survival_pod,
-/obj/structure/window/shuttle/survival_pod,
-/turf/simulated/floor/pod,
-/area/survivalpod)
 "T" = (
 /obj/structure/sign/mining/survival{
 	dir = 8
@@ -226,8 +217,7 @@
 /area/survivalpod)
 "W" = (
 /obj/structure/sign/mining/survival{
-	dir = 4;
-	tag = "icon-survival (EAST)"
+	dir = 4
 	},
 /turf/simulated/wall/mineral/titanium/survival,
 /area/survivalpod)
@@ -249,7 +239,7 @@ c
 T
 G
 T
-S
+G
 T
 G
 T

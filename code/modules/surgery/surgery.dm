@@ -1,6 +1,5 @@
 ///Datum Surgery Helpers//
 
-
 /datum/surgery
 	/// Name of the surgery
 	var/name
@@ -49,7 +48,6 @@
 	/// Whether this surgery should be cancelled when an organ change happens. (removed if requires bodypart, or added if doesn't require bodypart)
 	var/cancel_on_organ_change = TRUE
 
-
 /datum/surgery/New(atom/surgery_target, surgery_location, surgery_bodypart)
 	..()
 	if(!surgery_target)
@@ -79,7 +77,6 @@
 	if(!affecting || !istype(affecting))
 		return TRUE
 	return requires_organic_bodypart && affecting.is_robotic() || !requires_organic_bodypart && !affecting.is_robotic()
-
 
 /**
  * Whether or not we can start this surgery.
@@ -122,7 +119,7 @@
 		if(tool && tool.GetComponent(/datum/component/surgery_initiator))
 			return FALSE
 		if(tool && HAS_TRAIT(tool, TRAIT_SURGICAL))
-			to_chat(user, span_warning("This step requires a different tool!"))
+			user.balloon_alert(user, "неподходящий инструмент!")
 			return TRUE
 	return FALSE
 
@@ -170,7 +167,6 @@
 /datum/surgery/proc/on_organ_remove(mob/living/carbon/organ_owner, obj/item/organ/external/organ)
 	SIGNAL_HANDLER  // COMSIG_CARBON_LOSE_ORGAN
 	handle_organ_state_change(organ_owner, organ, FALSE)
-
 
 /* SURGERY STEPS */
 /datum/surgery_step
@@ -274,7 +270,7 @@
 		if(target_zone == surgery.location)
 			if(get_location_accessible(target, target_zone) || surgery.ignore_clothes)
 				return initiate(user, target, target_zone, tool, surgery)
-			to_chat(user, span_warning("You need to expose [target]'s [parse_zone(target_zone)] before you can perform surgery on it!"))
+			user.balloon_alert(user, "часть тела чем-то закрыта!")
 			return SURGERY_INITIATE_FAILURE //returns TRUE so we don't stab the guy in the dick or wherever.
 
 	if(repeatable)
@@ -351,7 +347,10 @@
 		implement_speed_mod = allowed_tools[implement_type] / 100.0
 
 	// They also have some interesting ways that surgery success/fail prob get evaluated, maybe worth looking at
+	var/mob_mod = surgery.get_mob_surgery_speed_mod(target, user, tool)
+
 	speed_mod /= (get_location_modifier(target) * 1 + surgery.speed_modifier) * implement_speed_mod
+	speed_mod *= mob_mod
 	var/step_time = time
 
 	SEND_SIGNAL(user, COMSIG_SURGERY_STEP_INIT, &step_time)
@@ -362,7 +361,11 @@
 		prob_success = allowed_tools[implement_type]
 	prob_success *= get_location_modifier(target)
 
+	var/was_sleeping = (target.stat != DEAD && target.IsSleeping())
+
 	if(!do_after(user, modded_time, target, DA_IGNORE_SLOWDOWNS))
+		if(target.stat == DEAD && was_sleeping && user.client)
+			user.client.give_award(/datum/award/achievement/jobs/sandman, user)
 		surgery.step_in_progress = FALSE
 		return SURGERY_INITIATE_INTERRUPTED
 
@@ -397,6 +400,9 @@
 		surgery.step_number++
 		if(surgery.step_number > length(surgery.steps))
 			surgery.complete(target)
+
+	if(target.stat == DEAD && was_sleeping && user.client)
+		user.client.give_award(/datum/award/achievement/jobs/sandman, user)
 
 	surgery.step_in_progress = FALSE
 	if(advance)
@@ -559,7 +565,7 @@
 		if(length(get_path_to(E.loc, M.loc, max_distance = 2, simulated_only = FALSE)))
 			germs++
 
-	if(tool && tool.blood_DNA && length(tool.blood_DNA)) //germs from blood-stained tools
+	if(tool?.blood_DNA && length(tool.blood_DNA)) //germs from blood-stained tools
 		germs += 30
 
 	var/internals_length = LAZYLEN(E.internal_organs)
@@ -588,3 +594,53 @@
 		for(var/reagent in chems_needed)
 			if(target.reagents.has_reagent(reagent))
 				return TRUE
+
+
+/**
+ * Adds a speed modifier to this mob
+ *
+ * * id - id of the modifier, string
+ * * amount - the multiplier to apply to surgery speed.
+ * This is multiplicative with other modifiers.
+ * * duration - how long the modifier should last in deciseconds.
+ * If null, it will be permanent until removed.
+ */
+/mob/living/proc/add_surgery_speed_mod(id, amount, duration)
+	ASSERT(!isnull(id), "Surgery speed mod ID cannot be null")
+	ASSERT(isnum(amount), "Surgery speed mod amount must be a number")
+	ASSERT(isnum(duration) || isnull(duration), "Surgery speed mod duration must be a number or null")
+
+	var/existing = LAZYACCESS(mob_surgery_speed_mods, id)
+	if(existing == amount)
+		return
+
+	if(isnum(existing))
+		if(amount > 1 && existing > 1)
+			// both are speed decreases, take the better one
+			LAZYSET(mob_surgery_speed_mods, id, max(amount, existing))
+		else if(amount < 1 && existing < 1)
+			// both are speed increases, take the better one
+			LAZYSET(mob_surgery_speed_mods, id, min(amount, existing))
+		else
+			// one of each, just multiply them
+			LAZYSET(mob_surgery_speed_mods, id, amount * existing)
+	else
+		LAZYSET(mob_surgery_speed_mods, id, amount)
+
+	if(isnum(duration))
+		addtimer(CALLBACK(src, PROC_REF(remove_surgery_speed_mod), id), duration, TIMER_DELETE_ME|TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_NO_HASH_WAIT)
+
+/**
+ * Removes a speed modifier from this mob
+ *
+ * * id - id of the modifier to remove, string
+ */
+/mob/living/proc/remove_surgery_speed_mod(id)
+	LAZYREMOVE(mob_surgery_speed_mods, id)
+
+/// Returns a time modifier based on the mob's status
+/datum/surgery/proc/get_mob_surgery_speed_mod(mob/living/patient, mob/living/surgeon, tool)
+	var/basemod = 1.0
+	for(var/mod_id, mod_amt in patient.mob_surgery_speed_mods)
+		basemod *= mod_amt
+	return basemod

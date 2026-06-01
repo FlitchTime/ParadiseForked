@@ -7,63 +7,44 @@
 /datum/component/aura_healing
 	/// The range of which to heal
 	var/range = 5
-
 	/// Whether or not you must be a visible object of the parent
 	var/requires_visibility = TRUE
-
 	/// Brute damage to heal over a second
 	var/brute_heal = 0
-
 	/// Burn damage to heal over a second
 	var/burn_heal = 0
-
 	/// Toxin damage to heal over a second
 	var/toxin_heal = 0
-
 	/// Suffocation damage to heal over a second
 	var/suffocation_heal = 0
-
 	/// Stamina damage to heal over a second
 	var/stamina_heal = 0
-
 	/// Amount of cloning damage to heal over a second
 	var/clone_heal = 0
-
 	/// Amount of blood to heal over a second
 	var/blood_heal = 0
-
 	/// Map of organ (such as ORGAN_SLOT_BRAIN) to damage heal over a second
 	var/list/organ_healing
-
 	/// Amount of damage to heal on simple mobs over a second
 	var/simple_heal = 0
-
 	/// Map of external organs (such as "head", "l_leg", "groin" etc.). Will mend fractures only on these organs if specified.
 	var/list/external_organ_fracture_healing
-
 	/// Chance to mend fractures
 	var/mend_fractures_chance = 0
-
 	/// Its healing robots parts as well?
 	var/robot_heal = FALSE
-
 	/// Map of external organs (such as "tail", "wing", "r_foot" etc.). Will stop internal bleedings only on these organs if specified.
 	var/list/external_organ_bleeding_healing
-
 	/// Chance to stop internal bleedings
 	var/stop_internal_bleeding_chance = 0
-
 	/// Trait to limit healing to, if set
 	var/limit_to_trait
-
 	/// The color to give the healing visual
 	var/healing_color = COLOR_GREEN
-
 	/// A list of being healed to active alerts
 	var/list/current_alerts = list()
 
 	COOLDOWN_DECLARE(last_heal_effect_time)
-
 
 /datum/component/aura_healing/Initialize(
 	range = 5,
@@ -85,7 +66,7 @@
 	healing_color = COLOR_GREEN,
 	robot_heal = FALSE
 )
-	if (!isatom(parent))
+	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	START_PROCESSING(SSaura_healing, src)
@@ -109,7 +90,6 @@
 	src.healing_color = healing_color
 	src.robot_heal = robot_heal
 
-
 /datum/component/aura_healing/Destroy(force)
 	STOP_PROCESSING(SSaura_healing, src)
 	var/alert_category = "aura_healing_[src.UID()]"
@@ -123,14 +103,12 @@
 
 	return ..()
 
-
 /datum/component/aura_healing/process(seconds_per_tick)
 	var/should_show_effect = COOLDOWN_FINISHED(src, last_heal_effect_time)
 	if(should_show_effect)
 		COOLDOWN_START(src, last_heal_effect_time, HEAL_EFFECT_COOLDOWN)
 
 	var/list/to_heal = list()
-
 	var/alert_category = "aura_healing_[src.UID()]"
 
 	if(requires_visibility)
@@ -146,9 +124,11 @@
 
 	for(var/mob/living/candidate as anything in to_heal)
 		if(!current_alerts[candidate])
-			var/atom/movable/screen/alert/aura_healing/alert = candidate.throw_alert(alert_category, /atom/movable/screen/alert/aura_healing, new_master = parent)
-			alert.desc = "You are being healed by [parent]."
+			candidate.throw_alert(alert_category, /atom/movable/screen/alert/aura_healing, new_master = parent)
 			current_alerts[candidate] = TRUE
+			if(ishuman(candidate))
+				var/mob/living/carbon/human/human_candidate = candidate
+				human_candidate.add_fracture_ignore_trait(src)
 
 		var/old_health = candidate.health
 
@@ -196,6 +176,9 @@
 						if(QDELETED(body_part) || !body_part.has_fracture() || (body_part.is_robotic() && !robot_heal))
 							continue
 
+						if(!body_part.fracture.can_mend_by_aura_heal)
+							continue
+
 						if(prob(mend_fractures_chance))
 							external_organ_heal_done = TRUE
 							body_part.mend_fracture()
@@ -204,6 +187,9 @@
 				else
 					for(var/obj/item/organ/external/body_part as anything in human.bodyparts)
 						if(QDELETED(body_part) || !body_part.has_fracture() || (body_part.is_robotic() && !robot_heal))
+							continue
+
+						if(!body_part.fracture.can_mend_by_aura_heal)
 							continue
 
 						if(prob(mend_fractures_chance))
@@ -223,6 +209,7 @@
 						if(prob(stop_internal_bleeding_chance))
 							external_organ_heal_done = TRUE
 							body_part.stop_internal_bleeding()
+							body_part.stop_arterial_bleeding()
 							break
 
 				else
@@ -233,6 +220,7 @@
 						if(prob(stop_internal_bleeding_chance))
 							external_organ_heal_done = TRUE
 							body_part.stop_internal_bleeding()
+							body_part.stop_arterial_bleeding()
 							break
 
 		if(should_show_effect && (external_organ_heal_done || old_health < candidate.maxHealth))
@@ -243,10 +231,18 @@
 	for(var/mob/living/remove_alert_from as anything in current_alerts - to_heal)
 		remove_alert_from.clear_alert(alert_category)
 		current_alerts -= remove_alert_from
-
+		if(!ishuman(remove_alert_from))
+			continue
+		var/mob/living/carbon/human/human_remove = remove_alert_from
+		human_remove.remove_fracture_ignore_trait(src)
 
 /atom/movable/screen/alert/aura_healing
-	name = "Aura Healing"
-	icon_state = "template"
+	name = "Исцеляющая аура"
+	clickable_glow = TRUE
+	click_master = FALSE
+
+/atom/movable/screen/alert/aura_healing/update_desc(updates)
+	. = ..()
+	desc = "Аура, исходящая от [master_ref?.resolve()], исцеляет вас."
 
 #undef HEAL_EFFECT_COOLDOWN

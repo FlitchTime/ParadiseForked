@@ -1,9 +1,10 @@
 /atom/movable/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
-
+	if(.)
+		return
 	if(can_buckle && has_buckled_mobs())
 		if(length(buckled_mobs) > 1)
-			var/mob/living/unbuckled = tgui_input_list(user, "Who do you wish to unbuckle?", "Unbuckle", sort_names(buckled_mobs))
+			var/mob/living/unbuckled = tgui_input_list(user, "Кого вы хотите отстегнуть?", "Отстегивание", sort_names(buckled_mobs))
 			if(isnull(unbuckled))
 				return .
 			if(user_unbuckle_mob(unbuckled, user))
@@ -12,18 +13,16 @@
 			if(user_unbuckle_mob(buckled_mobs[1], user))
 				return TRUE
 
-
-/atom/movable/MouseDrop_T(mob/living/dropping, mob/living/user, params)
-	. = ..()
+/atom/movable/mouse_drop_receive(mob/living/dropping, mob/living/user, params)
 	return mouse_buckle_handling(dropping, user)
-
 
 /atom/movable/attack_robot(mob/living/user)
 	. = ..()
-
-	if(can_buckle && has_buckled_mobs() && Adjacent(user))
+	if(.)
+		return
+	if(Adjacent(user) && can_buckle && has_buckled_mobs())
 		if(length(buckled_mobs) > 1)
-			var/mob/living/unbuckled = tgui_input_list(user, "Who do you wish to unbuckle?", "Unbuckle", sort_names(buckled_mobs))
+			var/mob/living/unbuckled = tgui_input_list(user, "Кого вы хотите отстегнуть?", "Отстегивание", sort_names(buckled_mobs))
 			if(isnull(unbuckled))
 				return .
 			if(user_unbuckle_mob(unbuckled, user))
@@ -31,7 +30,6 @@
 		else
 			if(user_unbuckle_mob(buckled_mobs[1], user))
 				return TRUE
-
 
 /**
  * Does some typechecks and then calls user_buckle_mob
@@ -44,13 +42,11 @@
 	if(can_buckle && istype(target) && istype(user))
 		return user_buckle_mob(target, user, check_loc = FALSE)
 
-
 /**
  * Returns amount of mobs buckled to us.
  */
 /atom/movable/proc/has_buckled_mobs()
 	return length(buckled_mobs)
-
 
 /**
  * Set a mob as buckled to src
@@ -97,7 +93,7 @@
 		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_set_anchored))
 	target.set_buckled(src)
 	buckled_mobs |= target
-	target.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/restrained/buckled)
+	target.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/buckled)
 	target.set_glide_size(glide_size)
 	target.setDir(dir)
 
@@ -107,13 +103,11 @@
 	SEND_SIGNAL(src, COMSIG_MOVABLE_BUCKLE, target, force)
 	return TRUE
 
-
 /obj/buckle_mob(mob/living/target, force = FALSE, check_loc = TRUE)
 	. = ..()
 	if(. && (resistance_flags & ON_FIRE))	//Sets the mob on fire if you buckle them to a burning atom/movableect
 		target.adjust_fire_stacks(1)
 		target.IgniteMob()
-
 
 /atom/movable/proc/on_set_anchored(atom/movable/source, anchorvalue)
 	SIGNAL_HANDLER
@@ -123,7 +117,6 @@
 			ADD_TRAIT(buckled_mob, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
 		else
 			REMOVE_TRAIT(buckled_mob, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
-
 
 /**
  * Set a mob as unbuckled from src
@@ -168,7 +161,6 @@
 		var/turf/pitfall = buckled_mob.loc
 		pitfall?.zFall(buckled_mob)
 
-
 /**
  * Call [/atom/movable/proc/unbuckle_mob] for all buckled mobs
  */
@@ -178,7 +170,6 @@
 	for(var/mob in buckled_mobs)
 		unbuckle_mob(mob, force)
 
-
 /**
  * Handle any extras after buckling.
  * Called on buckle_mob()
@@ -186,14 +177,12 @@
 /atom/movable/proc/post_buckle_mob(mob/living/target)
 	return
 
-
 /**
  * Handle any extras after unbuckling.
  * Called on unbuckle_mob()
  */
 /atom/movable/proc/post_unbuckle_mob(mob/living/target)
 	return
-
 
 /**
  * Simple helper proc that runs a suite of checks to test whether it is possible or not to buckle the target mob to src.
@@ -257,7 +246,6 @@
 
 	return TRUE
 
-
 /**
  * Simple helper proc that runs a suite of checks to test whether it is possible or not for user to buckle target mob to src.
  *
@@ -282,7 +270,6 @@
 
 	return TRUE
 
-
 /**
  * Handles a mob buckling another mob to src and sends a visible_message
  *
@@ -304,12 +291,12 @@
 
 	if(target != user) // Cheks if user interacts with himself
 		target.visible_message(
-			span_warning("[user] is trying to buckle [target] to [src]!"),
-			span_userdanger("[user] is trying to buckle you to [src]!"),
-			span_italics("You hear metal clanking."),
+			span_warning("[user] пыта[PLUR_ET_YUT(user)]ся пристегнуть [target.declent_ru(ACCUSATIVE)] к [declent_ru(DATIVE)]!"),
+			span_userdanger("[user] пыта[PLUR_ET_YUT(user)]ся пристегнуть вас к [declent_ru(DATIVE)]!"),
+			span_italics("Слышен лязг металла."),
 		)
 		if(!do_after(user, 0.7 SECONDS, target, NONE))
-			to_chat(user, span_warning("You failed to buckle [target]."))
+			to_chat(user, span_warning("Вам не удалось пристегнуть [target.declent_ru(ACCUSATIVE)]."))
 			return FALSE
 
 		// Sanity check before we attempt to buckle. Is everything still in a kosher state for buckling after the delay?
@@ -321,17 +308,16 @@
 	if(.)
 		if(target == user)
 			target.visible_message(
-				span_notice("[target] buckles [target.p_them()]self to [src]."),
-				span_notice("You buckle yourself to [src]."),
-				span_italics("You hear metal clanking."),
+				span_notice("[target] пристегива[PLUR_ET_YUT(target)] себя к [declent_ru(DATIVE)]."),
+				span_notice("Вы пристегиваете себя к [declent_ru(DATIVE)]."),
+				span_italics("Слышен лязг металла."),
 			)
 		else
 			target.visible_message(
-				span_warning("[user] buckles [target] to [src]!"),
-				span_warning("[user] buckles you to [src]!"),
-				span_italics("You hear metal clanking."),
+				span_warning("[user] пристегива[PLUR_ET_YUT(target)] [target.declent_ru(ACCUSATIVE)] к [declent_ru(DATIVE)]!"),
+				span_warning("[user] пристегива[PLUR_ET_YUT(target)] вас к [declent_ru(DATIVE)]!"),
+				span_italics("Слышен лязг металла."),
 			)
-
 
 /**
  * Handles a user unbuckling a mob from src and sends a visible_message
@@ -343,27 +329,26 @@
  * * user - The mob unbuckling target
  */
 /atom/movable/proc/user_unbuckle_mob(mob/living/target, mob/living/user)
-	if(!(target in buckled_mobs) || !user.Adjacent(target))
+	if(!(target in buckled_mobs) || !target.IsReachableBy(user))
 		return
 	var/mob/living/buckled_mob = unbuckle_mob(target)
 	if(buckled_mob)
 		if(buckled_mob != user)
 			buckled_mob.visible_message(
-				span_notice("[user] unbuckles [buckled_mob] from [src]."),
-				span_notice("[user] unbuckles you from [src]."),
-				span_italics("You hear metal clanking."),
+				span_notice("[user] отстегива[PLUR_ET_YUT(target)] [buckled_mob] от [declent_ru(GENITIVE)]."),
+				span_notice("[user] отстегива[PLUR_ET_YUT(target)] вас от [declent_ru(GENITIVE)]."),
+				span_italics("Слышен лязг металла."),
 			)
 		else
 			buckled_mob.visible_message(
-				span_notice("[buckled_mob] unbuckles [buckled_mob.p_them()]self from [src]."),
-				span_notice("You unbuckle yourself from [src]."),
-				span_italics("You hear metal clanking."),
+				span_notice("[buckled_mob] отстегива[PLUR_ET_YUT(target)] себя от [declent_ru(GENITIVE)]."),
+				span_notice("Вы отстегиваете себя от [declent_ru(GENITIVE)]."),
+				span_italics("Слышен лязг металла."),
 			)
 		add_fingerprint(user)
 		if(isliving(buckled_mob.pulledby))
 			buckled_mob.pulledby.set_pull_offsets(buckled_mob, buckled_mob.pulledby.grab_state)
 	return buckled_mob
-
 
 /mob/living/proc/check_buckled()
 	if(buckled && !(buckled in loc))

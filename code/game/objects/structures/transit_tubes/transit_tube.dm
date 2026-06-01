@@ -17,6 +17,10 @@
 	var/exit_delay = 1
 	var/enter_delay = 0
 
+/obj/structure/transit_tube/ComponentInitialize()
+	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = 12)
+
 /obj/structure/transit_tube/Initialize(mapload, new_direction)
 	. = ..()
 	if(new_direction)
@@ -35,12 +39,12 @@
 	return ..()
 
 // When destroyed by explosions, properly handle contents.
-/obj/structure/transit_tube/ex_act(severity)
+/obj/structure/transit_tube/ex_act(severity, target)
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			for(var/atom/movable/AM in contents)
 				AM.forceMove(loc)
-				AM.ex_act(severity++)
+				AM.ex_act(severity--)
 
 			qdel(src)
 			return
@@ -48,7 +52,7 @@
 			if(prob(50))
 				for(var/atom/movable/AM in contents)
 					AM.forceMove(loc)
-					AM.ex_act(severity++)
+					AM.ex_act(severity--)
 
 				qdel(src)
 				return
@@ -62,7 +66,6 @@
 // Called when a pod stops in this tube section.
 /obj/structure/transit_tube/proc/pod_stopped(pod, from_dir)
 	return
-
 
 // Returns a /list of directions this tube section can connect to.
 //  Tubes that have some sort of logic or changing direction might
@@ -138,7 +141,6 @@
 		else
 			. += create_tube_overlay(direction ^ (EAST|WEST), WEST)
 
-
 /obj/structure/transit_tube/proc/create_tube_overlay(direction, shift_dir)
 	// We use image() because a mutable appearance will have its dir mirror the parent which sort of fucks up what we're doing here
 	var/image/tube_overlay = image(icon, dir = direction)
@@ -146,13 +148,13 @@
 		tube_overlay.icon_state = "decorative_diag"
 		switch(shift_dir)
 			if(NORTH)
-				tube_overlay.pixel_y = 32
+				tube_overlay.pixel_z = 32
 			if(SOUTH)
-				tube_overlay.pixel_y = -32
+				tube_overlay.pixel_z = -32
 			if(EAST)
-				tube_overlay.pixel_x = 32
+				tube_overlay.pixel_w = 32
 			if(WEST)
-				tube_overlay.pixel_x = -32
+				tube_overlay.pixel_w = -32
 	else
 		tube_overlay.icon_state = "decorative"
 
@@ -189,7 +191,6 @@
 /obj/structure/transit_tube/diagonal/crossing/topleft
 	dir = WEST
 
-
 /obj/structure/transit_tube/curved
 	icon_state = "curved0"
 
@@ -218,7 +219,6 @@
 		if(WEST)
 			tube_dirs = list(NORTHEAST, WEST)
 
-
 /obj/structure/transit_tube/junction
 	icon_state = "junction0"
 
@@ -246,7 +246,6 @@
 			tube_dirs = list(EAST, NORTHWEST, SOUTHWEST)
 		if(WEST)
 			tube_dirs = list(WEST, SOUTHEAST, NORTHEAST)
-
 
 /obj/structure/transit_tube/crossing
 	icon_state = "crossing"

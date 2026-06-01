@@ -1,3 +1,7 @@
+#define LIGHT_DAM_THRESHOLD 4
+#define LIGHT_HEAL_THRESHOLD 2
+#define LIGHT_DAMAGE_TAKEN 6
+
 /datum/species/shadow/ling
 	//Normal shadowpeople but with enhanced effects
 	name = SPECIES_SHADOWLING
@@ -7,7 +11,7 @@
 	deform = 'icons/mob/human_races/r_shadowling.dmi'
 	blacklisted = TRUE
 
-	blood_color = "#555555"
+	blood_color = BLOOD_COLOR_SHADOWLING
 	flesh_color = "#222222"
 
 	inherent_traits = list(
@@ -23,6 +27,7 @@
 		TRAIT_NO_SLIP_ALL,
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_SHOCKIMMUNE,
+		TRAIT_LIVERLESS_METABOLISM,
 	)
 	brute_mod = 0.75
 	burn_mod = 1.25
@@ -66,8 +71,6 @@
 		BODY_ZONE_PRECISE_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable/sturdy),
 	)
 
-	disliked_food = NONE
-
 /datum/species/shadow/ling/proc/handle_light(mob/living/carbon/human/H)
 	var/light_amount = 0
 	if(isturf(H.loc))
@@ -80,8 +83,8 @@
 			else
 				H.take_overall_damage(0, LIGHT_DAMAGE_TAKEN)
 			if(H.stat != DEAD)
-				to_chat(H, "<span class='userdanger'>Свет жжёт вас!</span>")//Message spam to say "GET THE FUCK OUT"
-				H << 'sound/weapons/sear.ogg'
+				to_chat(H, span_userdanger("Свет жжёт вас!"))//Message spam to say "GET THE FUCK OUT"
+				SEND_SOUND(H, sound('sound/weapons/sear.ogg'))
 		else if(light_amount < LIGHT_HEAL_THRESHOLD)
 			H.clear_alert("lightexposure")
 			var/obj/item/organ/internal/eyes/E = H.get_int_organ(/obj/item/organ/internal/eyes)
@@ -116,3 +119,7 @@
 	deform = 'icons/mob/human_races/r_lshadowling.dmi'
 	burn_mod = 1.1
 	heatmod = 1.1
+
+#undef LIGHT_DAM_THRESHOLD
+#undef LIGHT_HEAL_THRESHOLD
+#undef LIGHT_DAMAGE_TAKEN

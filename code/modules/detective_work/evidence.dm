@@ -8,17 +8,15 @@
 	item_state = ""
 	w_class = WEIGHT_CLASS_TINY
 
-/obj/item/evidencebag/afterattack(obj/item/I, mob/user, proximity, params)
-	if(!proximity || loc == I)
+/obj/item/evidencebag/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!proximity_flag || loc == target)
 		return
-	evidencebagEquip(I, user)
-
+	evidencebagEquip(target, user)
 
 /obj/item/evidencebag/attackby(obj/item/I, mob/user, params)
 	if(evidencebagEquip(I, user))
 		return ATTACK_CHAIN_BLOCKED_ALL
 	return ..()
-
 
 /obj/item/evidencebag/proc/evidencebagEquip(obj/item/I, mob/user)	// this shit is bad
 	if(!istype(I) || I.anchored == 1)
@@ -36,7 +34,7 @@
 		to_chat(user, span_notice("[I] won't fit in [src]."))
 		return
 
-	if(contents.len)
+	if(length(contents))
 		to_chat(user, span_notice("[src] already has something inside it."))
 		return
 
@@ -60,10 +58,10 @@
 	var/yy = I.pixel_y
 	I.pixel_x = 0		//then remove it so it'll stay within the evidence bag
 	I.pixel_y = 0
-	var/image/img = image("icon"=I, "layer"=FLOAT_LAYER)	//take a snapshot. (necessary to stop the underlays appearing under our inventory-HUD slots ~Carn
+	var/image/img = image(icon = I, layer = FLOAT_LAYER)	//take a snapshot. (necessary to stop the underlays appearing under our inventory-HUD slots ~Carn
 	img.plane = FLOAT_PLANE
-	I.pixel_x = xx		//and then return it
-	I.pixel_y = yy
+	I.pixel_w = xx		//and then return it
+	I.pixel_z = yy
 	add_overlay(img)
 	add_overlay("evidence")	//should look nicer for transparent stuff. not really that important, but hey.
 
@@ -73,7 +71,7 @@
 	return TRUE
 
 /obj/item/evidencebag/attack_self(mob/user)
-	if(contents.len)
+	if(length(contents))
 		var/obj/item/I = contents[1]
 		user.visible_message(span_notice("[user] takes [I] out of [src]."), span_notice("You take [I] out of [src]."),\
 		span_notice("You hear someone rustle around in a plastic bag, and remove something."))

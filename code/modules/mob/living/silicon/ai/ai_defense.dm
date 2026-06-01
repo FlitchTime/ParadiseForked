@@ -6,3 +6,35 @@
 
 /mob/living/silicon/ai/attack_slime(mob/living/simple_animal/slime/user)
 	return //immune to slimes
+
+/mob/living/silicon/ai/adjust_slot_machine_lose_effect()
+	if(prob(EMAGGED_SLOT_MACHINE_GIB_CHANCE))
+		to_chat(src, span_warningbig("Критическая неудача!<br>Неизвестная сила заставляет вас отключиться."))
+		src.death() // AI gib cause no body ghost error
+		return TRUE
+	to_chat(src, span_warning("Неудача! [src.name] получает видимые повреждения."))
+	src.adjustBruteLoss(rand(15, 20))
+	return FALSE
+
+/mob/living/silicon/ai/adjustBruteLoss(amount = 0, updating_health = TRUE, def_zone = null, blocked = 0, forced = FALSE, used_weapon = null, sharp = FALSE, silent = FALSE, affect_robotic = TRUE,)
+	. = ..()
+	if(amount < 0)
+		return
+	if(!deployed_shell)
+		return
+	to_chat(deployed_shell, span_warningbig("ТРЕВОГА: ЗАФИКСИРОВАНО ПОВРЕЖДЕНИЕ ЯДРА"))
+	SEND_SOUND(deployed_shell, 'sound/machines/engine_alert1.ogg')
+
+/mob/living/silicon/ai/adjustFireLoss(amount, updating_health = TRUE, def_zone = null, blocked = 0, forced = FALSE, used_weapon = null, sharp = FALSE, silent = FALSE, affect_robotic = TRUE,)
+	. = ..()
+	if(amount < 0)
+		return
+	if(!deployed_shell)
+		return
+	to_chat(deployed_shell, span_warningbig("ТРЕВОГА: ЗАФИКСИРОВАНО ПОВРЕЖДЕНИЕ ЯДРА"))
+	SEND_SOUND(deployed_shell, 'sound/machines/engine_alert1.ogg')
+
+/mob/living/silicon/ai/emp_act(severity)
+	. = ..()
+	if(deployed_shell)
+		disconnect_shell()

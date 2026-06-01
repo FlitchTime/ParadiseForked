@@ -1,56 +1,56 @@
 /obj/item/storage/wallet
 	name = "leather wallet"
 	desc = "Made from genuine leather, it is of the highest quality."
-	storage_slots = 10
 	icon = 'icons/obj/wallets.dmi'
 	icon_state = "brown_wallet"
 	item_state = "brown_wallet"
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
+	slot_flags = ITEM_SLOT_ID
+	storage_slots = 4
 	can_hold = list(
-		/obj/item/lipstick,
-		/obj/item/stack/spacecash,
 		/obj/item/card,
+		/obj/item/clothing/gloves/ring,
 		/obj/item/clothing/mask/cigarette,
-		/obj/item/flashlight/pen,
-		/obj/item/seeds,
-		/obj/item/stack/medical,
-		/obj/item/toy/crayon,
 		/obj/item/coin,
 		/obj/item/dice,
 		/obj/item/disk,
+		/obj/item/encryptionkey,
+		/obj/item/flashlight/pen,
 		/obj/item/implanter,
+		/obj/item/key,
 		/obj/item/lighter,
+		/obj/item/lipstick,
 		/obj/item/match,
 		/obj/item/paper,
 		/obj/item/pen,
 		/obj/item/photo,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/stamp,
-		/obj/item/encryptionkey,
-		/obj/item/clothing/gloves/ring,
 		/obj/item/reagent_containers/food/pill/patch,
+		/obj/item/reagent_containers/syringe,
+		/obj/item/seeds,
 		/obj/item/spacepod_equipment/key,
-		/obj/item/key,
+		/obj/item/stack/medical,
+		/obj/item/stack/spacecash,
+		/obj/item/stamp,
+		/obj/item/toy/crayon,
 	)
-	slot_flags = ITEM_SLOT_ID
-
 	var/obj/item/card/id/front_id = null
 	var/image/front_id_overlay = null
 
-
+/obj/item/storage/wallet/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_CARD_DECAL_APPLIED, PROC_REF(refresh_id_on_signal))
 
 /obj/item/storage/wallet/remove_from_storage(obj/item/I, atom/new_location)
 	. = ..()
-	if(. && istype(I, /obj/item/card/id))
+	if(. && is_id_card(I))
 		refresh_ID()
-
 
 /obj/item/storage/wallet/handle_item_insertion(obj/item/I, prevent_warning = FALSE)
 	. = ..()
-	if(. && istype(I, /obj/item/card/id))
+	if(. && is_id_card(I))
 		refresh_ID()
-
 
 /obj/item/storage/wallet/swap_items(obj/item/item_1, obj/item/item_2, mob/user)
 	. = ..()
@@ -61,6 +61,10 @@
 	. = ..()
 	refresh_ID()
 
+/obj/item/storage/wallet/proc/refresh_id_on_signal(datum/source)
+	SIGNAL_HANDLER
+
+	refresh_ID()
 
 /obj/item/storage/wallet/proc/refresh_ID()
 	// Locate the first ID in the wallet
@@ -69,10 +73,9 @@
 	if(ishuman(loc))
 		var/mob/living/carbon/human/wearing_human = loc
 		if(wearing_human.wear_id == src)
-			wearing_human.sec_hud_set_ID()
+			wearing_human.update_hud_set()
 
 	update_appearance(UPDATE_NAME|UPDATE_OVERLAYS)
-
 
 /obj/item/storage/wallet/update_overlays()
 	. = ..()
@@ -85,7 +88,6 @@
 		front_id_icon_state_holder = "id"
 	. += mutable_appearance('icons/obj/wallets.dmi', front_id_icon_state_holder)
 
-
 /obj/item/storage/wallet/update_name(updates = ALL)
 	. = ..()
 	if(front_id)
@@ -93,27 +95,18 @@
 	else
 		name = "[item_color] leather wallet"
 
-
 /obj/item/storage/wallet/GetID()
 	return front_id ? front_id : ..()
-
 
 /obj/item/storage/wallet/GetAccess()
 	return front_id ? front_id.GetAccess() : ..()
 
-
 /obj/item/storage/wallet/random/populate_contents()
-	var/cash = pick(/obj/item/stack/spacecash,
-		/obj/item/stack/spacecash/c10,
-		/obj/item/stack/spacecash/c100,
-		/obj/item/stack/spacecash/c500,
-		/obj/item/stack/spacecash/c1000)
-	var/coin = pickweight(list(/obj/item/coin/iron = 3,
-							   /obj/item/coin/silver = 2,
-							   /obj/item/coin/gold = 1))
-	new cash(src)
-	if(prob(50))
-		new cash(src)
+	var/coin = pickweight(list(
+		/obj/item/coin/iron = 3,
+		/obj/item/coin/silver = 2,
+		/obj/item/coin/gold = 1)
+	)
 	new coin(src)
 
 //////////////////////////////////////
@@ -124,8 +117,6 @@
 	name = "cheap wallet"
 	desc = "A cheap wallet from the arcade."
 	storage_slots = 5		//smaller storage than normal wallets
-	icon = 'icons/obj/wallets.dmi'
-
 
 /obj/item/storage/wallet/color/Initialize(mapload)
 	. = ..()
@@ -136,15 +127,12 @@
 		return
 	update_appearance(UPDATE_NAME|UPDATE_DESC|UPDATE_ICON_STATE)
 
-
 /obj/item/storage/wallet/color/update_icon_state()
 	icon_state = "[item_color]_wallet"
-
 
 /obj/item/storage/wallet/color/update_desc(updates = ALL)
 	. = ..()
 	desc = "[item_color] wallet made from... leather?"
-
 
 /obj/item/storage/wallet/color/blue
 	icon_state = "blue_wallet"

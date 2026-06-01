@@ -47,8 +47,7 @@
 	name = "Cheesewheel"
 	id = "cheesewheel"
 	result = null
-	required_reagents = list("milk" = 40)
-	required_catalysts = list("enzyme" = 5)
+	required_reagents = list("milk" = 90, "enzyme" = 5)
 	result_amount = 1
 
 /datum/chemical_reaction/cheesewheel/on_reaction(datum/reagents/holder, created_volume)
@@ -112,7 +111,6 @@
 	for(var/i in 1 to created_volume)
 		new /obj/item/reagent_containers/food/snacks/cookiedough(location)
 
-
 /datum/chemical_reaction/corn_syrup
 	name = "corn_syrup"
 	id = "corn_syrup"
@@ -150,7 +148,7 @@
 
 /datum/chemical_reaction/fake_cheese/on_reaction(datum/reagents/holder)
 	var/turf/T = get_turf(holder.my_atom)
-	T.visible_message("<span class='notice'>A faint cheese-ish smell drifts through the air...</span>")
+	T.visible_message(span_notice("A faint cheese-ish smell drifts through the air..."))
 
 /datum/chemical_reaction/weird_cheese
 	name = "Weird cheese"
@@ -212,3 +210,24 @@
 	min_temp = T0C + 480
 	mix_message = "The mixture emits a horrible smell as you heat up the contents. Luckily, enzymes don't stink."
 	mix_sound = 'sound/goonstation/misc/fuse.ogg'
+
+/datum/chemical_reaction/protein_water
+	name = "Разбавление протеина водой"
+	id = "protein_water"
+	result = "protein_liquid"
+	required_reagents = list("protein" = 1, "water" = 4)
+	result_amount = 5
+
+/datum/chemical_reaction/protein_milk
+	name = "Разбавление протеина молоком"
+	id = "protein_milk"
+	result = "protein_liquid_milk"
+	required_reagents = list("protein" = 1, "milk" = 4)
+	result_amount = 5
+
+/datum/chemical_reaction/creatine_water
+	name = "Разбавление креатина"
+	id = "creatine_water"
+	result = "creatine_liquid"
+	required_reagents = list("creatine" = 3, "water" = 2)
+	result_amount = 5

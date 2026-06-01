@@ -12,7 +12,7 @@
 	materials = list(MAT_GLASS = MINERAL_MATERIAL_AMOUNT)
 	attack_verb = list("уколол", "полоснул", "порезал")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	armor = list("melee" = 100, "bullet" = 0, "laser" = 0, "energy" = 100, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 50, "acid" = 100)
+	armor = list(MELEE = 100, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 100)
 	max_integrity = 40
 	resistance_flags = ACID_PROOF
 	sharp = TRUE
@@ -26,7 +26,6 @@
 			span_danger("[user] is slitting [user.p_their()] throat with [src]! It looks like [user.p_theyre()] trying to commit suicide."))
 		)
 		return BRUTELOSS
-
 
 /obj/item/shard/Initialize(mapload)
 	. = ..()
@@ -49,14 +48,16 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
+/obj/item/shard/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!proximity_flag || !(src in user))
+		return
 
-/obj/item/shard/afterattack(atom/movable/AM, mob/user, proximity, params)
-	if(!proximity || !(src in user))
+	if(isturf(target))
 		return
-	if(isturf(AM))
+
+	if(isstorage(target))
 		return
-	if(isstorage(AM))
-		return
+
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(!H.gloves && !HAS_TRAIT(H, TRAIT_PIERCEIMMUNE))
@@ -65,7 +66,6 @@
 				return
 			to_chat(H, span_warning("[src] cuts into your hand!"))
 			H.apply_damage(force * 0.5, def_zone = affecting)
-
 
 /obj/item/shard/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/lightreplacer))
@@ -93,7 +93,6 @@
 
 	return ..()
 
-
 /obj/item/shard/welder_act(mob/user, obj/item/I)
 	. = TRUE
 	if(!I.use_tool(src, user, volume = I.tool_volume))
@@ -110,7 +109,6 @@
 		to_chat(user, span_notice("You add the newly-formed glass to the stack. It now contains [new_amount] sheet\s."))
 	qdel(src)
 
-
 /obj/item/shard/proc/on_entered(datum/source, mob/living/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
 
@@ -118,7 +116,6 @@
 		return
 
 	playsound(loc, 'sound/effects/glass_step.ogg', 50, TRUE)
-
 
 /obj/item/shard/decompile_act(obj/item/matter_decompiler/C, mob/user)
 	C.stored_comms["glass"] += 3

@@ -4,14 +4,12 @@
 /area/template_noop)
 "c" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 1;
-	tag = "icon-heater (NORTH)"
+	dir = 1
 	},
 /obj/structure/window/reinforced,
 /turf/simulated/floor/shuttle/plating,
 /area/space/nearstation)
 "d" = (
-/turf/space,
 /turf/simulated/wall/shuttle{
 	dir = 1;
 	icon_state = "white_walls_directions"
@@ -97,7 +95,6 @@
 	},
 /area/space/nearstation)
 "w" = (
-/turf/space,
 /turf/simulated/wall/shuttle{
 	dir = 6;
 	icon_state = "white_walls_directions"
@@ -127,8 +124,7 @@
 /area/space/nearstation)
 "A" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 4;
-	tag = "icon-heater (EAST)"
+	dir = 4
 	},
 /obj/structure/window/reinforced{
 	dir = 8
@@ -138,13 +134,11 @@
 "B" = (
 /obj/structure/shuttle/engine/propulsion{
 	dir = 4;
-	icon_state = "propulsion_l";
-	tag = "icon-propulsion_l (WEST)"
+	icon_state = "propulsion_l"
 	},
 /obj/structure/shuttle/engine/propulsion{
 	dir = 4;
-	icon_state = "burst_r";
-	tag = "icon-burst_r (WEST)"
+	icon_state = "burst_r"
 	},
 /turf/simulated/floor/shuttle/plating,
 /area/space/nearstation)
@@ -159,8 +153,7 @@
 "E" = (
 /obj/structure/shuttle/engine/propulsion{
 	dir = 4;
-	icon_state = "propulsion_l";
-	tag = "icon-propulsion_l (WEST)"
+	icon_state = "propulsion_l"
 	},
 /turf/simulated/floor/shuttle/plating,
 /area/space/nearstation)
@@ -213,13 +206,10 @@
 /area/space/nearstation)
 "M" = (
 /turf/simulated/wall/shuttle{
-	icon_state = "swall_f5";
-	tag = "icon-swall_f5"
+	icon_state = "swall_f5"
 	},
-/turf/simulated/mineral/random/labormineral,
 /area/space/nearstation)
 "N" = (
-/turf/space,
 /turf/simulated/wall/shuttle{
 	dir = 5;
 	icon_state = "white_walls_directions"
@@ -244,37 +234,21 @@
 "R" = (
 /obj/structure/shuttle/engine/propulsion{
 	dir = 4;
-	icon_state = "propulsion_l";
-	tag = "icon-propulsion_l (WEST)"
+	icon_state = "propulsion_l"
 	},
 /obj/structure/shuttle/engine/propulsion{
 	dir = 4;
-	icon_state = "propulsion_l";
-	tag = "icon-propulsion_l (WEST)"
+	icon_state = "propulsion_l"
 	},
 /turf/simulated/floor/shuttle/plating,
 /area/space/nearstation)
-"S" = (
-/turf/space,
-/turf/simulated/wall/shuttle{
-	dir = 4
-	},
-/area/space/nearstation)
 "U" = (
-/turf/space,
 /turf/simulated/wall/shuttle{
 	dir = 9;
 	icon_state = "white_walls_directions"
 	},
 /area/space/nearstation)
 "V" = (
-/turf/simulated/wall/shuttle{
-	dir = 4;
-	icon_state = "white_walls_directions"
-	},
-/area/space/nearstation)
-"W" = (
-/turf/space,
 /turf/simulated/wall/shuttle{
 	dir = 4;
 	icon_state = "white_walls_directions"
@@ -626,7 +600,7 @@ m
 a
 a
 a
-S
+v
 m
 m
 J
@@ -867,13 +841,13 @@ a
 a
 a
 a
-W
+V
 A
 A
 A
 A
 A
-W
+V
 a
 a
 a

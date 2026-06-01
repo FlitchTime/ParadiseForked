@@ -1,31 +1,16 @@
-//TODO: Flash range does nothing currently
-
-#define CREAK_DELAY 5 SECONDS //Time taken for the creak to play after explosion, if applicable.
-#define DEVASTATION_PROB 30 //The probability modifier for devistation, maths!
-#define HEAVY_IMPACT_PROB 5 //ditto
-#define FAR_UPPER 60 //Upper limit for the far_volume, distance, clamped.
-#define FAR_LOWER 40 //lower limit for the far_volume, distance, clamped.
-#define PROB_SOUND 75 //The probability modifier for a sound to be an echo, or a far sound. (0-100)
-#define SHAKE_CLAMP 2.5 //The limit for how much the camera can shake for out of view booms.
-#define FREQ_UPPER 40 //The upper limit for the randomly selected frequency.
-#define FREQ_LOWER 25 //The lower of the above.
-
-/client/proc/check_bomb_impacts()
-	set name = "Check Bomb Impact"
-	set category = "Debug"
-
-	var/newmode = alert("Use reactionary explosions?","Check Bomb Impact", "Yes", "No")
-	var/zmode = alert("Use Multi-Z explosions?","Check Bomb Impact,", "Yes", "No")
-	var/turf/epicenter = get_turf(mob)
+ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effect of a bomb would be.", ADMIN_CATEGORY_DEBUG)
+	var/newmode = tgui_alert(user, "Use reactionary explosions?", "Check Bomb Impact", list("Yes", "No"))
+	var/zmode = tgui_alert("Use Multi-Z explosions?", "Check Bomb Impact", list("Yes", "No"))
+	var/turf/epicenter = get_turf(user.mob)
 	if(!epicenter)
 		return
 
-	to_chat(usr, span_notice("Check Bomb Impact epicenter is: [COORD(epicenter)]"))
+	to_chat(user, span_notice("Check Bomb Impact epicenter is: [COORD(epicenter)]"))
 	var/dev = 0
 	var/heavy = 0
 	var/light = 0
 	var/list/choices = list("Small Bomb","Medium Bomb","Big Bomb","Custom Bomb")
-	var/choice = input("Bomb Size?") in choices
+	var/choice = tgui_input_list(user, "Bomb Size?", , choices)
 	switch(choice)
 		if(null)
 			return 0
@@ -42,9 +27,9 @@
 			heavy = 5
 			light = 7
 		if("Custom Bomb")
-			dev = input("Devestation range (Tiles):") as num
-			heavy = input("Heavy impact range (Tiles):") as num
-			light = input("Light impact range (Tiles):") as num
+			dev = tgui_input_number(user, "Devestation range (Tiles):")
+			heavy = tgui_input_number(user, "Heavy impact range (Tiles):")
+			light = tgui_input_number(user, "Light impact range (Tiles):")
 
 	var/max_range = max(dev, heavy, light)
 	var/x0 = epicenter.x
@@ -68,7 +53,7 @@
 			floor_block["[below.z]"] = below.explosion_vertical_block
 	for(var/turf/T in affected_turfs)
 		wipe_colours += T
-		var/dist = HYPOTENUSE(T.x, T.y, x0, y0)
+		var/dist = CHEAP_HYPOTENUSE(T.x, T.y, x0, y0)
 		if((zmode == "Yes") && (T.z != z0))
 			if(T.z < z0)
 				dist += floor_block["[T.z + 1]"] + 1
@@ -88,27 +73,20 @@
 
 		if(dist < dev)
 			T.color = "red"
-			T.maptext = "Dev"
+			T.maptext = MAPTEXT("Dev")
 		else if(dist < heavy)
 			T.color = "yellow"
-			T.maptext = "Heavy"
+			T.maptext = MAPTEXT("Heavy")
 		else if(dist < light)
 			T.color = "blue"
-			T.maptext = "Light"
+			T.maptext = MAPTEXT("Light")
 		else
 			continue
 
-	sleep(100)
-	for(var/turf/T in wipe_colours)
-		T.color = null
-		T.maptext = ""
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(wipe_color_and_text), wipe_colours), 10 SECONDS)
 
-#undef CREAK_DELAY
-#undef DEVASTATION_PROB
-#undef HEAVY_IMPACT_PROB
-#undef FAR_UPPER
-#undef FAR_LOWER
-#undef PROB_SOUND
-#undef SHAKE_CLAMP
-#undef FREQ_UPPER
-#undef FREQ_LOWER
+/proc/wipe_color_and_text(list/atom/wiping)
+	for(var/atom/wiping_atom as anything in wiping)
+		wiping_atom.color = null
+		wiping_atom.maptext = ""
+

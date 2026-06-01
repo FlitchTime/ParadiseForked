@@ -1,44 +1,53 @@
 /**********************Jaunter**********************/
 /obj/item/wormhole_jaunter
 	name = "wormhole jaunter"
-	desc = "A single use device harnessing outdated wormhole technology, Nanotrasen has since turned its eyes to bluespace for more accurate teleportation. The wormholes it creates are unpleasant to travel through, to say the least.\nThanks to modifications provided by the Free Golems, this jaunter provides protection from chasms."
-	icon = 'icons/obj/items.dmi'
+	desc = "Одноразовое устройство, использующее устаревшую технологию червоточин. \"Нанотрейзен\" переключилась на блюспейс для более точной телепортации. Перемещение через создаваемые им червоточины, мягко говоря, некомфортно.\nБлагодаря модификациям Свободных Големов, этот генератор червоточин обеспечивает защиту от пропастей."
 	icon_state = "Jaunter"
 	item_state = "electronic"
-	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 3
 	throw_range = 5
 	origin_tech = "bluespace=2"
 	slot_flags = ITEM_SLOT_BELT
-	var/emagged = FALSE
 
+/obj/item/wormhole_jaunter/get_ru_names()
+	return list(
+		NOMINATIVE = "генератор червоточин",
+		GENITIVE = "генератора червоточин",
+		DATIVE = "генератору червоточин",
+		ACCUSATIVE = "генератор червоточин",
+		INSTRUMENTAL = "генератором червоточин",
+		PREPOSITIONAL = "генераторе червоточин",
+	)
 
 /obj/item/wormhole_jaunter/attack_self(mob/user)
-	user.visible_message(span_notice("[user.name] activates the [name]!"))
+	user.visible_message(span_notice("[user.name] активиру[PLUR_ET_YUT(user)] [declent_ru(ACCUSATIVE)]!"))
 	SSblackbox.record_feedback("tally", "jaunter", 1, "User") // user activated
 	activate(user, TRUE)
 
-
-/obj/item/wormhole_jaunter/proc/turf_check(mob/user)
+/obj/item/wormhole_jaunter/proc/turf_check()
 	var/turf/device_turf = get_turf(src)
-	if(!device_turf || !is_teleport_allowed(device_turf.z))
-		if(user)
-			to_chat(user, span_notice("You're having difficulties getting [src] to work."))
-		return FALSE
-	return TRUE
 
+	if(!device_turf || !is_teleport_allowed(device_turf.z))
+		return "Ошибка! Телепортация невозможна."
+
+	if(!is_mining_level(device_turf.z) || istype(get_area(device_turf), /area/ruin/space/bubblegum_arena))
+		return "Ошибка! Требуется натуральная гравитация для размещения якоря."
+
+	return TRUE
 
 /obj/item/wormhole_jaunter/proc/get_destinations()
 	. = list()
-	for(var/obj/item/radio/beacon/beacon in GLOB.global_radios)
+	for(var/obj/item/beacon/beacon as anything in GLOB.beacons)
 		var/turf/beacon_turf = get_turf(beacon)
 		if(is_station_level(beacon_turf.z))
 			. += beacon
 
-
 /obj/item/wormhole_jaunter/proc/activate(mob/user, adjacent, teleport)
-	if(!turf_check(user))
+	var/turf_check_result = turf_check()
+
+	if(!istrue(turf_check_result))
+		atom_say(turf_check_result)
 		return FALSE
 
 	var/list/destinations = get_destinations()
@@ -46,7 +55,7 @@
 		if(user)
 			balloon_alert(user, "нет доступных маяков!")
 		else
-			visible_message(span_notice("\The [src] found no beacons in the world to anchor a wormhole to!"))
+			visible_message(span_notice("[DECLENT_RU_CAP(src, NOMINATIVE)] не нашёл маяков для создания якоря!"))
 		return TRUE // used for chasm code
 
 	var/chosen_beacon = pick(destinations)
@@ -61,14 +70,12 @@
 	qdel(src)
 	return FALSE // used for chasm code
 
-
 /obj/item/wormhole_jaunter/proc/chasm_react(mob/user)
 	. = activate(user, FALSE, TRUE)
 
 	if(!.)
-		to_chat(user, span_notice("Your [name] activates, saving you from the chasm!"))
+		to_chat(user, span_notice("Ваш [declent_ru(NOMINATIVE)] активируется, спасая вас от пропасти!"))
 		SSblackbox.record_feedback("tally", "jaunter", 1, "Chasm") // chasm automatic activation
-
 
 /obj/item/wormhole_jaunter/emag_act(mob/user)
 	if(!emagged)
@@ -77,22 +84,29 @@
 		if(user)
 			balloon_alert(user, "протоколы защиты сняты!")
 		var/turf/T = get_turf(src)
-		do_sparks(5, 0, T)
-		playsound(T, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-
+		do_sparks(5, FALSE, T)
+		playsound(T, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/effect/portal/jaunt_tunnel
 	name = "jaunt tunnel"
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "bhole3"
-	desc = "A stable hole in the universe made by a wormhole jaunter. Turbulent doesn't even begin to describe how rough passage through one of these is, but at least it will always get you somewhere near a beacon."
+	desc = "Стабильная дыра во вселенной, созданная генератором червоточин. Слово \"турбулентный\" не передаёт, насколько жёстким может быть прохождение через неё, но по крайней мере она всегда доставит вас куда-то рядом с маяком."
 	failchance = 0
-	var/emagged = FALSE
+	light_on = FALSE
 
+/obj/effect/portal/jaunt_tunnel/get_ru_names()
+	return list(
+		NOMINATIVE = "стабильная червоточина",
+		GENITIVE = "стабильной червоточины",
+		DATIVE = "стабильной червоточине",
+		ACCUSATIVE = "стабильную червоточину",
+		INSTRUMENTAL = "стабильной червоточиной",
+		PREPOSITIONAL = "стабильной червоточине",
+	)
 
 /obj/effect/portal/jaunt_tunnel/update_overlays()
 	. = list()	// we need no mask here
-
 
 /obj/effect/portal/jaunt_tunnel/can_teleport(atom/movable/M, silent = FALSE)
 	if(!emagged && ismegafauna(M))
@@ -103,7 +117,7 @@
 	. = ..()
 	if(.)
 		// KERPLUNK
-		playsound(M,'sound/weapons/resonator_blast.ogg', 50, 1)
+		playsound(M,'sound/weapons/resonator_blast.ogg', 50, TRUE)
 		if(iscarbon(M))
 			var/mob/living/carbon/L = M
 			L.Weaken(12 SECONDS)
@@ -113,27 +127,34 @@
 
 /obj/item/grenade/jaunter_grenade
 	name = "chasm jaunter recovery grenade"
-	desc = "NT-Drunk Dialer Grenade. Originally built by NT for locating all beacons in an area and creating wormholes to them, it now finds use to miners for recovering allies from chasms."
+	desc = "Граната \"НТ-Пьяный набор\". Первоначально созданная \"Нанотрейзен\" для поиска всех маяков в области и создания червоточин к ним, теперь используется шахтёрами для спасения коллег из пропастей."
 	icon_state = "mirage"
 	/// Mob that threw the grenade.
 	var/mob/living/thrower
 
+/obj/item/grenade/jaunter_grenade/get_ru_names()
+	return list(
+		NOMINATIVE = "граната спасения из пропасти",
+		GENITIVE = "гранаты спасения из пропасти",
+		DATIVE = "гранате спасения из пропасти",
+		ACCUSATIVE = "гранату спасения из пропасти",
+		INSTRUMENTAL = "гранатой спасения из пропасти",
+		PREPOSITIONAL = "гранате спасения из пропасти",
+	)
 
 /obj/item/grenade/jaunter_grenade/Destroy()
 	thrower = null
 	return ..()
 
-
 /obj/item/grenade/jaunter_grenade/attack_self(mob/user)
 	. = ..()
 	thrower = user
-
 
 /obj/item/grenade/jaunter_grenade/prime()
 	update_mob()
 
 	var/list/destinations = list()
-	for(var/obj/item/radio/beacon/beacon in GLOB.global_radios)
+	for(var/obj/item/beacon/beacon as anything in GLOB.beacons)
 		var/turf/beacon_turf = get_turf(beacon)
 		if(is_station_level(beacon_turf.z))
 			destinations += beacon_turf
@@ -161,7 +182,7 @@
 		return
 
 	var/list/portal_turfs = list()
-	for(var/turf/turf as anything in circleviewturfs(our_turf, 3))
+	for(var/turf/turf as anything in circle_view_turfs(our_turf, 3))
 		if(!turf.density)
 			portal_turfs += turf
 	playsound(our_turf, 'sound/magic/lightningbolt.ogg', 100, TRUE)

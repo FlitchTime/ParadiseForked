@@ -15,7 +15,7 @@ import {
   Stack,
   TextArea,
 } from '../components';
-import { timeAgo } from '../constants';
+import { timeAgo, DEPARTMENTS_RU } from '../constants';
 import { Window } from '../layouts';
 import {
   ComplexModal,
@@ -40,28 +40,28 @@ const jobOpeningCategoriesOrder = [
 ];
 const jobOpeningCategories = {
   security: {
-    title: 'Security',
-    fluff_text: 'Помогайте обеспечивать безопасность экипажа',
+    title: 'Безопасность',
+    fluff_text: 'Защищайте экипаж и объект от угроз',
   },
   engineering: {
-    title: 'Engineering',
-    fluff_text: 'Следите за бесперебойной работой станции',
+    title: 'Инженерия',
+    fluff_text: 'Следите за работой систем объекта',
   },
   medical: {
-    title: 'Medical',
-    fluff_text: 'Занимайтесь медициной и спасайте жизни',
+    title: 'Медицина',
+    fluff_text: 'Поддерживайте экипаж живыми и здоровыми',
   },
   science: {
-    title: 'Science',
-    fluff_text: 'Разрабатывайте новые технологии',
+    title: 'Наука',
+    fluff_text: 'Продвигайте науку вперёд',
   },
   service: {
-    title: 'Service',
+    title: 'Обслуживание',
     fluff_text: 'Обеспечивайте экипаж удобствами',
   },
   supply: {
-    title: 'Supply',
-    fluff_text: 'Поддерживайте снабжение станции',
+    title: 'Снабжение',
+    fluff_text: 'Занимайтесь логистикой объекта',
   },
 };
 
@@ -89,6 +89,7 @@ type Chanel = {
   admin: boolean;
   description: string;
   author: string;
+  author_ckey: string;
   public: boolean;
   censored: boolean;
   frozen: boolean;
@@ -416,6 +417,11 @@ const NewscasterFeed = (properties: CensorModeProps & FullStoriesProps) => {
             <LabeledList.Item label="Владелец">
               {channel.author || 'Н/Д'}
             </LabeledList.Item>
+            {!!is_admin && (
+              <LabeledList.Item label="Ckey">
+                {channel.author_ckey}
+              </LabeledList.Item>
+            )}
             <LabeledList.Item label="Публичный">
               {channel.public ? 'Да' : 'Нет'}
             </LabeledList.Item>
@@ -460,7 +466,7 @@ const NewscasterJobs = (properties: FullStoriesProps & CensorModeProps) => {
         }
         buttons={
           <Box mt="0.25rem" color="label">
-            Работайте ради лучшего будущего в Nanotrasen
+            Работайте ради лучшего будущего в &quot;Нанотрейзен&quot;!
           </Box>
         }
       >
@@ -508,16 +514,11 @@ const NewscasterJobs = (properties: FullStoriesProps & CensorModeProps) => {
         )}
       </Section>
       <Section height="17%">
-        Интересует работа в НаноТрейзен?
+        Интересует работа в &quot;Нанотрейзен&quot;?
         <br />
         Запишитесь на любую из вышеуказанных должностей прямо сейчас в{' '}
         <b>Офисе Главы Персонала!</b>
         <br />
-        <Box as="small" color="label">
-          Подписываясь на работу в НаноТрейзен, вы соглашаетесь передать свою
-          душу в отдел лояльности вездесущего и полезного наблюдателя за
-          человечеством.
-        </Box>
       </Section>
     </Stack>
   );
@@ -535,6 +536,7 @@ export type StoryData = {
   body_short: string;
   admin_locked: boolean;
   photo?: boolean;
+  author_ckey: string;
 };
 
 type StoryProps = {
@@ -546,6 +548,7 @@ type StoryProps = {
 const Story = (properties: StoryProps) => {
   const { act, data } = useBackend<NewscasterData>();
   const { story, wanted = false } = properties;
+  const { is_admin } = data;
   const { censorMode, fullStories, setFullStories } = properties;
   return (
     <Section
@@ -581,6 +584,7 @@ const Story = (properties: StoryProps) => {
             )}
             <Box inline>
               <Icon name="user" /> {story.author} |&nbsp;
+              {!!is_admin && <>ckey: {story.author_ckey} |&nbsp;</>}
               {!wanted && (
                 <>
                   <Icon name="eye" /> {story.view_count.toLocaleString()}{' '}
@@ -704,7 +708,7 @@ const manageChannelModalBodyOverride = (
               disabled={!isAdmin}
               width="100%"
               value={author}
-              onChange={(_e, v) => setAuthor(v)}
+              onChange={setAuthor}
             />
           </LabeledList.Item>
         </Stack.Item>
@@ -715,7 +719,7 @@ const manageChannelModalBodyOverride = (
               placeholder="Макс. 50 символов"
               maxLength={50}
               value={name}
-              onChange={(_e, v) => setName(v)}
+              onChange={setName}
             />
           </LabeledList.Item>
         </Stack.Item>
@@ -730,7 +734,7 @@ const manageChannelModalBodyOverride = (
               maxLength={128}
               height={10}
               value={description}
-              onChange={(_e, v) => setDescription(v)}
+              onChange={setDescription}
             />
           </Stack.Item>
         </Stack.Item>
@@ -741,7 +745,7 @@ const manageChannelModalBodyOverride = (
               disabled={!isAdmin}
               value={icon}
               mr="0.5rem"
-              onChange={(_e, v) => setIcon(v)}
+              onChange={setIcon}
             />
             <Icon name={icon} size={2} verticalAlign="middle" mr="0.5rem" />
           </LabeledList.Item>
@@ -841,7 +845,7 @@ const createStoryModalBodyOverride = (
               disabled={!isAdmin}
               width="100%"
               value={author}
-              onChange={(_e, v) => setAuthor(v)}
+              onChange={setAuthor}
             />
           </LabeledList.Item>
         </Stack.Item>
@@ -866,7 +870,7 @@ const createStoryModalBodyOverride = (
               placeholder="Макс. 128 символов"
               maxLength={128}
               value={title}
-              onChange={(_e, v) => setTitle(v)}
+              onChange={setTitle}
             />
           </LabeledList.Item>
         </Stack.Item>
@@ -882,7 +886,7 @@ const createStoryModalBodyOverride = (
               width="100%"
               height={10}
               value={body}
-              onChange={(_e, v) => setBody(v)}
+              onChange={setBody}
             />
           </Stack.Item>
         </Stack.Item>
@@ -1000,7 +1004,7 @@ const wantedNoticeModalBodyOverride = (
               disabled={!isAdmin}
               width="100%"
               value={author}
-              onChange={(_e, v) => setAuthor(v)}
+              onChange={setAuthor}
             />
           </LabeledList.Item>
         </Stack.Item>
@@ -1010,7 +1014,7 @@ const wantedNoticeModalBodyOverride = (
               width="100%"
               value={name}
               maxLength={128}
-              onChange={(_e, v) => setName(v)}
+              onChange={setName}
             />
           </LabeledList.Item>
         </Stack.Item>
@@ -1021,7 +1025,7 @@ const wantedNoticeModalBodyOverride = (
             value={description}
             height={10}
             maxLength={512}
-            onChange={(_e, v) => setDescription(v)}
+            onChange={setDescription}
           />
         </Stack.Item>
         <Stack.Item>

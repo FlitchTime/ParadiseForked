@@ -1,8 +1,3 @@
-/datum/game_mode
-	var/abductor_teams = 0
-	var/list/datum/mind/abductors = list()
-	var/list/datum/mind/abductees = list()
-
 /datum/game_mode/abduction
 	name = "abduction"
 	config_tag = "abduction"
@@ -26,11 +21,11 @@
 /datum/game_mode/abduction/pre_setup()
 	possible_abductors = get_players_for_role(ROLE_ABDUCTOR)
 
-	if(!possible_abductors.len)
+	if(!length(possible_abductors))
 		return 0
 
 	abductor_teams = max(1, min(max_teams,round(num_players()/15)))
-	var/possible_teams = max(1,round(possible_abductors.len / 2))
+	var/possible_teams = max(1,round(length(possible_abductors) / 2))
 	abductor_teams = min(abductor_teams,possible_teams)
 
 	abductors.len = 2*abductor_teams
@@ -55,7 +50,7 @@
 	//Team Members
 
 	if(!preset_agent || !preset_scientist)
-		if(possible_abductors.len <=2)
+		if(length(possible_abductors) <=2)
 			return 0
 
 	var/datum/mind/scientist
@@ -72,7 +67,6 @@
 		possible_abductors -= agent
 	else
 		agent = preset_agent
-
 
 	scientist.assigned_role = SPECIAL_ROLE_ABDUCTOR_SCIENTIST
 	scientist.special_role = SPECIAL_ROLE_ABDUCTOR_SCIENTIST
@@ -181,7 +175,7 @@
 	log_game("[abductor] has become an abductor scientist.")
 
 /datum/game_mode/abduction/proc/get_team_console(team_number)
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in SSmachines.get_by_type(/obj/machinery/abductor/console))
 		if(C.team == team_number)
 			return C
 
@@ -191,7 +185,7 @@
 			var/obj/machinery/abductor/console/con = get_team_console(team_number)
 			var/datum/objective/objective = team_objectives[team_number]
 			if(con.experiment.points >= objective.target_amount)
-				SSshuttle.emergency.request(null, 0.5, reason = "Large amount of abnormal thought patterns detected. All crew are recalled for mandatory evaluation and reconditioning.")
+				SSshuttle.emergency.request(null, 0.5, reason = " Выявлено множество аномальных моделей мышления. Весь экипаж будет направлен на обязательное обследование и реабилитацию для восстановления полноценной работоспособности.")
 				SSshuttle.emergency.canRecall = FALSE
 				finished = 1
 				return ..()
@@ -210,35 +204,31 @@
 	return 1
 
 /datum/game_mode/proc/auto_declare_completion_abduction()
-	var/text = ""
-	if(!length(abductors))
-		return
-
-	text += span_big("<br><b>The abductors were:</b><br>")
-	for(var/datum/mind/abductor_mind in abductors)
-		text += printplayer(abductor_mind)
-		text += "<br>"
-		text += printobjectives(abductor_mind)
-		text += "<br>"
-
-	if(abductees.len)
-		text += span_big("<br><b>The abductees were:</b><br>")
-		for(var/datum/mind/abductee_mind in abductees)
-			text += printplayer(abductee_mind)
+	var/list/text = list()
+	if(length(abductors))
+		text += span_bigbold("<br>The abductors were:<br>")
+		for(var/datum/mind/abductor_mind in abductors)
+			text += printplayer(abductor_mind)
 			text += "<br>"
-			text += printobjectives(abductee_mind)
+			text += printobjectives(abductor_mind)
 			text += "<br>"
-
-	to_chat(world, text)
+		if(length(abductees))
+			text += span_bigbold("<br>The abductees were:<br>")
+			for(var/datum/mind/abductee_mind in abductees)
+				text += printplayer(abductee_mind)
+				text += "<br>"
+				text += printobjectives(abductee_mind)
+				text += "<br>"
+		return text.Join("")
 
 //Landmarks
 // TODO: Split into seperate landmarks for prettier ships
 /obj/effect/landmark/abductor
+	icon_state = "abductor_agent"
 	var/team = 1
 
 /obj/effect/landmark/abductor/agent
 /obj/effect/landmark/abductor/scientist
-
 
 // OBJECTIVES
 /datum/objective/experiment
@@ -258,7 +248,6 @@
 /datum/objective/experiment/New()
 	explanation_text = "Проведите эксперимент на [target_amount] гуманоид[declension_ru(target_amount, "е", "ах", "ах")]."
 
-
 /datum/objective/experiment/check_completion()
 	var/ab_team = abductor_team_number
 	for(var/datum/mind/player in get_owners())
@@ -269,7 +258,7 @@
 		var/datum/species/abductor/abductor = human_owner.dna.species
 		ab_team = abductor.team
 
-	for(var/obj/machinery/abductor/experiment/experiment in GLOB.machines)
+	for(var/obj/machinery/abductor/experiment/experiment in SSmachines.get_by_type(/obj/machinery/abductor/experiment))
 		if(experiment.team == ab_team)
 			if(experiment.points >= target_amount)
 				return TRUE
@@ -277,7 +266,6 @@
 				return FALSE
 
 	return FALSE
-
 
 /datum/game_mode/proc/remove_abductor(datum/mind/abductor_mind)
 	if(abductor_mind in abductors)

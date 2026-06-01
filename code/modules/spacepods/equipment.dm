@@ -1,19 +1,19 @@
 /obj/item/spacepod_equipment/weaponry/proc/fire_weapons()
 	if((HAS_TRAIT(usr, TRAIT_PACIFISM) || GLOB.pacifism_after_gt) && harmful)
-		to_chat(usr, "<span class='warning'>You don't want to harm other living beings!</span>")
+		to_chat(usr, span_warning("You don't want to harm other living beings!"))
 		return
 	if(my_atom.next_firetime > world.time)
-		to_chat(usr, "<span class='warning'>Your weapons are recharging.</span>")
+		to_chat(usr, span_warning("Your weapons are recharging."))
 		return
 	my_atom.next_firetime = world.time + fire_delay
 	var/turf/firstloc
 	var/turf/secondloc
 	if(!my_atom.equipment_system || !my_atom.equipment_system.weapon_system)
-		to_chat(usr, "<span class='warning'>Missing equipment or weapons.</span>")
+		to_chat(usr, span_warning("Missing equipment or weapons."))
 		my_atom.verbs -= text2path("[type]/proc/fire_weapons")
 		return
 	if(!my_atom.battery.use(shot_cost))
-		to_chat(usr, "<span class='warning'>Insufficient charge to fire the weapons</span>")
+		to_chat(usr, span_warning("Insufficient charge to fire the weapons"))
 		return
 	var/olddir
 	for(var/i = 0; i < shots_per; i++)
@@ -43,7 +43,7 @@
 		projtwo.firer_source_atom = src
 		projtwo.def_zone = BODY_ZONE_CHEST
 		spawn()
-			playsound(src, fire_sound, 50, 1)
+			playsound(src, fire_sound, 50, TRUE)
 			projone.dumbfire(my_atom.dir)
 			projtwo.dumbfire(my_atom.dir)
 		sleep(2)
@@ -55,11 +55,22 @@
 	var/obj/item/spacepod_equipment/weaponry/weapon_system // weapons system
 	var/obj/item/spacepod_equipment/misc/misc_system // misc system
 	var/obj/item/spacepod_equipment/cargo/cargo_system // cargo system
-	var/obj/item/spacepod_equipment/cargo/sec_cargo_system // secondary cargo system
+	var/obj/item/spacepod_equipment/sec_cargo/sec_cargo_system // secondary cargo system
 	var/obj/item/spacepod_equipment/lock/lock_system // lock system
 	var/obj/item/spacepod_equipment/locators/locator_system //locator_system
 
-/datum/spacepod/equipment/New(var/obj/spacepod/SP)
+/datum/spacepod/equipment/Destroy(force)
+	my_atom = null
+	QDEL_LIST(installed_modules)
+	weapon_system = null
+	misc_system = null
+	cargo_system = null
+	sec_cargo_system = null
+	lock_system = null
+	locator_system = null
+	. = ..()
+
+/datum/spacepod/equipment/New(obj/spacepod/SP)
 	..()
 	if(istype(SP))
 		my_atom = SP
@@ -71,7 +82,12 @@
 	var/occupant_mod = 0	// so any module can modify occupancy
 	var/list/storage_mod = list("slots" = 0, "w_class" = 0)		// so any module can modify storage slots
 
-/obj/item/spacepod_equipment/proc/removed(var/mob/user) // So that you can unload cargo when you remove the module
+/obj/item/spacepod_equipment/Destroy()
+	my_atom?.equipment_system?.installed_modules -= src
+	my_atom = null
+	. = ..()
+
+/obj/item/spacepod_equipment/proc/removed(mob/user) // So that you can unload cargo when you remove the module
 	return
 
 /*
@@ -83,13 +99,18 @@
 /obj/item/spacepod_equipment/weaponry
 	name = "pod weapon"
 	desc = "You shouldn't be seeing this"
-	icon_state = "blank"
+	icon_state = null
 	var/obj/projectile/projectile_type
 	var/shot_cost = 0
 	var/shots_per = 1
 	var/fire_sound
 	var/fire_delay = 15
 	var/harmful = TRUE
+
+/obj/item/spacepod_equipment/weaponry/Destroy()
+	if(my_atom?.equipment_system?.weapon_system == src)
+		my_atom.equipment_system.weapon_system = null
+	. = ..()
 
 /obj/item/spacepod_equipment/weaponry/taser
 	name = "disabler system"
@@ -163,10 +184,10 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 	name = "pod misc"
 	desc = "You shouldn't be seeing this"
 	icon = 'icons/goonstation/pods/ship.dmi'
-	icon_state = "blank"
+	icon_state = null
 
 /obj/item/spacepod_equipment/misc/tracker
-	name = "\improper spacepod tracking system"
+	name = "spacepod tracking system"
 	desc = "A tracking device for spacepods."
 	icon_state = "pod_locator"
 
@@ -176,6 +197,8 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 
 /obj/item/spacepod_equipment/misc/tracker/Destroy()
 	GLOB.pod_trackers -= src
+	if(my_atom?.equipment_system?.misc_system == src)
+		my_atom.equipment_system.misc_system = null
 	return ..()
 
 /*
@@ -190,7 +213,13 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 	icon_state = "cargo_blank"
 	var/obj/storage = null
 
-/obj/item/spacepod_equipment/cargo/proc/passover(var/obj/item/I)
+/obj/item/spacepod_equipment/cargo/Destroy()
+	if(my_atom?.equipment_system?.cargo_system == src)
+		my_atom.equipment_system.cargo_system = null
+	QDEL_NULL(storage)
+	. = ..()
+
+/obj/item/spacepod_equipment/cargo/proc/passover(obj/item/I)
 	return
 
 /obj/item/spacepod_equipment/cargo/proc/unload() // called by unload verb
@@ -198,7 +227,7 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 		storage.forceMove(get_turf(my_atom))
 		storage = null
 
-/obj/item/spacepod_equipment/cargo/removed(var/mob/user) // called when system removed
+/obj/item/spacepod_equipment/cargo/removed(mob/user) // called when system removed
 	. = ..()
 	unload()
 
@@ -208,7 +237,7 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 	desc = "An ore storage system for spacepods. Scoops up any ore you drive over."
 	icon_state = "cargo_ore"
 
-/obj/item/spacepod_equipment/cargo/ore/passover(var/obj/item/I)
+/obj/item/spacepod_equipment/cargo/ore/passover(obj/item/I)
 	if(storage && istype(I,/obj/item/stack/ore))
 		I.forceMove(storage)
 
@@ -227,7 +256,12 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 /obj/item/spacepod_equipment/sec_cargo
 	name = "secondary cargo"
 	desc = "you shouldn't be seeing this"
-	icon_state = "blank"
+	icon_state = null
+
+/obj/item/spacepod_equipment/sec_cargo/Destroy()
+	if(my_atom?.equipment_system?.sec_cargo_system == src)
+		my_atom.equipment_system.sec_cargo_system = null
+	. = ..()
 
 // Passenger Seat
 /obj/item/spacepod_equipment/sec_cargo/chair
@@ -252,9 +286,14 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 /obj/item/spacepod_equipment/lock
 	name = "pod lock"
 	desc = "You shouldn't be seeing this"
-	icon_state = "blank"
+	icon_state = null
 	var/mode = 0
 	var/id = null
+
+/obj/item/spacepod_equipment/lock/Destroy()
+	if(my_atom?.equipment_system?.lock_system == src)
+		my_atom.equipment_system.lock_system = null
+	. = ..()
 
 // Key and Tumbler System
 /obj/item/spacepod_equipment/lock/keyed
@@ -263,8 +302,8 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 	icon_state = "lock_tumbler"
 	var/static/id_source = 0
 
-/obj/item/spacepod_equipment/lock/keyed/New()
-	..()
+/obj/item/spacepod_equipment/lock/keyed/Initialize(mapload)
+	. = ..()
 	id = ++id_source
 
 // The key
@@ -274,7 +313,6 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 	icon_state = "podkey"
 	w_class = WEIGHT_CLASS_TINY
 	var/id = 0
-
 
 // Key - Lock Interactions
 /obj/item/spacepod_equipment/lock/keyed/attackby(obj/item/I, mob/user, params)
@@ -290,20 +328,19 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 
 	return ..()
 
-/*
-///////////////////////////////////////
-/////////Locator System///////////////////
-///////////////////////////////////////
-*/
-
+// Locator System
 /obj/item/spacepod_equipment/locators
 	name = "Locator system"
 	desc = "You shouldn't be seeing this"
 	icon = 'icons/spacepods_paradise/locator.dmi'
-	icon_state = "blank"
-
+	icon_state = null
 	var/can_ignore_z = FALSE
 	var/can_found_all = FALSE
+
+/obj/item/spacepod_equipment/locators/Destroy()
+	if(my_atom?.equipment_system?.locator_system == src)
+		my_atom.equipment_system.locator_system = null
+	. = ..()
 
 /obj/item/spacepod_equipment/locators/proc/scan(mob/user)
 	var/message_user = ""
@@ -317,7 +354,7 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 		return
 	atom_say("Результаты поиска:[message_user]")
 
-/obj/item/spacepod_equipment/locators/proc/object_size(var/square)
+/obj/item/spacepod_equipment/locators/proc/object_size(square)
 	if(square <= 500)
 		return "Малый"
 	else if(square <= 900)
@@ -331,13 +368,9 @@ GLOBAL_LIST_EMPTY(pod_trackers)
 	desc = "Сканирующее устройство позволяющее определять координаты астероидов в секторе."
 	icon_state = "pod_locator"
 	origin_tech = "engineering=5;magnets=4"
-	can_found_all = FALSE
-	can_ignore_z = FALSE
 
 /obj/item/spacepod_equipment/locators/advanced_pod_locator
 	name = "Улучшеный модуль поиска астероидов"
 	desc = "Улучшеный модуль поиска способный обнаружить любой объект в секторе"
 	icon_state = "pod_locator"
 	can_found_all = TRUE
-	can_ignore_z = FALSE
-

@@ -7,15 +7,21 @@
 	. = ..()
 	generate_text()
 
+#define POSSIBLE_SPIDERS(spiders) (length(##spiders))? "Помогите вашему гнезду отложить яйцо Императрицы Ужаса. Это могут сделать: [##spiders.Join(", ")]. Защищайте их и помогите им набрать силу, чтобы они смогли это сделать." : "Вы остались без стаи и единой цели. Но вы знаете что вы созданы убивать и сеять хаос."
+
 /datum/objective/spider_protect/proc/generate_text(datum/team/terror_spiders/spider_team)
 	var/list/possible_spiders = list()
-	var/list/spiders = spider_team.main_spiders
+
+	var/list/spiders = spider_team?.main_spiders
 	if(!spiders)
 		return
+
 	for(var/spiter_type in spiders)
 		if(spiter_type != TERROR_OTHER && LAZYLEN(spiders[spiter_type]))
 			possible_spiders += spiter_type
-	explanation_text = "Помогите вашему гнезду отложить яйцо Императрицы Ужаса. Это могут сделать: [possible_spiders.Join(", ")]. Защищайте их и помогите им набрать силу, чтобы они могли отложить яйцо."
+	explanation_text = POSSIBLE_SPIDERS(possible_spiders)
+
+#undef POSSIBLE_SPIDERS
 
 /datum/objective/spider_protect/check_completion(datum/team/terror_spiders/spider_team)
 	. = ..()
@@ -63,7 +69,7 @@
 
 /datum/objective/spider_get_power/alife_spiders/generate_text()
 	. = ..()
-	explanation_text = "Расплодитесь. Для того, чтобы вы могли отложить яйцо Императрицы, в вашем гнезде долж[declension_ru(targets_need, "ен", "о", "о")] быть [targets_need] паук[declension_ru(targets_need, "", "а", "ов")]."
+	explanation_text = "Расплодитесь. Для того, чтобы вы могли отложить яйцо Императрицы, в вашем гнезде долж[declension_ru(targets_need, "ен", "о", "о")] быть [targets_need] паук[DECL_CREDIT(targets_need)]."
 
 /datum/objective/spider_get_power/alife_spiders/check_completion(datum/team/terror_spiders/spider_team)
 	. = ..()
@@ -84,7 +90,7 @@
 
 /datum/objective/spider_get_power/spider_infections/generate_text()
 	. = ..()
-	explanation_text = "Заражайте. Для того, чтобы вы могли отложить яйцо Императрицы, долж[declension_ru(targets_need, "ен", "о", "о")] быть заражено [targets_need] гуманоид[declension_ru(targets_need, "", "а", "ов")]."
+	explanation_text = "Заражайте. Для того, чтобы вы могли отложить яйцо Императрицы, долж[declension_ru(targets_need, "ен", "о", "о")] быть заражено [targets_need] гуманоид[DECL_CREDIT(targets_need)]."
 
 /datum/objective/spider_get_power/spider_infections/check_completion(datum/team/terror_spiders/spider_team)
 	. = ..()
@@ -92,12 +98,11 @@
 	if(completed)
 		return .
 
-	if(spider_team?.terror_infections.len >= targets_need)
+	if(length(spider_team?.terror_infections) >= targets_need)
 		completed = TRUE
 		spider_team?.other_target?.check_completion(spider_team)
 		return TRUE
 	return .
-
 
 /datum/objective/spider_get_power/eat_humans
 	name = "Поедать гуманоидов"

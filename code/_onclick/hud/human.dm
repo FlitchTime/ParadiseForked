@@ -4,6 +4,7 @@
 /atom/movable/screen/human/toggle
 	name = "toggle"
 	icon_state = "toggle"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/human/toggle/Click()
 	var/mob/targetmob = usr
@@ -42,6 +43,7 @@
 /atom/movable/screen/ling/sting
 	name = "current sting"
 	screen_loc = ui_lingstingdisplay
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/ling/sting/Click()
 	if(isobserver(usr))
@@ -58,7 +60,6 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /atom/movable/screen/devil/soul_counter
-	icon = 'icons/mob/screen_gen.dmi'
 	name = "souls owned"
 	icon_state = "Devil-6"
 	screen_loc = ui_devilsouldisplay
@@ -82,7 +83,6 @@
 
 /atom/movable/screen/devil/soul_counter/proc/clear()
 	invisibility = INVISIBILITY_ABSTRACT
-
 
 /datum/hud/human
 	var/hud_alpha = 255
@@ -386,6 +386,9 @@
 	mymob.stamina_bar = new /atom/movable/screen/stamina_bar(null, src)
 	infodisplay += mymob.stamina_bar
 
+	mymob.nutrition_bar = new /atom/movable/screen/nutrition_bar(null, src)
+	infodisplay += mymob.nutrition_bar
+
 	lingchemdisplay = new /atom/movable/screen/ling/chems(null, src)
 	infodisplay += lingchemdisplay
 
@@ -401,14 +404,12 @@
 	combo_display = new(null, src)
 	infodisplay += combo_display
 
-
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
 		if(inv.slot_id)
 			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
 			inv.update_appearance()
 
 	update_locked_slots()
-
 
 /datum/hud/human/update_locked_slots()
 	if(!mymob)

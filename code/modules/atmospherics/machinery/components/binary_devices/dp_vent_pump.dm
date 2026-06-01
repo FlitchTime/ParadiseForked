@@ -14,40 +14,34 @@
 
 	connect_types = list(1,2,3) //connects to regular, supply and scrubbers pipes
 
-	on = FALSE
 	var/releasing = TRUE // FALSE = siphoning, TRUE = releasing
 
 	var/external_pressure_bound = ONE_ATMOSPHERE
 	var/input_pressure_min = 0
 	var/output_pressure_max = 0
 
-	frequency = ATMOS_VENTSCRUB
-	var/id_tag = null
+	var/pressure_checks = DONT_PASS_EXTERNAL_PRESURE_BOUND
+	var/area/current_area
 
-	var/pressure_checks = 1
-	//1: Do not pass external_pressure_bound
-	//2: Do not pass input_pressure_min
-	//4: Do not pass output_pressure_max
-
-	multitool_menu_type = /datum/multitool_menu/idtag/freq/dp_vent_pump
-
-/obj/machinery/atmospherics/binary/dp_vent_pump/New()
-	..()
-	if(!id_tag)
-		assign_uid()
-		id_tag = num2text(uid)
+/obj/machinery/atmospherics/binary/dp_vent_pump/Initialize(mapload)
+	. = ..()
 	icon = null
+	asign_new_area(get_area(src))
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/Destroy()
-	if(SSradio)
-		SSradio.remove_object(src, frequency)
-	radio_connection = null
 	return ..()
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/atmos_init()
-	..()
-	if(frequency)
-		set_frequency(frequency)
+/obj/machinery/atmospherics/binary/dp_vent_pump/proc/asign_new_area(area/area)
+	var/area/cached_current_area = current_area
+	if(cached_current_area)
+		cached_current_area.air_vents -= src
+		current_area = null
+
+	if(!area)
+		return
+
+	area.air_vents |= src
+	current_area = area
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/high_volume
 	name = "large dual port air vent"
@@ -55,11 +49,10 @@
 /obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/on
 	on = TRUE
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/New()
-	..()
+/obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/Initialize(mapload)
+	. = ..()
 	air1.volume = 1000
 	air2.volume = 1000
-
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/update_overlays()
 	. = ..()
@@ -84,7 +77,6 @@
 	. += SSair.icon_manager.get_atmos_icon("device", state = vent_icon)
 	update_pipe_image()
 
-
 /obj/machinery/atmospherics/binary/dp_vent_pump/update_underlays()
 	if(..())
 		underlays.Cut()
@@ -103,128 +95,116 @@
 			else
 				add_underlay(T, node2, dir)
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/process_atmos()
-	..()
+/obj/machinery/atmospherics/binary/dp_vent_pump/process_atmos(seconds)
 	if(!on)
-		return 0
+		return FALSE
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/milla_safe/dp_vent_pump_process/milla = new()
+	milla.invoke_async(src)
+
+/datum/milla_safe/dp_vent_pump_process
+
+/datum/milla_safe/dp_vent_pump_process/on_run(obj/machinery/atmospherics/binary/dp_vent_pump/vent_pump)
+	if(!vent_pump.on)
+		return FALSE
+
+	var/turf/turf = get_turf(vent_pump)
+
+	var/datum/gas_mixture/environment = get_turf_air(turf)
 	var/environment_pressure = environment.return_pressure()
+	var/datum/gas_mixture/air1 = vent_pump.air1
+	var/datum/gas_mixture/air2 = vent_pump.air2
+	var/datum/pipeline/parent1 = vent_pump.parent1
+	var/datum/pipeline/parent2 = vent_pump.parent2
+	var/pressure_checks = vent_pump.pressure_checks
+	var/external_pressure_bound = vent_pump.external_pressure_bound
+	var/pressure_delta = 10000
 
-	if(releasing) //input -> external
-		var/pressure_delta = 10000
-
-		if(pressure_checks&1)
+	if(vent_pump.releasing) //input -> external
+		if(pressure_checks & DONT_PASS_EXTERNAL_PRESURE_BOUND)
 			pressure_delta = min(pressure_delta, (external_pressure_bound - environment_pressure))
-		if(pressure_checks&2)
-			pressure_delta = min(pressure_delta, (air1.return_pressure() - input_pressure_min))
+
+		if(pressure_checks & DONT_PASS_INPUT_PRESURE_MIN)
+			pressure_delta = min(pressure_delta, (air1.return_pressure() - vent_pump.input_pressure_min))
 
 		if(pressure_delta > 0)
-			if(air1.temperature > 0)
-				var/transfer_moles = pressure_delta*environment.volume/(air1.temperature * R_IDEAL_GAS_EQUATION)
-
+			if(air1.temperature() > 0)
+				var/transfer_moles = pressure_delta*environment.volume/(air1.temperature() * R_IDEAL_GAS_EQUATION)
 				var/datum/gas_mixture/removed = air1.remove(transfer_moles)
+				environment.merge(removed)
+				parent1.update = TRUE
 
-				loc.assume_air(removed)
-
-				parent1.update = 1
-				air_update_turf()
 	else //external -> output
-		var/pressure_delta = 10000
-
-		if(pressure_checks&1)
+		if(pressure_checks & DONT_PASS_EXTERNAL_PRESURE_BOUND)
 			pressure_delta = min(pressure_delta, (environment_pressure - external_pressure_bound))
-		if(pressure_checks&4)
-			pressure_delta = min(pressure_delta, (output_pressure_max - air2.return_pressure()))
+
+		if(pressure_checks & DONT_PASS_OUTPUT_PRESURE_MAX)
+			pressure_delta = min(pressure_delta, (vent_pump.output_pressure_max - air2.return_pressure()))
 
 		if(pressure_delta > 0)
-			if(environment.temperature > 0)
-				var/transfer_moles = pressure_delta*air2.volume/(environment.temperature * R_IDEAL_GAS_EQUATION)
-
-				var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
-
+			if(environment.temperature() > 0)
+				var/transfer_moles = pressure_delta * air2.volume / (environment.temperature() * R_IDEAL_GAS_EQUATION)
+				var/datum/gas_mixture/removed = air2.remove(transfer_moles)
 				air2.merge(removed)
+				parent2.update = TRUE
 
-				parent2.update = 1
-				air_update_turf()
-	return 1
+	return TRUE
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/proc/broadcast_status()
-	if(!radio_connection)
-		return 0
-
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
-		"tag" = id_tag,
-		"device" = "ADVP",
+/obj/machinery/atmospherics/binary/dp_vent_pump/get_data()
+	var/list/data = list(
+		"name" = name,
+		"machine_type" = "ADVP",
+		"uid" = UID(),
 		"power" = on,
-		"direction" = releasing?("release"):("siphon"),
+		"direction" = releasing? "release" : "siphon",
 		"checks" = pressure_checks,
 		"input" = input_pressure_min,
 		"output" = output_pressure_max,
 		"external" = external_pressure_bound,
-		"sigtype" = "status"
 	)
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
-	return 1
+	return data
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/receive_signal(datum/signal/signal)
-	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
-		return 0
-	if(signal.data["power"] != null)
-		on = text2num(signal.data["power"])
+/obj/machinery/atmospherics/binary/dp_vent_pump/update_params(list/params)
+	if("power" in params)
+		on = params["power"]
 
-	if(signal.data["power_toggle"] != null)
+	if("power_toggle" in params)
 		on = !on
 
-	if(signal.data["direction"] != null)
-		releasing = text2num(signal.data["direction"])
+	if("direction" in params)
+		releasing = params["direction"]
 
-	if(signal.data["checks"] != null)
-		pressure_checks = text2num(signal.data["checks"])
+	if("checks" in params)
+		pressure_checks = params["checks"]
 
-	if(signal.data["purge"])
-		pressure_checks &= ~1
+	if("purge" in params)
+		pressure_checks &= ~DONT_PASS_EXTERNAL_PRESURE_BOUND
 		releasing = FALSE
 
-	if(signal.data["stabilize"])//the fact that this was "stabalize" shows how many fucks people give about these wonders, none
-		pressure_checks |= 1
+	if("stabilize" in params)//the fact that this was "stabalize" shows how many fucks people give about these wonders, none
+		pressure_checks |= DONT_PASS_EXTERNAL_PRESURE_BOUND
 		releasing = TRUE
 
-	if(signal.data["set_input_pressure"] != null)
-		input_pressure_min = between(
+	if("set_input_pressure" in params)
+		input_pressure_min = clamp(
+			params["set_input_pressure"],
 			0,
-			text2num(signal.data["set_input_pressure"]),
-			ONE_ATMOSPHERE*50
+			ONE_ATMOSPHERE * 50
 		)
 
-	if(signal.data["set_output_pressure"] != null)
-		output_pressure_max = between(
+	if("set_output_pressure" in params)
+		output_pressure_max = clamp(
+			params["set_output_pressure"],
 			0,
-			text2num(signal.data["set_output_pressure"]),
-			ONE_ATMOSPHERE*50
+			ONE_ATMOSPHERE * 50
 		)
 
-	if(signal.data["set_external_pressure"] != null)
-		external_pressure_bound = between(
+	if("set_external_pressure" in params)
+		external_pressure_bound = clamp(
+			params["set_external_pressure"],
 			0,
-			text2num(signal.data["set_external_pressure"]),
-			ONE_ATMOSPHERE*50
+			ONE_ATMOSPHERE * 50
 		)
+	update_appearance(UPDATE_ICON)
 
-	if(signal.data["status"])
-		spawn(2)
-			broadcast_status()
-		return //do not update_icon
-
-	spawn(2)
-		broadcast_status()
-	update_icon()
-
-/obj/machinery/atmospherics/binary/dp_vent_pump/multitool_act(mob/user, obj/item/I)
-	. = TRUE
-	multitool_menu_interact(user, I)

@@ -1,15 +1,12 @@
 /obj/machinery/computer/library/public
-	name = "visitor computer"
 
 /obj/machinery/computer/library/public/attack_hand(mob/user)
 	if(..())
 		return
 	interact(user)
 
-
 /obj/machinery/computer/library/public/wrench_act(mob/living/user, obj/item/I)
 	return default_unfasten_wrench(user, I)
-
 
 /obj/machinery/computer/library/public/interact(mob/user)
 	if(interact_check(user))
@@ -52,7 +49,7 @@
 						<td>[CB.title]</td>
 						<td>[CB.category]</td>
 						<td>[CB.id]</td>
-						<td><A href="byond://?src=[UID()];flag=[CB.id]">\[Flag[CB.flagged ? "ged" : ""]\]</a></td>
+						<td><a href="byond://?src=[UID()];flag=[CB.id]">\[Flag[CB.flagged ? "ged" : ""]\]</a></td>
 					</tr>"}
 
 				dat += "</table><br />[pagelist]"
@@ -76,19 +73,19 @@
 				page_num = clamp(pn, 1, num_pages)
 
 	if(href_list["settitle"])
-		var/newtitle = input("Enter a title to search for:") as text|null
+		var/newtitle = tgui_input_text(usr, "Enter a title to search for:")
 		if(newtitle)
 			query.title = sanitize(newtitle)
 		else
 			query.title = null
 	if(href_list["setcategory"])
-		var/newcategory = input("Choose a category to search for:") in (list("Any") + GLOB.library_section_names)
+		var/newcategory = tgui_input_list(usr, "Choose a category to search for:", "Select category", (list("Any") + GLOB.library_section_names))
 		if(newcategory == "Any")
 			query.category = null
 		else if(newcategory)
 			query.category = sanitize(newcategory)
 	if(href_list["setauthor"])
-		var/newauthor = input("Enter an author to search for:") as text|null
+		var/newauthor = tgui_input_text(usr, "Enter an author to search for:")
 		if(newauthor)
 			query.author = sanitize(newauthor)
 		else
@@ -102,7 +99,7 @@
 
 	if(href_list["search"])
 		num_results = src.get_num_results()
-		num_pages = CEILING(num_results/LIBRARY_BOOKS_PER_PAGE, 1)
+		num_pages = ceil(num_results/LIBRARY_BOOKS_PER_PAGE)
 		page_num = 1
 
 		screenstate = 1
@@ -118,7 +115,7 @@
 		if(id)
 			var/datum/cachedbook/B = getBookByID(id)
 			if(B)
-				if((input(usr, "Are you sure you want to flag [B.title] as having inappropriate content?", "Flag Book #[B.id]") in list("Yes", "No")) == "Yes")
+				if((tgui_alert(usr, "Are you sure you want to flag [B.title] as having inappropriate content?", "Flag Book #[B.id]", list("Yes", "No"))) == "Yes")
 					GLOB.library_catalog.flag_book_by_id(usr, id)
 
 	add_fingerprint(usr)

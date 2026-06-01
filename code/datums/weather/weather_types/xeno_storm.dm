@@ -13,7 +13,6 @@
 
 	area_type = /area
 	protected_areas = list(/area/space, /area/crew_quarters/sleep)
-	target_trait = STATION_LEVEL
 
 	immunity_type = TRAIT_WEATHER_IMMUNE
 
@@ -21,11 +20,14 @@
 	var/vents_per_tick = 15
 	var/list/affected_vents_list = list()
 
-
 /datum/weather/xeno_storm/telegraph()
 	. = ..()
 	status_alarm(TRUE)
-	GLOB.event_announcement.Announce("Зафиксирована сигнатура Императрицы Ксеноморфов на борту станции [station_name()]. Запущено глубокое сканирование.", "ВНИМАНИЕ: БИОЛОГИЧЕСКАЯ УГРОЗА.", 'sound/effects/siren-spooky.ogg')
+	GLOB.major_announcement.announce(
+		message = "Зафиксирована сигнатура Императрицы Ксеноморфов на борту станции [station_name()]. Запущено глубокое сканирование.",
+		new_title = ANNOUNCE_BIOHAZARD_RU,
+		new_sound = 'sound/effects/siren-spooky.ogg'
+	)
 
 	if(!.)
 		return
@@ -35,9 +37,8 @@
 		if(area in impacted_areas)
 			affected_vents_list[vent] = TRUE
 
-
 /datum/weather/xeno_storm/fire()
-	if(!affected_vents_list.len)
+	if(!length(affected_vents_list))
 		return
 	var/list/vents = list()
 	for(var/i = 1; i < vents_per_tick; i++)
@@ -46,7 +47,6 @@
 		new/obj/structure/alien/weeds/node(get_turf(vent))
 		vents += vent
 	affected_vents_list -= vents
-
 
 /datum/weather/xeno_storm/end()
 	if(..())

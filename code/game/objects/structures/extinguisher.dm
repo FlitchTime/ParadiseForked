@@ -2,14 +2,12 @@
 #define NORMAL_EXTINGUISHER 1
 #define MINI_EXTINGUISHER 2
 
-
 /obj/structure/extinguisher_cabinet
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "extinguisher_closed"
 	anchored = TRUE
-	density = FALSE
 	max_integrity = 200
 	integrity_failure = 50
 	interaction_flags_click = NEED_HANDS | ALLOW_RESTING
@@ -22,7 +20,7 @@
 	. = ..()
 	if(direction)
 		setDir(direction)
-		set_pixel_offsets_from_dir(28, -28, 30, -30)
+		set_pixel_offsets_from_dir(29, -29, 26, -26)
 	switch(extinguishertype)
 		if(NO_EXTINGUISHER)
 			return
@@ -46,16 +44,15 @@
 	QDEL_NULL(has_extinguisher)
 	return ..()
 
-/obj/structure/extinguisher_cabinet/ex_act(severity)
+/obj/structure/extinguisher_cabinet/ex_act(severity, target)
 	if(has_extinguisher)
-		has_extinguisher.ex_act(severity)
-	..()
+		has_extinguisher.ex_act(severity, target)
+	return ..()
 
 /obj/structure/extinguisher_cabinet/handle_atom_del(atom/A)
 	if(A == has_extinguisher)
 		has_extinguisher = null
 		update_icon(UPDATE_ICON_STATE)
-
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM || I.is_robot_module())
@@ -78,13 +75,12 @@
 
 	return ..()
 
-
 /obj/structure/extinguisher_cabinet/welder_act(mob/user, obj/item/I)
 	if(has_extinguisher)
-		to_chat(user, "<span class='warning'>You need to remove the extinguisher before deconstructing [src]!</span>")
+		to_chat(user, span_warning("You need to remove the extinguisher before deconstructing [src]!"))
 		return
 	if(!opened)
-		to_chat(user, "<span class='warning'>Open the cabinet before cutting it apart!</span>")
+		to_chat(user, span_warning("Open the cabinet before cutting it apart!"))
 		return
 	. = TRUE
 	if(!I.tool_use_check(user, 0))
@@ -96,7 +92,7 @@
 
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user)
 	if(isrobot(user) || isalien(user))
-		to_chat(user, "<span class='notice'>You don't have the dexterity to do this!</span>")
+		to_chat(user, span_notice("You don't have the dexterity to do this!"))
 		return
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -112,7 +108,7 @@
 			playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 		has_extinguisher.forceMove_turf()
 		user.put_in_hands(has_extinguisher, ignore_anim = FALSE)
-		to_chat(user, "<span class='notice'>You take [has_extinguisher] from [src].</span>")
+		to_chat(user, span_notice("You take [has_extinguisher] from [src]."))
 		has_extinguisher = null
 		opened = 1
 	else
@@ -125,7 +121,7 @@
 		if(icon_state == "extinguisher_closed")
 			playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 		has_extinguisher.loc = loc
-		to_chat(user, "<span class='notice'>You telekinetically remove [has_extinguisher] from [src].</span>")
+		to_chat(user, span_notice("You telekinetically remove [has_extinguisher] from [src]."))
 		has_extinguisher = null
 		opened = 1
 	else
@@ -151,16 +147,16 @@
 	qdel(src)
 
 /obj/structure/extinguisher_cabinet/update_icon_state()
-	if(!opened)
-		icon_state = "extinguisher_closed"
-		return
+	icon_state = "extinguisher" // Needs to reset the state with every update
+
 	if(has_extinguisher)
 		if(istype(has_extinguisher, /obj/item/extinguisher/mini))
-			icon_state = "extinguisher_mini"
+			icon_state += "_mini"
 		else
-			icon_state = "extinguisher_full"
-	else
-		icon_state = "extinguisher_empty"
+			icon_state += "_full"
+
+	if(!opened)
+		icon_state += "_closed"
 
 /obj/structure/extinguisher_cabinet/empty
 	extinguishertype = NO_EXTINGUISHER
@@ -168,3 +164,7 @@
 #undef NO_EXTINGUISHER
 #undef NORMAL_EXTINGUISHER
 #undef MINI_EXTINGUISHER
+
+// MARK: Mapping Dir Helpers
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29, 26)
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet/empty, 29, 26)

@@ -9,7 +9,6 @@
 		ui = new(user, src, "PDA", name)
 		ui.open()
 
-
 /obj/item/pda/ui_data(mob/user)
 	var/list/data = list()
 
@@ -59,6 +58,8 @@
 		"template" = current_app.template,
 		"has_back" = current_app.has_back)
 
+	data["current_theme"] = current_theme || "nanotrasen"
+
 	current_app.update_ui(user, data)
 
 	return data
@@ -68,7 +69,7 @@
 	if(..())
 		return
 
-	add_fingerprint(usr)
+	add_fingerprint(ui.user)
 
 	. = TRUE
 	switch(action)
@@ -81,13 +82,14 @@
 				var/datum/data/pda/app/A = locateUID(params["program"])
 				if(A)
 					start_program(A)
-		if("Eject")//Ejects the cart, only done from hub.
+		if("Eject") //Ejects the cart, only done from hub.
 			if(!isnull(cartridge))
-				var/turf/T = loc
-				if(ismob(T))
-					T = T.loc
 				var/obj/item/cartridge/C = cartridge
-				C.forceMove(T)
+				if(ismob(loc))
+					var/mob/T = loc
+					T.put_in_hands(C)
+				else
+					C.forceMove(get_turf(src))
 				if(scanmode in C.programs)
 					scanmode = null
 				if(current_app in C.programs)
@@ -99,13 +101,15 @@
 						P.unnotify()
 				cartridge = null
 				update_shortcuts()
-		if("Eject_Request")//Ejects the cart, only done from hub.
+				playsound(src, 'sound/machines/terminal_eject.ogg', 50, TRUE)
+		if("Eject_Request") //Ejects the cart, only done from hub.
 			if(!isnull(request_cartridge))
-				var/turf/T = loc
-				if(ismob(T))
-					T = T.loc
-				var/obj/item/cartridge/C = request_cartridge
-				C.forceMove(T)
+				var/obj/item/cartridge/C = cartridge
+				if(ismob(loc))
+					var/mob/T = loc
+					T.put_in_hands(C)
+				else
+					C.forceMove(get_turf(src))
 				if(scanmode in C.programs)
 					scanmode = null
 				if(current_app in C.programs)
@@ -118,14 +122,52 @@
 				request_cartridge.update_programs(null)
 				request_cartridge = null
 				update_shortcuts()
-		if("Authenticate")//Checks for ID
-			id_check(usr, in_pda_usage = TRUE)
+		if("Authenticate") //Checks for ID
+			id_check(ui.user, in_pda_usage = TRUE)
+		if("Available_Ringtones")
+			ttone = params["selected_ringtone"]
 		if("Ringtone")
+			if(!silent)
+				playsound(src, 'sound/machines/terminal_select.ogg', 15, TRUE)
 			return set_ringtone(ui.user)
+		if("CycleTheme")
+			var/list/themes = list(
+				"nanotrasen",
+				"ntos_darkmode",
+				"ntos_roboblue",
+
+				"ntos_cat",
+				"ntos_roboquest",
+				"ntos_spooky",
+				"ntos_synth",
+				"ntos_terminal",
+
+				"abductor",
+				"admin",
+				"cargo",
+				"changeling",
+				"clockwork",
+				"hackerman",
+				"honker",
+				"infernal",
+				"malfunction",
+				"safe",
+				"spider_clan",
+			)
+			var/current_index = themes.Find(current_theme)
+			if(!current_index || current_index >= themes.len)
+				current_index = 1
+			else
+				current_index++
+			current_theme = themes[current_index]
+			ui_interact(ui.user)
+			return TRUE
+		if("VPNConnect")
+			return vpn_connect(ui.user)
 		else
 			if(current_app)
 				. = current_app.ui_act(action, params, ui, state) // It needs proxying through down here so apps actually have their interacts called
 
-	if((honkamt > 0) && (prob(60)))//For clown virus.
+	if((honkamt > 0) && (prob(60))) //For clown virus.
 		honkamt--
-		playsound(loc, 'sound/items/bikehorn.ogg', 30, 1)
+		playsound(src, 'sound/items/bikehorn.ogg', 30, TRUE)

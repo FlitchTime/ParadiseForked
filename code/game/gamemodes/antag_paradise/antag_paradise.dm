@@ -7,13 +7,13 @@
 /datum/game_mode/antag_paradise
 	name = "Antag Paradise"
 	config_tag = "antag-paradise"
-	protected_jobs = list(JOB_TITLE_OFFICER, JOB_TITLE_WARDEN, JOB_TITLE_DETECTIVE, JOB_TITLE_HOS, JOB_TITLE_CAPTAIN, JOB_TITLE_BLUESHIELD, JOB_TITLE_REPRESENTATIVE, JOB_TITLE_PILOT, JOB_TITLE_JUDGE, JOB_TITLE_BRIGDOC, JOB_TITLE_LAWYER, JOB_TITLE_CCOFFICER, JOB_TITLE_CCFIELD, JOB_TITLE_CCSPECOPS, JOB_TITLE_CCSUPREME, JOB_TITLE_SYNDICATE)
+	protected_jobs = list(JOB_TITLE_OFFICER, JOB_TITLE_WARDEN, JOB_TITLE_DETECTIVE, JOB_TITLE_HOS, JOB_TITLE_CAPTAIN, JOB_TITLE_BLUESHIELD, JOB_TITLE_REPRESENTATIVE, JOB_TITLE_PILOT, JOB_TITLE_MAGISTRATE, JOB_TITLE_BRIGDOC, JOB_TITLE_CCOFFICER, JOB_TITLE_CCFIELD, JOB_TITLE_CCSPECOPS, JOB_TITLE_CCSUPREME, JOB_TITLE_SYNDICATE_OFFICER, JOB_TITLE_PRISONER, JOB_TITLE_CMO, JOB_TITLE_RD, JOB_TITLE_QUARTERMASTER, JOB_TITLE_HOP, JOB_TITLE_CHIEF_ENGINEER)
 	restricted_jobs = list(JOB_TITLE_CYBORG, JOB_TITLE_AI)
 	required_players = 10
 	required_enemies = 1
 	forbidden_antag_jobs = list(ROLE_VAMPIRE = list(JOB_TITLE_CHAPLAIN))
-	var/list/protected_jobs_AI = list(JOB_TITLE_CIVILIAN, JOB_TITLE_CHIEF, JOB_TITLE_ENGINEER, JOB_TITLE_ENGINEER_TRAINEE, JOB_TITLE_ATMOSTECH, JOB_TITLE_MECHANIC, JOB_TITLE_CMO, JOB_TITLE_DOCTOR, JOB_TITLE_INTERN, JOB_TITLE_CORONER, JOB_TITLE_CHEMIST, JOB_TITLE_GENETICIST, JOB_TITLE_VIROLOGIST, JOB_TITLE_PSYCHIATRIST, JOB_TITLE_PARAMEDIC, JOB_TITLE_RD, JOB_TITLE_SCIENTIST, JOB_TITLE_SCIENTIST_STUDENT, JOB_TITLE_ROBOTICIST, JOB_TITLE_HOP, JOB_TITLE_CHAPLAIN, JOB_TITLE_BARTENDER, JOB_TITLE_CHEF, JOB_TITLE_BOTANIST, JOB_TITLE_QUARTERMASTER, JOB_TITLE_CARGOTECH, JOB_TITLE_MINER, JOB_TITLE_MINING_MEDIC, JOB_TITLE_CLOWN, JOB_TITLE_MIME, JOB_TITLE_JANITOR, JOB_TITLE_LIBRARIAN, JOB_TITLE_EXPLORER)	// Basically all jobs, except AI.
-	var/secondary_protected_species = list(SPECIES_MACNINEPERSON)
+	var/list/protected_jobs_AI = list(JOB_TITLE_CIVILIAN, JOB_TITLE_PRISONER, JOB_TITLE_CHIEF_ENGINEER, JOB_TITLE_ENGINEER, JOB_TITLE_ENGINEER_TRAINEE, JOB_TITLE_ATMOSTECH, JOB_TITLE_SPACEPOD_TECHNICIAN, JOB_TITLE_CMO, JOB_TITLE_DOCTOR, JOB_TITLE_MEDICAL_INTERN, JOB_TITLE_CORONER, JOB_TITLE_CHEMIST, JOB_TITLE_GENETICIST, JOB_TITLE_VIROLOGIST, JOB_TITLE_PSYCHIATRIST, JOB_TITLE_PARAMEDIC, JOB_TITLE_RD, JOB_TITLE_SCIENTIST, JOB_TITLE_SCIENCE_STUDENT, JOB_TITLE_ROBOTICIST, JOB_TITLE_HOP, JOB_TITLE_CHAPLAIN, JOB_TITLE_BARTENDER, JOB_TITLE_CHEF, JOB_TITLE_BOTANIST, JOB_TITLE_QUARTERMASTER, JOB_TITLE_CARGOTECH, JOB_TITLE_MINER, JOB_TITLE_MINING_MEDIC, JOB_TITLE_CLOWN, JOB_TITLE_MIME, JOB_TITLE_JANITOR, JOB_TITLE_LIBRARIAN, JOB_TITLE_EXPLORER)	// Basically all jobs, except AI.
+	var/secondary_protected_species = list(SPECIES_MACHINEPERSON, SPECIES_PLASMAMAN)
 	var/vampire_restricted_jobs = list(JOB_TITLE_CHAPLAIN)
 	/// Chosen antags if any. Key - mind, value - antag type
 	var/list/datum/mind/pre_antags = list()
@@ -26,6 +26,8 @@
 		ROLE_CHANGELING = 15,
 		ROLE_HIJACKER = 40,
 		ROLE_MALF_AI = 40,
+		ROLE_ESCAPING_PRISONER = 40,
+		ROLE_DEVIL = 40,
 		ROLE_NINJA = 40,
 	)
 	/// Antag weights for main antags
@@ -35,11 +37,9 @@
 	/// Timestamp for autotraitor
 	COOLDOWN_DECLARE(antag_making_cooldown)
 
-
 /datum/game_mode/antag_paradise/announce()
 	to_chat(world, "<b>The current game mode is - Antag Paradise</b>")
 	to_chat(world, "<b>Traitors, thieves, vampires and changelings, oh my! Stay safe as these forces work to bring down the station.</b>")
-
 
 /datum/game_mode/antag_paradise/process()
 	if(EMERGENCY_ESCAPED_OR_ENDGAMED)
@@ -55,9 +55,10 @@
 	antag_possibilities[ROLE_TRAITOR] =	get_alive_players_for_role(ROLE_TRAITOR)
 	antag_possibilities[ROLE_THIEF] = get_alive_players_for_role(ROLE_THIEF, list(SPECIES_VOX = 4))
 	antag_possibilities[ROLE_MALF_AI] = get_alive_AIs_for_role(ROLE_MALF_AI)
+	antag_possibilities[ROLE_DEVIL] = get_alive_players_for_role(ROLE_DEVIL)
+	antag_possibilities[ROLE_ESCAPING_PRISONER] = get_alive_players_for_role(ROLE_ESCAPING_PRISONER, req_job_rank = JOB_TITLE_PRISONER)
 	roll_antagonists(antag_possibilities)
 	initiate_antags()
-
 
 /datum/game_mode/antag_paradise/proc/roll_antagonists(list/antag_possibilities, roundstart = FALSE)
 	pre_antags = list()
@@ -76,10 +77,12 @@
 		return
 
 	if(!roundstart)
+		var/list/special_antag_types = list(ROLE_HIJACKER, ROLE_THIEF)
 		if(length(antag_possibilities[ROLE_MALF_AI]))
-			special_antag_type = pick(ROLE_HIJACKER, ROLE_THIEF, ROLE_MALF_AI)
-		else
-			special_antag_type = pick(ROLE_HIJACKER, ROLE_THIEF)
+			special_antag_types += ROLE_MALF_AI
+		if(length(antag_possibilities[ROLE_ESCAPING_PRISONER]))
+			special_antag_types += ROLE_ESCAPING_PRISONER
+		special_antag_type = pick(special_antag_types)
 
 	switch(special_antag_type)
 		if(ROLE_HIJACKER)
@@ -95,7 +98,7 @@
 			for(var/i in 1 to special_antag_amount)
 				var/datum/mind/special_antag = pick_n_take(antag_possibilities[ROLE_THIEF])
 				if(special_antag)
-					listclearduplicates(special_antag, antag_possibilities[ROLE_THIEF])
+					list_clear_duplicates(special_antag, antag_possibilities[ROLE_THIEF])
 					special_antag.special_role = SPECIAL_ROLE_THIEF
 					special_antag.restricted_roles = restricted_jobs
 					pre_antags[special_antag] = ROLE_THIEF
@@ -110,6 +113,32 @@
 					special_antag.special_role = SPECIAL_ROLE_MALFAI
 					SSjobs.new_malf = special_antag.current
 					pre_antags[special_antag] = ROLE_MALF_AI
+					antags_amount--
+
+		if(ROLE_ESCAPING_PRISONER)
+			if(special_antag_amount)
+				var/prisoners_count = ROLE_PRISONERS_MAX_COUNT // max prisoners count count as 1 antag
+				for(var/datum/mind/special_antag as anything in antag_possibilities[ROLE_ESCAPING_PRISONER])
+					if(!special_antag)
+						continue
+					special_antag.restricted_roles = (restricted_jobs|protected_jobs|protected_jobs_AI)
+					special_antag.restricted_roles += JOB_TITLE_AI
+					special_antag.restricted_roles -= JOB_TITLE_PRISONER
+					special_antag.special_role = SPECIAL_ROLE_ESCAPING_PRISONER
+					SSjobs.new_prisoners += special_antag.current
+					pre_antags[special_antag] = ROLE_ESCAPING_PRISONER
+					prisoners_count -= 1
+					if(prisoners_count == 0)
+						break
+				antags_amount--
+
+		if(ROLE_DEVIL)
+			if(special_antag_amount)
+				var/datum/mind/special_antag = safepick(get_players_for_role(ROLE_DEVIL))
+				if(special_antag)
+					special_antag.restricted_roles = restricted_jobs
+					special_antag.special_role = SPECIAL_ROLE_DEVIL
+					pre_antags[special_antag] = ROLE_DEVIL
 					antags_amount--
 
 		if(ROLE_NINJA)
@@ -164,7 +193,7 @@
 					var/datum/mind/thief = pick_n_take(antag_possibilities[ROLE_THIEF])
 					if(!thief)
 						continue
-					listclearduplicates(thief, antag_possibilities[ROLE_THIEF])
+					list_clear_duplicates(thief, antag_possibilities[ROLE_THIEF])
 					if(thief.special_role)
 						continue
 					thief.special_role = SPECIAL_ROLE_THIEF
@@ -205,7 +234,6 @@
 				pre_double_antags[antag] = ROLE_CHANGELING
 				break
 
-
 /datum/game_mode/antag_paradise/pre_setup()
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
@@ -216,11 +244,12 @@
 	antag_possibilities[ROLE_TRAITOR] =	get_players_for_role(ROLE_TRAITOR)
 	antag_possibilities[ROLE_THIEF] = get_players_for_role(ROLE_THIEF, list(SPECIES_VOX = 4))
 	antag_possibilities[ROLE_MALF_AI] = get_players_for_role(ROLE_MALF_AI)
+	antag_possibilities[ROLE_ESCAPING_PRISONER] = get_players_for_role(ROLE_ESCAPING_PRISONER, req_job_rank = JOB_TITLE_PRISONER)
+	antag_possibilities[ROLE_DEVIL] =	get_players_for_role(ROLE_DEVIL)
 
 	calculate_antags()
 
 	return roll_antagonists(antag_possibilities, roundstart = TRUE)
-
 
 /datum/game_mode/antag_paradise/proc/calculate_antags()
 	var/players = num_players()
@@ -288,7 +317,6 @@
 		return
 	antags_weights[pick_weight_classic(tripple_weights_config)] = subtype_weights[ANTAG_TRIPPLE]
 
-
 /datum/game_mode/antag_paradise/post_setup()
 	for(var/datum/mind/antag as anything in pre_antags)
 		if(pre_antags[antag] == ROLE_NINJA)
@@ -301,7 +329,6 @@
 	COOLDOWN_START(src, antag_making_cooldown, AUTOTRAITOR_LOW_BOUND)	// first auto-traitor tick checks all players in 5 minutes
 	..()
 
-
 /datum/game_mode/antag_paradise/proc/initiate_antags(roundstart = FALSE)
 	for(var/datum/mind/antag as anything in pre_antags)
 		switch(pre_antags[antag])
@@ -310,6 +337,10 @@
 				hijacker_datum.is_hijacker = TRUE
 				hijacker_datum.contractor_pending = roundstart? new(antag) : null
 				antag.add_antag_datum(hijacker_datum)
+
+			if(ROLE_DEVIL)
+				var/datum/antagonist/devil/divil_datum = new
+				antag.add_antag_datum(divil_datum)
 
 			if(ROLE_MALF_AI)
 				if(isAI(antag.current))
@@ -326,6 +357,9 @@
 				if(roundstart)
 					datum.contractor_pending = new(antag)
 				antag.add_antag_datum(datum)
+			if(ROLE_ESCAPING_PRISONER)
+				var/datum/antagonist/traitor/prisoner/datum = new
+				antag.add_antag_datum(datum)
 			if(ROLE_THIEF)
 				antag.add_antag_datum(/datum/antagonist/thief)
 
@@ -335,7 +369,6 @@
 				antag.add_antag_datum(/datum/antagonist/vampire/new_vampire)
 			if(ROLE_CHANGELING)
 				antag.add_antag_datum(/datum/antagonist/changeling)
-
 
 /proc/config_to_roles(list/check_list)
 	var/list/new_list = list()
@@ -347,6 +380,9 @@
 			if("malfai")
 				new_list += ROLE_MALF_AI
 				new_list[ROLE_MALF_AI] = check_list[index]
+			if("prisoner")
+				new_list += ROLE_ESCAPING_PRISONER
+				new_list[ROLE_ESCAPING_PRISONER] = check_list[index]
 			if("ninja")
 				new_list += ROLE_NINJA
 				new_list[ROLE_NINJA] = check_list[index]
@@ -356,11 +392,13 @@
 			if("nothing")
 				new_list += ROLE_NONE
 				new_list[ROLE_NONE] = check_list[index]
+			if("devil")
+				new_list += ROLE_DEVIL
+				new_list[ROLE_DEVIL] = check_list[index]
 			else
 				new_list += index
 				new_list[index] = check_list[index]
 	return new_list
-
 
 #undef AUTOTRAITOR_LOW_BOUND
 #undef AUTOTRAITOR_HIGH_BOUND

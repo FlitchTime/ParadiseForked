@@ -1,7 +1,6 @@
 /datum/event/communications_blackout
 	var/syndicate = FALSE
 
-
 /datum/event/communications_blackout/announce(false_alarm)
 	var/alert = syndicate ? "Обнаружено враждебное вмешательство в работу телекоммуникаций." : "Обнаружены ионосферные аномалии."
 
@@ -16,11 +15,12 @@
 
 	var/list/awared_ones = active_ais()
 	for(var/mob/living/silicon/ai/AI as anything in awared_ones)	//AIs are always aware of communication blackouts.
-		to_chat(AI, "<span class='ВНИМАНИЕ'><br><b>[alert_text]</b><br></span>")
+		to_chat(AI, "<br>[span_warning(alert_text)]<br>")
 
 	if(syndicate || false_alarm || prob(30))	//most of the time, we don't want an announcement, so as to allow AIs to fake blackouts.
-		GLOB.event_announcement.Announce(alert_text)
-
+		GLOB.minor_announcement.announce(
+			message = alert_text
+		)
 
 /datum/event/communications_blackout/start()
 	var/time = rand(1800, 3000)
@@ -33,11 +33,9 @@
 	addtimer(CALLBACK(src, PROC_REF(toggle_monitors)), time)
 	GLOB.communications_blackout = TRUE
 
-
 /datum/event/communications_blackout/proc/toggle_monitors()
 	GLOB.communications_blackout = FALSE
 	return
-
 
 /datum/event/communications_blackout/syndicate
 	syndicate = TRUE

@@ -1,31 +1,32 @@
 /datum/data/pda/utility/flashlight
-	name = "Enable Flashlight"
-	icon = "lightbulb-o"
+	name = "Вкл фонарь"
+	icon = "lightbulb"
 	/// Is the flashlight function on?
 	var/fon = FALSE
 
 /datum/data/pda/utility/flashlight/start()
 	fon = !fon
-	name = fon ? "Disable Flashlight" : "Enable Flashlight"
+	name = fon ? "Выкл фонарь" : "Вкл фонарь"
 	pda.update_shortcuts()
 	pda.update_icon(UPDATE_OVERLAYS)
 	pda.set_light_on(fon)
-
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 /datum/data/pda/utility/honk
-	name = "Honk Synthesizer"
-	icon = "smile-o"
+	name = "Хонк-синтезатор"
+	icon = "smile"
 	category = "Clown"
 
 	var/last_honk //Also no honk spamming that's bad too
 
 /datum/data/pda/utility/honk/start()
 	if(!(last_honk && world.time < last_honk + 20))
-		playsound(pda.loc, 'sound/items/bikehorn.ogg', 50, 1)
+		playsound(pda.loc, 'sound/items/bikehorn.ogg', 50, TRUE)
 		last_honk = world.time
 
 /datum/data/pda/utility/toggle_door
-	name = "Toggle Door"
+	name = "Переключатель дверей"
 	icon = "external-link-alt"
 	var/remote_door_id = ""
 
@@ -36,80 +37,76 @@
 				M.open()
 			else
 				M.close()
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 /datum/data/pda/utility/scanmode/medical
-	base_name = "Med Scanner"
-	icon = "heart-o"
+	base_name = "Анализатор здоровья"
+	icon = "heart"
 
 /datum/data/pda/utility/scanmode/medical/scan_mob(mob/living/M, mob/living/user)
-	user.visible_message("<span class='notice'>[user] analyzes [M]'s vitals.</span>", "<span class='notice'>You analyze [M]'s vitals.</span>")
+	user.visible_message(span_notice("[user] analyzes [M]'s vitals."), span_notice("You analyze [M]'s vitals."))
 
 	healthscan(user, M, 1)
 
 /datum/data/pda/utility/scanmode/dna
-	base_name = "DNA Scanner"
+	base_name = "Сканер ДНК"
 	icon = "link"
 
 /datum/data/pda/utility/scanmode/dna/scan_mob(mob/living/C as mob, mob/living/user as mob)
+	var/list/messages = list()
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		if(!istype(H.dna, /datum/dna))
-			to_chat(user, "<span class='notice'>No fingerprints found on [H]</span>")
+			messages.Add(user, span_notice("No fingerprints found on [H]"))
 		else
-			to_chat(user, "<span class='notice'>[H]'s Fingerprints: [md5(H.dna.uni_identity)]</span>")
+			messages.Add(user, span_notice("[H]'s Fingerprints: [md5(H.dna.uni_identity)]"))
+	if(length(messages))
+		to_chat(user, chat_box_regular(messages.Join("<br>")))
 	scan_blood(C, user)
 
 /datum/data/pda/utility/scanmode/dna/scan_atom(atom/A as mob|obj|turf|area, mob/user as mob)
 	scan_blood(A, user)
 
 /datum/data/pda/utility/scanmode/dna/proc/scan_blood(atom/A, mob/user)
+	var/list/messages = list()
 	if(!A.blood_DNA)
-		to_chat(user, "<span class='notice'>No blood found on [A]</span>")
+		messages.Add(user, span_notice("No blood found on [A]"))
 		if(A.blood_DNA)
 			qdel(A.blood_DNA)
 	else
-		to_chat(user, "<span class='notice'>Blood found on [A]. Analysing...</span>")
+		messages.Add(user, span_notice("Blood found on [A]. Analysing..."))
 		spawn(15)
 			for(var/blood in A.blood_DNA)
-				to_chat(user, "<span class='notice'>Blood type: [A.blood_DNA[blood]]\nDNA: [blood]</span>")
-
-/datum/data/pda/utility/scanmode/halogen
-	base_name = "Halogen Counter"
-	icon = "exclamation-circle"
-
-/datum/data/pda/utility/scanmode/halogen/scan_mob(mob/living/C as mob, mob/living/user as mob)
-	C.visible_message("<span class='warning'>[user] has analyzed [C]'s radiation levels!</span>")
-
-	user.show_message("<span class='notice'>Analyzing Results for [C]:</span>")
-	if(C.radiation)
-		user.show_message("<span class='notice'>Radiation Level: [C.radiation > 0 ? "</span><span class='danger'>[C.radiation]" : "0"]</span>")
-	else
-		user.show_message("<span class='notice'>No radiation detected.</span>")
+				messages.Add(user, span_notice("Blood type: [A.blood_DNA[blood]]\nDNA: [blood]"))
+	to_chat(user, chat_box_regular(messages.Join("<br>")))
 
 /datum/data/pda/utility/scanmode/reagent
-	base_name = "Reagent Scanner"
+	base_name = "Сканер реагентов"
 	icon = "flask"
 
 /datum/data/pda/utility/scanmode/reagent/scan_atom(atom/A as mob|obj|turf|area, mob/user as mob)
+	var/list/messages = list()
 	if(!isnull(A.reagents))
-		if(A.reagents.reagent_list.len > 0)
-			var/reagents_length = A.reagents.reagent_list.len
-			to_chat(user, "<span class='notice'>[reagents_length] chemical agent[reagents_length > 1 ? "s" : ""] found.</span>")
+		if(length(A.reagents.reagent_list) > 0)
+			var/reagents_length = length(A.reagents.reagent_list)
+			messages.Add(span_notice("[reagents_length] chemical agent[reagents_length > 1 ? "s" : ""] found."))
 			for(var/datum/reagent/R in A.reagents.reagent_list)
 				if(R.id != "blood")
-					to_chat(user, "<span class='notice'>\t [R]</span>")
+					messages.Add(span_notice("\t [R]"))
 				else
 					var/blood_type = R.data["blood_type"]
 					var/blood_species = R.data["blood_species"]
-					to_chat(user, "<span class='notice'>\t [R] [blood_type] [blood_species]</span>")
+					messages.Add(span_notice("\t [R] [blood_type] [blood_species]"))
 		else
-			to_chat(user, "<span class='notice'>No active chemical agents found in [A].</span>")
+			messages.Add(span_notice("No active chemical agents found in [A]."))
 	else
-		to_chat(user, "<span class='notice'>No significant chemical agents found in [A].</span>")
+		messages.Add(span_notice("No significant chemical agents found in [A]."))
+	to_chat(user, chat_box_regular(messages.Join("<br>")))
 
 /datum/data/pda/utility/scanmode/gas
-	base_name = "Gas Scanner"
+	base_name = "Газоанализатор"
 	icon = "tachometer-alt"
 
-/datum/data/pda/utility/scanmode/gas/scan_atom(atom/A, mob/user)
-	atmos_scan(user=user, target=A, silent=FALSE, print=TRUE)
+/datum/data/pda/utility/scanmode/gas/scan_atom(atom/scanned_atom, mob/user)
+	atmos_scan(user = user, target = scanned_atom, silent = FALSE, print = TRUE)

@@ -1,10 +1,10 @@
 
 /obj/machinery/kitchen_machine/oven
 	name = "oven"
-	desc = "Cookies are ready, dear."
+	desc = "Печь, в которой получаются идеальные печеньки. Или горелые лепёшки. Как повезёт."
 	icon = 'icons/obj/machines/cooking_machines.dmi'
 	icon_state = "oven_off"
-	cook_verbs = list("Baking", "Roasting", "Broiling")
+	cook_verbs = list("Запекается", "Жарится")
 	recipe_type = RECIPE_OVEN
 	off_icon = "oven_off"
 	on_icon = "oven_on"
@@ -12,14 +12,24 @@
 	dirty_icon = "oven_dirty"
 	open_icon = "oven_open"
 
+/obj/machinery/kitchen_machine/oven/get_ru_names()
+	return list(
+		NOMINATIVE = "духовка",
+		GENITIVE = "духовки",
+		DATIVE = "духовке",
+		ACCUSATIVE = "духовку",
+		INSTRUMENTAL = "духовкой",
+		PREPOSITIONAL = "духовке"
+	)
+
 // see code/modules/food/recipes_oven.dm for recipes
 
 /*******************
 *   Initialising
 ********************/
 
-/obj/machinery/kitchen_machine/oven/New()
-	..()
+/obj/machinery/kitchen_machine/oven/Initialize(mapload)
+	. = ..()
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/oven(null)
 	component_parts += new /obj/item/stock_parts/micro_laser(null)
@@ -28,8 +38,8 @@
 	component_parts += new /obj/item/stack/cable_coil(null, 5)
 	RefreshParts()
 
-/obj/machinery/kitchen_machine/oven/upgraded/New()
-	..()
+/obj/machinery/kitchen_machine/oven/upgraded/Initialize(mapload)
+	. = ..()
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/oven(null)
 	component_parts += new /obj/item/stock_parts/micro_laser/ultra(null)
@@ -44,19 +54,18 @@
 		E += M.rating
 	efficiency = round((E/2), 1) // There's 2 lasers, so halve the effect on the efficiency to keep it balanced
 
-
 /obj/machinery/kitchen_machine/oven/special_grab_attack(atom/movable/grabbed_thing, mob/living/grabber)
 	if(!ishuman(grabbed_thing) || !Adjacent(grabbed_thing))
 		return
 	var/mob/living/carbon/human/victim = grabbed_thing
 	var/obj/item/organ/external/head/head = victim.get_organ(BODY_ZONE_HEAD)
 	if(!head)
-		to_chat(grabber, span_warning("This person doesn't have a head!"))
+		balloon_alert(grabber, "нет головы!")
 		return
 	add_fingerprint(grabber)
 	victim.visible_message(
-		span_danger("[grabber] bashes [victim]'s head in [src]'s door!"),
-		span_userdanger("[grabber] bashes your head in [src]'s door! It feels rather hot in the oven!"),
+		span_danger("[grabber.declent_ru(NOMINATIVE)] ударя[PLUR_ET_YUT(grabber)] [victim.declent_ru(ACCUSATIVE)] головой о дверцу [declent_ru(GENITIVE)]!"),
+		span_userdanger("[grabber.declent_ru(NOMINATIVE)] бь[PLUR_ET_YUT(grabber)] вас головой о дверцу [declent_ru(GENITIVE)]! В духовке довольно жарко!"),
 	)
 	if(victim.has_pain())
 		victim.emote("scream")
@@ -67,4 +76,3 @@
 	add_attack_logs(grabber, victim, "Smashed with [src]")
 	//Removes the grip to prevent rapid bashes. With the knockdown, you PROBABLY can't run unless they are slow to grab you again...
 	grabber.stop_pulling()
-

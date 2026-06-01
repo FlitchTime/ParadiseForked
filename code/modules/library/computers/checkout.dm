@@ -2,12 +2,12 @@
  * Library Computer
  */
 /obj/machinery/computer/library/checkout
-	name = "Check-In/Out Computer"
+	name = "Library Computer"
 	var/arcanecheckout = 0
 	//var/screenstate = 0 // 0 - Main Menu, 1 - Inventory, 2 - Checked Out, 3 - Check Out a Book
 	var/buffer_book
 	var/buffer_mob
-	var/upload_category = "Fiction"
+	var/upload_category = "Художественная"
 	var/list/checkouts = list()
 	var/list/inventory = list()
 	var/checkoutperiod = 5 // In minutes
@@ -16,12 +16,22 @@
 	var/bibledelay = 0 // LOL NO SPAM (1 minute delay) -- Doohl
 	var/booklist
 
-/obj/machinery/computer/library/checkout/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/library/checkout/get_ru_names()
+	return list(
+		NOMINATIVE = "библиотечный компьютер",
+		GENITIVE = "библиотечного компьютера",
+		DATIVE = "библиотечному компьютеру",
+		ACCUSATIVE = "библиотечный компьютер",
+		INSTRUMENTAL = "библиотечным компьютером",
+		PREPOSITIONAL = "библиотечном компьютере",
+	)
+
+/obj/machinery/computer/library/checkout/attack_hand(mob/user)
 	if(..())
 		return
 	interact(user)
 
-/obj/machinery/computer/library/checkout/interact(var/mob/user)
+/obj/machinery/computer/library/checkout/interact(mob/user)
 	if(interact_check(user))
 		return
 
@@ -44,14 +54,14 @@
 
 			if(src.arcanecheckout)
 				new /obj/item/melee/cultblade/dagger(src.loc)
-				to_chat(user, "<span class='warning'>Your sanity barely endures the seconds spent in the vault's browsing window. The only thing to remind you of this when you stop browsing is a strange looking dagger sitting on the desk. You don't really remember where it came from.</span>")
+				to_chat(user, span_warning("Your sanity barely endures the seconds spent in the vault's browsing window. The only thing to remind you of this when you stop browsing is a strange looking dagger sitting on the desk. You don't really remember where it came from."))
 				user.visible_message("[user] stares at the blank screen for a few moments, [user.p_their()] expression frozen in fear. When [user.p_they()] finally awaken[user.p_s()] from it, [user.p_they()] look[user.p_s()] a lot older.", 2)
 				src.arcanecheckout = 0
 		if(1)
 			// Inventory
 			dat += "<h3>Inventory</h3>"
 			for(var/obj/item/book/b in inventory)
-				dat += "[b.name] <a href='byond://?src=[UID()];delbook=\ref[b]'>(Delete)</a><br>"
+				dat += "[b.name] <a href='byond://?src=[UID()];delbook=[b.UID()]'>(Delete)</a><br>"
 			dat += "<a href='byond://?src=[UID()];switchscreen=0'>(Return to main menu)</a><br>"
 		if(2)
 			// Checked Out
@@ -70,7 +80,7 @@
 					timedue = round(timedue)
 
 				dat += {"\"[b.bookname]\", Checked out to: [b.mobname]<br>--- Taken: [timetaken] minutes ago, Due: in [timedue] minutes<br>
-					<a href='byond://?src=[UID()];checkin=\ref[b]'>(Check In)</a><br><br>"}
+					<a href='byond://?src=[UID()];checkin=[b.UID()]'>(Check In)</a><br><br>"}
 			dat += "<a href='byond://?src=[UID()];switchscreen=0'>(Return to main menu)</a><br>"
 		if(3)
 			// Check Out a Book
@@ -91,7 +101,7 @@
 				dat += "<span style='color: red;'<b>ERROR</b>: Unable to contact External Archive. Please contact your system administrator for assistance.</span>"
 			else
 				num_results = src.get_num_results()
-				num_pages = CEILING(num_results/LIBRARY_BOOKS_PER_PAGE, 1)
+				num_pages = ceil(num_results/LIBRARY_BOOKS_PER_PAGE)
 				dat += {"<ul>
 					<li><a href='byond://?src=[UID()];id=-1'>(Order book by SS<sup>13</sup>BN)</a></li>
 				</ul>"}
@@ -122,7 +132,7 @@
 					var/author = CB.author
 					var/controls =  "<a href='byond://?src=[UID()];id=[CB.id]'>\[Order\]</a>"
 					controls += {" <a href="byond://?src=[UID()];flag=[CB.id]">\[Flag[CB.flagged ? "ged" : ""]\]</a>"}
-					if(check_rights(R_ADMIN, 0, user = user))
+					if(check_rights(R_ADMIN, FALSE, user = user))
 						controls +=  " <a style='color:red' href='byond://?src=[UID()];del=[CB.id]'>\[Delete\]</a>"
 						author += " (<a style='color:red' href='byond://?src=[UID()];delbyckey=[ckey(CB.ckey)]'>[ckey(CB.ckey)])</a>)"
 					dat += {"<tr>
@@ -195,8 +205,8 @@
 	if(density && !emagged)
 		emagged = 1
 		if(user)
-			to_chat(user, "<span class='notice'>You override the library computer's printing restrictions.</span>")
-
+			to_chat(user, span_notice("Вы обходите ограничения печати компьютера."))
+			balloon_alert(user, "взломано")
 
 /obj/machinery/computer/library/checkout/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -206,16 +216,14 @@
 		add_fingerprint(user)
 		var/obj/item/barcodescanner/scanner = I
 		scanner.computer = src
-		to_chat(user, span_notice("The [scanner.name]'s associated machine has been set to [src]."))
-		audible_message("The [name] lets out a low, short blip.", hearing_distance = 2)
+		atom_say("Сканер был успешно привязан.", FALSE)
+		playsound(src, 'sound/machines/ping.ogg', 20)
 		return ATTACK_CHAIN_PROCEED_SUCCESS
 
 	return ..()
 
-
 /obj/machinery/computer/library/checkout/wrench_act(mob/living/user, obj/item/I)
 	return default_unfasten_wrench(user, I)
-
 
 /obj/machinery/computer/library/checkout/Topic(href, href_list)
 	if(..())
@@ -237,19 +245,19 @@
 		else
 			page_num = clamp(text2num(href_list["page"]), 1, num_pages)
 	if(href_list["settitle"])
-		var/newtitle = input("Enter a title to search for:") as text|null
+		var/newtitle = tgui_input_text(usr, "Enter a title to search for:")
 		if(newtitle)
 			query.title = sanitize(newtitle)
 		else
 			query.title = null
 	if(href_list["setcategory"])
-		var/newcategory = input("Choose a category to search for:") in (list("Any") + GLOB.library_section_names)
+		var/newcategory = tgui_input_list(usr, "Choose a category to search for:", "Select category" , list("Any") + GLOB.library_section_names)
 		if(newcategory == "Any")
 			query.category = null
 		else if(newcategory)
 			query.category = sanitize(newcategory)
 	if(href_list["setauthor"])
-		var/newauthor = input("Enter an author to search for:") as text|null
+		var/newauthor = tgui_input_text(usr, "Enter an author to search for:")
 		if(newauthor)
 			query.author = sanitize(newauthor)
 		else
@@ -257,7 +265,7 @@
 
 	if(href_list["search"])
 		num_results = src.get_num_results()
-		num_pages = CEILING(num_results/LIBRARY_BOOKS_PER_PAGE, 1)
+		num_pages = ceil(num_results/LIBRARY_BOOKS_PER_PAGE)
 		page_num = 1
 
 		screenstate = 4
@@ -293,7 +301,7 @@
 				return
 
 			if(query.affected == 0)
-				to_chat(usr, "<span class='danger'>Unable to find any matching rows.</span>")
+				to_chat(usr, span_danger("Unable to find any matching rows."))
 				qdel(query)
 				return
 			qdel(query)
@@ -310,7 +318,7 @@
 		if(id)
 			var/datum/cachedbook/B = getBookByID(id)
 			if(B)
-				if((input(usr, "Are you sure you want to flag [B.title] as having inappropriate content?", "Flag Book #[B.id]") in list("Yes", "No")) == "Yes")
+				if((tgui_alert(usr, "Are you sure you want to flag [B.title] as having inappropriate content?", "Flag Book #[B.id]", list("Yes", "No"))) == "Yes")
 					GLOB.library_catalog.flag_book_by_id(usr, id)
 
 	if(href_list["switchscreen"])
@@ -331,7 +339,7 @@
 				if(!bibledelay)
 
 					var/obj/item/storage/bible/B = new /obj/item/storage/bible(src.loc)
-					if(SSticker && ( SSticker.Bible_icon_state && SSticker.Bible_item_state) )
+					if(SSticker && ( SSticker.Bible_icon_state && SSticker.Bible_item_state))
 						B.icon_state = SSticker.Bible_icon_state
 						B.item_state = SSticker.Bible_item_state
 						B.name = SSticker.Bible_name
@@ -359,9 +367,9 @@
 		if(checkoutperiod < 1)
 			checkoutperiod = 1
 	if(href_list["editbook"])
-		buffer_book = copytext(sanitize(input("Enter the book's title:") as text|null),1,MAX_MESSAGE_LEN)
+		buffer_book = tgui_input_text(usr, "Enter the book's title:", max_length = MAX_MESSAGE_LEN)
 	if(href_list["editmob"])
-		buffer_mob = copytext(sanitize(input("Enter the recipient's name:") as text|null),1,MAX_NAME_LEN)
+		buffer_mob = tgui_input_text(usr, "Enter the recipient's name:", max_length = MAX_MESSAGE_LEN)
 	if(href_list["checkout"])
 		var/datum/borrowbook/b = new /datum/borrowbook
 		b.bookname = sanitize(buffer_book)
@@ -370,23 +378,23 @@
 		b.duedate = world.time + (checkoutperiod * 600)
 		checkouts.Add(b)
 	if(href_list["checkin"])
-		var/datum/borrowbook/b = locate(href_list["checkin"])
+		var/datum/borrowbook/b = locateUID(href_list["checkin"])
 		checkouts.Remove(b)
 	if(href_list["delbook"])
-		var/obj/item/book/b = locate(href_list["delbook"])
+		var/obj/item/book/b = locateUID(href_list["delbook"])
 		inventory.Remove(b)
 	if(href_list["uploadauthor"])
-		var/newauthor = copytext(sanitize(input("Enter the author's name: ") as text|null),1,MAX_MESSAGE_LEN)
+		var/newauthor = tgui_input_text(usr, "Enter the author's name: ", max_length = MAX_MESSAGE_LEN)
 		if(newauthor && scanner)
 			scanner.cache.author = newauthor
 	if(href_list["uploadcategory"])
-		var/newcategory = input("Choose a category: ") in list("Fiction", "Non-Fiction", "Adult", "Reference", "Religion")
+		var/newcategory = tgui_input_list(usr, "Choose a category: ", items = list("Fiction", "Non-Fiction", "Adult", "Reference", "Religion"))
 		if(newcategory)
 			upload_category = newcategory
 	if(href_list["upload"])
 		if(scanner)
 			if(scanner.cache)
-				var/choice = input("Are you certain you wish to upload this title to the Archive?") in list("Confirm", "Abort")
+				var/choice = tgui_alert(usr, "Are you certain you wish to upload this title to the Archive?", , list("Confirm", "Abort"))
 				if(choice == "Confirm")
 					if(!SSdbcore.IsConnected())
 						alert("Connection to Archive has been severed. Aborting.")
@@ -411,7 +419,7 @@
 
 	if(href_list["id"])
 		if(href_list["id"]=="-1")
-			href_list["id"] = input("Enter your order:") as null|num
+			href_list["id"] = tgui_input_number(usr, "Enter your order:")
 			if(!href_list["id"])
 				return
 
@@ -467,7 +475,7 @@
  * Library Scanner
  */
 
-/obj/machinery/computer/library/checkout/proc/make_external_book(var/datum/cachedbook/newbook)
+/obj/machinery/computer/library/checkout/proc/make_external_book(datum/cachedbook/newbook)
 	if(!newbook || !newbook.id)
 		return
 	var/obj/item/book/B = new newbook.path(loc)

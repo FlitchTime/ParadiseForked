@@ -1,17 +1,10 @@
-/client/proc/one_click_antag()
-	set name = "Create Antagonist"
-	set desc = "Auto-create an antagonist of your choice"
-	set category = "Admin.Event"
+ADMIN_VERB(one_click_antag, R_SERVER|R_EVENT, "Create Antagonist", "Auto-create an antagonist of your choice.", ADMIN_CATEGORY_EVENTS)
+	if(!user.holder)
+		return
 
-	if(!check_rights(R_SERVER|R_EVENT))	return
-
-	if(holder)
-		holder.one_click_antag()
-	return
-
+	user.holder.one_click_antag()
 
 /datum/admins/proc/one_click_antag()
-
 	var/dat = {"<b>One-click Antagonist</b><br>
 		<a href='byond://?src=[UID()];makeAntag=1'>Make Traitors</a><br>
 		<a href='byond://?src=[UID()];makeAntag=2'>Make Changelings</a><br>
@@ -27,14 +20,15 @@
 		<a href='byond://?src=[UID()];makeAntag=12'>Make Blobs</a><br>
 		<a href='byond://?src=[UID()];makeAntag=13'>Make Terror Spiders</a><br>
 		<a href='byond://?src=[UID()];makeAntag=14'>Make Aliens</a><br>
+		<a href='byond://?src=[UID()];makeAntag=15'>Make Nuke Team</a><br>
 		"}
 	var/datum/browser/popup = new(usr, "oneclickantag", "One-click Antagonist", 400, 400)
 	popup.set_content(dat)
 	popup.open(FALSE)
 	return
 
-/datum/admins/proc/CandCheck(var/role = null, var/mob/living/carbon/human/M, var/datum/game_mode/temp = null)
-  // You pass in ROLE define (optional), the applicant, and the gamemode, and it will return true / false depending on whether the applicant qualify for the candidacy in question
+/datum/admins/proc/CandCheck(role = null, mob/living/carbon/human/M, datum/game_mode/temp = null)
+	// You pass in ROLE define (optional), the applicant, and the gamemode, and it will return true / false depending on whether the applicant qualify for the candidacy in question
 	if(jobban_isbanned(M, "Syndicate"))
 		return FALSE
 	if(M.stat || !M.mind || M.mind.special_role || M.mind.offstation_role)
@@ -69,8 +63,8 @@
 		if(CandCheck(ROLE_TRAITOR, applicant, temp))
 			candidates += applicant
 
-	if(candidates.len)
-		var/numTraitors = min(candidates.len, antnum)
+	if(length(candidates))
+		var/numTraitors = min(length(candidates), antnum)
 
 		for(var/i = 0, i<numTraitors, i++)
 			H = pick(candidates)
@@ -79,7 +73,6 @@
 
 		return 1
 	return 0
-
 
 /datum/admins/proc/makeChangelings()
 
@@ -101,8 +94,8 @@
 		if(CandCheck(ROLE_CHANGELING, applicant, temp))
 			candidates += applicant
 
-	if(candidates.len)
-		var/numChangelings = min(candidates.len, antnum)
+	if(length(candidates))
+		var/numChangelings = min(length(candidates), antnum)
 
 		for(var/i = 0, i<numChangelings, i++)
 			H = pick(candidates)
@@ -158,8 +151,8 @@
 		if(CandCheck(ROLE_REV, applicant, temp))
 			candidates += applicant
 
-	if(candidates.len)
-		var/numRevs = min(candidates.len, antnum)
+	if(length(candidates))
+		var/numRevs = min(length(candidates), antnum)
 
 		for(var/i = 0, i<numRevs, i++)
 			H = pick(candidates)
@@ -179,7 +172,7 @@
 	log_admin("[key_name(owner)] tried making a Wizard with One-Click-Antag")
 	message_admins("[key_name_admin(owner)] tried making a Wizard with One-Click-Antag")
 
-	if(candidates.len)
+	if(length(candidates))
 		var/mob/dead/observer/selected = pick(candidates)
 		candidates -= selected
 
@@ -187,7 +180,6 @@
 		new_character.mind.make_Wizard()
 		return 1
 	return 0
-
 
 /datum/admins/proc/makeCult()
 
@@ -252,85 +244,46 @@
 /datum/admins/proc/makeNukeTeam()
 
 	var/list/mob/candidates = list()
-	var/mob/theghost = null
-	var/time_passed = world.time
 
-	var/antnum = tgui_input_number(owner, "How many nuclear operative you want to create? Enter 0 to cancel.", "Amount:", 0)
+	var/antnum = tgui_input_number(owner, "Сколько ядерных оперативников вы хотите создать? Введите 0 для отмены.", "Количество:", 0)
+
 	if(!antnum || antnum <= 0)
-		return
+		return FALSE
+
 	log_admin("[key_name(owner)] tried making a [antnum] person Nuke Op Team with One-Click-Antag")
 	message_admins("[key_name_admin(owner)] tried making a [antnum] person Nuke Op Team with One-Click-Antag")
 
-	for(var/mob/G in GLOB.respawnable_list)
-		if(istype(G) && G.client && (ROLE_OPERATIVE in G.client.prefs.be_special))
-			if(!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate"))
-				if(player_old_enough_antag(G.client,ROLE_OPERATIVE))
-					spawn(0)
-						switch(tgui_alert(G, "Do you wish to be considered for a nuke team being sent in?", "Please answer in 30 seconds!", list("Yes", "No")))
-							if("Yes")
-								if((world.time-time_passed)>300)//If more than 30 game seconds passed.
-									return
-								candidates += G
-							if("No")
-								return
-							else
-								return
+	candidates = SSghost_spawns.poll_candidates("Вы хотите стать ядерным оперативником?", ROLE_OPERATIVE, TRUE, 1 MINUTES, role_cleanname = "Ядерного оперативника", source = image('icons/mob/simple_human.dmi', "syndicate_space_sword"))
 
-	sleep(300)
+	if(!length(candidates))
+		return FALSE
 
-	if(candidates.len)
-		var/agentcount = 0
+	var/datum/team/nuclear_team/team = GLOB.antagonist_teams[/datum/team/nuclear_team]
+	var/has_team = !!team
 
-		for(var/i = 0, i<antnum,i++)
-			shuffle(candidates) //More shuffles means more randoms
-			for(var/mob/j in candidates)
-				if(!j || !j.client)
-					candidates.Remove(j)
-					continue
+	if(!has_team)
+		team = new
 
-				theghost = candidates
-				candidates.Remove(theghost)
+	for(var/i = 1, i <= antnum, i++)
+		var/spawnpos = i
 
-				var/mob/living/carbon/human/new_character=makeBody(theghost)
-				new_character.mind.make_Nuke()
+		if(spawnpos > length(GLOB.nukespawn))
+			spawnpos = 2
 
-				agentcount++
+		var/mob/mob = pick_n_take(candidates)
+		var/mob/living/carbon/human/human = new /mob/living/carbon/human(GLOB.nukespawn[spawnpos])
+		human.possess_by_player(mob.key)
+		create_syndicate(human.mind)
+		team.add_member(human.mind)
+		var/datum/antagonist/nuclear_operative/datum = human.mind.has_antag_datum(/datum/antagonist/nuclear_operative)
+		datum.equip()
 
-		if(agentcount < 1)
-			return 0
+	if(has_team)
+		return TRUE
 
-		var/obj/effect/landmark/nuke_spawn = locate("landmark*Nuclear-Bomb")
-		var/obj/effect/landmark/closet_spawn = locate("landmark*Nuclear-Closet")
-
-		var/nuke_code = rand(10000, 99999)
-
-		if(nuke_spawn)
-			var/obj/item/paper/P = new
-			P.info = "Sadly, the Syndicate could not get you a nuclear bomb.  We have, however, acquired the arming code for the station's onboard nuke.  The nuclear authorization code is: <b>[nuke_code]</b>"
-			P.name = "nuclear bomb code and instructions"
-			P.loc = nuke_spawn.loc
-
-		if(closet_spawn)
-			new /obj/structure/closet/syndicate/nuclear(closet_spawn.loc)
-
-		for(var/datum/mind/synd_mind in SSticker.mode.syndicates)
-			if(synd_mind.current)
-				if(synd_mind.current.client)
-					for(var/image/I in synd_mind.current.client.images)
-						if(I.icon_state == "synd")
-							qdel(I)
-
-		for(var/datum/mind/synd_mind in SSticker.mode.syndicates)
-			if(synd_mind.current)
-				if(synd_mind.current.client)
-					for(var/datum/mind/synd_mind_1 in SSticker.mode.syndicates)
-						if(synd_mind_1.current)
-							var/I = image('icons/mob/mob.dmi', loc = synd_mind_1.current, icon_state = "synd")
-							synd_mind.current.client.images += I
-
-		for(var/obj/machinery/nuclearbomb/bomb in GLOB.machines)
-			bomb.r_code = nuke_code						// All the nukes are set to this code.
-	return 1
+	team.scale_telecrystals()
+	team.share_telecrystals()
+	return TRUE
 
 //Abductors
 /datum/admins/proc/makeAbductorTeam()
@@ -353,7 +306,6 @@
 	log_and_message_admins("tried making Aliens with One-Click-Antag")
 	spawn_aliens(antnum)
 	return TRUE
-
 
 /datum/admins/proc/makeSpaceNinja()
 	. = FALSE
@@ -381,8 +333,7 @@
 		new_character.mind.make_Space_Ninja(custom_objective)
 		return TRUE
 
-
-/proc/makeBody(var/mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
+/proc/makeBody(mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
 	if(!G_found || !G_found.key)	return
 
 	//First we spawn a dude.
@@ -392,7 +343,7 @@
 	A.copy_to(new_character)
 
 	new_character.dna.ready_dna(new_character)
-	new_character.key = G_found.key
+	new_character.possess_by_player(G_found.key)
 
 	return new_character
 
@@ -408,10 +359,10 @@
 	if(!length(candidates))
 		return 0
 
-	var/raider_num = min(antnum, candidates.len)
+	var/raider_num = min(antnum, length(candidates))
 	var/datum/game_mode/mode = SSticker.mode
 	//If there no vox objectives - create them
-	if(!mode.raid_objectives || !mode.raid_objectives.len)
+	if(!mode.raid_objectives || !length(mode.raid_objectives))
 		mode.raid_objectives = mode.forge_vox_objectives()
 	//Spawns vox raiders and equips them.
 	while(raider_num > 0)
@@ -431,7 +382,7 @@
 			raider.objectives = mode.raid_objectives.Copy()
 
 		var/index = raider_num
-		if(index > GLOB.raider_spawn.len)
+		if(index > length(GLOB.raider_spawn))
 			index = 1
 
 		var/mob/living/carbon/human/new_vox = new /mob/living/carbon/human/vox(GLOB.raider_spawn[index])
@@ -440,7 +391,7 @@
 		raider.set_original_mob(new_vox)
 
 		raider.key = candidate.key
-		new_vox.key = raider.key
+		new_vox.possess_by_player(raider.key)
 
 		mode.create_vox(raider)
 		mode.greet_vox(raider)
@@ -468,8 +419,8 @@
 		if(CandCheck(ROLE_VAMPIRE, applicant, temp))
 			candidates += applicant
 
-	if(candidates.len)
-		var/numVampires = min(candidates.len, antnum)
+	if(length(candidates))
+		var/numVampires = min(length(candidates), antnum)
 
 		for(var/i = 0, i<numVampires, i++)
 			H = pick(candidates)
@@ -507,7 +458,7 @@
 		if(!G.key)
 			candidates.Remove(G)
 
-	if(candidates.len)
+	if(length(candidates))
 		var/teamOneMembers = 5
 		var/teamTwoMembers = 5
 		var/datum/preferences/A = new()
@@ -522,7 +473,7 @@
 
 				newMember.dna.ready_dna(newMember)
 
-				while((!theghost || !theghost.client) && candidates.len)
+				while((!theghost || !theghost.client) && length(candidates))
 					theghost = pick(candidates)
 					candidates.Remove(theghost)
 
@@ -530,7 +481,7 @@
 					qdel(newMember)
 					break
 
-				newMember.key = theghost.key
+				newMember.possess_by_player(theghost.key)
 				teamOneMembers--
 				to_chat(newMember, "You are a member of the <font color = 'green'><b>GREEN</b></font> Thunderdome team! Gear up and help your team destroy the red team!")
 
@@ -544,7 +495,7 @@
 
 				newMember.dna.ready_dna(newMember)
 
-				while((!theghost || !theghost.client) && candidates.len)
+				while((!theghost || !theghost.client) && length(candidates))
 					theghost = pick(candidates)
 					candidates.Remove(theghost)
 
@@ -552,7 +503,7 @@
 					qdel(newMember)
 					break
 
-				newMember.key = theghost.key
+				newMember.possess_by_player(theghost.key)
 				teamTwoMembers--
 				to_chat(newMember, "You are a member of the <font color = 'red'><b>RED</b></font> Thunderdome team! Gear up and help your team destroy the green team!")
 	else
@@ -578,8 +529,8 @@
 		if(CandCheck(ROLE_THIEF, applicant, temp))
 			candidates += applicant
 
-	if(candidates.len)
-		var/numThieves = min(candidates.len, antnum)
+	if(length(candidates))
+		var/numThieves = min(length(candidates), antnum)
 
 		for(var/i = 0, i<numThieves, i++)
 			H = pick(candidates)

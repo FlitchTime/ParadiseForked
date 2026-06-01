@@ -4,7 +4,6 @@
 /mob/living/simple_animal/hostile/blob_minion/spore
 	name = "blob spore"
 	desc = "Плавающая хрупкая спора."
-	icon = 'icons/mob/blob.dmi'
 	icon_state = "blobpod"
 	icon_living = "blobpod"
 	health_doll_icon = "blobpod"
@@ -17,7 +16,6 @@
 	melee_damage_lower = BLOBMOB_SPORE_DMG_LOWER
 	melee_damage_upper = BLOBMOB_SPORE_DMG_UPPER
 	obj_damage = BLOBMOB_SPORE_OBJ_DMG
-	environment_smash = ENVIRONMENT_SMASH_STRUCTURES
 	attacktext = "ударяет"
 	attack_sound = 'sound/weapons/genhit1.ogg'
 	deathmessage = "взрывается облаком газа!"
@@ -28,7 +26,6 @@
 	var/death_cloud_size = 2
 	/// Type of mob to create
 	var/mob/living/zombie_type = /mob/living/simple_animal/hostile/blob_minion/zombie
-
 
 /mob/living/simple_animal/hostile/blob_minion/spore/Initialize(mapload)
 	. = ..()
@@ -61,7 +58,7 @@
 	stat_attack = initial(stat_attack)
 
 /mob/living/simple_animal/hostile/blob_minion/spore/pull_constraint(atom/movable/pulled_atom, state, supress_message = FALSE) //Prevents spore from pulling things
-	if(istype(pulled_atom, /mob/living))
+	if(isliving(pulled_atom))
 		return TRUE // Get dem
 	if(!supress_message)
 		to_chat(src, span_warning("Вы не можете таскать ничего кроме других существ и их тел."))
@@ -127,7 +124,6 @@
 
 /mob/living/simple_animal/hostile/blob_minion/spore/minion/death_burst()
 	return // This behaviour is superceded by the overmind's intervention
-
 
 /// Weakened spore spawned by distributed neurons, can't zombify people and makes a teeny explosion
 /mob/living/simple_animal/hostile/blob_minion/spore/minion/weak

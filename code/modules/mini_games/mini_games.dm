@@ -18,26 +18,24 @@
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "thunderdome-bomb"
 	anchored = TRUE
-	density = FALSE
 	invisibility = INVISIBILITY_MAXIMUM
-	opacity = FALSE
 	layer = BELOW_MOB_LAYER
 	resistance_flags = INDESTRUCTIBLE
 
 /**
  * Changed copy of /proc/notify_ghosts designed to be customizable across user preferences
  */
-/datum/mini_game/proc/notify_players(message, ghost_sound = null, enter_link = null, title = null, atom/source = null, image/alert_overlay = null, flashwindow = TRUE, var/action = NOTIFY_JUMP) //Easy notification of ghosts.
+/datum/mini_game/proc/notify_players(message, ghost_sound = null, enter_link = null, title = null, atom/source = null, image/alert_overlay = null, flashwindow = TRUE, action = NOTIFY_JUMP) //Easy notification of ghosts.
 	for(var/mob/dead/observer/O in GLOB.player_list)
 		if(!O.client?.prefs?.minigames_notifications || !(role in O.client?.prefs?.be_special))
 			return
 		to_chat(O, span_ghostalert("[message][(enter_link) ? " [enter_link]" : ""]"))
 		if(ghost_sound)
-			O << sound(ghost_sound)
+			SEND_SOUND(O, sound(ghost_sound))
 		if(flashwindow)
 			window_flash(O.client)
 		if(source)
-			var/atom/movable/screen/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /atom/movable/screen/alert/notify_action)
+			var/atom/movable/screen/alert/notify_action/A = O.throw_alert("[source.UID()]_notify_action", /atom/movable/screen/alert/notify_action)
 			if(A)
 				if(O.client.prefs && O.client.prefs.UI_style)
 					A.icon = ui_style2icon(O.client.prefs.UI_style)
@@ -45,7 +43,7 @@
 					A.name = title
 				A.desc = message
 				A.action = action
-				A.target = source
+				A.target_ref = WEAKREF(source)
 				if(!alert_overlay)
 					var/old_layer = source.layer
 					var/old_plane = source.plane

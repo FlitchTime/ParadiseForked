@@ -1,7 +1,7 @@
 /**
  *  Guardian's mines. Can be attached to anything to do explosive stuff on a victim.
  */
-#define MINE_LIFE_TIME (60 SECONDS)
+#define MINE_LIFE_TIME 60 SECONDS
 
 ///Datum specialized for guardian(holoparasite)-bomber.
 /datum/component/guardian_mine
@@ -15,20 +15,20 @@
 	addtimer(CALLBACK(src, PROC_REF(defuse)), MINE_LIFE_TIME)
 
 /datum/component/guardian_mine/RegisterWithParent()
-	RegisterSignal(parent, list(
+	RegisterSignals(parent, list(
 		COMSIG_ATOM_ATTACK_HAND,
 		COMSIG_ITEM_PICKUP,
 		COMSIG_CLICK_ALT,
 		COMSIG_ATOM_BUMPED,
 		COMSIG_ATOM_START_PULL,
 		COMSIG_ATOM_ATTACK,
-		COMSIG_PARENT_ATTACKBY,
+		COMSIG_ATOM_ATTACKBY,
 		COMSIG_MOVABLE_BUCKLE,
 		COMSIG_MOVABLE_IMPACT
 		),
 		PROC_REF(explode))
 
-	RegisterSignal(parent, list(COMSIG_PARENT_EXAMINE), PROC_REF(examine_mined))
+	RegisterSignals(parent, list(COMSIG_ATOM_EXAMINE), PROC_REF(examine_mined))
 
 /datum/component/guardian_mine/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -38,13 +38,12 @@
 		COMSIG_ATOM_BUMPED,
 		COMSIG_ATOM_START_PULL,
 		COMSIG_ATOM_ATTACK,
-		COMSIG_PARENT_ATTACKBY,
+		COMSIG_ATOM_ATTACKBY,
 		COMSIG_MOVABLE_BUCKLE,
 		COMSIG_MOVABLE_IMPACT)
 		)
 
-	UnregisterSignal(parent, list(COMSIG_PARENT_EXAMINE))
-
+	UnregisterSignal(parent, list(COMSIG_ATOM_EXAMINE))
 
 /datum/component/guardian_mine/proc/defuse()
 	if(is_exploded)
@@ -68,11 +67,12 @@
 		return
 	add_attack_logs(victim, parent_atom, "booby trap TRIGGERED (spawner: [bomber], ckey: [bomber.ckey])")
 	to_chat(victim, span_danger("Это ловушка! [parent_atom] был заминирован!"))
-	playsound(get_turf(parent_atom),'sound/effects/bomb_activate.ogg', 200, 1)
-	playsound(get_turf(parent_atom),'sound/effects/explosion1.ogg', 200, 1)
-	victim.ex_act(3)
+	playsound(get_turf(parent_atom),'sound/effects/bomb_activate.ogg', 200, TRUE)
+	playsound(get_turf(parent_atom),'sound/effects/explosion1.ogg', 200, TRUE)
+	victim.ex_act(EXPLODE_LIGHT)
 	victim.Weaken(6 SECONDS)
 	victim.adjustBruteLoss(20)
 	is_exploded = TRUE
 	UnregisterFromParent()
 
+#undef MINE_LIFE_TIME

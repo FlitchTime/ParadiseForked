@@ -6,7 +6,9 @@
 
 /area/ruin/powered/clownplanet
 	icon_state = "dk_yellow"
-	ambientsounds = list('sound/music/clown.ogg')
+	ambientsounds = list(
+		'sound/music/clown.ogg',
+	)
 
 /area/ruin/powered/animal_hospital
 	icon_state = "dk_yellow"
@@ -21,7 +23,7 @@
 	icon_state = "dk_yellow"
 
 /area/ruin/powered/golem_ship
-	name = "Free Golem Landing"
+	name = "Free Golem Ship"
 	icon_state = "dk_yellow"
 
 /area/ruin/powered/greed
@@ -45,10 +47,13 @@
 	name = "Biodome"
 	icon_state = "dk_yellow"
 
+/area/ruin/powered/lavaland
+	icon_state = "dk_yellow"
+
 /area/ruin/unpowered/syndicate_lava_base
 	name = "Secret Base"
 	icon_state = "dk_yellow"
-	ambientsounds = HIGHSEC_SOUNDS
+	ambience_index = AMBIENCE_DANGER
 	report_alerts = FALSE
 	hide_attacklogs = TRUE
 
@@ -94,14 +99,15 @@
 	power_equip = FALSE
 	power_light = FALSE
 	poweralm = FALSE
+	ambient_buzz = 'sound/ambience/lavaland/magma.ogg'
 
 //ash walker nest
 /area/ruin/unpowered/ash_walkers
 	icon_state = "red"
+	ambient_buzz = 'sound/ambience/lavaland/magma.ogg'
 
 // This area exists so that lavaland ruins dont overwrite the baseturfs on regular space ruins
 /area/ruin/unpowered/misc_lavaruin
-	outdoors = FALSE
 
 //'safe' caves
 /area/ruin/unpowered/safe_cave

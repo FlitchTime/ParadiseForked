@@ -8,7 +8,7 @@
 */
 
 #define JOB_STYLE_1 "Имя (Должность)"
-#define JOB_STYLE_2 "Имя - Должность"
+#define JOB_STYLE_2 "Имя — Должность"
 #define JOB_STYLE_3 "\[Должность\] Имя"
 #define JOB_STYLE_4 "(Должность) Имя"
 
@@ -18,41 +18,51 @@
 	/// Associative list of all jobs and their department color classes
 	var/all_jobs = list(
 		// AI
+		"Автоматическое оповещение" = "airadio",
 		JOB_TITLE_AI = "airadio",
 		"Android" = "airadio",
 		JOB_TITLE_CYBORG = "airadio",
 		"Personal AI" = "airadio",
 		"Robot" = "airadio",
-		// Civilian
+		// Assistant
 		JOB_TITLE_CIVILIAN = "radio",
+		JOB_TITLE_PRISONER = "radio",
+		//Teams radio
+		JOB_TITLE_TEAM1 = "t1radio",
+		JOB_TITLE_TEAM2 = "t2radio",
+		JOB_TITLE_TEAM3 = "t3radio",
 		// Command (Solo command, not department heads)
 		JOB_TITLE_BLUESHIELD = "comradio",
 		JOB_TITLE_CAPTAIN = "comradio",
-		JOB_TITLE_HOP = "comradio",
 		JOB_TITLE_REPRESENTATIVE = "comradio",
 		// Engineeering
-		JOB_TITLE_CHIEF = "engradio",
+		JOB_TITLE_CHIEF_ENGINEER = "engradio",
 		JOB_TITLE_ATMOSTECH = "engradio",
-		JOB_TITLE_MECHANIC = "engradio",
+		JOB_TITLE_SPACEPOD_TECHNICIAN = "engradio",
 		JOB_TITLE_ENGINEER = "engradio",
 		JOB_TITLE_ENGINEER_TRAINEE = "engradio",
 		// Central Command
-		"Emergency Response Team Engineer" = "dsquadradio", // I know this says deathsquad but the class for responseteam is neon green. No.
-		"Emergency Response Team Leader" = "dsquadradio",
-		"Emergency Response Team Medic" = "dsquadradio",
-		"Emergency Response Team Member" = "dsquadradio",
-		"Emergency Response Team Officer" = "dsquadradio",
+		"Custodian" = "dsquadradio", // I know this says deathsquad but the class for responseteam is neon green. No.
+		"Deathsquad Commando" = "dsquadradio",
+		JOB_TITLE_ERT_ENGINEER = "dsquadradio",
+		JOB_TITLE_ERT_LEADER = "dsquadradio",
+		JOB_TITLE_ERT_MEDIC = "dsquadradio",
+		JOB_TITLE_ERT_MEMBER = "dsquadradio",
+		JOB_TITLE_ERT_OFFICER = "dsquadradio",
+		JOB_TITLE_ERT_INQUISITOR = "dsquadradio",
+		JOB_TITLE_ERT_JANITOR = "dsquadradio",
 		JOB_TITLE_CCOFFICER = "dsquadradio",
 		JOB_TITLE_CCFIELD = "dsquadradio",
 		JOB_TITLE_CCSPECOPS = "dsquadradio",
-		JOB_TITLE_SYNDICATE = "syndiecom",
 		JOB_TITLE_CCSUPREME = "dsquadradio",
+		JOB_TITLE_CCSOLGOV = "dsquadradio",
+		"VIP Guest" = "dsquadradio",
 		// Medical
 		JOB_TITLE_CHEMIST = "medradio",
 		JOB_TITLE_CMO = "medradio",
 		JOB_TITLE_CORONER = "medradio",
 		JOB_TITLE_DOCTOR = "medradio",
-		JOB_TITLE_INTERN = "medradio",
+		JOB_TITLE_MEDICAL_INTERN = "medradio",
 		JOB_TITLE_PARAMEDIC = "medradio",
 		JOB_TITLE_PSYCHIATRIST = "medradio",
 		JOB_TITLE_VIROLOGIST = "medradio",
@@ -61,22 +71,24 @@
 		JOB_TITLE_RD = "sciradio",
 		JOB_TITLE_ROBOTICIST = "sciradio",
 		JOB_TITLE_SCIENTIST = "sciradio",
-		JOB_TITLE_SCIENTIST_STUDENT = "sciradio",
+		JOB_TITLE_SCIENCE_STUDENT = "sciradio",
 		// Security
 		JOB_TITLE_BRIGDOC = "secradio",
 		JOB_TITLE_DETECTIVE = "secradio",
 		JOB_TITLE_HOS = "secradio",
 		JOB_TITLE_LAWYER = "secradio",
-		JOB_TITLE_JUDGE = "secradio",
+		JOB_TITLE_MAGISTRATE = "secradio",
 		JOB_TITLE_OFFICER = "secradio",
 		JOB_TITLE_PILOT = "secradio",
 		JOB_TITLE_WARDEN = "secradio",
+		JOB_TITLE_PRISONER = "prisradio",
 		// Supply
 		JOB_TITLE_QUARTERMASTER = "supradio",
 		JOB_TITLE_CARGOTECH = "supradio",
 		JOB_TITLE_MINER = "supradio",
 		JOB_TITLE_MINING_MEDIC = "supradio",
 		// Service
+		JOB_TITLE_HOP = "comradio",
 		JOB_TITLE_BARTENDER = "srvradio",
 		JOB_TITLE_BOTANIST = "srvradio",
 		JOB_TITLE_CHAPLAIN = "srvradio",
@@ -85,15 +97,17 @@
 		JOB_TITLE_JANITOR = "srvradio",
 		JOB_TITLE_LIBRARIAN = "srvradio",
 		JOB_TITLE_MIME = "srvradio",
+		// Syndicate
+		JOB_TITLE_SYNDICATE_OFFICER = "syndiecom",
 	)
 	/// List of Command jobs
-	var/list/heads = list(JOB_TITLE_CAPTAIN, JOB_TITLE_HOP, JOB_TITLE_QUARTERMASTER, JOB_TITLE_REPRESENTATIVE, JOB_TITLE_BLUESHIELD, JOB_TITLE_CHIEF, JOB_TITLE_CMO, JOB_TITLE_RD, JOB_TITLE_HOS, JOB_TITLE_JUDGE, JOB_TITLE_AI, "Syndicate Research Director", "Syndicate Comms Officer")
+	var/list/heads = list(JOB_TITLE_CAPTAIN, JOB_TITLE_HOP, JOB_TITLE_QUARTERMASTER, JOB_TITLE_REPRESENTATIVE, JOB_TITLE_BLUESHIELD, JOB_TITLE_CHIEF_ENGINEER, JOB_TITLE_CMO, JOB_TITLE_RD, JOB_TITLE_HOS, JOB_TITLE_MAGISTRATE, JOB_TITLE_AI, "Syndicate Research Director", "Syndicate Comms Officer")
 	/// List of ERT jobs
-	var/list/ert_jobs = list("Emergency Response Team Officer", "Emergency Response Team Engineer", "Emergency Response Team Medic", "Emergency Response Team Leader", "Emergency Response Team Member")
+	var/list/ert_jobs = list(JOB_TITLE_ERT_OFFICER, JOB_TITLE_ERT_ENGINEER, JOB_TITLE_ERT_MEDIC, JOB_TITLE_ERT_LEADER, JOB_TITLE_ERT_MEMBER)
 	/// List of CentComm jobs
-	var/list/cc_jobs = list(JOB_TITLE_CCOFFICER, JOB_TITLE_CCFIELD, JOB_TITLE_CCSPECOPS, JOB_TITLE_SYNDICATE, "Nanotrasen Navy Captain", JOB_TITLE_CCSOLGOV, "Soviet Officer", "Soviet Marine Captain", "Soviet Admiral", JOB_TITLE_CCSUPREME)
+	var/list/cc_jobs = list(JOB_TITLE_CCOFFICER, JOB_TITLE_CCFIELD, JOB_TITLE_CCSPECOPS, JOB_TITLE_SYNDICATE_OFFICER, "Nanotrasen Navy Captain", JOB_TITLE_CCSOLGOV, "Soviet Officer", "Soviet Marine Captain", "Soviet Admiral", JOB_TITLE_CCSUPREME)
 	/// List of SolGov Marine jobs
-	var/list/tsf_jobs = list("Solar Federation Specops Lieutenant", "Solar Federation Specops Marine", "Solar Federation Marine")
+	var/list/tsf_jobs = list("Solar Federation Specops Lieutenant", "Solar Federation Specops Marine", "Solar Federation Lieutenant", "Solar Federation Marine", "Solar Federation Representative", "Solar Federation General", "VIP Guest")
 	//  List of USSP jobs
 	var/list/soviet_jobs = list("Soviet Tourist", "Soviet Conscript", "Soviet Soldier", "Soviet Officer", "Soviet Marine", "Soviet Marine Captain", "Soviet General", "Soviet Engineer", "Soviet Scientist", "Soviet Medic")
 	// Defined so code compiles and incase someone has a non-standard job
@@ -165,7 +179,7 @@
 
 // This loads a configuration from a JSON string.
 // Fucking broken as shit, someone help me fix this.
-/datum/nttc_configuration/proc/nttc_deserialize(text, var/ckey)
+/datum/nttc_configuration/proc/nttc_deserialize(text, ckey)
 	if(word_blacklist.Find(text)) //uh oh, they tried to be naughty
 		message_admins(span_danger("EXPLOIT WARNING: ") + "[ckey] attempted to upload an NTTC configuration containing JS abusable tags!")
 		log_admin("EXPLOIT WARNING: [ckey] attempted to upload an NTTC configuration containing JS abusable tags")
@@ -209,11 +223,17 @@
 		tcm.pass = FALSE
 	// All job and coloring shit
 	if(toggle_job_color || toggle_name_color)
+		var/job = tcm.sender_job
 		var/rank = tcm.sender_rank
-		job_class = all_jobs[rank]
+		//if the job title is not custom, just use that to decide the rules of formatting
+		if(job in all_jobs)
+			job_class = all_jobs[job]
+		else
+			job_class = all_jobs[rank]
 
+	tcm.pre_modify_name = tcm.sender_name
 	if(toggle_name_color)
-		var/new_name = "<span class=\"[job_class]\">" + tcm.sender_name + "</span>"
+		var/new_name = "<span class=\"[job_class]\">[tcm.sender_name]</span>"
 		tcm.sender_name = new_name
 		tcm.vname = new_name // this is required because the broadcaster uses this directly if the speaker doesn't have a voice changer on
 
@@ -224,25 +244,24 @@
 			job = "ERT"
 		if(toggle_job_color)
 			switch(job_indicator_type)
-				// These must have trailing spaces. No exceptions.
 				if(JOB_STYLE_1)
-					new_name = "[tcm.sender_name] <span class=\"[job_class]\">([job])</span> "
+					new_name = "[tcm.sender_name] <span class=\"[job_class]\">([job])</span>"
 				if(JOB_STYLE_2)
-					new_name = "[tcm.sender_name] - <span class=\"[job_class]\">[job]</span> "
+					new_name = "[tcm.sender_name] – <span class=\"[job_class]\">[job]</span>"
 				if(JOB_STYLE_3)
-					new_name = "<span class=\"[job_class]\"><small>\[[job]\]</small></span> [tcm.sender_name] "
+					new_name = "<span class=\"[job_class]\"><small>\[[job]\]</small></span> [tcm.sender_name]"
 				if(JOB_STYLE_4)
-					new_name = "<span class=[job_class]>([job])</span> [tcm.sender_name] "
+					new_name = "<span class=[job_class]>([job])</span> [tcm.sender_name]"
 		else
 			switch(job_indicator_type)
 				if(JOB_STYLE_1)
-					new_name = "[tcm.sender_name] ([job]) "
+					new_name = "[tcm.sender_name] ([job])"
 				if(JOB_STYLE_2)
-					new_name = "[tcm.sender_name] - [job] "
+					new_name = "[tcm.sender_name] – [job]"
 				if(JOB_STYLE_3)
-					new_name = "<small>\[[job]\]</small> [tcm.sender_name] "
+					new_name = "<small>\[[job]\]</small> [tcm.sender_name]"
 				if(JOB_STYLE_4)
-					new_name = "([job]) [tcm.sender_name] "
+					new_name = "([job]) [tcm.sender_name]"
 
 		// Only change the name if they have a job tag set, otherwise everyone becomes unknown, and thats bad
 		if(new_name != "")
@@ -253,8 +272,13 @@
 
 	// Makes heads of staff bold
 	if(toggle_command_bold)
+		var/job = tcm.sender_job
 		var/rank = tcm.sender_rank
-		if((rank in ert_jobs) || (rank in heads) || (rank in cc_jobs))
+		var/realjob = job
+		if(!(job in all_jobs))
+			realjob = rank
+
+		if((realjob in ert_jobs) || (realjob in heads) || (realjob in cc_jobs) || (realjob in tsf_jobs))
 			for(var/I in 1 to length(message_pieces))
 				var/datum/multilingual_say_piece/S = message_pieces[I]
 				if(!S.message)

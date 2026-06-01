@@ -2,16 +2,95 @@
 	resistance_flags = FLAMMABLE
 	max_integrity = 150
 
-//trees
+/obj/structure/flora/Initialize(mapload)
+	. = ..()
+	GLOB.world_flora |= src
+
+/obj/structure/flora/Destroy(force)
+	GLOB.world_flora -= src
+	. = ..()
+
+// MARK: Trees
 /obj/structure/flora/tree
 	name = "tree"
+	desc = "A large tree."
 	anchored = TRUE
 	density = TRUE
 	pixel_x = -16
-	layer = 9
+	layer = FLY_LAYER
+	plane = ABOVE_GAME_PLANE
 
+/// Return a see_through_map, examples in seethrough.dm
+/obj/structure/flora/tree/proc/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT
+
+/obj/structure/flora/tree/ComponentInitialize()
+	AddComponent(/datum/component/seethrough, get_seethrough_map())
+
+/obj/structure/flora/tree/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_WOOD, -40, 5)
+
+// MARK: New Year Trees
+/obj/structure/flora/tree/new_year
+	name = "new year tree"
+	desc = "Чудесно украшенная новогодняя ёлка."
+	icon = 'icons/obj/flora/new_year/new_year_tree.dmi'
+	icon_state = "new_year_tree"
+
+/obj/structure/flora/tree/new_year/get_ru_names()
+	return list(
+		NOMINATIVE = "новогодняя ёлка",
+		GENITIVE = "новогодней ёлки",
+		DATIVE = "новогодней ёлке",
+		ACCUSATIVE = "новогоднюю ёлку",
+		INSTRUMENTAL = "новогодней ёлкой",
+		PREPOSITIONAL = "новогодней ёлке"
+	)
+
+/obj/structure/flora/tree/new_year/presents
+	desc = "Чудесно украшенная новогодняя ёлка. А под ней подарки!"
+	icon_state = "new_year_tree_presents"
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF // protected by the christmas spirit
+	/// The type of gift created during interaction
+	var/gift_type = /obj/item/gift
+	/// If TRUE, players can take unlimited gifts.
+	var/unlimited = FALSE
+	/// Static list of keys of players who have already taken gifts (if unlimited = FALSE)
+	var/static/list/took_presents
+
+/obj/structure/flora/tree/new_year/presents/Initialize(mapload)
+	. = ..()
+	if(!took_presents)
+		took_presents = list()
+
+/obj/structure/flora/tree/new_year/presents/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(!user.ckey)
+		return
+
+	if(took_presents[user.ckey] && !unlimited)
+		to_chat(user, span_warning("Здесь нет подарков с твоим именем..."))
+		return
+
+	to_chat(user, span_warning("Немного покопавшись, вы находите подарок с вашим именем на обёртке!"))
+
+	if(!unlimited)
+		took_presents[user.ckey] = TRUE
+
+	var/obj/item/present = new gift_type(src)
+	user.put_in_hands(present)
+
+/obj/structure/flora/tree/new_year/presents/unlimited
+	desc = "Чудесно украшенная новогодняя ёлка. У неё, казалось бы, бесконечный запас подарков!"
+	unlimited = TRUE
+
+// MARK: Pine Trees
 /obj/structure/flora/tree/pine
 	name = "pine tree"
+	desc = "A coniferous pine tree."
 	icon = 'icons/obj/flora/pinetrees.dmi'
 	icon_state = "pine_1"
 	var/randomize_tree = TRUE
@@ -23,9 +102,41 @@
 
 /obj/structure/flora/tree/pine/xmas
 	name = "xmas tree"
-	icon = 'icons/obj/flora/pinetrees.dmi'
 	icon_state = "pine_c"
 	randomize_tree = FALSE
+	/// Number of gifts this tree can spawn when spawn_gifts() is called
+	var/gifts_count = 20
+	/// List of valid turfs adjacent to the tree where gifts can be spawned
+	var/list/possible_turfs
+
+/obj/structure/flora/tree/pine/xmas/Initialize(mapload)
+	. = ..()
+	recalculate_spawns()
+
+/obj/structure/flora/tree/pine/xmas/proc/recalculate_spawns()
+	if(!isturf(loc))
+		return
+
+	LAZYCLEARLIST(possible_turfs)
+
+	var/list/new_possible_gifts = RANGE_TURFS(1, loc) - loc
+
+	for(var/turf/turf in new_possible_gifts)
+		if(turf.density || is_space_or_openspace(turf))
+			continue
+
+		LAZYADD(possible_turfs, turf)
+
+/obj/structure/flora/tree/pine/xmas/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	recalculate_spawns()
+
+/obj/structure/flora/tree/pine/xmas/proc/spawn_gifts()
+	if(!length(possible_turfs))
+		return
+
+	for(var/i in 1 to gifts_count)
+		new /obj/effect/spawner/lootdrop/evil_santa_gift/xmas_tree(pick(possible_turfs))
 
 /obj/structure/flora/tree/dead
 	icon = 'icons/obj/flora/deadtrees.dmi'
@@ -45,12 +156,14 @@
 	pixel_x = 0
 
 /obj/structure/flora/tree/jungle
-	name = "tree"
 	icon_state = "tree"
 	desc = "It's seriously hampering your view of the jungle."
 	icon = 'icons/obj/flora/jungletrees.dmi'
 	pixel_x = -48
 	pixel_y = -20
+
+/obj/structure/flora/tree/jungle/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT_TWO_TALL
 
 /obj/structure/flora/tree/jungle/Initialize(mapload)
 	icon_state = "[icon_state][rand(1, 6)]"
@@ -60,6 +173,9 @@
 	pixel_y = 0
 	pixel_x = -32
 	icon = 'icons/obj/flora/jungletreesmall.dmi'
+
+/obj/structure/flora/tree/jungle/small/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT
 
 //grass
 /obj/structure/flora/grass
@@ -75,7 +191,6 @@
 	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
 
-
 /obj/structure/flora/grass/green
 	icon_state = "snowgrass1gb"
 
@@ -89,7 +204,6 @@
 /obj/structure/flora/grass/both/Initialize(mapload)
 	. = ..()
 	icon_state = "snowgrassall[rand(1, 3)]"
-
 
 //bushes
 /obj/structure/flora/bush
@@ -221,19 +335,15 @@
 	. = ..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
-
 /obj/item/twohanded/required/kirbyplants
 	name = "potted plant"
 	icon = 'icons/obj/flora/plants.dmi'
 	icon_state = "plant-1"
 	item_flags = NO_PIXEL_RANDOM_DROP
-	anchored = FALSE
 	layer = ABOVE_MOB_LAYER
-	w_class = WEIGHT_CLASS_HUGE
 	force = 10
 	force_wielded = 10
 	throwforce = 13
-	throw_speed = 2
 	throw_range = 4
 	/// Amount of SSobj ticks (Roughly 2 seconds) that a extinguished plant has been lit up
 	var/light_process = 0
@@ -244,9 +354,8 @@
 	light_on = FALSE
 	light_system = MOVABLE_LIGHT
 
-
-/obj/item/twohanded/required/kirbyplants/New()
-	..()
+/obj/item/twohanded/required/kirbyplants/Initialize(mapload)
+	. = ..()
 	if(prob(1))
 		icon_state = "plant-36"
 		return
@@ -255,20 +364,18 @@
 	if(num == 9)
 		l_range_init = 2
 		l_power_init = 0.6
-		set_light_range_power_color(l_range_init, l_power_init, COLOR_LUMINOL)
+		set_light_range_power_color(l_range_init, l_power_init, LIGHT_COLOR_CYAN)
 		set_light_on(TRUE)
 	else if(num == 20)
 		l_range_init = 2
 		l_power_init = 0.6
-		set_light_range_power_color(l_range_init, l_power_init, COLOR_WHEAT)
+		set_light_range_power_color(l_range_init, l_power_init, LIGHT_COLOR_BRIGHT_YELLOW)
 		set_light_on(TRUE)
 
-
 /obj/item/twohanded/required/kirbyplants/Destroy()
-	if(isprocessing)
+	if(datum_flags & DF_ISPROCESSING)
 		STOP_PROCESSING(SSobj, src)
 	return ..()
-
 
 /obj/item/twohanded/required/kirbyplants/extinguish_light(force = FALSE)
 	if(light_on)
@@ -276,7 +383,6 @@
 		name = "dimmed [name]"
 		desc = "Something shadowy moves to cover the plant. Perhaps shining a light will force it to clear?"
 		START_PROCESSING(SSobj, src)
-
 
 /obj/item/twohanded/required/kirbyplants/process()
 	var/turf/source_turf = get_turf(src)
@@ -287,7 +393,6 @@
 		return
 	light_process = 0
 
-
 /obj/item/twohanded/required/kirbyplants/proc/reset_light()
 	light_process = 0
 	set_light_on(TRUE)
@@ -295,21 +400,20 @@
 	desc = initial(desc)
 	STOP_PROCESSING(SSobj, src)
 
-
 /obj/item/twohanded/required/kirbyplants/equipped(mob/living/user)
 	. = ..()
 	if(!wielded)
 		return
 	var/image/I = image(icon = 'icons/obj/flora/plants.dmi' , icon_state = src.icon_state, loc = user)
 	I.override = 1
-	user.add_alt_appearance("sneaking_mission", I, GLOB.player_list)
+	add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "sneaking_mission", I)
 
 /obj/item/twohanded/required/kirbyplants/dropped(mob/living/user, slot, silent = FALSE)
 	. = ..()
 	user.remove_alt_appearance("sneaking_mission")
 
 /obj/item/twohanded/required/kirbyplants/dead
-	name = "\improper RD's potted plant"
+	name = "RD's potted plant"
 	desc = "A gift from the botanical staff, presented after the RD's reassignment. There's a tag on it that says \"Y'all come back now, y'hear?\"\nIt doesn't look very healthy..."
 	icon_state = "plant-dead"
 
@@ -370,7 +474,6 @@
 	name = "corn stalk"
 	icon = 'icons/obj/flora/plants.dmi'
 	icon_state = "cornstalk1"
-	anchored = FALSE
 	layer = 5
 
 /obj/structure/flora/corn_stalk/alt_1
@@ -384,13 +487,20 @@
 	icon = 'icons/obj/flora/plants.dmi'
 	icon_state = "strawbail1"
 	density = TRUE
-	climbable = 1 // you can climb all over them.
+	var/elevation = 16
+
+/obj/structure/flora/straw_bail/ComponentInitialize()
+	. = ..()
+	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = elevation)
 
 /obj/structure/flora/straw_bail/alt_1
 	icon_state = "strawbail2"
+	elevation = 26
 
 /obj/structure/flora/straw_bail/alt_2
 	icon_state = "strawbail3"
+	elevation = 22
 
 /obj/structure/bush
 	name = "foliage"
@@ -403,26 +513,21 @@
 	var/indestructable = FALSE
 	var/stump = 0
 
-
 /obj/structure/bush/Initialize(mapload)
 	. = ..()
 	if(prob(20))
 		set_opacity(TRUE)
 
-
 /obj/structure/bush/update_icon_state()
 	icon_state = stump ? "stump[stump]" : initial(icon_state)
-
 
 /obj/structure/bush/update_name(updates = ALL)
 	. = ..()
 	name = stump ? "cleared foliage" : initial(name)
 
-
 /obj/structure/bush/update_desc(updates = ALL)
 	. = ..()
 	desc = stump ? "There used to be dense undergrowth here." : initial(desc)
-
 
 /obj/structure/bush/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -461,73 +566,62 @@
 
 	return ..()
 
-
-//Jungle grass
-
+// MARK: Jungle grass
 /obj/structure/flora/grass/jungle
 	name = "jungle grass"
 	desc = "Thick alien flora."
 	icon = 'icons/obj/flora/jungleflora.dmi'
-	icon_state = "grassa"
-
+	icon_state = "grass1"
+	base_icon_state = "grass"
+	/// Controls how many variants of the sprite exists
+	var/variations = 10
 
 /obj/structure/flora/grass/jungle/Initialize(mapload)
-	icon_state = "[icon_state][rand(1, 5)]"
+	icon_state = "[base_icon_state][rand(1, variations)]"
 	. = ..()
 
-/obj/structure/flora/grass/jungle/b
-	icon_state = "grassb"
-
-//Jungle rocks
-
+// MARK: Jungle rocks
 /obj/structure/flora/rock/jungle
 	icon_state = "rock"
 	desc = "A pile of rocks."
 	icon = 'icons/obj/flora/jungleflora.dmi'
-	density = FALSE
 
 /obj/structure/flora/rock/jungle/Initialize(mapload)
 	. = ..()
 	icon_state = "[initial(icon_state)][rand(1,5)]"
 
-
-//Jungle bushes
-
+// MARK: Jungle bushes
 /obj/structure/flora/junglebush
 	name = "bush"
 	desc = "A wild plant that is found in jungles."
 	icon = 'icons/obj/flora/jungleflora.dmi'
-	icon_state = "busha"
+	icon_state = "bush1"
+	base_icon_state = "bush"
+	anchored = TRUE
+	/// Controls how many variants of the sprite exists
+	var/variations = 9
 
 /obj/structure/flora/junglebush/Initialize(mapload)
-	icon_state = "[icon_state][rand(1, 3)]"
+	icon_state = "[base_icon_state][rand(1, variations)]"
 	. = ..()
 
-/obj/structure/flora/junglebush/b
-	icon_state = "bushb"
-
-/obj/structure/flora/junglebush/c
-	icon_state = "bushc"
-
 /obj/structure/flora/junglebush/large
-	icon_state = "bush"
 	icon = 'icons/obj/flora/largejungleflora.dmi'
 	pixel_x = -16
 	pixel_y = -12
 	layer = ABOVE_ALL_MOB_LAYER
+	variations = 3
 
 /obj/structure/flora/rock/pile/largejungle
-	name = "rocks"
-	icon_state = "rocks"
+	icon_state = "rocks1"
+	base_icon_state = "rocks"
 	icon = 'icons/obj/flora/largejungleflora.dmi'
-	density = FALSE
 	pixel_x = -16
 	pixel_y = -16
 
 /obj/structure/flora/rock/pile/largejungle/Initialize(mapload)
 	. = ..()
-	icon_state = "[initial(icon_state)][rand(1,3)]"
-
+	icon_state = "[initial(base_icon_state)][rand(1,3)]"
 
 //hellflora from shiptest
 /obj/structure/flora/firebush
@@ -535,7 +629,6 @@
 	desc = "A bush being consumed by flames. Maybe it'll rise from its ashes like a phoenix?"
 	icon = 'icons/obj/flora/hellflora.dmi'
 	icon_state = "hell_bush"
-	density = FALSE
 	light_color = "#e08300"
 	light_power = 2
 	light_range = 3
@@ -550,7 +643,7 @@
 	resistance_flags = LAVA_PROOF
 	gender = PLURAL
 
-/obj/structure/flora/ausbushes/fullgrass/hell/Initialize()
+/obj/structure/flora/ausbushes/fullgrass/hell/Initialize(mapload)
 	. = ..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 	light_color = pick("#e87800", "#780606")
@@ -564,7 +657,7 @@
 	resistance_flags = LAVA_PROOF
 	gender = PLURAL
 
-/obj/structure/flora/ausbushes/sparsegrass/hell/Initialize()
+/obj/structure/flora/ausbushes/sparsegrass/hell/Initialize(mapload)
 	. = ..()
 	icon_state = "sparsegrass_[rand(1, 3)]"
 	light_color = pick("#e87800", "#780606")
@@ -583,10 +676,9 @@
 	desc = "Some kind of orange plant that appears to be slowly burning."
 	icon = 'icons/obj/flora/hellflora.dmi'
 	light_range = 2
-	light_power = 1
 	resistance_flags = LAVA_PROOF
 
-/obj/structure/flora/ausbushes/hell/Initialize()
+/obj/structure/flora/ausbushes/hell/Initialize(mapload)
 	. = ..()
 	if(icon_state == "firstbush_1")
 		icon_state = "firstbush_[rand(1, 4)]"
@@ -597,10 +689,9 @@
 	desc = "Some kind of orange fern."
 	icon = 'icons/obj/flora/hellflora.dmi'
 	light_range = 2
-	light_power = 1
 	resistance_flags = LAVA_PROOF
 
-/obj/structure/flora/ausbushes/fernybush/hell/Initialize()
+/obj/structure/flora/ausbushes/fernybush/hell/Initialize(mapload)
 	. = ..()
 	icon_state = "fernybush_[rand(1, 3)]"
 	light_color = pick("#e87800", "#780606")
@@ -613,7 +704,7 @@
 	light_power = 2
 	resistance_flags = LAVA_PROOF
 
-/obj/structure/flora/ausbushes/genericbush/hell/Initialize()
+/obj/structure/flora/ausbushes/genericbush/hell/Initialize(mapload)
 	. = ..()
 	icon_state = "genericbush_[rand(1, 4)]"
 	light_color = pick("#e87800", "#780606")
@@ -627,3 +718,35 @@
 	light_range = 2
 	resistance_flags = LAVA_PROOF
 	gender = PLURAL
+
+/obj/structure/festivus
+	name = "festivus pole"
+	desc = "На прошлогодних \"Испытаниях Силы\" директор исследований умудрился забросить этот неподвижный стержень, пролетавший мимо, прямиком в цветочный горшок."
+	icon = 'icons/obj/flora/pinetrees.dmi'
+	icon_state = "festivus_pole"
+
+/obj/structure/festivus/get_ru_names()
+	return list(
+		NOMINATIVE = "горшок силы",
+		GENITIVE = "горшка силы",
+		DATIVE = "горшка силы",
+		ACCUSATIVE = "горшок силы",
+		INSTRUMENTAL = "горшком силы",
+		PREPOSITIONAL = "горшке силы",
+	)
+
+/obj/structure/festivus/anchored
+	name = "suplexed rod"
+	desc = "Настоящий подвиг силы, почти не уступающий прошлогоднему."
+	icon_state = "anchored_rod"
+	anchored = TRUE
+
+/obj/structure/festivus/anchored/get_ru_names()
+	return list(
+		NOMINATIVE = "остановленный стержень",
+		GENITIVE = "остановленного стерженя",
+		DATIVE = "остановленному стерженю",
+		ACCUSATIVE = "остановленный стержень",
+		INSTRUMENTAL = "остановленным стерженем",
+		PREPOSITIONAL = "остановленном стержене",
+	)

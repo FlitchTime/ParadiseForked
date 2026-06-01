@@ -1,11 +1,11 @@
 /*
-	AI ClickOn()
-
-	The AI can double click to move the camera (this was already true but is cleaner),
-	or double click a mob to track them.
-
-	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
-*/
+ * AI ClickOn()
+ *
+ * The AI can double click to move the camera (this was already true but is cleaner),
+ * or double click a mob to track them.
+ *
+ * Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
+ */
 /mob/living/silicon/ai/DblClickOn(atom/A, params)
 	if(client.click_intercept)
 		// Not doing a click intercept here, because otherwise we double-tap with the `ClickOn` proc.
@@ -18,7 +18,6 @@
 		ai_actual_track(A)
 	else
 		A.move_camera_by_click()
-
 
 /mob/living/silicon/ai/ClickOn(atom/A, params)
 	if(client.click_intercept)
@@ -42,8 +41,7 @@
 		var/message = "[key_name(src)] might be running a modified client! (failed can_see on AI click of [A]([COORD(pixel_turf)]))"
 		add_attack_logs(src, src, message, ATKLOG_ALL)
 		log_admin(message)
-		SSdiscord.send2discord_simple_noadmins("**\[Warning]** [key_name(src)] might be running a modified client! (failed checkTurfVis on AI click of [A]([COORD(pixel_turf)]))")
-
+		GLOB.discord_manager.send2discord_simple_noadmins("**\[Warning]** [key_name(src)] might be running a modified client! (failed checkTurfVis on AI click of [A]([COORD(pixel_turf)]))")
 
 	var/turf_visible
 	if(pixel_turf)
@@ -56,30 +54,59 @@
 				var/message = "[key_name(src)] might be running a modified client! (failed can_see on AI click of [A]([COORD(pixel_turf)]))"
 				add_attack_logs(src, src, message, ATKLOG_ALL)
 				log_admin(message)
-				SSdiscord.send2discord_simple_noadmins("**\[Warning]** [key_name(src)] might be running a modified client! (failed checkTurfVis on AI click of [A]([COORD(pixel_turf)]))")
+				GLOB.discord_manager.send2discord_simple_noadmins("**\[Warning]** [key_name(src)] might be running a modified client! (failed checkTurfVis on AI click of [A]([COORD(pixel_turf)]))")
 				return
 
 	var/list/modifiers = params2list(params)
-	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
-		return
-	if(modifiers["shift"] && modifiers["alt"])
-		AltShiftClickOn(A)
-		return
-	if(modifiers["middle"])
+
+	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
+		if(LAZYACCESS(modifiers, SHIFT_CLICK))
+			if(LAZYACCESS(modifiers, ALT_CLICK))
+				MiddleShiftAltClickOn(A)
+				return
+			if(LAZYACCESS(modifiers, CTRL_CLICK))
+				MiddleControlClickOn(A)
+				return
+			MiddleShiftClickOn(A)
+			return
+		if(LAZYACCESS(modifiers, CTRL_CLICK))
+			MiddleControlClickOn(A)
+			return
+		if(LAZYACCESS(modifiers, ALT_CLICK))
+			MiddleAltClickOn(A)
+			return
 		MiddleClickOn(A)
-		if(controlled_mech) //Are we piloting a mech? Placed here so the modifiers are not overridden.
-			controlled_mech.click_action(A, src, params) //Override AI normal click behavior.
+		if(controlled_mech)
+			controlled_mech.click_action(A, src, modifiers)
 		return
-	if(modifiers["shift"])
+
+	if(LAZYACCESS(modifiers, SHIFT_CLICK))
+		if(LAZYACCESS(modifiers, CTRL_CLICK))
+			CtrlShiftClickOn(A)
+			return
+		if(LAZYACCESS(modifiers, ALT_CLICK))
+			AltShiftClickOn(A)
+			return
 		ShiftClickOn(A)
 		return
-	if(modifiers["alt"]) // alt and alt-gr (rightalt)
+
+	if(LAZYACCESS(modifiers, ALT_CLICK))
 		ai_base_click_alt(A)
 		return
-	if(modifiers["ctrl"])
+
+	if(LAZYACCESS(modifiers, CTRL_CLICK))
 		CtrlClickOn(A)
 		return
+
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		if(controlled_mech)
+			controlled_mech.click_action(A, src, modifiers)
+			return
+		var/secondary_result = A.attack_ai_secondary(src, modifiers)
+		if(secondary_result == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || secondary_result == SECONDARY_ATTACK_CONTINUE_CHAIN)
+			return
+		else if(secondary_result != SECONDARY_ATTACK_CALL_NORMAL)
+			CRASH("attack_ai_secondary did not return a SECONDARY_ATTACK_* define.")
 
 	if(world.time <= next_move)
 		return
@@ -89,9 +116,13 @@
 		aiCamera.captureimage(A, usr)
 		return
 
-	if(waypoint_mode)
+	if(setting_waypoint)
+		setting_waypoint = FALSE
 		set_waypoint(A)
-		waypoint_mode = 0
+		return
+
+	if(controlled_mech)
+		controlled_mech.click_action(A, src, modifiers)
 		return
 
 	A.add_hiddenprint(src)
@@ -99,18 +130,28 @@
 
 /*
 	AI has no need for the UnarmedAttack() and RangedAttack() procs,
-	because the AI code is not generic;	attack_ai() is used instead.
+	because the AI code is not generic; attack_ai() is used instead.
 	The below is only really for safety, or you can alter the way
 	it functions and re-insert it above.
 */
-/mob/living/silicon/ai/UnarmedAttack(atom/A)
+/mob/living/silicon/ai/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
 	A.attack_ai(src)
 
-/mob/living/silicon/ai/RangedAttack(atom/A, params)
+/mob/living/silicon/ai/RangedAttack(atom/A, list/modifiers)
 	A.attack_ai(src)
 
 /atom/proc/attack_ai(mob/user)
 	return
+
+/**
+ * What happens when the AI holds right-click on an item. Returns a SECONDARY_ATTACK_* value.
+ *
+ * Arguments:
+ * * user The mob holding the right click
+ * * modifiers The list of the custom click modifiers
+ */
+/atom/proc/attack_ai_secondary(mob/user, list/modifiers)
+	return SECONDARY_ATTACK_CALL_NORMAL
 
 /*
 	Since the AI handles shift, ctrl, and alt-click differently
@@ -127,9 +168,7 @@
 /mob/living/silicon/ai/CtrlClickOn(atom/A)
 	A.AICtrlClick(src)
 /mob/living/silicon/ai/MiddleClickOn(atom/A)
-    A.AIMiddleClick(src)
-/mob/living/silicon/ai/MiddleShiftClickOn(atom/A)
-	A.AIMiddleShiftClick(src)
+	A.AIMiddleClick(src)
 
 // DEFAULT PROCS TO OVERRIDE
 
@@ -169,25 +208,43 @@
 /atom/proc/ai_click_alt(mob/living/silicon/ai/user)
 	return
 
-
 /atom/proc/AIMiddleClick(mob/living/user)
 	return
 
-/atom/proc/AIMiddleShiftClick()
+/atom/proc/AIMiddleControlClick()
+	return
+
+/atom/proc/AIMiddleShiftControlClick()
+	return
+
+/atom/proc/AIMiddleAltClick()
+	return
+
+/atom/proc/AIMiddleAltShiftClick()
 	return
 
 /mob/living/silicon/ai/TurfAdjacent(turf/T)
 	return (GLOB.cameranet && GLOB.cameranet.checkTurfVis(T) && (get_dist(eyeobj, T) <= 7)) //not further than view distance
 
-
 // APC
 
 /obj/machinery/power/apc/AICtrlClick(mob/living/user) // turns off/on APCs.
 	if(!can_use(user))
-		to_chat(user, "<span class='warning'>AI control for \the [src] interface has been disabled.</span>")
+		to_chat(user, span_warning("AI control for \the [src] interface has been disabled."))
 		return
 	toggle_breaker(user)
 
+/obj/machinery/power/apc/AIShiftClick(mob/living/user) // Bolt all Airlocks in APC room.
+	if(!can_use(user))
+		to_chat(user, span_warning("AI control for \the [src] interface has been disabled."))
+		return
+	for(var/obj/machinery/door/airlock/A in area.machinery_cache)
+		A.AICtrlClick(user)
+
+/obj/machinery/power/apc/attack_ai_secondary(mob/living/silicon/user, list/modifiers)
+	if(can_use(user))
+		togglelock(user)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 // TURRETCONTROL
 
@@ -229,7 +286,6 @@
 		electrify(-1, user, TRUE) // permanent shock
 	return CLICK_ACTION_SUCCESS
 
-
 /obj/machinery/door/airlock/AIMiddleClick(mob/living/user) // Toggles door bolt lights.
 	if(!ai_control_check(user))
 		return
@@ -243,3 +299,53 @@
 /obj/machinery/ai_slipper/ai_click_alt(mob/living/silicon/ai/user) //Dispenses liquid if on
 	Activate()
 	return CLICK_ACTION_SUCCESS
+
+// AREAS
+
+/mob/living/silicon/ai/proc/MiddleControlClickOn(atom/A)
+	if(!ismalfAI(mind))
+		return
+	var/turf/turf = get_turf(A)
+	if(!turf)
+		return
+	var/area/area = get_area(turf)
+	if(!area)
+		return
+	for(var/obj/machinery/door/airlock/airlock in area.machinery_cache)
+		airlock.AICtrlClick(src)
+
+/mob/living/silicon/ai/MiddleShiftClickOn(atom/A)
+	if(!ismalfAI(mind))
+		return
+	var/turf/turf = get_turf(A)
+	if(!turf)
+		return
+	var/area/area = get_area(turf)
+	if(!area)
+		return
+	for(var/obj/machinery/door/airlock/airlock in area.machinery_cache)
+		airlock.AIShiftClick(src)
+
+/mob/living/silicon/ai/proc/MiddleAltClickOn(atom/A)
+	if(!ismalfAI(mind))
+		return
+	var/turf/turf = get_turf(A)
+	if(!turf)
+		return
+	var/area/area = get_area(turf)
+	if(!area)
+		return
+	for(var/obj/machinery/door/airlock/airlock in area.machinery_cache)
+		airlock.ai_click_alt(src)
+
+/mob/living/silicon/ai/proc/MiddleShiftAltClickOn(atom/A)
+	if(!ismalfAI(mind))
+		return
+	var/turf/turf = get_turf(A)
+	if(!turf)
+		return
+	var/area/area = get_area(turf)
+	if(!area)
+		return
+	for(var/obj/machinery/door/airlock/airlock in area.machinery_cache)
+		airlock.AIAltShiftClick(src)

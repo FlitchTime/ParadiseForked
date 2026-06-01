@@ -1,27 +1,23 @@
 
 GLOBAL_LIST_EMPTY(assistant_occupations)
 
-
 GLOBAL_LIST_INIT(command_positions, list(
 	JOB_TITLE_CAPTAIN,
 	JOB_TITLE_HOP,
 	JOB_TITLE_HOS,
 	JOB_TITLE_QUARTERMASTER,
-	JOB_TITLE_CHIEF,
+	JOB_TITLE_CHIEF_ENGINEER,
 	JOB_TITLE_RD,
 	JOB_TITLE_CMO,
 	JOB_TITLE_REPRESENTATIVE
 ))
 
-
 GLOBAL_LIST_INIT(engineering_positions, list(
-	JOB_TITLE_CHIEF,
+	JOB_TITLE_CHIEF_ENGINEER,
 	JOB_TITLE_ENGINEER,
 	JOB_TITLE_ATMOSTECH,
-	JOB_TITLE_MECHANIC,
-	JOB_TITLE_ENGINEER_TRAINEE
+	JOB_TITLE_ENGINEER_TRAINEE,
 ))
-
 
 GLOBAL_LIST_INIT(medical_positions, list(
 	JOB_TITLE_CMO,
@@ -33,7 +29,7 @@ GLOBAL_LIST_INIT(medical_positions, list(
 	JOB_TITLE_VIROLOGIST,
 	JOB_TITLE_PARAMEDIC,
 	JOB_TITLE_CORONER,
-	JOB_TITLE_INTERN
+	JOB_TITLE_MEDICAL_INTERN
 ))
 
 GLOBAL_LIST_INIT(additional_medical_positions, list(
@@ -45,7 +41,8 @@ GLOBAL_LIST_INIT(science_positions, list(
 	JOB_TITLE_SCIENTIST,
 	JOB_TITLE_GENETICIST,	//Part of both medical and science
 	JOB_TITLE_ROBOTICIST,
-	JOB_TITLE_SCIENTIST_STUDENT
+	JOB_TITLE_SCIENCE_STUDENT,
+	JOB_TITLE_SPACEPOD_TECHNICIAN,
 ))
 
 GLOBAL_LIST_INIT(security_positions, list(
@@ -55,7 +52,7 @@ GLOBAL_LIST_INIT(security_positions, list(
 	JOB_TITLE_OFFICER,
 	JOB_TITLE_BRIGDOC,
 	JOB_TITLE_PILOT,
-	JOB_TITLE_JUDGE
+	JOB_TITLE_MAGISTRATE
 ))
 
 GLOBAL_LIST_INIT(technically_security_positions,(
@@ -78,7 +75,7 @@ GLOBAL_LIST_INIT(support_positions, list(
 	JOB_TITLE_CHAPLAIN,
 	JOB_TITLE_CLOWN,
 	JOB_TITLE_MIME,
-	JOB_TITLE_JUDGE,
+	JOB_TITLE_MAGISTRATE,
 	JOB_TITLE_REPRESENTATIVE,
 	JOB_TITLE_BLUESHIELD,
 	JOB_TITLE_EXPLORER
@@ -99,7 +96,9 @@ GLOBAL_LIST_INIT(mining_positions, list(
 GLOBAL_LIST_INIT(service_positions, (support_positions - supply_positions))
 
 GLOBAL_LIST_INIT(civilian_positions, list(
-	JOB_TITLE_CIVILIAN
+	JOB_TITLE_CIVILIAN,
+	JOB_TITLE_PRISONER,
+	JOB_TITLE_INVESTOR,
 ))
 
 GLOBAL_LIST_INIT(nonhuman_positions, list(
@@ -112,14 +111,13 @@ GLOBAL_LIST_INIT(nonhuman_positions, list(
 GLOBAL_LIST_INIT(whitelisted_positions, list(
 	JOB_TITLE_BLUESHIELD,
 	JOB_TITLE_REPRESENTATIVE,
-	JOB_TITLE_MECHANIC,
+	JOB_TITLE_SPACEPOD_TECHNICIAN,
 	JOB_TITLE_BRIGDOC,
-	JOB_TITLE_JUDGE,
+	JOB_TITLE_MAGISTRATE,
 	JOB_TITLE_PILOT,
 ))
 
-
-/proc/guest_jobbans(var/job)
+/proc/guest_jobbans(job)
 	return (job in GLOB.whitelisted_positions)
 
 /proc/get_job_datums()
@@ -133,7 +131,7 @@ GLOBAL_LIST_INIT(whitelisted_positions, list(
 
 	return occupations
 
-/proc/get_alternate_titles(var/job)
+/proc/get_alternate_titles(job)
 	var/list/jobs = get_job_datums()
 	var/list/titles = list()
 

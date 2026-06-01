@@ -3,15 +3,12 @@
 	icon_state = "plating"
 	icon = 'icons/turf/floors/plating.dmi'
 	intact = FALSE
+	underfloor_accessibility = UNDERFLOOR_INTERACTABLE
 	floor_tile = null
-	baseturf = /turf/baseturf_bottom
 
 	var/unfastened = FALSE
 
 	footstep = FOOTSTEP_PLATING
-	barefootstep = FOOTSTEP_HARD_BAREFOOT
-	clawfootstep = FOOTSTEP_HARD_CLAW
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	real_layer = PLATING_LAYER
 
 /turf/simulated/floor/plating/Initialize(mapload)
@@ -42,7 +39,6 @@
 
 	if(unfastened)
 		. += span_warning("It has been unfastened.")
-
 
 /turf/simulated/floor/plating/attackby(obj/item/I, mob/user, params)
 	. = ..()
@@ -114,7 +110,6 @@
 		new /obj/item/stack/sheet/metal(src, 2)
 		return .|ATTACK_CHAIN_BLOCKED_ALL
 
-
 /turf/simulated/floor/plating/screwdriver_act(mob/user, obj/item/I)
 	. = TRUE
 	if(!I.tool_use_check(user, 0))
@@ -153,8 +148,14 @@
 	else
 		ChangeTurf(baseturf)
 
+/turf/simulated/floor/plating/lavaland_air
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_LAVALAND
+
+/turf/simulated/floor/plating/cold
+	atmos_environment = ENVIRONMENT_COLD
+
 /turf/simulated/floor/plating/airless
-	icon_state = "plating"
 	name = "airless plating"
 	oxygen = 0
 	nitrogen = 0
@@ -163,185 +164,6 @@
 /turf/simulated/floor/plating/airless/Initialize(mapload)
 	. = ..()
 	name = "plating"
-
-/turf/simulated/floor/engine
-	name = "reinforced floor"
-	icon_state = "engine"
-	thermal_conductivity = 0.025
-	var/insulated = FALSE
-	heat_capacity = 325000
-	explosion_vertical_block = 2
-	floor_tile = /obj/item/stack/rods
-	footstep = FOOTSTEP_PLATING
-	barefootstep = FOOTSTEP_HARD_BAREFOOT
-	clawfootstep = FOOTSTEP_HARD_CLAW
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
-	
-/turf/simulated/floor/engine/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/blob_turf_consuming, 3)
-
-/turf/simulated/floor/engine/break_tile()
-	return //unbreakable
-
-/turf/simulated/floor/engine/burn_tile()
-	return //unburnable
-
-/turf/simulated/floor/engine/make_plating(make_floor_tile = FALSE, mob/user, force = FALSE)
-	if(force)
-		..(make_floor_tile, user)
-	return //unplateable
-
-/turf/simulated/floor/engine/attack_hand(mob/user)
-	user.Move_Pulled(src)
-
-/turf/simulated/floor/engine/pry_tile(obj/item/C, mob/user, silent = FALSE)
-	return
-
-/turf/simulated/floor/engine/acid_act(acidpwr, acid_volume)
-	acidpwr = min(acidpwr, 50) //we reduce the power so reinf floor never get melted.
-	. = ..()
-
-
-/turf/simulated/floor/engine/wrench_act(mob/living/user, obj/item/I)
-	. = TRUE
-	if(!I.use_tool(src, user, 3 SECONDS, volume = I.tool_volume) || !istype(src, /turf/simulated/floor/engine))
-		return .
-	make_plating(make_floor_tile = FALSE, force = TRUE)
-	var/obj/item/stack/rods/rods = new(src, 2)
-	rods.add_fingerprint(user)
-
-
-/turf/simulated/floor/engine/attackby(obj/item/I, mob/user, params)
-	. = ..()
-
-	if(ATTACK_CHAIN_CANCEL_CHECK(.))
-		return .
-
-	if(istype(I, /obj/item/stack/sheet/plasteel)) //Insulating the floor
-		add_fingerprint(user)
-		var/obj/item/stack/sheet/plasteel/plasteel = I
-		if(insulated)
-			to_chat(user, span_warning("The [name] is already insulatedt!"))
-			return .
-		if(plasteel.get_amount() < 1)
-			to_chat(user, span_warning("You need at least one sheet of plasteel to do this!"))
-			return .
-		to_chat(user, span_notice("You start insulating [src]..."))
-		if(!do_after(user, 4 SECONDS * plasteel.toolspeed, src, category = DA_CAT_TOOL) || insulated || QDELETED(plasteel) || !plasteel.use(1))
-			return .
-		to_chat(user, span_notice("You finish insulating [src]."))
-		ChangeTurf(/turf/simulated/floor/engine/insulated)
-		return .|ATTACK_CHAIN_BLOCKED_ALL
-
-
-/turf/simulated/floor/engine/ex_act(severity)
-	switch(severity)
-		if(1)
-			ChangeTurf(baseturf)
-		if(2)
-			if(prob(50))
-				ChangeTurf(baseturf)
-
-		
-/turf/simulated/floor/engine/blob_consume()
-	ChangeTurf(baseturf)
-
-/turf/simulated/floor/engine/cult
-	name = "engraved floor"
-	icon_state = "cult"
-	var/holy = FALSE
-
-
-/turf/simulated/floor/engine/cult/Initialize(mapload)
-	. = ..()
-	update_icon(UPDATE_ICON_STATE)
-
-
-/turf/simulated/floor/engine/cult/update_icon_state()
-	if(SSticker?.cultdat && !holy)
-		icon_state = SSticker.cultdat.cult_floor_icon_state
-		return
-	icon_state = initial(icon_state)
-
-
-/turf/simulated/floor/engine/cult/narsie_act()
-	return
-
-/turf/simulated/floor/engine/cult/ratvar_act()
-	. = ..()
-	if(istype(src, /turf/simulated/floor/engine/cult)) //if we haven't changed type
-		var/previouscolor = color
-		color = "#FAE48C"
-		animate(src, color = previouscolor, time = 8)
-
-/turf/simulated/floor/engine/cult/holy
-	icon_state = "holy"
-	holy = TRUE
-
-//air filled floors; used in atmos pressure chambers
-
-/turf/simulated/floor/engine/n20
-	name = "\improper N2O floor"
-	sleeping_agent = 6000
-	oxygen = 0
-	nitrogen = 0
-
-/turf/simulated/floor/engine/co2
-	name = "\improper CO2 floor"
-	carbon_dioxide = 50000
-	oxygen = 0
-	nitrogen = 0
-
-/turf/simulated/floor/engine/plasma
-	name = "plasma floor"
-	toxins = 70000
-	oxygen = 0
-	nitrogen = 0
-
-/turf/simulated/floor/engine/o2
-	name = "\improper O2 floor"
-	oxygen = 100000
-	nitrogen = 0
-
-/turf/simulated/floor/engine/n2
-	name = "\improper N2 floor"
-	nitrogen = 100000
-	oxygen = 0
-
-/turf/simulated/floor/engine/air
-	name = "air floor"
-	oxygen = 2644
-	nitrogen = 10580
-
-
-/turf/simulated/floor/engine/singularity_pull(S, current_size)
-	if(current_size >= STAGE_FIVE)
-		if(floor_tile)
-			if(prob(30))
-				make_plating(make_floor_tile = TRUE, force = TRUE)
-		else if(prob(30))
-			ReplaceWithLattice()
-
-/turf/simulated/floor/engine/vacuum
-	name = "vacuum floor"
-	icon_state = "engine"
-	oxygen = 0
-	nitrogen = 0
-	temperature = TCMB
-
-/turf/simulated/floor/engine/insulated
-	name = "insulated reinforced floor"
-	icon_state = "engine"
-	insulated = TRUE
-	explosion_vertical_block = 3
-	thermal_conductivity = 0
-
-/turf/simulated/floor/engine/insulated/vacuum
-	name = "insulated vacuum floor"
-	icon_state = "engine"
-	oxygen = 0
-	nitrogen = 0
 
 /turf/simulated/floor/plating/ironsand
 	name = "Iron Sand"
@@ -362,9 +184,8 @@
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
-/turf/simulated/floor/plating/snow/ex_act(severity)
+/turf/simulated/floor/plating/snow/ex_act(severity, target)
 	return
 
 /turf/simulated/floor/plating/snow/remove_plating()
@@ -377,13 +198,17 @@
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
-/turf/simulated/floor/snow/ex_act(severity)
+/turf/simulated/floor/snow/ex_act(severity, target)
 	return
 
 /turf/simulated/floor/snow/pry_tile(obj/item/C, mob/user, silent = FALSE)
 	return
+
+// Metal foam states
+// teehee no one will find these here
+#define MFOAM_ALUMINUM 1
+#define MFOAM_IRON 2
 
 /turf/simulated/floor/plating/metalfoam
 	name = "foamed metal plating"
@@ -401,6 +226,8 @@
 		if(MFOAM_IRON)
 			icon_state = "ironfoam"
 
+#undef MFOAM_ALUMINUM
+#undef MFOAM_IRON
 
 /turf/simulated/floor/plating/metalfoam/attackby(obj/item/I, mob/user, params)
 	. = ..()
@@ -442,15 +269,13 @@
 		add_fingerprint(user)
 		return .|ATTACK_CHAIN_BLOCKED_ALL
 
-
-
 /turf/simulated/floor/plating/metalfoam/attack_animal(mob/living/simple_animal/M)
 	M.do_attack_animation(src)
 	if(M.melee_damage_upper == 0)
 		M.visible_message(span_notice("[M] nudges \the [src]."))
 	else
 		if(M.attack_sound)
-			playsound(loc, M.attack_sound, 50, 1, 1)
+			playsound(loc, M.attack_sound, 50, TRUE, 1)
 		M.visible_message(span_danger("\The [M] [M.attacktext] [src]!"))
 		smash(src)
 
@@ -470,9 +295,7 @@
 	icon = 'icons/turf/floors/ice_turfs.dmi'
 	base_icon_state = "ice_turfs"
 	icon_state = "unsmooth"
-	oxygen = 22
-	nitrogen = 82
-	temperature = 180
+	atmos_environment = ENVIRONMENT_LAVALAND
 	baseturf = /turf/simulated/floor/plating/ice
 	slowdown = 1
 	smooth = SMOOTH_BITMASK

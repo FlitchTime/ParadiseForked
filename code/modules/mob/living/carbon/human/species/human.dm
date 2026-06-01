@@ -1,8 +1,6 @@
 /datum/species/human
 	name = SPECIES_HUMAN
 	name_plural = "Humans"
-	icobase = 'icons/mob/human_races/r_human.dmi'
-	deform = 'icons/mob/human_races/r_def_human.dmi'
 	primitive_form = /datum/species/monkey
 	language = LANGUAGE_SOL_COMMON
 	inherent_traits = list(
@@ -22,5 +20,8 @@
 
 	meat_type = /obj/item/reagent_containers/food/snacks/meat/humanoid/human
 
-	reagent_tag = PROCESS_ORG
+	reagent_tag = ORGANIC
 	//Has standard darksight of 2.
+
+/datum/species/human/gain_muscles(mob/living/target, datum/strength_level/default, max_level, can_become_stronger)
+	..(target, target.gender == FEMALE ? default.prev_level : default, max_level, can_become_stronger)

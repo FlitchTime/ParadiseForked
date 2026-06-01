@@ -8,9 +8,8 @@
 	slot_flags = ITEM_SLOT_BELT
 	materials = list(MAT_METAL = 60, MAT_GLASS = 30)
 	force = 2
-	throwforce = 0
-	drop_sound = 'sound/items/handling/taperecorder_drop.ogg'
-	pickup_sound = 'sound/items/handling/taperecorder_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/taperecorder_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/taperecorder_pickup.ogg'
 	tts_seed = "Xenia"
 	/// If its currently recording.
 	var/recording = FALSE
@@ -26,25 +25,24 @@
 	var/starts_with_tape = TRUE
 	/// Sound loop that plays when recording or playing back.
 	var/datum/looping_sound/tape_recorder_hiss/soundloop
-
+	/// Sound or loud mode
+	var/silent_mode = FALSE
 
 /obj/item/taperecorder/empty
 	starts_with_tape = FALSE
 
-
-/obj/item/taperecorder/New()
-	..()
+/obj/item/taperecorder/Initialize(mapload)
+	. = ..()
 	if(starts_with_tape)
 		mytape = new /obj/item/tape/random(src)
 		update_icon(UPDATE_ICON_STATE)
-	soundloop = new(list(src))
-
+	soundloop = new(src)
+	become_hearing_sensitive()
 
 /obj/item/taperecorder/Destroy()
 	QDEL_NULL(mytape)
 	QDEL_NULL(soundloop)
 	return ..()
-
 
 /obj/item/taperecorder/examine(mob/user)
 	. = ..()
@@ -60,15 +58,13 @@
 				. += span_notice("[mytape] has [mytape.remaining_capacity] seconds remaining.") // to avoid having 0 minutes
 			else
 				. += span_notice("[mytape] has [seconds_to_time(mytape.remaining_capacity)] remaining.")
-		. += span_info("<b>Alt-Click</b> to access the tape.")
-
+		. += span_notice("<b>Alt-Click</b> to access the tape.")
 
 /obj/item/taperecorder/proc/update_sound()
-	if(!playing && !recording)
+	if(!playing && !recording || silent_mode)
 		soundloop.stop()
 	else
 		soundloop.start()
-
 
 /obj/item/taperecorder/update_icon_state()
 	if(!mytape)
@@ -80,11 +76,9 @@
 	else
 		icon_state = "taperecorder_idle"
 
-
-/obj/item/taperecorder/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = TRUE)
+/obj/item/taperecorder/fire_act(exposed_temperature, exposed_volume)
 	mytape?.ruin() //Fires destroy the tape
 	return ..()
-
 
 /obj/item/taperecorder/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/tape))
@@ -102,7 +96,6 @@
 
 	return ..()
 
-
 /obj/item/taperecorder/attack_hand(mob/user)
 	if(loc == user && mytape)
 		if(!user.is_in_hands(src))
@@ -112,7 +105,6 @@
 		return
 	..()
 
-
 /obj/item/taperecorder/attack_self(mob/user)
 	if(!mytape || mytape.ruined)
 		return
@@ -121,37 +113,58 @@
 	else
 		record()
 
+#define PLAYBACK_TAPE "Воспроизведение кассеты"
+#define PRINT_TRANSCRIPT "Распечатать стенограмму"
+#define EJECT_TAPE "Достать кассету"
+#define SILENT_MODE "Тихий режим"
+
+/obj/item/taperecorder/proc/toggle_silent_mode(mob/user)
+	silent_mode = !silent_mode
+	update_sound()
+	balloon_alert(user, "тихий режим [silent_mode ? "включён" : "выключен"]")
+	playsound(src, 'sound/machines/switch.ogg', 20, FALSE)
 
 /obj/item/taperecorder/click_alt(mob/living/user)
 	if(!mytape)
 		return NONE
 
-	var/list/options = list( "Playback Tape" = image(icon = 'icons/obj/device.dmi', icon_state = "taperecorder_playing"),
-					"Print Transcript" = image(icon = 'icons/obj/bureaucracy.dmi', icon_state = "paper_words"),
-					"Eject Tape" = image(icon = 'icons/obj/device.dmi', icon_state = "[mytape.icon_state]")
-					)
+	var/list/options = list(
+		PLAYBACK_TAPE = image(icon = 'icons/obj/device.dmi', icon_state = "taperecorder_playing"),
+		PRINT_TRANSCRIPT = image(icon = 'icons/obj/bureaucracy.dmi', icon_state = "paper_words"),
+		EJECT_TAPE = image(icon = 'icons/obj/device.dmi', icon_state = "[mytape.icon_state]"),
+		SILENT_MODE = image(icon = silent_mode ? 'icons/obj/items.dmi' : 'icons/obj/device.dmi' , icon_state = silent_mode ? "earmuffs" : "megaphone")
+	)
 	var/choice = show_radial_menu(user, src, options, require_near = TRUE)
 	if(!choice || user.incapacitated())
 		return CLICK_ACTION_BLOCKING
 	switch(choice)
-		if("Playback Tape")
+		if(PLAYBACK_TAPE)
 			play(user)
-		if("Print Transcript")
+		if(PRINT_TRANSCRIPT)
 			print_transcript(user)
-		if("Eject Tape")
+		if(EJECT_TAPE)
 			eject(user)
+		if(SILENT_MODE)
+			toggle_silent_mode(user)
 	return CLICK_ACTION_SUCCESS
+
+#undef PLAYBACK_TAPE
+#undef PRINT_TRANSCRIPT
+#undef EJECT_TAPE
+#undef SILENT_MODE
 
 /obj/item/taperecorder/proc/recorder_say(message, datum/tape_piece/record_datum)
 	if(record_datum)
 		tts_seed = record_datum.tts_seed
-		atom_say_verb = record_datum.message_verb || "says"
+		atom_say_verb = record_datum.message_verb || "говорит"
 		atom_say("[record_datum.message]")
 	else
 		tts_seed = initial(tts_seed)
-		atom_say_verb = "says"
+		atom_say_verb = "говорит"
+		if(silent_mode)
+			balloon_alert(ismob(loc) ? loc : null, "[message]")
+			return
 		atom_say("[message]")
-
 
 /obj/item/taperecorder/proc/eject(mob/user)
 	if(mytape)
@@ -162,7 +175,6 @@
 		user.put_in_hands(mytape, ignore_anim = FALSE)
 		mytape = null
 		update_icon(UPDATE_ICON_STATE)
-
 
 /obj/item/taperecorder/proc/record()
 	if(!mytape || mytape.ruined)
@@ -201,7 +213,6 @@
 		recorder_say("Кассета заполнена.")
 		playsound(src, 'sound/items/taperecorder/taperecorder_stop.ogg', 50, FALSE)
 
-
 /obj/item/taperecorder/proc/stop(playback_override = FALSE)
 	if(recording)
 		mytape.timestamp += mytape.used_capacity
@@ -222,7 +233,6 @@
 		playing = FALSE
 	update_icon(UPDATE_ICON_STATE)
 	update_sound()
-
 
 /obj/item/taperecorder/proc/play(mob/user)
 	if(!mytape || mytape.ruined)
@@ -270,29 +280,30 @@
 
 	stop(playback_override = TRUE)
 
-
 /obj/item/taperecorder/hear_talk(mob/living/M, list/message_pieces)
+	. = ..()
 	var/msg = multilingual_to_message(message_pieces)
-	if(mytape && recording)
-		var/ending = copytext(msg, length(msg))
-		mytape.timestamp += mytape.used_capacity
-		var/datum/tape_piece/piece = new()
-		piece.time = mytape.used_capacity
-		piece.speaker_name = M.name
-		piece.message = msg
-		piece.message_verb = "says"
-		piece.tts_seed = M.tts_seed
+	if(!mytape || !recording)
+		return
 
-		if(M.AmountStuttering())
-			piece.message_verb = "stammers"
-		else if(M.getBrainLoss() >= 60)
-			piece.message_verb = "gibbers"
-		else if(ending == "?")
-			piece.message_verb = "asks"
-		else if(ending == "!")
-			piece.message_verb = "exclaims"
-		mytape.storedinfo += piece
+	var/ending = copytext(msg, length(msg))
+	mytape.timestamp += mytape.used_capacity
+	var/datum/tape_piece/piece = new()
+	piece.time = mytape.used_capacity
+	piece.speaker_name = M.name
+	piece.message = msg
+	piece.message_verb = "says"
+	piece.tts_seed = M.tts_seed
 
+	if(M.AmountStuttering())
+		piece.message_verb = "stammers"
+	else if(M.getBrainLoss() >= 60)
+		piece.message_verb = "gibbers"
+	else if(ending == "?")
+		piece.message_verb = "asks"
+	else if(ending == "!")
+		piece.message_verb = "exclaims"
+	mytape.storedinfo += piece
 
 /obj/item/taperecorder/hear_message(mob/living/M, msg)
 	if(mytape && recording)
@@ -304,7 +315,6 @@
 		piece.message_verb = null
 		piece.tts_seed = initial(tts_seed)
 		mytape.storedinfo += piece
-
 
 /obj/item/taperecorder/proc/print_transcript(mob/user)
 	if(!mytape)
@@ -319,7 +329,7 @@
 		return
 
 	recorder_say("Распечатка в процессе...")
-	playsound(loc, 'sound/goonstation/machines/printer_thermal.ogg', 50, 1)
+	playsound(loc, 'sound/goonstation/machines/printer_thermal.ogg', 50, TRUE)
 	flick("taperecorder_anim", src)
 
 	sleep(3 SECONDS) //prevent paper from being printed until the end of the animation
@@ -346,7 +356,6 @@
 	if(!QDELETED(user) && in_range(user, transcript))
 		user.put_in_hands(transcript, ignore_anim = FALSE)
 
-
 /obj/item/tape
 	name = "tape"
 	desc = "A magnetic tape that can hold up to ten minutes of content."
@@ -356,9 +365,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	materials = list(MAT_METAL = 20, MAT_GLASS = 5)
 	force = 1
-	throwforce = 0
-	drop_sound = 'sound/items/handling/tape_drop.ogg'
-	pickup_sound = 'sound/items/handling/tape_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/tape_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/tape_pickup.ogg'
 	var/max_capacity = 600
 	var/used_capacity = 0
 	var/remaining_capacity = 600
@@ -366,11 +374,9 @@
 	var/list/timestamp = list()
 	var/ruined = FALSE
 
-
-/obj/item/tape/random/New()
-	..()
+/obj/item/tape/random/Initialize(mapload)
+	. = ..()
 	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"
-
 
 /obj/item/tape/examine(mob/user)
 	. = ..()
@@ -387,24 +393,20 @@
 			else
 				. += span_notice("It has [seconds_to_time(remaining_capacity)] remaining.")
 
-
 /obj/item/tape/update_overlays()
 	. = ..()
 	if(ruined)
 		. += "ribbonoverlay"
 
-
-/obj/item/tape/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = TRUE)
+/obj/item/tape/fire_act(exposed_temperature, exposed_volume)
 	..()
 	ruin()
-
 
 /obj/item/tape/attackby(obj/item/I, mob/user, params)
 	if(is_pen(I))
 		rename_interactive(user, I)
 		return ATTACK_CHAIN_PROCEED_SUCCESS
 	return ..()
-
 
 /obj/item/tape/screwdriver_act(mob/living/user, obj/item/I)
 	. = TRUE
@@ -416,11 +418,9 @@
 	to_chat(user, span_notice("You wind the tape back in!"))
 	fix()
 
-
 /obj/item/tape/attack_self(mob/user)
 	if(!ruined)
 		ruin(user)
-
 
 /obj/item/tape/proc/ruin(mob/user)
 	if(user)
@@ -433,16 +433,14 @@
 		ruined = TRUE
 		update_icon(UPDATE_OVERLAYS)
 
-
 /obj/item/tape/proc/fix()
 	if(ruined)
 		ruined = FALSE
 		update_icon(UPDATE_OVERLAYS)
 
-
 /obj/item/tape/verb/wipe()
 	set name = "Стереть плёнку"
-	set category = "Объекты"
+	set category = VERB_CATEGORY_OBJECT
 	set src in view(1)
 
 	var/mob/living/carbon/user = usr
@@ -456,7 +454,6 @@
 	storedinfo.Cut()
 	timestamp.Cut()
 
-
 /**
  * Datum used to operate with message pieces.
  */
@@ -467,5 +464,4 @@
 	var/message_verb
 	var/tts_seed
 	var/transcript
-
 

@@ -29,7 +29,7 @@
 		for(var/obj/item/I in H)
 			if(istype(I, /obj/item/implant))
 				continue
-			if(istype(I, /obj/item/organ))
+			if(is_organ(I))
 				continue
 			qdel(I)
 
@@ -41,7 +41,7 @@
 		H.equip_to_slot_or_del(new /obj/item/pinpointer(H.loc), ITEM_SLOT_POCKET_LEFT)
 
 		var/obj/item/card/id/W = new(H)
-		W.name = "[H.real_name]'s ID Card"
+		W.name = "[H.real_name]’s ID Card"
 		W.icon_state = "centcom"
 		W.access = get_all_accesses()
 		W.access += get_all_centcom_access()
@@ -109,4 +109,11 @@
 	message_admins("[key_name_admin(usr)] used THERE CAN BE ONLY ME! -NO ATTACK LOGS WILL BE SENT TO ADMINS FROM THIS POINT FORTH-")
 	log_admin("[key_name(usr)] used there can be only me.")
 	GLOB.nologevent = 1
-	world << sound('sound/music/thunderdome.ogg')
+
+	var/sound/music = sound('sound/music/thunderdome.ogg', channel = CHANNEL_ADMIN)
+	for(var/mob/mob as anything in GLOB.player_list)
+		if(mob.client.prefs.sound & SOUND_MIDI)
+			if(isnewplayer(mob) && (mob.client.prefs.sound & SOUND_LOBBY))
+				mob.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+			music.volume = 100 * mob.client.prefs.get_channel_volume(CHANNEL_ADMIN)
+			SEND_SOUND(mob, music)

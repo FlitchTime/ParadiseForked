@@ -3,32 +3,19 @@
 	desc = "An endcap for pipes"
 	icon = 'icons/obj/pipes_and_stuff/atmospherics/atmos/pipes.dmi'
 	icon_state = "cap"
-	level = 2
 
 	volume = 35
 
-	dir = SOUTH
 	initialize_directions = SOUTH
 
 	var/obj/machinery/atmospherics/node
 
-/obj/machinery/atmospherics/pipe/cap/New()
-	..()
+/obj/machinery/atmospherics/pipe/cap/Initialize(mapload)
+	. = ..()
 	initialize_directions = dir
-
-/obj/machinery/atmospherics/pipe/cap/hide(i)
-	if(level == 1 && issimulatedturf(loc))
-		invisibility = i ? INVISIBILITY_MAXIMUM : 0
-	update_icon()
 
 /obj/machinery/atmospherics/pipe/cap/pipeline_expansion()
 	return list(node)
-
-/obj/machinery/atmospherics/pipe/cap/process_atmos()
-	if(!parent)
-		..()
-	else
-		. = PROCESS_KILL
 
 /obj/machinery/atmospherics/pipe/cap/Destroy()
 	. = ..()
@@ -53,7 +40,6 @@
 	if(node)
 		node.update_underlays()
 
-
 /obj/machinery/atmospherics/pipe/cap/update_overlays()
 	. = ..()
 	if(!check_icon_cache())
@@ -61,7 +47,6 @@
 
 	alpha = 255
 	. += SSair.icon_manager.get_atmos_icon("pipe", , pipe_color, "cap" + icon_connect_type)
-
 
 /obj/machinery/atmospherics/pipe/cap/atmos_init()
 	..()
@@ -74,16 +59,9 @@
 				node = target
 				break
 
-	var/turf/T = get_turf(src)			// hide if turf is not intact
-	if(!istype(T) || (T.transparent_floor == TURF_TRANSPARENT))
-		return
-	hide(T.intact)
 	update_icon()
 
 /obj/machinery/atmospherics/pipe/cap/visible
-	level = 2
-	icon_state = "cap"
-	plane = GAME_PLANE
 	layer = GAS_PIPE_VISIBLE_LAYER
 
 /obj/machinery/atmospherics/pipe/cap/visible/scrubbers
@@ -108,10 +86,7 @@
 
 /obj/machinery/atmospherics/pipe/cap/hidden
 	level = 1
-	icon_state = "cap"
 	alpha = 128
-	plane = GAME_PLANE
-	layer = GAS_PIPE_HIDDEN_LAYER
 
 /obj/machinery/atmospherics/pipe/cap/hidden/scrubbers
 	name = "scrubbers pipe endcap"

@@ -25,8 +25,7 @@
 /obj/structure/mopbucket/examine(mob/user)
 	. = ..()
 	if(in_range(user, src))
-		. += span_info("[bicon(src)] [src] contains [reagents.total_volume] units of water left.")
-
+		. += span_notice("[get_examine_icon(user)] [src] contains [reagents.total_volume] units of water left.")
 
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM || I.is_robot_module())
@@ -39,7 +38,6 @@
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
-
 
 /obj/structure/mopbucket/crowbar_act(mob/living/user, obj/item/I)
 	. = TRUE
@@ -59,23 +57,20 @@
 	reagents.reaction(loc)
 	reagents.clear_reagents()
 
-
 /obj/structure/mopbucket/proc/put_in_cart(obj/item/I, mob/user)
 	. = user.drop_transfer_item_to_loc(I, src)
 	if(.)
 		to_chat(user, span_notice("You put [I] into [src]."))
 
-
 /obj/structure/mopbucket/on_reagent_change()
 	update_icon(UPDATE_OVERLAYS)
-
 
 /obj/structure/mopbucket/update_overlays()
 	. = ..()
 	if(mymop)
 		. += "mopbucket_mop"
 	if(reagents.total_volume > 0)
-		var/image/reagentsImage = image(icon, src, "mopbucket_reagents0")
+		var/mutable_appearance/reagentsImage = mutable_appearance(icon, "mopbucket_reagents0")
 		reagentsImage.alpha = 150
 		switch((reagents.total_volume / reagents.maximum_volume) * 100)
 			if(1 to 25)
@@ -86,16 +81,15 @@
 				reagentsImage.icon_state = "mopbucket_reagents3"
 			if(76 to 100)
 				reagentsImage.icon_state = "mopbucket_reagents4"
-		reagentsImage.icon += mix_color_from_reagents(reagents.reagent_list)
+		reagentsImage.color = get_color_matrix_from_reagents(reagents.reagent_list)
 		. += reagentsImage
-
 
 /obj/structure/mopbucket/attack_hand(mob/living/user)
 	. = ..()
 	if(mymop)
 		mymop.forceMove_turf()
 		user.put_in_hands(mymop, ignore_anim = FALSE)
-		to_chat(user, "<span class='notice'>You take [mymop] from [src].</span>")
+		to_chat(user, span_notice("You take [mymop] from [src]."))
 		mymop = null
 		update_icon(UPDATE_OVERLAYS)
 

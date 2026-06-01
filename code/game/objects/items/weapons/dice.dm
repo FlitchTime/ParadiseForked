@@ -1,19 +1,20 @@
 /obj/item/storage/pill_bottle/dice
 	name = "dice pack"
 	desc = "Мешочек с игральными костями внутри."
-	ru_names = list(
-        NOMINATIVE = "мешок игральных костей",
-        GENITIVE = "мешка игральных костей",
-        DATIVE = "мешку игральных костей",
-        ACCUSATIVE = "мешок игральных костей",
-        INSTRUMENTAL = "мешком игральных костей",
-        PREPOSITIONAL = "мешке игральных костей"
-	)
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "dicebag"
 	can_hold = list(/obj/item/dice)
 	allow_wrap = FALSE
 
+/obj/item/storage/pill_bottle/dice/get_ru_names()
+	return list(
+		NOMINATIVE = "мешок игральных костей",
+		GENITIVE = "мешка игральных костей",
+		DATIVE = "мешку игральных костей",
+		ACCUSATIVE = "мешок игральных костей",
+		INSTRUMENTAL = "мешком игральных костей",
+		PREPOSITIONAL = "мешке игральных костей",
+	)
 
 /obj/item/storage/pill_bottle/dice/populate_contents()
 	var/special_die = pick("1", "2", "fudge", "00", "100")
@@ -34,12 +35,9 @@
 	if(special_die == "100")
 		new /obj/item/dice/d100(src)
 
-
 /obj/item/storage/box/dice
 	name = "Коробка игральных костей"
 	desc = "ЕЩЁ ОДНИ!? ДА БЛЯДЬ!"
-	icon_state = "box"
-
 
 /obj/item/storage/box/dice/populate_contents()
 	new /obj/item/dice/d2(src)
@@ -50,22 +48,13 @@
 	new /obj/item/dice/d12(src)
 	new /obj/item/dice/d20(src)
 
-
 /obj/item/storage/pill_bottle/dice/suicide_act(mob/user)
-	user.visible_message(span_suicide("[user] игра[pluralize_ru(user.gender,"ет","ют")] со смертью! Похоже, он[genderize_ru(user.gender,"","а","о","и")] пыта[pluralize_ru(user.gender,"ется","ются")] покончить жизнь самоубийством!"))
+	user.visible_message(span_suicide("[user] игра[PLUR_ET_YUT(user)] со смертью! Похоже, он[GEND_A_O_I(user)] пыта[PLUR_ET_YUT(user)]ся покончить жизнь самоубийством!"))
 	return (OXYLOSS)
 
 /obj/item/dice //depreciated d6, use /obj/item/dice/d6 if you actually want a d6
 	name = "dice"
 	desc = "Кость с шестью гранями. Непримечательна и проста в обращении."
-	ru_names = list(
-		NOMINATIVE = "игральная кость",
-		GENITIVE = "игральной кости",
-		DATIVE = "игральной кости",
-		ACCUSATIVE = "игральную кость",
-		INSTRUMENTAL = "игральной костью",
-		PREPOSITIONAL = "игральной кости"
-	)
 	gender = FEMALE
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "d6"
@@ -78,6 +67,15 @@
 	var/rigged = DICE_NOT_RIGGED
 	var/rigged_value
 
+/obj/item/dice/get_ru_names()
+	return list(
+		NOMINATIVE = "игральная кость",
+		GENITIVE = "игральной кости",
+		DATIVE = "игральной кости",
+		ACCUSATIVE = "игральную кость",
+		INSTRUMENTAL = "игральной костью",
+		PREPOSITIONAL = "игральной кости",
+	)
 
 /obj/item/dice/Initialize(mapload)
 	. = ..()
@@ -85,11 +83,9 @@
 		result = roll(sides)
 	update_icon(UPDATE_OVERLAYS)
 
-
 /obj/item/dice/update_overlays()
 	. = ..()
 	. += "[icon_state][result]"
-
 
 /obj/item/dice/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] играет со смертью! Похоже [user.p_theyre()] пытается покончить жизнь самоубийством!"))
@@ -163,10 +159,8 @@
 	icon_state = "d100"
 	sides = 100
 
-
 /obj/item/dice/d100/update_overlays()
 	return list()
-
 
 /obj/item/dice/d20/e20
 	var/triggered = FALSE
@@ -201,7 +195,7 @@
 		result = special_faces[result]
 	if(user != null) //Dice was rolled in someone's hand
 		user.visible_message(
-			"[user] броса[pluralize_ru(user.gender,"ет","ют")] [src.name]. На [src.name] выпадает [result]. [comment]",
+			"[user] броса[PLUR_ET_YUT(user)] [src.name]. На [src.name] выпадает [result]. [comment]",
 			span_notice("Вы бросили [src.name] и выпало [result]. [comment]"),
 			span_italics("Вы слышите как катится [src.name], звучит как [fake_result].")
 		)
@@ -236,48 +230,87 @@
 	investigate_log("E20 detonated with a roll of [actual_result]. Triggered by: [key_name_log(user)]", INVESTIGATE_BOMB)
 	add_game_logs("threw E20, detonating at [AREACOORD(epicenter)] with a roll of [actual_result].", user)
 	add_attack_logs(user, src, "detonated with a roll of [actual_result]", ATKLOG_FEW)
-	explosion(epicenter, round(result * 0.25), round(result * 0.5), round(result), round(result * 1.5), TRUE, capped, cause = key_name(user)+" E20")
-
+	explosion(epicenter, devastation_range = round(result * 0.25), heavy_impact_range = round(result * 0.5), light_impact_range = round(result), flash_range = round(result * 1.5), adminlog = TRUE, ignorecap = capped, cause = (key_name(user)+" E20"))
 
 // Die of Fate
 /obj/item/dice/d20/fate
-	name = "\improper Die of Fate"
-	desc = "A die with twenty sides. You can feel unearthly energies radiating from it. Using this might be VERY risky."
-	icon_state = "d20"
+	name = "Die of Fate"
+	desc = "Кубик с двадцатью гранями. От него исходит таинственная энергия. Использовать его может быть ОЧЕНЬ рискованно."
 	var/reusable = TRUE
 	var/used = FALSE
 
+/obj/item/dice/d20/fate/get_ru_names()
+	return list(
+		NOMINATIVE = "Игральная Кость Судьбы",
+		GENITIVE = "Игральной Кости Судьбы",
+		DATIVE = "Игральной Кости Судьбы",
+		ACCUSATIVE = "Игральную Кость Судьбы",
+		INSTRUMENTAL = "Игральной Костью Судьбы",
+		PREPOSITIONAL = "Игральной Кости Судьбы"
+	)
+
 /obj/item/dice/d20/fate/stealth
 	name = "d20"
-	desc = "A die with twenty sides. The preferred die to throw at the GM."
+	desc = "Кость с двадцатью гранями. Именно такой чаще всего бросают в игровых мастеров."
+
+/obj/item/dice/d20/fate/stealth/get_ru_names()
+	return list(
+		NOMINATIVE = "игральная кость",
+		GENITIVE = "игральной кости",
+		DATIVE = "игральной кости",
+		ACCUSATIVE = "игральную кость",
+		INSTRUMENTAL = "игральной костью",
+		PREPOSITIONAL = "игральной кости"
+	)
 
 /obj/item/dice/d20/fate/one_use
 	reusable = FALSE
 
 /obj/item/dice/d20/fate/one_use/stealth
 	name = "d20"
-	desc = "A die with twenty sides. The preferred die to throw at the GM."
+	desc = "Кость с двадцатью гранями. Именно такой чаще всего бросают в игровых мастеров."
+
+/obj/item/dice/d20/fate/one_use/stealth/get_ru_names()
+	return list(
+		NOMINATIVE = "игральная кость",
+		GENITIVE = "игральной кости",
+		DATIVE = "игральной кости",
+		ACCUSATIVE = "игральную кость",
+		INSTRUMENTAL = "игральной костью",
+		PREPOSITIONAL = "игральной кости"
+	)
+
 
 /obj/item/dice/d20/fate/cursed
 	name = "cursed Die of Fate"
-	desc = "A die with twenty sides. You feel that rolling this is a REALLY bad idea."
+	desc = "Кость с двадцатью гранями. Вы чувствуете, что бросать её это ОЧЕНЬ плохая идея."
 	color = "#00BB00"
 
 	rigged = DICE_TOTALLY_RIGGED
 	rigged_value = 1
 
+/obj/item/dice/d20/fate/cursed/get_ru_names()
+	return list(
+		NOMINATIVE = "проклятая Игральная Кость Судьбы",
+		GENITIVE = "проклятой Игральной Кости Судьбы",
+		DATIVE = "проклятой Игральной Кости Судьбы",
+		ACCUSATIVE = "проклятую Игральную Кость Судьбы",
+		INSTRUMENTAL = "проклятой Игральной Костью Судьбы",
+		PREPOSITIONAL = "проклятой Игральной Кости Судьбы"
+	)
+
 /obj/item/dice/d20/fate/diceroll(mob/user)
 	. = ..()
 	if(!used)
 		if(!ishuman(user) || !user.mind || (user.mind in SSticker.mode.wizards))
-			to_chat(user, span_warning("You feel the magic of the dice is restricted to ordinary humans!"))
+			to_chat(user, span_warning("[capitalize(declent_ru(NOMINATIVE))] отказывается вам подчиняться!"))
 			return
 
 		if(!reusable)
 			used = TRUE
 
 		var/turf/T = get_turf(src)
-		T.visible_message(span_userdanger("[src] flares briefly."))
+		T.visible_message(span_userdanger("[capitalize(declent_ru(NOMINATIVE))] ярко вспыхива[PLUR_ET_YUT(src)]!"))
 
 		addtimer(CALLBACK(src, PROC_REF(effect), user, .), 1 SECONDS)
 
@@ -285,142 +318,9 @@
 	. = ..()
 
 	if(!ishuman(user) || !user.mind || (user.mind in SSticker.mode.wizards))
-		to_chat(user, span_warning("You feel the magic of the dice is restricted to ordinary humans! You should leave it alone."))
+		to_chat(user, span_warning("[capitalize(declent_ru(NOMINATIVE))] отказывается вам подчиняться!"))
 		user.drop_item_ground(src)
 
-/obj/item/dice/d20/fate/proc/create_smoke(amount)
-	var/datum/effect_system/fluid_spread/smoke/smoke = new
-	smoke.set_up(amount = amount, location = drop_location())
-	smoke.start()
-
 /obj/item/dice/d20/fate/proc/effect(mob/living/carbon/human/user, roll)
-	var/turf/T = get_turf(src)
-	switch(roll)
-		if(1)
-			//Dust
-			T.visible_message(span_userdanger("[user] turns to dust!"))
-			user.dust()
-		if(2)
-			//Death
-			T.visible_message(span_userdanger("[user] suddenly dies!"))
-			user.death()
-		if(3)
-			//Swarm of creatures
-			T.visible_message(span_userdanger("A swarm of creatures surround [user]!"))
-			for(var/direction in GLOB.alldirs)
-				new /mob/living/simple_animal/hostile/netherworld(get_step(get_turf(user),direction))
-		if(4)
-			//Destroy Equipment
-			T.visible_message(span_userdanger("Everything [user] is holding and wearing disappears!"))
-			for(var/obj/item/I in user)
-				if(istype(I, /obj/item/implant) || istype(I, /obj/item/organ))
-					continue
-				qdel(I)
-		if(5)
-			//Monkeying
-			T.visible_message(span_userdanger("[user] transforms into a monkey!"))
-			user.monkeyize()
-		if(6)
-			//Cut speed
-			T.visible_message(span_userdanger("[user] starts moving slower!"))
-			user.add_movespeed_modifier(/datum/movespeed_modifier/die_of_fate)
-		if(7)
-			//Throw
-			T.visible_message(span_userdanger("Unseen forces throw [user]!"))
-			user.Stun(12 SECONDS)
-			user.adjustBruteLoss(50)
-			var/throw_dir = GLOB.cardinal
-			var/atom/throw_target = get_edge_target_turf(user, throw_dir)
-			user.throw_at(throw_target, 200, 4)
-		if(8)
-			//Fueltank Explosion
-			T.visible_message(span_userdanger("An explosion bursts into existence around [user]!"))
-			explosion(get_turf(user),-1,0,2, flame_range = 2, cause = src)
-		if(9)
-			//Cold
-			T.visible_message(span_userdanger("[user] looks a little under the weather!"))
-			var/datum/disease/virus/cold/D = new
-			D.Contract(user)
-		if(10)
-			//Nothing
-			T.visible_message(span_userdanger("Nothing seems to happen."))
-		if(11)
-			//Cookie
-			T.visible_message(span_userdanger("A cookie appears out of thin air!"))
-			var/obj/item/reagent_containers/food/snacks/cookie/C = new(drop_location())
-			create_smoke(2)
-			C.name = "Cookie of Fate"
-		if(12)
-			//Healing
-			T.visible_message(span_userdanger("[user] looks very healthy!"))
-			user.revive()
-		if(13)
-			//Mad Dosh
-			T.visible_message(span_userdanger("Mad dosh shoots out of [src]!"))
-			var/turf/Start = get_turf(src)
-			for(var/direction in GLOB.alldirs)
-				var/turf/dirturf = get_step(Start,direction)
-				if(rand(0,1))
-					new /obj/item/stack/spacecash/c1000(dirturf)
-				else
-					var/obj/item/storage/bag/money/M = new(dirturf)
-					for(var/i in 1 to rand(5,50))
-						new /obj/item/coin/gold(M)
-		if(14)
-			//Free Gun
-			T.visible_message(span_userdanger("An impressive gun appears!"))
-			create_smoke(2)
-			new /obj/item/gun/projectile/revolver/mateba(drop_location())
-		if(15)
-			//Random One-use spellbook
-			T.visible_message(span_userdanger("A magical looking book drops to the floor!"))
-			create_smoke(2)
-			new /obj/item/spellbook/oneuse/random(drop_location())
-		if(16)
-			//Servant & Servant Summon
-			T.visible_message(span_userdanger("A Dice Servant appears in a cloud of smoke!"))
-			var/mob/living/carbon/human/H = new(drop_location())
-			create_smoke(2)
-
-			H.equipOutfit(/datum/outfit/butler)
-			var/datum/mind/servant_mind = new /datum/mind()
-			var/datum/objective/O = new
-			O.owner = servant_mind
-			O.target = user.mind
-			O.explanation_text = "Служить [user.real_name]."
-			O.antag_menu_name = "Служить"
-			servant_mind.objectives += O
-			servant_mind.transfer_to(H)
-
-			var/list/mob/dead/observer/candidates = SSghost_spawns.poll_candidates("Вы хотите поиграть играть за слугу [user.real_name]?", ROLE_WIZARD, role_cleanname = "слугу", poll_time = 30 SECONDS, source = H)
-			if(LAZYLEN(candidates))
-				var/mob/dead/observer/C = pick(candidates)
-				message_admins("[ADMIN_LOOKUPFLW(C)] was spawned as Dice Servant")
-				H.key = C.key
-				to_chat(H, span_notice("Вы слуга [user.real_name]. Вы должны сделать всё, что в ваших силах, чтобы выполнить [genderize_ru(user.gender, "его", "eё", "его", "их")] приказы."))
-
-			var/obj/effect/proc_holder/spell/summonmob/S = new
-			S.target_mob = H
-			user.mind.AddSpell(S)
-
-		if(17)
-			//Choose from 1 of 3 random syndie bundles
-			T.visible_message(span_userdanger("A suspicious radio beacon appears!"))
-			new /obj/item/radio/beacon/syndicate/bundle/magical(drop_location())
-			create_smoke(2)
-		if(18)
-			//Captain ID
-			T.visible_message(span_userdanger("A golden identification card appears!"))
-			new /obj/item/card/id/captains_spare(drop_location())
-			create_smoke(2)
-		if(19)
-			//Instrinct Resistance
-			T.visible_message(span_userdanger("[user] looks very robust!"))
-			user.physiology.brute_mod *= 0.5
-			user.physiology.burn_mod *= 0.5
-
-		if(20)
-			//Free wizard!
-			T.visible_message(span_userdanger("Magic flows out of [src] and into [user]!"))
-			user.mind.make_Wizard()
-
+	var/datum/dice_roll/d_action = GLOB.dice_rolls[roll]
+	d_action.activate(user, src)

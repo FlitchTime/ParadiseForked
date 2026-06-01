@@ -34,7 +34,7 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 		return 0
 
 	if(CONFIG_GET(flag/guest_jobban) && guest_jobbans(rank))
-		if(IsGuestKey(M.key))
+		if(is_guest_key(M.key))
 			return "Guest Job-ban"
 
 	if(GLOB.jobban_assoclist[M.ckey])
@@ -57,7 +57,7 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 			if(GLOB.jobban_regex.Find(s))
 				jobban_assoc_insert(GLOB.jobban_regex.group[1], GLOB.jobban_regex.group[2], GLOB.jobban_regex.group[3])
 			else
-				log_runtime(EXCEPTION("Skipping malformed job ban: [s]"))
+				stack_trace("Skipping malformed job ban: [s]")
 	else
 		if(!SSdbcore.IsConnected())
 			log_world("Database connection failed. Reverting to the legacy ban system.")
@@ -105,13 +105,12 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 /proc/jobban_unban_client(ckey, rank)
 	jobban_remove("[ckey] - [rank]")
 
-/proc/ban_unban_log_save(var/formatted_log)
+/proc/ban_unban_log_save(formatted_log)
 	text2file(formatted_log,"data/ban_unban_log.txt")
-
 
 /proc/jobban_remove(X)
 	for(var/i = 1; i <= length(GLOB.jobban_keylist); i++)
-		if( findtext(GLOB.jobban_keylist[i], "[X]") )
+		if(findtext(GLOB.jobban_keylist[i], "[X]"))
 			// This need to be here, instead of jobban_unban, due to direct calls to jobban_remove
 			if(GLOB.jobban_regex.Find(X))
 				var/ckey = GLOB.jobban_regex.group[1]
@@ -119,9 +118,9 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 				if(GLOB.jobban_assoclist[ckey] && GLOB.jobban_assoclist[ckey][rank])
 					GLOB.jobban_assoclist[ckey] -= rank
 				else
-					log_runtime(EXCEPTION("Attempted to remove non-existent job ban: [X]"))
+					stack_trace("Attempted to remove non-existent job ban: [X]")
 			else
-				log_runtime(EXCEPTION("Failed to remove malformed job ban from associative list: [X]"))
+				stack_trace("Failed to remove malformed job ban from associative list: [X]")
 			GLOB.jobban_keylist.Remove(GLOB.jobban_keylist[i])
 			if(CONFIG_GET(flag/ban_legacy_system))
 				jobban_savebanfile()
@@ -129,8 +128,8 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 	return 0
 
 /mob/verb/displayjobbans()
-	set category = "OOC"
-	set name = "Показать текущие джоббаны"
+	set category = VERB_CATEGORY_OOC
+	set name = "Текущие джоббаны"
 	set desc = "Displays all of your current jobbans."
 
 	if(!client || !ckey)
@@ -164,9 +163,9 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 			var/ackey = select_query.item[7]
 
 			if(bantype == "JOB_PERMABAN")
-				to_chat(src, "<span class='warning'>[bantype]: [job] - REASON: [reason], by [ackey]; [bantime]</span>")
+				to_chat(src, span_warning("[bantype]: [job] - REASON: [reason], by [ackey]; [bantime]"))
 			else if(bantype == "JOB_TEMPBAN")
-				to_chat(src, "<span class='warning'>[bantype]: [job] - REASON: [reason], by [ackey]; [bantime]; [duration]; expires [expiration]</span>")
+				to_chat(src, span_warning("[bantype]: [job] - REASON: [reason], by [ackey]; [bantime]; [duration]; expires [expiration]"))
 
 			is_actually_banned = TRUE
 
@@ -174,6 +173,6 @@ GLOBAL_DATUM_INIT(jobban_regex, /regex, regex("(\[\\S]+) - (\[^#]+\[^# ])(?: ## 
 
 		if(is_actually_banned)
 			if(CONFIG_GET(string/banappeals))
-				to_chat(src, "<span class='warning'>You can appeal the bans at: [CONFIG_GET(string/banappeals)]</span>")
+				to_chat(src, span_warning("You can appeal the bans at: [CONFIG_GET(string/banappeals)]"))
 		else
-			to_chat(src, "<span class='warning'>You have no active jobbans!</span>")
+			to_chat(src, span_warning("You have no active jobbans!"))

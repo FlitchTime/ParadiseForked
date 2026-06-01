@@ -1,19 +1,19 @@
 /obj/item/paper_bin
 	name = "paper bin"
 	icon = 'icons/obj/bureaucracy.dmi'
-	icon_state = "paper_bin1"
-	item_state = "sheet-metal"
+	icon_state = "paper_bin"
+	righthand_file = 'icons/mob/inhands/storage_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/storage_lefthand.dmi'
+	item_state = "paper_bin"
 	throwforce = 1
-	w_class = WEIGHT_CLASS_NORMAL
 	throw_speed = 3
-	throw_range = 7
 	pressure_resistance = 8
 	var/amount = 30					//How much paper is in the bin.
 	var/list/papers = list()	//List of papers put in the bin for reference.
 	var/letterhead_type
 	var/purple_bin = FALSE
 
-/obj/item/paper_bin/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = TRUE)
+/obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
 	if(amount)
 		amount = 0
 		update_icon(UPDATE_ICON_STATE)
@@ -28,23 +28,15 @@
 	extinguish()
 	update_icon(UPDATE_ICON_STATE)
 
+/obj/item/paper_bin/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	if(over_object != user || !ishuman(user))
+		return
 
-/obj/item/paper_bin/MouseDrop(atom/over_object, src_location, over_location, src_control, over_control, params)
-	. = ..()
-	if(!.)
-		return FALSE
+	if(!user.put_in_hands(src, ignore_anim = FALSE))
+		return
 
-	var/mob/user = usr
-	if(over_object != user || user.incapacitated() || !ishuman(user))
-		return FALSE
-
-	if(user.put_in_hands(src, ignore_anim = FALSE))
-		add_fingerprint(user)
-		user.visible_message(span_notice("[user] picks up [src]."))
-		return TRUE
-
-	return FALSE
-
+	add_fingerprint(user)
+	user.visible_message(span_notice("[user] picks up [src]."))
 
 /obj/item/paper_bin/attack_hand(mob/user)
 	if(ishuman(user))
@@ -61,8 +53,8 @@
 			update_icon(UPDATE_ICON_STATE)
 
 		var/obj/item/paper/P
-		if(papers.len > 0)	//If there's any custom paper on the stack, use that instead of creating a new paper.
-			P = papers[papers.len]
+		if(length(papers) > 0)	//If there's any custom paper on the stack, use that instead of creating a new paper.
+			P = papers[length(papers)]
 			papers.Remove(P)
 			P.forceMove_turf()
 		else
@@ -78,13 +70,12 @@
 		if(in_range(user, src))
 			user.put_in_hands(P, ignore_anim = FALSE)
 			P.add_fingerprint(user)
-			to_chat(user, "<span class='notice'>You take [P] out of the [src].</span>")
+			to_chat(user, span_notice("You take [P] out of the [src]."))
 	else
-		to_chat(user, "<span class='notice'>[src] is empty!</span>")
+		to_chat(user, span_notice("[src] is empty!"))
 
 	add_fingerprint(user)
 	return
-
 
 /obj/item/paper_bin/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/paper))
@@ -105,26 +96,26 @@
 
 	return ..()
 
-
 /obj/item/paper_bin/examine(mob/user)
 	. = ..()
 	if(in_range(user, src))
 		if(amount)
-			. += "<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>"
+			. += span_notice("There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.")
 		else
-			. += "<span class='notice'>There are no papers in the bin.</span>"
-
+			. += span_notice("There are no papers in the bin.")
 
 /obj/item/paper_bin/update_icon_state()
+	icon_state = "paper_bin"
 	if(amount < 1)
-		icon_state = "paper_bin0"
+		icon_state += "_empty"
 	else
-		icon_state = "paper_bin[purple_bin ? "2" : "1"]"
-
+		icon_state += "[purple_bin ? "_carbon" : ""]"
+	item_state = icon_state
 
 /obj/item/paper_bin/carbon
 	name = "carbonless paper bin"
-	icon_state = "paper_bin2"
+	icon_state = "paper_bin_carbon"
+	item_state = "paper_bin_carbon"
 	purple_bin = TRUE
 
 /obj/item/paper_bin/carbon/attack_hand(mob/user)
@@ -134,15 +125,15 @@
 			update_icon(UPDATE_ICON_STATE)
 
 		var/obj/item/paper/carbon/P
-		if(papers.len > 0)	//If there's any custom paper on the stack, use that instead of creating a new paper.
-			P = papers[papers.len]
+		if(length(papers) > 0)	//If there's any custom paper on the stack, use that instead of creating a new paper.
+			P = papers[length(papers)]
 			papers.Remove(P)
 		else
 			P = new /obj/item/paper/carbon(drop_location())
 		user.put_in_hands(P, ignore_anim = FALSE)
-		to_chat(user, "<span class='notice'>You take [P] out of the [src].</span>")
+		to_chat(user, span_notice("You take [P] out of the [src]."))
 	else
-		to_chat(user, "<span class='notice'>[src] is empty!</span>")
+		to_chat(user, span_notice("[src] is empty!"))
 
 	add_fingerprint(user)
 	return

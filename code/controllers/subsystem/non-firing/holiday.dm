@@ -1,17 +1,19 @@
 SUBSYSTEM_DEF(holiday)
 	name = "Holiday"
-	init_order = INIT_ORDER_HOLIDAY // 4
-	flags = SS_NO_FIRE
-	ss_id = "holiday"
+	dependents = list(
+		/datum/controller/subsystem/mapping,
+	)
+	ss_flags = SS_NO_FIRE
+
 	var/list/holidays
 
 /datum/controller/subsystem/holiday/Initialize()
 	if(!CONFIG_GET(flag/allow_holidays))
 		return //Holiday stuff was not enabled in the config!
 
-	var/YY = text2num(time2text(world.timeofday, "YY")) 	// get the current year
-	var/MM = text2num(time2text(world.timeofday, "MM")) 	// get the current month
-	var/DD = text2num(time2text(world.timeofday, "DD")) 	// get the current day
+	var/YY = text2num(time2text(world.timeofday, "YY"))	// get the current year
+	var/MM = text2num(time2text(world.timeofday, "MM"))	// get the current month
+	var/DD = text2num(time2text(world.timeofday, "DD"))	// get the current day
 
 	for(var/H in subtypesof(/datum/holiday))
 		var/datum/holiday/holiday = new H()
@@ -21,7 +23,6 @@ SUBSYSTEM_DEF(holiday)
 				holidays = list()
 			holidays[holiday.name] = holiday
 	return SS_INIT_SUCCESS
-
 
 /datum/controller/subsystem/holiday/OnMasterLoad()
 	if(holidays)

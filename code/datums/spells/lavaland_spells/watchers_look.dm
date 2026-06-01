@@ -11,13 +11,12 @@
 	var/projectiles_icons = list(
 		"watcher_normal" = /obj/projectile/watcher,
 		"watcher_fire" = /obj/projectile/temp/basilisk/magmawing,
-		"watcher_ice" = /obj/projectile/temp/basilisk/icewing)
+		"watcher_ice" = /obj/projectile/temp/basilisk/icewing,
+	)
 	var/selected_projectile = 1
-
 
 /obj/effect/proc_holder/spell/watchers_look/create_new_targeting()
 	return new /datum/spell_targeting/clicked_atom
-
 
 /obj/effect/proc_holder/spell/watchers_look/cast(list/targets, mob/user = usr)
 	var/target = targets[1]
@@ -31,11 +30,15 @@
 	proj.original = target
 	proj.firer = user
 	var/turf/target_turf = get_turf(target)
-	proj.preparePixelProjectile(target, target_turf, user, targeting.click_params)
+
+	var/list/click_params = targeting.click_params
+	if(istext(click_params))
+		click_params = params2list(click_params)
+
+	proj.preparePixelProjectile(target, user, click_params)
 	proj.fire()
 	user.newtonian_move(get_dir(target_turf, T))
 	return TRUE
-
 
 /obj/effect/proc_holder/spell/watchers_look/click_alt(mob/user)
 	//switch to next type of projectile and update action's icon

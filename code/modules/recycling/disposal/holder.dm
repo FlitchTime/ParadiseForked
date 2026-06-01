@@ -26,11 +26,9 @@
 	/// Contains a fat person?
 	var/has_fat_guy = FALSE
 
-
 /obj/structure/disposalholder/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_WEATHER_IMMUNE, INNATE_TRAIT)
-
 
 /obj/structure/disposalholder/Destroy()
 	QDEL_NULL(gas)
@@ -38,7 +36,6 @@
 	last_pipe = null
 	current_pipe = null
 	return ..()
-
 
 /// Initializes a holder from the contents of a disposal unit
 /obj/structure/disposalholder/proc/init(obj/machinery/disposal/disposal)
@@ -71,7 +68,6 @@
 		SEND_SIGNAL(atom_in_transit, COMSIG_MOVABLE_DISPOSING, src, disposal, hasmob)
 		atom_in_transit.forceMove(src)
 
-
 /// Starts the movement process, argument is the disposal unit the holder started in
 /obj/structure/disposalholder/proc/start(obj/machinery/disposal/disposal)
 	if(QDELETED(disposal.trunk))
@@ -82,24 +78,21 @@
 	setDir(DOWN)
 	start_moving()
 
-
 /// Starts the movement process, persists while the holder is moving through pipes
 /obj/structure/disposalholder/proc/start_moving()
 	var/delay = world.tick_lag
-	var/datum/move_loop/our_loop = SSmove_manager.move_disposals(src, delay = delay, timeout = delay * count)
+	var/datum/move_loop/our_loop = GLOB.move_manager.move_disposals(src, delay = delay, timeout = delay * count)
 	if(our_loop)
 		RegisterSignal(our_loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
 		RegisterSignal(our_loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(try_expel))
 		RegisterSignal(our_loop, COMSIG_QDELETING, PROC_REF(movement_stop))
 		current_pipe = loc
 
-
 /// Handles the preprocess check signal, sets the current pipe as the last pipe
 /obj/structure/disposalholder/proc/pre_move(datum/move_loop/source)
 	SIGNAL_HANDLER
 
 	last_pipe = loc
-
 
 /// Handles the postprocess check signal, tries to leave the pipe
 /obj/structure/disposalholder/proc/try_expel(datum/move_loop/source, result, visual_delay)
@@ -111,7 +104,6 @@
 		return
 	last_pipe.expel(src, get_turf(src), dir)
 
-
 /// Handles what happens to the contents when the qdel signal triggers
 /obj/structure/disposalholder/proc/movement_stop(datum/source)
 	SIGNAL_HANDLER
@@ -120,8 +112,7 @@
 	last_pipe = null
 	active = FALSE
 	for(var/mob/living/piperider in contents)
-		to_chat(piperider, span_notice("Your movement has slowed to a stop. If you tried, you could probably <b>struggle</b> free."))
-
+		to_chat(piperider, span_notice("Ваше движение замедлилось до полной остановки. Если постараться, вы могли-бы <b>вырваться</b>."))
 
 /**
  * Starts the struggle code
@@ -137,7 +128,6 @@
 		return //Somehow they got out without telling us
 	INVOKE_ASYNC(src, PROC_REF(struggle_free), escapee)
 
-
 /**
  * Completes the struggle code
  *
@@ -149,12 +139,12 @@
 		return //Somehow we're not in a pipe, shits probably fucked
 	var/obj/structure/disposalpipe/transport_cylinder = loc
 	if(active)
-		to_chat(escapee, span_danger("You slide past [loc] and are unable to keep your grip!"))
+		to_chat(escapee, span_danger("Вы проскальзываете мимо [loc.declent_ru(GENITIVE)] и не можете удержаться!"))
 		return
 	var/turf/our_turf = get_turf(src)
 	if(our_turf in escapee.do_afters)
 		return //already trying to escape
-	to_chat(escapee, span_warning("You push against the thin pipe walls..."))
+	to_chat(escapee, span_warning("Вы упираетесь в тонкие стенки трубы..."))
 	playsound(our_turf, 'sound/machines/airlock_alien_prying.ogg', 30, FALSE, 3) //yeah I know but at least it sounds like metal being bent.
 	if(!do_after(escapee, 20 SECONDS, our_turf))
 		return
@@ -162,7 +152,6 @@
 		jailbird.apply_damage(rand(5, 15), BRUTE)
 	transport_cylinder.spew_forth()
 	transport_cylinder.take_damage(transport_cylinder.max_integrity)
-
 
 //failsafe in the case the holder is somehow forcemoved somewhere that's not a disposal pipe. Otherwise the above loop breaks.
 /obj/structure/disposalholder/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
@@ -179,11 +168,9 @@
 		thing.forceMove(drop_loc)
 	qdel(src)
 
-
 /// Finds the turf which should contain the next pipe
 /obj/structure/disposalholder/proc/nextloc()
 	return get_step(src, dir)
-
 
 /// Finds a matching pipe on a turf
 /obj/structure/disposalholder/proc/findpipe(turf/check_turf)
@@ -198,7 +185,6 @@
 			return pipe
 	// if no matching pipe, return null
 	return null
-
 
 /// Merge two holder objects, used when a holder meets a stuck holder
 /obj/structure/disposalholder/proc/merge(obj/structure/disposalholder/other)
@@ -217,25 +203,22 @@
 		has_fat_guy = TRUE
 	qdel(other)
 
-
 // called when player tries to move while in a pipe
 /obj/structure/disposalholder/relaymove(mob/living/user, direction)
 	if(user.incapacitated() || world.time <= user.last_special)
 		return
 	user.last_special = world.time + 10 SECONDS
 	for(var/mob/hearer in range(5, get_turf(src)))
-		hearer.show_message("<span size=[max(0, 5 - get_dist(src, hearer))]>CLONG, clong!</span>", EMOTE_AUDIBLE)
+		hearer.show_message("<span size=[max(0, 5 - get_dist(src, hearer))]>БДЫНЬ, бдынь!</span>", EMOTE_AUDIBLE)
 	playsound(loc, 'sound/effects/clang.ogg', 50, FALSE)
 
-
 /// Called to vent all gas in holder to a location
-/obj/structure/disposalholder/proc/vent_gas(turf/turf)
-	turf.assume_air(gas)
-
+/obj/structure/disposalholder/proc/vent_gas(turf/location)
+	if(istype(location))
+		location.blind_release_air(gas)
 
 /obj/structure/disposalholder/AllowDrop()
 	return TRUE
-
 
 /obj/structure/disposalholder/ex_act(severity, target)
 	return

@@ -73,6 +73,7 @@
 #define ACCESS_MINISAT 75
 #define ACCESS_MINERAL_STOREROOM 76
 #define ACCESS_NETWORK 77
+#define ACCESS_INVESTOR 78
 
 #define ACCESS_WEAPONS 99 //Weapon authorization for secbots
 
@@ -120,7 +121,7 @@
 //Поскольку дальше уже зона Сол трейдеров и т.д. Следующие доступы будут идти по убывающей начиная с 149-ой
 #define ACCESS_SYNDICATE_MEDICAL 149 // Ghost role 'Taipan' Syndicate Medical Access
 #define ACCESS_SYNDICATE_BOTANY 148 // Ghost role 'Taipan' Syndicate Botany Access
-
+#define ACCESS_SYNDICATE_CONTAINER 163
 
 //Trade Stations
 #define ACCESS_TRADE_SOL 160
@@ -128,8 +129,24 @@
 //MONEY
 #define ACCESS_CRATE_CASH 200
 
+// de_kerberos 2
+#define ACCESS_CAPTAIN_REAL 310
+#define ACCESS_ARMORY_REAL 311
+
 //Awaymissions
 #define ACCESS_AWAY01 271
 
 //Ghost roles
 #define ACCESS_FREE_GOLEMS 300
+
+//Access Region Codes
+#define REGION_ALL 0
+#define REGION_GENERAL 1
+#define REGION_SECURITY 2
+#define REGION_MEDBAY 3
+#define REGION_RESEARCH 4
+#define REGION_ENGINEERING 5
+#define REGION_SUPPLY 6
+#define REGION_COMMAND 7
+#define REGION_CENTCOMM 8
+#define REGION_TAIPAN 9

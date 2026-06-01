@@ -1,15 +1,23 @@
-/mob/dead/observer/DblClickOn(var/atom/A, var/params)
+/mob/dead/observer/DblClickOn(atom/A, params)
 	if(client.click_intercept)
 		// Not doing a click intercept here, because otherwise we double-tap with the `ClickOn` proc.
 		// But we return here since we don't want to do regular dblclick handling
 		return
 
-	if(can_reenter_corpse && mind && mind.current)
-		if(A == mind.current || (mind.current in A)) // double click your corpse or whatever holds it
-			reenter_corpse()						// (cloning scanner, body bag, closet, mech, etc)
-			return									// seems legit.
+	var/list/modifiers = params2list(params)
 
-	if(istype(A, /mob/living) && orbit_menu?.auto_observe)
+	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
+		return
+
+	if(LAZYACCESS(modifiers, SHIFT_CLICK))
+		return
+
+	if(can_reenter_corpse && mind?.current)
+		if(A == mind.current || (mind.current in A)) // double click your corpse or whatever holds it
+			reenter_corpse() // (cloning scanner, body bag, closet, mech, etc)
+			return // seems legit.
+
+	if(isliving(A) && orbit_menu?.auto_observe)
 		var/mob/living/eye_mob = A
 		do_observe(eye_mob)
 
@@ -22,51 +30,61 @@
 		forceMove(get_turf(A))
 		update_parallax_contents()
 
-/mob/dead/observer/ClickOn(var/atom/A, var/params)
+/mob/dead/observer/ClickOn(atom/A, params)
 	if(client.click_intercept)
 		client.click_intercept.InterceptClickOn(src, params, A)
 		return
+
 	if(world.time <= next_move)
 		return
 
 	var/list/modifiers = params2list(params)
-	if(check_rights(R_ADMIN, 0)) // Admin click shortcuts
-		var/mob/M
-		if(modifiers["shift"] && modifiers["ctrl"])
-			client.debug_variables(A)
+	if(check_rights(R_ADMIN, FALSE)) // Admin click shortcuts
+		var/mob/selected_mob
+		if(LAZYACCESS(modifiers, SHIFT_CLICK))
+			if(LAZYACCESS(modifiers, CTRL_CLICK))
+				client.debug_variables(A)
+				return
+			if(LAZYACCESS(modifiers, MIDDLE_CLICK))
+				selected_mob = get_mob_in_atom_with_warning(A)
+				if(!selected_mob)
+					return
+				admin_mob_info(selected_mob)
+				return
+		if(LAZYACCESS(modifiers, CTRL_CLICK))
+			selected_mob = get_mob_in_atom_with_warning(A)
+			if(!selected_mob)
+				return
+			usr.client.VUAP_selected_mob = selected_mob
+			usr.client.selectedPlayerCkey = selected_mob.ckey
+			SSadmin_verbs.dynamic_invoke_verb(usr, /datum/admin_verb/vuap_personal, selected_mob)
 			return
-		if(modifiers["ctrl"])
-			M = get_mob_in_atom_with_warning(A)
-			if(M)
-				client.holder.show_player_panel(M)
-			return
-		if(modifiers["shift"] && modifiers["middle"])
-			M = get_mob_in_atom_with_warning(A)
-			if(M)
-				admin_mob_info(M)
-			return
-	if(modifiers["middle"])
+
+	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 		MiddleClickOn(A)
 		return
-	if(modifiers["shift"])
+
+	if(LAZYACCESS(modifiers, SHIFT_CLICK))
 		ShiftClickOn(A)
 		return
-	if(modifiers["alt"])
+
+	if(LAZYACCESS(modifiers, ALT_CLICK))
 		AltClickOn(A)
 		return
+
 	// You are responsible for checking CONFIG_GET(flag/ghost_interaction) when you override this function
 	// Not all of them require checking, see below
 	A.attack_ghost(src)
 
 // We don't need a fucking toggle.
-/mob/dead/observer/ShiftClickOn(var/atom/A)
+/mob/dead/observer/ShiftClickOn(atom/A)
 	examinate(A)
 
 /atom/proc/attack_ghost(mob/dead/observer/user)
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_GHOST, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	if(user.client)
-		if(isobserver(user) && user.gas_scan && atmos_scan(user = user, target = src, silent = TRUE))
+		if(isobserver(user) && user.gas_scan && atmos_scan(user = user, target = src, silent = TRUE, milla_turf_details = check_rights(R_DEBUG, FALSE)))
 			return TRUE
 	return FALSE
 
@@ -89,7 +107,7 @@
 	var/obj/machinery/teleport/station/S = power_station
 	if(S)
 		var/obj/machinery/computer/teleporter/com = S.teleporter_console
-		if(com && com.target)
+		if(com?.target)
 			user.forceMove(get_turf(com.target))
 
 /obj/machinery/gateway/centerstation/attack_ghost(mob/user)

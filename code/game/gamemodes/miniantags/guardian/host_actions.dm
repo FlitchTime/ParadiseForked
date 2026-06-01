@@ -5,7 +5,7 @@
  */
 /datum/action/guardian
 	name = "Generic guardian host action"
-	icon_icon = 'icons/mob/guardian.dmi'
+	button_icon = 'icons/mob/guardian.dmi'
 	button_icon_state = "base"
 	var/mob/living/simple_animal/hostile/guardian/guardian
 
@@ -22,12 +22,16 @@
  * Allows the guardian host to communicate with their guardian.
  */
 /datum/action/guardian/communicate
-	name = "Communicate"
-	desc = "Communicate telepathically with your guardian."
+	name = "Связь"
+	desc = "Телепатически свяжитесь со своим хранителем."
 	button_icon_state = "communicate"
 
-/datum/action/guardian/communicate/Trigger(left_click = TRUE)
-	var/input = tgui_input_text(owner, "Enter a message to tell your guardian:", "Message")
+/datum/action/guardian/communicate/Trigger(mob/clicker, trigger_flags)
+	. = ..()
+	if(!.)
+		return
+
+	var/input = tgui_input_text(owner, "Введите сообщение для вашего хранителя:", "Сообщение")
 	if(!input)
 		return
 
@@ -38,8 +42,8 @@
 
 	// Show the message to any ghosts/dead players.
 	for(var/mob/M in GLOB.dead_mob_list)
-		if(M && M.client && M.stat == DEAD && !isnewplayer(M))
-			to_chat(M, span_changeling("<i>Guardian Communication from <b>[owner]</b> ([ghost_follow_link(owner, ghost=M)]): [input]</i>"))
+		if(M?.client && M.stat == DEAD && !isnewplayer(M))
+			to_chat(M, span_changeling("([ghost_follow_link(owner, ghost = M)]) <i>Сообщение от хранителя <b>[owner]</b>: [input]</i>"))
 
 /**
  * # Recall guardian action
@@ -47,11 +51,14 @@
  * Allows the guardian host to recall their guardian.
  */
 /datum/action/guardian/recall
-	name = "Recall Guardian"
-	desc = "Forcibly recall your guardian."
+	name = "Отозвать Хранителя"
+	desc = "Принудительно отозвать вашего хранителя."
 	button_icon_state = "recall"
 
-/datum/action/guardian/recall/Trigger(left_click = TRUE)
+/datum/action/guardian/recall/Trigger(mob/clicker, trigger_flags)
+	. = ..()
+	if(!.)
+		return
 	guardian.Recall()
 
 /**
@@ -60,44 +67,51 @@
  * Allows the guardian host to exchange their guardian's player for another.
  */
 /datum/action/guardian/reset_guardian
-	name = "Replace Guardian Player"
-	desc = "Replace your guardian's player with a ghost. This can only be done once."
+	name = "Заменить Игрока-Хранителя"
+	desc = "Замените игрока, управляющего вашим хранителем. Это можно сделать только один раз."
 	button_icon_state = "reset"
 	var/cooldown_timer
 
-/datum/action/guardian/reset_guardian/IsAvailable()
+/datum/action/guardian/reset_guardian/IsAvailable(feedback = FALSE)
 	if(cooldown_timer)
 		return FALSE
 	return TRUE
 
-/datum/action/guardian/reset_guardian/Trigger(left_click = TRUE)
-	if(cooldown_timer)
-		to_chat(owner, span_warning("This ability is still recharging."))
+/datum/action/guardian/reset_guardian/Trigger(mob/clicker, trigger_flags)
+	. = ..()
+	if(!.)
 		return
 
-	var/confirm = tgui_alert(owner, "Are you sure you want replace your guardian's player?", "Confirm", list("Yes", "No"))
-	if(confirm != "Yes")
+	if(cooldown_timer)
+		to_chat(owner, span_warning("Эта способность всё ещё перезаряжается."))
+		return
+
+	var/confirm = tgui_alert(owner, "Вы уверены, что хотите заменить вашего игрока-хранителя?", "Подтверждение", list("Да", "Нет"))
+	if(confirm != "Да")
 		return
 
 	// Do this immediately, so the user can't spam a bunch of polls.
 	cooldown_timer = addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), 5 MINUTES)
 	UpdateButtonIcon()
 
-	to_chat(owner, span_danger("Searching for a replacement ghost..."))
-	var/list/mob/dead/observer/candidates = SSghost_spawns.poll_candidates("Do you want to play as [guardian.real_name]?", ROLE_GUARDIAN, FALSE, 15 SECONDS, source = guardian)
+	to_chat(owner, span_danger("Поиск подходящего призрака..."))
+	var/list/mob/dead/observer/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль [guardian.real_name]?", ROLE_GUARDIAN, FALSE, 15 SECONDS, source = guardian)
 
-	if(!length(candidates))
-		to_chat(owner, span_danger("There were no ghosts willing to take control of your guardian. You can try again in 5 minutes."))
+	if(QDELETED(guardian) || QDELETED(owner))
+		return
+
+	if(!LAZYLEN(candidates))
+		to_chat(owner, span_danger("Не нашлось призраков, готовых взять управление вашим хранителем. Попробуйте снова через 5 минут."))
 		log_game("[owner](ckey: [owner.ckey]) has tried to replace their guardian, but there were no candidates willing to enroll.")
 		return
 
 	var/mob/dead/observer/new_stand = pick(candidates)
-	to_chat(guardian, span_danger("Your user reset you, and your body was taken over by a ghost. Looks like they weren't happy with your performance."))
-	to_chat(owner, span_danger("Your guardian has been successfully reset."))
+	to_chat(guardian, span_danger("Ваш хозяин сбросил вас, и ваше тело было захвачено призраком. Похоже, он был недоволен вашей работой."))
+	to_chat(owner, span_danger("Ваш хранитель был успешно сброшен."))
 	message_admins("[key_name_admin(new_stand)] has taken control of ([key_name_admin(guardian)])")
 
 	guardian.ghostize()
-	guardian.key = new_stand.key
+	guardian.possess_by_player(new_stand.key)
 	log_game("[guardian.key] has taken control of [guardian], owner: [guardian]")
 	qdel(src)
 

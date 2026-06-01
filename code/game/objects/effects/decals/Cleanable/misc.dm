@@ -2,8 +2,6 @@
 	name = "clutter"
 	desc = "Someone should clean that up."
 	gender = PLURAL
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "shards"
@@ -14,16 +12,18 @@
 	gender = PLURAL
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "ash"
-	anchored = TRUE
 	scoop_reagents = list("ash" = 10)
 	mergeable_decal = FALSE
+
+/obj/effect/decal/cleanable/ash/Initialize(mapload)
+	. = ..()
+	pixel_x = base_pixel_x + rand(-5, 5)
+	pixel_y = base_pixel_y + rand(-5, 5)
 
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
 	gender = PLURAL
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/effects/dirt.dmi'
 	icon_state = "dirt"
@@ -41,8 +41,6 @@
 	name = "dust"
 	desc = "It's a little dusty. Someone should clean that up."
 	gender = PLURAL
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/effects/dirt.dmi'
 	icon_state = "dust"
@@ -58,10 +56,7 @@
 	name = "flour"
 	desc = "It's still good. Four second rule!"
 	gender = PLURAL
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "flour"
 
 /obj/effect/decal/cleanable/flour/foam
@@ -76,39 +71,53 @@
 /obj/effect/decal/cleanable/greenglow
 	name = "glowing goo"
 	desc = "Jeez. I hope that's not for lunch."
-	gender = PLURAL
-	density = FALSE
-	anchored = TRUE
-	layer = TURF_LAYER
-	light_range = 1
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
+	gender = PLURAL
+	layer = TURF_LAYER
+	light_power = 3
+	light_range = 2
+	light_color = LIGHT_COLOR_GREEN
 
-/obj/effect/decal/cleanable/greenglow/Initialize(mapload)
+/obj/effect/decal/cleanable/greenglow/temp/Initialize(mapload)
 	. = ..()
 	QDEL_IN(src, 2 MINUTES)
 
 /obj/effect/decal/cleanable/greenglow/ex_act()
 	return
 
+/obj/effect/decal/cleanable/greenglow/filled/Initialize(mapload)
+	var/decal_reagent = pick(/datum/reagent/uranium, /datum/reagent/radium)
+	scoop_reagents = list()
+	scoop_reagents[decal_reagent] = 5
+	. = ..()
+
+/obj/effect/decal/cleanable/greenglow/radioactive
+	name = "radioactive goo"
+	desc = "Holy crap, stop looking at this and move away immediately! It's radioactive!"
+	light_power = 5
+	light_range = 3
+	light_color = LIGHT_COLOR_NUCLEAR
+
+/obj/effect/decal/cleanable/greenglow/radioactive/Initialize(mapload)
+	. = ..()
+	AddComponent(
+		/datum/component/radioactive_emitter, \
+		cooldown_time = 5 SECONDS, \
+		range = 4, \
+		threshold = RAD_MEDIUM_INSULATION, \
+	)
+
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"
 	desc = "Somebody should remove that."
-	density = FALSE
-	anchored = TRUE
 	layer = OBJ_LAYER
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "cobweb1"
 	resistance_flags = FLAMMABLE
 
 /obj/effect/decal/cleanable/molten_object
 	name = "gooey grey mass"
 	desc = "It looks like a melted... something."
-	density = FALSE
-	anchored = TRUE
 	layer = OBJ_LAYER
-	gender = NEUTER
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "molten"
 	mergeable_decal = FALSE
 
@@ -119,18 +128,13 @@
 /obj/effect/decal/cleanable/cobweb2
 	name = "cobweb"
 	desc = "Somebody should remove that."
-	density = FALSE
-	anchored = TRUE
 	layer = OBJ_LAYER
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "cobweb2"
 
 /obj/effect/decal/cleanable/vomit
 	name = "vomit"
 	desc = "Gosh, how unpleasant."
 	gender = PLURAL
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "vomit_1"
@@ -153,7 +157,7 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/shreds/ex_act(severity, target)
-	if(severity == 1) //so shreds created during an explosion aren't deleted by the explosion.
+	if(severity >= EXPLODE_DEVASTATE) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
 
 /obj/effect/decal/cleanable/shreds/Initialize(mapload)
@@ -164,8 +168,6 @@
 /obj/effect/decal/cleanable/tomato_smudge
 	name = "tomato smudge"
 	desc = "It's red."
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "tomato_floor1"
@@ -173,10 +175,7 @@
 
 /obj/effect/decal/cleanable/plant_smudge
 	name = "plant smudge"
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
-	gender = NEUTER
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "smashed_plant"
 	random_icon_states = list("smashed_plant")
@@ -184,8 +183,6 @@
 /obj/effect/decal/cleanable/egg_smudge
 	name = "smashed egg"
 	desc = "Seems like this one won't hatch."
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "smashed_egg1"
@@ -194,8 +191,6 @@
 /obj/effect/decal/cleanable/pie_smudge //honk
 	name = "smashed pie"
 	desc = "It's pie cream from a cream pie."
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "smashed_pie"
@@ -204,15 +199,11 @@
 /obj/effect/decal/cleanable/fungus
 	name = "space fungus"
 	desc = "A fungal growth. Looks pretty nasty."
-	density = FALSE
-	anchored = TRUE
 	layer = TURF_LAYER
 	plane = GAME_PLANE
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "flour"
 	color = "#D5820B"
 	scoop_reagents = list("fungus" = 10)
-
 
 /obj/effect/decal/cleanable/confetti //PARTY TIME!
 	name = "confetti"
@@ -221,9 +212,7 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "confetti1"
 	random_icon_states = list("confetti1", "confetti2", "confetti3")
-	anchored = TRUE
 	mergeable_decal = FALSE
-
 
 /**
  * Used for the confetti gibspawner, moves in a direction leaving a trail of confetti.
@@ -239,21 +228,18 @@
 		if(!step_to(src, get_step(src, direction), 0))
 			break
 
-
 /obj/effect/decal/cleanable/insectguts
 	name = "cockroach guts"
 	desc = "One bug squashed. Four more will rise in its place."
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "xfloor1"
 	random_icon_states = list("xfloor1", "xfloor2", "xfloor3", "xfloor4", "xfloor5", "xfloor6", "xfloor7")
-	anchored = TRUE
 
 /obj/effect/decal/cleanable/glass
 	name = "tiny shards"
 	desc = "Back to sand."
 	icon = 'icons/obj/shards.dmi'
 	icon_state = "tiny"
-	anchored = TRUE
 
 /obj/effect/decal/cleanable/glass/plasma
 	icon_state = "plasmatiny"
@@ -263,9 +249,7 @@
 	desc = "A rune drawn in ash."
 	icon = 'icons/effects/ashwalker_rune.dmi'
 	icon_state = "AshRuneSmall"
-	anchored = TRUE
 	mergeable_decal = FALSE
-	mouse_opacity = MOUSE_OPACITY_ICON
 
 /obj/effect/decal/cleanable/ashrune/Initialize(mapload)
 	. = ..()
@@ -295,9 +279,7 @@
 	icon_state = "rune6"
 	color = "#661b1b"
 
-	anchored = TRUE
 	mergeable_decal = FALSE
-	mouse_opacity = MOUSE_OPACITY_ICON
 
 	var/datum/antagonist/devil/devil
 

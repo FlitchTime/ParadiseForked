@@ -2,7 +2,6 @@
 	name = "Паучьи яйца"
 	id = "spidereggs"
 	description = "Мелкая пыль, содержащая паучьи яйца. О боже."
-	reagent_state = SOLID
 	color = "#FFFFFF"
 	can_synth = FALSE
 	taste_mult = 0
@@ -13,7 +12,6 @@
 			if(!M.get_int_organ(/obj/item/organ/internal/body_egg))
 				new/obj/item/organ/internal/body_egg/spider_eggs(M) //Yes, even Xenos can fall victim to the plague that is spider infestation.
 	return ..()
-
 
 /datum/reagent/nanomachines
 	name = "Наномашины"
@@ -28,7 +26,6 @@
 		var/datum/disease/virus/transformation/robot/D = new
 		D.Contract(M)
 	return ..()
-
 
 /datum/reagent/xenomicrobes
 	name = "Ксеномикробы"
@@ -62,7 +59,6 @@
 	name = "Зазубренные кристаллы"
 	id = "jagged_crystals"
 	description = "В результате быстрого химического разложения эти кристаллы превратились в витые шипы."
-	reagent_state = SOLID
 	color = "#FA0000" // rgb: 250, 0, 0
 	can_synth = FALSE
 	taste_mult = 0
@@ -150,7 +146,6 @@
 	name = "Сердечные черви"
 	id = "heartworms"
 	description = "Какая гадость! Эти черви будут не против полакомиться твоим сердечком!"
-	reagent_state = SOLID
 	color = "#925D6C"
 	can_synth = FALSE
 	taste_mult = 0

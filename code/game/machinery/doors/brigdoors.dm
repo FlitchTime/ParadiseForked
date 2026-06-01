@@ -15,20 +15,17 @@
 	icon_state = "frame"
 	desc = "A remote control for a door."
 	req_access = list(ACCESS_BRIG)
-	anchored = TRUE    		// can't pick it up
-	density = FALSE			// can walk through it.
-	layer = 4 				// above all glasses and other things
-	var/id = null     		// id of door it controls.
+	anchored = TRUE   		// can't pick it up
+	layer = 4				// above all glasses and other things
+	var/id = null    		// id of door it controls.
 	var/releasetime = 0		// when world.timeofday reaches it - release the prisoner
-	var/timing = 0    		// boolean, true/1 timer is on, false/0 means it's not timing
+	var/timing = 0   		// boolean, true/1 timer is on, false/0 means it's not timing
 	var/picture_state		// icon_state of alert picture, if not displaying text/numbers
 	var/list/obj/machinery/targets = list()
 	var/timetoset = 0		// Used to set releasetime upon starting the timer
-	var/obj/item/radio/Radio
 	var/printed = 0
 	var/datum/data/record/prisoner
 	maptext_height = 26
-	maptext_width = 32
 	maptext_y = -1
 	var/occupant = CELL_NONE
 	var/crimes = CELL_NONE
@@ -40,26 +37,16 @@
 	var/prisoner_hasrecord = FALSE
 	var/prisoner_time_add
 
-
 /obj/machinery/door_timer/Initialize(mapload)
 	. = ..()
 	GLOB.celltimers_list += src
-
-	Radio = new /obj/item/radio(src)
-	Radio.listening = 0
-	Radio.config(list(SEC_FREQ_NAME = 0))
-	Radio.follow_target = src
-
 	addtimer(CALLBACK(src, PROC_REF(delayed_update)), 2 SECONDS, TIMER_DELETE_ME)
 
-
 /obj/machinery/door_timer/Destroy()
-	GLOB.celltimers_list -= src
-	QDEL_NULL(Radio)
 	targets.Cut()
 	prisoner = null
+	GLOB.celltimers_list -= src
 	return ..()
-
 
 /obj/machinery/door_timer/proc/delayed_update()
 	for(var/obj/machinery/door/window/brigdoor/brigdoor in GLOB.airlocks)
@@ -67,7 +54,7 @@
 			targets += brigdoor
 			INVOKE_ASYNC(brigdoor, TYPE_PROC_REF(/obj/machinery/door, open))
 
-	for(var/obj/machinery/machine in GLOB.machines)
+	for(var/obj/machinery/machine in SSmachines.get_by_type(/obj/machinery))
 		if(istype(machine, /obj/machinery/flasher))
 			var/obj/machinery/flasher/flasher = machine
 			if(flasher.id == id)
@@ -85,7 +72,6 @@
 	if(!length(targets))
 		stat |= BROKEN
 		update_icon(UPDATE_OVERLAYS)
-
 
 /obj/machinery/door_timer/proc/print_report()
 	if(occupant == CELL_NONE || crimes == CELL_NONE)
@@ -107,12 +93,12 @@
 						<b>Arresting Officer:</b>		[usr.name]<br><hr><br>
 						<small>This log file was generated automatically upon activation of a cell timer.</small>"}
 
-		playsound(C.loc, "sound/goonstation/machines/printer_dotmatrix.ogg", 50, 1)
+		playsound(C.loc, 'sound/goonstation/machines/printer_dotmatrix.ogg', 50, TRUE)
 		GLOB.cell_logs += P
 
 	var/datum/data/record/G = find_record("name", occupant, GLOB.data_core.general)
-	var/prisoner_drank = "unknown"
-	var/prisoner_trank = "unknown"
+	var/prisoner_drank = UNKNOWN_STATUS_RUS
+	var/prisoner_trank = UNKNOWN_STATUS_RUS
 	if(G)
 		if(G.fields["rank"])
 			prisoner_drank = G.fields["rank"]
@@ -124,22 +110,24 @@
 	var/timetext = seconds_to_time(timetoset / 10)
 	var/announcetext = "Detainee [occupant] ([prisoner_drank]) has been incarcerated for [timetext] for the crime of: '[crimes]'. \
 	Arresting Officer: [usr.name].[R ? "" : " Detainee record not found, manual record update required."]"
-	Radio.autosay(announcetext, name, SEC_FREQ_NAME)
+	radio_announce(announcetext, name, SEC_FREQ, src)
 
 	// Notify the actual criminal being brigged. This is a QOL thing to ensure they always know the charges against them.
 	// Announcing it on radio isn't enough, as they're unlikely to have sec radio.
 	notify_prisoner("You have been incarcerated for [timetext] for the crime of: '[crimes]'.")
 
-	if(prisoner_trank != "unknown" && prisoner_trank != "Civilian")
+	if(prisoner_trank != UNKNOWN_STATUS_RUS && prisoner_trank != "Civilian")
 		SSjobs.notify_dept_head(prisoner_trank, announcetext)
 
 	if(R)
 		prisoner = R
 		R.fields["criminal"] = SEC_RECORD_STATUS_INCARCERATED
+		R.fields["last_modifier_level"] = LAW_LEVEL_CENTCOMM
 		var/mob/living/carbon/human/M = usr
-		var/rank = "UNKNOWN RANK"
+		var/rank = "ДОЛЖНОСТЬ НЕИЗВЕСТНА"
 		if(istype(M))
 			var/obj/item/card/id/I = M.get_id_card()
+			R.fields["last_modifier_level"] = I.law_level
 			if(I)
 				rank = I.assignment
 		if(!R.fields["comments"] || !islist(R.fields["comments"])) //copied from security computer code because apparently these need to be initialized
@@ -149,12 +137,17 @@
 	return 1
 
 /obj/machinery/door_timer/proc/notify_prisoner(notifytext)
-	for(var/mob/living/carbon/human/H in range(4, get_turf(src)))
-		if(occupant == H.name)
-			to_chat(H, "[src] beeps, \"[notifytext]\"")
-			return
+	var/mob/living/carbon/human/human = find_prisoner()
+	if(human)
+		to_chat(human, "[src] beeps, \"[notifytext]\"")
+		return
 	atom_say("[src] beeps, \"[occupant]: [notifytext]\"")
 
+/obj/machinery/door_timer/proc/find_prisoner()
+	for(var/mob/living/carbon/human/human in range(4, get_turf(src)))
+		if(occupant == human.name)
+			return human
+	return null
 
 //Main door timer loop, if it's timing and time is >0 reduce time by 1.
 // if it's less than 0, open door, reset timer
@@ -168,15 +161,14 @@
 			timer_end()
 			return PROCESS_KILL
 		if(timeleft() <= 0)
-			Radio.autosay("Timer has expired. Releasing prisoner.", name, SEC_FREQ, list(z))
-			occupant = CELL_NONE
+			radio_announce("Timer has expired. Releasing prisoner.", name, SEC_FREQ, src)
 			timer_end() // open doors, reset timer, clear status screen
+			occupant = CELL_NONE
 			return PROCESS_KILL
 		update_display()
 	else
 		timer_end()
 		return PROCESS_KILL
-
 
 //Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
 // Stolen from status_display
@@ -200,13 +192,11 @@
 	else if(maptext)
 		maptext = ""
 
-
 // has the door power situation changed, if so update icon.
 /obj/machinery/door_timer/power_change(forced = FALSE)
 	if(!..())
 		return
 	update_display()
-
 
 // open/closedoor checks if door_timer has power, if so it checks if the
 // linked door is open/closed (by density) then opens it/closes it.
@@ -245,8 +235,11 @@
 		monitor.total_joules = 0
 		monitor.on = TRUE
 
-	return TRUE
+	var/mob/living/carbon/human/human = find_prisoner()
+	if(human)
+		SEND_SIGNAL(human, COMSIG_DOOR_TIMER_START, crimes, prisoner_time)
 
+	return TRUE
 
 // Opens and unlocks doors, power check
 /obj/machinery/door_timer/proc/timer_end()
@@ -256,6 +249,11 @@
 	if(stat & (NOPOWER|BROKEN))
 		return FALSE
 
+	//send signal
+	var/mob/living/carbon/human/human = find_prisoner()
+	if(human)
+		SEND_SIGNAL(human, COMSIG_DOOR_TIMER_FINISH, crimes, prisoner_time)
+
 	// Reset vars
 	occupant = CELL_NONE
 	crimes = CELL_NONE
@@ -264,8 +262,10 @@
 	officer = CELL_NONE
 	releasetime = 0
 	printed = FALSE
+	prisoner_time = null
 	if(prisoner)
 		prisoner.fields["criminal"] = SEC_RECORD_STATUS_RELEASED
+		prisoner.fields["last_modifier_level"] = LAW_LEVEL_BASE
 		update_all_mob_security_hud()
 		prisoner = null
 
@@ -288,7 +288,6 @@
 		monitor.on = FALSE
 
 	return TRUE
-
 
 // Check for releasetime timeleft
 /obj/machinery/door_timer/proc/timeleft()
@@ -314,7 +313,6 @@
 /obj/machinery/door_timer/attack_ghost(mob/user)
 	ui_interact(user)
 
-
 /obj/machinery/door_timer/emp_act(severity)
 	if((stat & (BROKEN|NOPOWER)) || emagged)
 		..(severity)
@@ -323,12 +321,10 @@
 		emagged = TRUE
 	..(severity)
 
-
 /obj/machinery/door_timer/emag_act()
 	if((stat & (BROKEN|NOPOWER)) || emagged || !timing)
 		return
 	emagged = TRUE
-
 
 //Allows humans to use door_timer
 //Opens dialog window when someone clicks on door timer
@@ -415,15 +411,14 @@
 			crimes = prisoner_charge
 			prisoner_name = null
 			prisoner_charge = null
-			prisoner_time = null
 			timer_start()
 		if("add_timer")
 			if(timing)
-				var/add_reason = sanitize(copytext(input(usr, "Reason:", name, "") as text|null, 1, MAX_MESSAGE_LEN))
+				var/add_reason = tgui_input_text(usr, "Reason:", name, "", max_length = MAX_MESSAGE_LEN)
 				if(!add_reason)
 					to_chat(usr, span_warning("Must specify the reason!"))
 					return FALSE
-				prisoner_time_add = input(usr, "Minutes to add:", name, prisoner_time_add) as num|null
+				prisoner_time_add = tgui_input_number(usr, "Minutes to add:", name, prisoner_time_add)
 				prisoner_time_add = min(max(round(prisoner_time_add), 0), PERMABRIG_TIME)
 				if(!prisoner_time_add)
 					to_chat(usr, span_warning("Must specify the number!"))
@@ -435,7 +430,7 @@
 				timetoset = timetoset + prisoner_time_add
 				releasetime = releasetime + prisoner_time_add
 				var/addtext = isobserver(usr) ? "for: [add_reason]." : "by [usr.name] for: [add_reason]"
-				Radio.autosay("Prisoner [occupant] had their timer increased by [prisoner_time_add / 600] minutes [addtext]", name, SEC_FREQ, list(z))
+				radio_announce("Prisoner [occupant] had their timer increased by [prisoner_time_add / 600] minutes [addtext]", name, SEC_FREQ, src)
 				notify_prisoner("Your brig timer has been increased by [prisoner_time_add / 600] minutes for: '[add_reason]'.")
 				var/datum/data/record/R = find_security_record("name", occupant)
 				if(istype(R))
@@ -451,7 +446,7 @@
 					return FALSE
 				releasetime = world.timeofday + timetoset
 				var/resettext = isobserver(usr) ? "for: [reset_reason]." : "by [usr.name] for: [reset_reason]."
-				Radio.autosay("Prisoner [occupant] had their timer reset [resettext]", name, SEC_FREQ, list(z))
+				radio_announce("Prisoner [occupant] had their timer reset [resettext]", name, SEC_FREQ, src)
 				notify_prisoner("Your brig timer has been reset for: '[reset_reason]'.")
 				var/datum/data/record/R = find_security_record("name", occupant)
 				if(istype(R))
@@ -462,24 +457,22 @@
 			if(timing)
 				timer_end()
 				var/stoptext = isobserver(usr) ? "from cell control." : "by [usr.name]."
-				Radio.autosay("Timer stopped manually [stoptext]", name, SEC_FREQ, list(z))
+				radio_announce("Timer stopped manually [stoptext]", name, SEC_FREQ, src)
 			else
 				. = FALSE
 		if("flash")
 			for(var/obj/machinery/flasher/flasher in targets)
-				if(flasher.last_flash && (flasher.last_flash + 15 SECONDS) > world.time)
+				if(!COOLDOWN_FINISHED(flasher, flash_cooldown))
 					to_chat(usr, span_warning("Flash is still recharging."))
 				else
 					flasher.flash()
 		else
 			. = FALSE
 
-
 /obj/machinery/door_timer/update_overlays()
 	. = ..()
 	if(!(stat & NOPOWER) && ((stat & BROKEN) || emagged))
 		. += "ai_bsod"
-
 
 /obj/machinery/door_timer/cell_1
 	name = "Cell 1"
@@ -505,10 +498,5 @@
 	name = "Cell 6"
 	id = "Cell 6"
 
-/obj/machinery/door_timer/cell_7
-	name = "Cell 7"
-	id = "Cell 7"
-
-/obj/machinery/door_timer/cell_8
-	name = "Cell 8"
-	id = "Cell 8"
+#undef CELL_NONE
+#undef PERMABRIG_TIME

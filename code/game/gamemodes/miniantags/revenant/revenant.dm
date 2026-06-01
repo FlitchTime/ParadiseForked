@@ -4,11 +4,10 @@
 //Admin-spawn or random event
 
 #define INVISIBILITY_REVENANT 50
-#define REVENANT_NAME_FILE "revenant_names.json"
 
 /mob/living/simple_animal/revenant
 	name = "revenant"
-	desc = "A malevolent spirit."
+	desc = "Злобный дух."
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "revenant_idle"
 	var/icon_idle = "revenant_idle"
@@ -22,7 +21,6 @@
 	maxHealth =  INFINITY
 	nightvision = 8
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
-	universal_understand = 1
 	response_help   = "passes through"
 	response_disarm = "swings at"
 	response_harm   = "punches"
@@ -35,7 +33,7 @@
 	move_resist = INFINITY
 	mob_size = MOB_SIZE_TINY
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
-	speed = 1
+	pass_flags_self = PASSMOB | PASSPROJECTILE
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
 	tts_seed = "Sylvanas"
@@ -51,9 +49,18 @@
 	var/inhibited = 0 //If the revenant's abilities are blocked by a chaplain's power.
 	var/essence_drained = 0 //How much essence the revenant has drained.
 	var/draining = 0 //If the revenant is draining someone.
-	var/list/drained_mobs = list() //Cannot harvest the same mob twice
+	var/list/drained_mobs //Cannot harvest the same mob twice
 	var/perfectsouls = 0 //How many perfect, regen-cap increasing souls the revenant has.
 
+/mob/living/simple_animal/revenant/get_ru_names()
+	return list(
+		NOMINATIVE = "ревенант",
+		GENITIVE = "ревенанта",
+		DATIVE = "ревенанту",
+		ACCUSATIVE = "ревенанта",
+		INSTRUMENTAL = "ревенантом",
+		PREPOSITIONAL = "ревенанте",
+	)
 
 /mob/living/simple_animal/revenant/Initialize(mapload)
 	. = ..()
@@ -79,18 +86,19 @@
 		revealed = 0
 		incorporeal_move = INCORPOREAL_REVENANT
 		invisibility = INVISIBILITY_REVENANT
-		to_chat(src, span_revenboldnotice("You are once more concealed."))
+		pass_flags_self |= PASSPROJECTILE
+		to_chat(src, span_revenboldnotice("Реальность содрогается, и вы растворяетесь в тени."))
 	if(unstun_time && world.time >= unstun_time)
 		unstun_time = 0
 		REMOVE_TRAIT(src, TRAIT_NO_TRANSFORM, REVENANT_TRAIT)
-		to_chat(src, span_revenboldnotice("You can move again!"))
+		to_chat(src, span_revenboldnotice("Вы чувствуете, как контроль над вашим телом возвращается."))
 	update_icon(UPDATE_ICON_STATE)
 
 /mob/living/simple_animal/revenant/can_perform_action(atom/target, action_bitflags)
 	return FALSE
 
-/mob/living/simple_animal/revenant/ex_act(severity)
-	return 1 //Immune to the effects of explosions.
+/mob/living/simple_animal/revenant/ex_act(severity, target)
+	return //Immune to the effects of explosions.
 
 /mob/living/simple_animal/revenant/blob_act(obj/structure/blob/B)
 	return //blah blah blobs aren't in tune with the spirit world, or something.
@@ -104,9 +112,8 @@
 /mob/living/simple_animal/revenant/ratvar_act()
 	return
 
-/mob/living/simple_animal/revenant/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE, jitter_time = 10 SECONDS, stutter_time = 6 SECONDS, stun_duration = 4 SECONDS)
+/mob/living/simple_animal/revenant/electrocute_act(shock_damage, atom/source, siemens_coeff = 1, flags = NONE, jitter_time = 10 SECONDS, stutter_time = 6 SECONDS, stun_duration = 4 SECONDS)
 	return FALSE //You are a ghost, atmos and grill makes sparks, and you make your own shocks with lights.
-
 
 /mob/living/simple_animal/revenant/adjustHealth(
 	amount = 0,
@@ -120,8 +127,7 @@
 		return .
 	essence = max(0, essence-amount)
 	if(essence == 0)
-		to_chat(src, span_revendanger("You feel your essence fraying!"))
-
+		to_chat(src, span_revendanger("Вы чувствуете, как ваша сущность распадается!"))
 
 /mob/living/simple_animal/revenant/say(message)
 	if(!message)
@@ -133,20 +139,19 @@
 		return emote(copytext(message, 2), intentional = TRUE)
 
 	for(var/mob/M in GLOB.mob_list)
-		var/rendered = span_revennotice("<b>[src]</b> [(isobserver(M) ? ("([ghost_follow_link(src, ghost=M)])") : "")] says, \"[message]\"")
+		var/rendered = span_revennotice("[(isobserver(M) ? ("([ghost_follow_link(src, ghost = M)])") : "")] <b>[src]</b> говорит: \"[message]\"")
 		if(istype(M, /mob/living/simple_animal/revenant) || isobserver(M))
 			to_chat(M, rendered)
-
 
 /mob/living/simple_animal/revenant/get_status_tab_items()
 	var/list/status_tab_data = ..()
 	. = status_tab_data
-	status_tab_data[++status_tab_data.len] = list("Запас эссенции:", "[essence]/[essence_regen_cap]E")
-	status_tab_data[++status_tab_data.len] = list("Поглощено эссенции:", "[essence_accumulated]E")
-	status_tab_data[++status_tab_data.len] = list("Поглощено идеальных душ:", "[perfectsouls]")
+	status_tab_data[++status_tab_data.len] = list("Current essence:", "[essence]/[essence_regen_cap]E")
+	status_tab_data[++status_tab_data.len] = list("Stolen essence:", "[essence_accumulated]E")
+	status_tab_data[++status_tab_data.len] = list("Stolen perfect souls:", "[perfectsouls]")
 
-/mob/living/simple_animal/revenant/New()
-	..()
+/mob/living/simple_animal/revenant/Initialize(mapload)
+	. = ..()
 
 	remove_from_all_data_huds()
 	random_revenant_name()
@@ -174,11 +179,15 @@
 		giveObjectivesandGoals()
 		giveSpells()
 	else
-		var/list/mob/dead/observer/candidates = SSghost_spawns.poll_candidates("Do you want to play as a revenant?", poll_time = 15 SECONDS, source = /mob/living/simple_animal/revenant)
+		var/list/mob/dead/observer/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль Ревенанта?", poll_time = 15 SECONDS, source = /mob/living/simple_animal/revenant)
+
+		if(QDELETED(src))
+			return
+
 		var/mob/dead/observer/theghost = null
-		if(candidates.len)
+		if(length(candidates))
 			theghost = pick(candidates)
-			key = theghost.key
+			possess_by_player(theghost.key)
 			message_admins("[key_name_admin(src)] has taken control of a revenant created without a mind")
 			giveObjectivesandGoals()
 			giveSpells()
@@ -188,14 +197,14 @@
 
 /mob/living/simple_animal/revenant/proc/giveObjectivesandGoals()
 			mind.wipe_memory()
-			SEND_SOUND(src, 'sound/effects/ghost.ogg')
+			SEND_SOUND(src, sound('sound/effects/ghost.ogg'))
 			var/list/messages = list()
-			messages.Add(span_deadsay("<font size=3><b>You are a revenant.</b></font>"))
-			messages.Add("<b>Your formerly mundane spirit has been infused with alien energies and empowered into a revenant.</b>")
-			messages.Add("<b>You are not dead, not alive, but somewhere in between. You are capable of limited interaction with both worlds.</b>")
-			messages.Add("<b>You are invincible and invisible to everyone but other ghosts. Most abilities will reveal you, rendering you vulnerable.</b>")
-			messages.Add("<b>To function, you are to drain the life essence from humans. This essence is a resource, as well as your health, and will power all of your abilities.</b>")
-			messages.Add("<b><i>You do not remember anything of your past lives, nor will you remember anything about this one after your death.</i></b>")
+			messages.Add(span_deadsay(span_fontsize3(span_bold("Вы — ревенант."))))
+			messages.Add("<b>Ваш некогда обычный дух был наполнен чужеродной энергией и превращён в ревенанта.</b>")
+			messages.Add("<b>Вы не мёртвы, не живы, а где-то посередине. Вы способны на ограниченное взаимодействие с обоими мирами.</b>")
+			messages.Add("<b>Вы неуязвимы и невидимы для всех, кроме других призраков. Большинство способностей раскроют вас, сделав уязвимым.</b>")
+			messages.Add("<b>Чтобы существовать, вы должны высасывать жизненную эссенцию из людей. Эта эссенции — ваш ресурс и здоровье, она питает все ваши способности.</b>")
+			messages.Add("<b><i>Вы не помните ничего из своих прошлых жизней, а также не будете помнить ничего из этой после своей смерти.</i></b>")
 			messages.Add(span_motd("С полной информацией вы можете ознакомиться на вики: <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Revenant\">Ревенант</a>"))
 			var/datum/objective/revenant/objective = new
 			objective.owner = mind
@@ -218,7 +227,6 @@
 	mind.AddSpell(new /obj/effect/proc_holder/spell/aoe/revenant/hallucinations(null))
 	return TRUE
 
-
 /mob/living/simple_animal/revenant/dust()
 	. = death()
 
@@ -233,15 +241,14 @@
 	if(!.)
 		return FALSE
 
-	to_chat(src, span_revendanger("NO! No... it's too late, you can feel your essence breaking apart..."))
+	to_chat(src, span_revendanger("НЕТ! Нет... уже слишком поздно, вы чувствуете, как ваша сущность распадается..."))
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, REVENANT_TRAIT)
 	revealed = 1
 	invisibility = 0
-	playsound(src, 'sound/effects/screech.ogg', 100, 1)
-	visible_message(span_warning("[src] lets out a waning screech as violet mist swirls around its dissolving body!"))
+	playsound(src, 'sound/effects/screech.ogg', 100, TRUE)
+	visible_message(span_warning("[declent_ru(NOMINATIVE)] издаёт затихающий визг, пока фиолетовый туман окутывает его распадающееся тело!"))
 	update_icon(UPDATE_ICON_STATE)
 	delayed_death()
-
 
 /mob/living/simple_animal/revenant/proc/delayed_death()
 	set waitfor = FALSE
@@ -249,7 +256,7 @@
 	sleep(2.5 SECONDS)
 	if(QDELETED(src))
 		return
-	visible_message(span_danger("[src]'s body breaks apart into a fine pile of blue dust."))
+	visible_message(span_danger("Тело [declent_ru(GENITIVE)] рассыпается в мелкую синюю пыль."))
 	var/obj/item/ectoplasm/revenant/R = new (get_turf(src))
 	var/reforming_essence = essence_regen_cap //retain the gained essence capacity
 	R.essence = max(reforming_essence - 15 * perfectsouls, 75) //minus any perfect souls
@@ -258,31 +265,29 @@
 	ghostize()
 	qdel(src)
 
-
 /mob/living/simple_animal/revenant/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/nullrod))
 		visible_message(
-			span_warning("[src] violently flinches!"),
-			span_revendanger("As [I.name] passes through you, you feel your essence draining away!"),
+			span_warning("[src] дёргается в конвульсиях!"),
+			span_revendanger("Когда [I.declent_ru(NOMINATIVE)] проход[PLUR_IT_YAT(I)] сквозь вас, вы чувствуете, как ваша эссенция утекает!"),
 		)
 		apply_damage(25) //hella effective
 		inhibited = TRUE
 		addtimer(VARSET_CALLBACK(src, inhibited, FALSE), 3 SECONDS)
 	return ..()
 
-
 /mob/living/simple_animal/revenant/proc/castcheck(essence_cost)
 	if(!src)
 		return
 	var/turf/T = get_turf(src)
 	if(iswallturf(T))
-		to_chat(src, span_revenwarning("You cannot use abilities from inside of a wall."))
+		balloon_alert(src, "нельзя использовать в стене!")
 		return 0
 	if(src.inhibited)
-		to_chat(src, span_revenwarning("Your powers have been suppressed by nulling energy!"))
+		balloon_alert(src, "силы подавлены!")
 		return 0
 	if(!src.change_essence_amount(essence_cost, 1))
-		to_chat(src, span_revenwarning("You lack the essence to use that ability."))
+		balloon_alert(src, "не хватает эссенции")
 		return 0
 	return 1
 
@@ -296,9 +301,9 @@
 		essence_accumulated = max(0, essence_accumulated+essence_amt)
 	if(!silent)
 		if(essence_amt > 0)
-			to_chat(src, span_revennotice("Gained [essence_amt]E from [source]."))
+			to_chat(src, span_revennotice("Получено [essence_amt] эссенци[declension_ru(essence_amt,"я","и","и")] от [source]."))
 		else
-			to_chat(src, span_revenminor("Lost [essence_amt]E from [source]."))
+			to_chat(src, span_revenminor("Потеряно [essence_amt] эссенци[declension_ru(essence_amt,"я","и","и")] из-за [source]."))
 	return 1
 
 /mob/living/simple_animal/revenant/proc/reveal(time)
@@ -309,11 +314,12 @@
 	revealed = 1
 	invisibility = 0
 	incorporeal_move = INCORPOREAL_NONE
+	pass_flags_self &= ~PASSPROJECTILE
 	if(!unreveal_time)
-		to_chat(src, span_revendanger("You have been revealed!"))
+		to_chat(src, span_revendanger("Ваша форма становится осязаемой, и смертные могут вас увидеть..."))
 		unreveal_time = world.time + time
 	else
-		to_chat(src, span_revenwarning("You have been revealed!"))
+		to_chat(src, span_revenwarning("Ваша форма становится осязаемой, и смертные могут вас увидеть..."))
 		unreveal_time = unreveal_time + time
 	update_icon(UPDATE_ICON_STATE)
 
@@ -324,10 +330,10 @@
 		return
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, REVENANT_TRAIT)
 	if(!unstun_time)
-		to_chat(src, span_revendanger("You cannot move!"))
+		to_chat(src, span_revendanger("Вы не можете двинуться, пока способность не завершится."))
 		unstun_time = world.time + time
 	else
-		to_chat(src, span_revenwarning("You cannot move!"))
+		to_chat(src, span_revenwarning("Вы не можете двинуться, пока способность не завершится."))
 		unstun_time = unstun_time + time
 	update_icon(UPDATE_ICON_STATE)
 
@@ -343,17 +349,14 @@
 	else
 		icon_state = icon_idle
 
-
 /datum/objective/revenant
 	needs_target = FALSE
 	var/targetAmount = 100
 
-
 /datum/objective/revenant/New()
 	targetAmount = rand(350,600)
-	explanation_text = "Absorb [targetAmount] points of essence from humans."
+	explanation_text = "Поглотите [targetAmount] единиц[declension_ru(targetAmount,"e","и","")] эссенции у людей."
 	..()
-
 
 /datum/objective/revenant/check_completion()
 	var/total_essence = 0
@@ -370,39 +373,36 @@
 
 	return TRUE
 
-
 /datum/objective/revenantFluff
 	needs_target = FALSE
 	antag_menu_name = "Задача ревенанта"
 
-
-
 /datum/objective/revenantFluff/New()
-	var/list/explanationTexts = list("Помогайте существующим угрозам и усугубляйте их в критические моменты.", \
-									 "Вызовите как можно больше хаоса и гнева, не будучи убитыми.", \
-									 "Повредите и сделайте как можно большую часть станции разрушеной и непригодной для использования.", \
-									 "Отключите как можно больше машин и вызовите сбои в их работе.", \
-									 "Убедитесь, что любое святое оружие приведено в негодность.", \
-									 "Мешайте экипажу, пытаясь остаться незамеченным..", \
-									 "Сделайте экипаж как можно более несчастным.", \
-									 "Сделайте клоуна как можно более несчастным.", \
-									 "Сделайте капитана как можно более несчастным.", \
-									 "Сделайте ИИ как можно более несчастным.", \
-									 "Раздражайте тех, кто вас больше всего оскорбляет.", \
-									 "Шепчите шутки о призраках в головы людей.", \
-									 "Помогайте экипажу в критических ситуациях, но принимайте оплату в душах.", \
-									 "По возможности предотвращайте применение энергетического оружия.")
+	var/list/explanationTexts = list(
+		"Помогайте существующим угрозам и усугубляйте их в критические моменты.", \
+		"Вызовите как можно больше хаоса и гнева, не будучи убитыми.", \
+		"Повредите и сделайте как можно большую часть станции разрушеной и непригодной для использования.", \
+		"Отключите как можно больше машин и вызовите сбои в их работе.", \
+		"Убедитесь, что любое святое оружие приведено в негодность.", \
+		"Мешайте экипажу, пытаясь остаться незамеченным..", \
+		"Сделайте экипаж как можно более несчастным.", \
+		"Сделайте клоуна как можно более несчастным.", \
+		"Сделайте капитана как можно более несчастным.", \
+		"Сделайте ИИ как можно более несчастным.", \
+		"Раздражайте тех, кто вас больше всего оскорбляет.", \
+		"Шепчите шутки о призраках в головы людей.", \
+		"Помогайте экипажу в критических ситуациях, но принимайте оплату в душах.", \
+		"По возможности предотвращайте применение энергетического оружия."
+	)
 	explanation_text = pick(explanationTexts)
 	..()
-
 
 /datum/objective/revenantFluff/check_completion()
 	return TRUE
 
-
 /obj/item/ectoplasm/revenant
 	name = "glimmering residue"
-	desc = "A pile of fine blue dust. Small tendrils of violet mist swirl around it."
+	desc = "Куча мелкой синей пыли. Вокруг неё вьются тонкие фиолетовые туманные завитки."
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "revenantEctoplasm"
 	w_class = WEIGHT_CLASS_SMALL
@@ -412,41 +412,47 @@
 	var/inert = FALSE
 	var/client/client_to_revive
 
+/obj/item/ectoplasm/revenant/get_ru_names()
+	return list(
+		NOMINATIVE = "фантомная пыль",
+		GENITIVE = "фантомной пыли",
+		DATIVE = "фантомной пыли",
+		ACCUSATIVE = "фантомную пыль",
+		INSTRUMENTAL = "фантомной пылью",
+		PREPOSITIONAL = "фантомной пыли",
+	)
 
-/obj/item/ectoplasm/revenant/New()
-	..()
+/obj/item/ectoplasm/revenant/Initialize(mapload)
+	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(reform)), reform_time)
-
 
 /obj/item/ectoplasm/revenant/Destroy()
 	client_to_revive = null
 	return ..()
 
-
 /obj/item/ectoplasm/revenant/attack_self(mob/user)
 	if(!reforming || inert)
 		return ..()
-	user.visible_message(span_notice("[user] scatters [src] in all directions."), \
-						 span_notice("You scatter [src] across the area. The particles slowly fade away."))
+	user.visible_message(
+		span_notice("[user] рассыпает [declent_ru(NOMINATIVE)] во всех направлениях."), \
+		span_notice("Вы рассыпаете [declent_ru(NOMINATIVE)] по области. Частицы медленно исчезают.")
+	)
 	user.drop_from_active_hand()
 	qdel(src)
-
 
 /obj/item/ectoplasm/revenant/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	..()
 	if(inert)
 		return
-	visible_message(span_notice("[src] breaks into particles upon impact, which fade away to nothingness."))
+	visible_message(span_notice("[DECLENT_RU_CAP(src, NOMINATIVE)] рассыпается на частицы при ударе, которые исчезают в никуда."))
 	qdel(src)
-
 
 /obj/item/ectoplasm/revenant/examine(mob/user)
 	. = ..()
 	if(inert)
-		. += span_revennotice("It seems inert.")
+		. += span_revennotice("Кажется, это инертно.")
 	else if(reforming)
-		. += span_revenwarning("It is shifting and distorted. It would be wise to destroy this.")
-
+		. += span_revenwarning("Оно искажается и меняется. Было бы мудро уничтожить это.")
 
 /obj/item/ectoplasm/revenant/proc/reform()
 	if(QDELETED(src))
@@ -454,7 +460,7 @@
 
 	if(!reforming)
 		inert = TRUE
-		visible_message(span_warning("[src] settles down and seems lifeless."))
+		visible_message(span_warning("[DECLENT_RU_CAP(src, NOMINATIVE)] оседает и кажется безжизненным."))
 		return
 
 	var/key_of_revenant
@@ -468,11 +474,9 @@
 				new_revenant.client = client_to_revive
 				key_of_revenant = client_to_revive.key
 
-
 	if(!key_of_revenant)
 		message_admins("The new revenant's old client either could not be found or is in a new, living mob - grabbing a random candidate instead...")
 		var/list/candidates = SSghost_spawns.poll_candidates("Do you want to play as a revenant?", ROLE_REVENANT, TRUE, source = /mob/living/simple_animal/revenant)
-
 		if(length(candidates))
 			var/mob/new_owner = pick(candidates)
 			key_of_revenant = new_owner.key
@@ -480,7 +484,7 @@
 	if(!key_of_revenant)
 		qdel(new_revenant)
 		inert = TRUE
-		visible_message(span_revenwarning("[src] settles down and seems lifeless."))
+		visible_message(span_revenwarning("[DECLENT_RU_CAP(src, NOMINATIVE)] оседает и кажется безжизненной."))
 		message_admins("No candidates were found for the new revenant. Oh well!")
 		return
 
@@ -496,11 +500,12 @@
 	player_mind.current = new_revenant
 	new_revenant.essence = essence
 	new_revenant.mind = player_mind
-	new_revenant.key = player_mind.key
+	new_revenant.possess_by_player(player_mind.key)
 
-	visible_message(span_revenboldnotice("[src] suddenly rises into the air before fading away."))
+	visible_message(span_revenboldnotice("[DECLENT_RU_CAP(src, NOMINATIVE)] внезапно поднимается в воздух, а затем исчезает."))
 	message_admins("[key_name_admin(new_revenant)] has been [client_to_revive ? "re":""]made into a revenant by reforming ectoplasm.")
 	add_game_logs("was [client_to_revive ? "re":""]made as a revenant by reforming ectoplasm.", new_revenant)
 
 	qdel(src)
 
+#undef INVISIBILITY_REVENANT

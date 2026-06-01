@@ -12,7 +12,6 @@
 	new /obj/item/areaeditor/blueprints/ce(src)
 	new /obj/item/storage/box/permits(src)
 	new /obj/item/clothing/glasses/welding/superior(src)
-	new /obj/item/clothing/gloves/color/yellow(src)
 	new /obj/item/tank/jetpack/suit(src)
 	new /obj/item/cartridge/ce(src)
 	new /obj/item/radio/headset/heads/ce(src)
@@ -24,13 +23,16 @@
 	new /obj/item/door_remote/chief_engineer(src)
 	new /obj/item/rpd(src)
 	new /obj/item/reagent_containers/food/drinks/mug/ce(src)
-	new /obj/item/organ/internal/cyberimp/eyes/meson(src)
+	new /obj/item/autoimplanter/oneuse/meson_eyes(src)
+	new /obj/item/clothing/glasses/meson/atmos(src)
 	new /obj/item/clothing/accessory/medal/engineering(src)
 	new /obj/item/holosign_creator/atmos(src)
 	new /obj/item/megaphone(src)
 	new /obj/item/storage/garmentbag/engineering_chief(src)
 	new /obj/item/storage/bag/construction(src)
 	new /obj/item/storage/belt/utility/chief/full(src)
+	new /obj/item/gun/energy/gun/mini(src)
+	new /obj/item/clothing/accessory/holster(src)
 
 /obj/structure/closet/secure_closet/engineering_electrical
 	name = "electrical supplies locker"
@@ -39,7 +41,6 @@
 	custom_door_overlay = "engelec"
 
 /obj/structure/closet/secure_closet/engineering_electrical/populate_contents()
-	new /obj/item/clothing/gloves/color/yellow(src)
 	new /obj/item/storage/toolbox/electrical(src)
 	new /obj/item/storage/toolbox/electrical(src)
 	new /obj/item/storage/toolbox/electrical(src)
@@ -50,7 +51,6 @@
 	new /obj/item/multitool(src)
 	new /obj/item/multitool(src)
 	new /obj/item/clothing/head/beret/eng
-
 
 /obj/structure/closet/secure_closet/engineering_welding
 	name = "welding supplies locker"
@@ -65,7 +65,6 @@
 	new /obj/item/weldingtool/largetank(src)
 	new /obj/item/weldingtool/largetank(src)
 	new /obj/item/weldingtool/largetank(src)
-
 
 /obj/structure/closet/secure_closet/engineering_personal
 	name = "engineer's locker"
@@ -91,7 +90,6 @@
 	new /obj/item/storage/bag/construction(src)
 	new /obj/item/storage/bag/construction(src)
 
-
 /obj/structure/closet/secure_closet/atmos_personal
 	name = "technician's locker"
 	req_access = list(ACCESS_ATMOSPHERICS)
@@ -99,6 +97,7 @@
 
 /obj/structure/closet/secure_closet/atmos_personal/populate_contents()
 	new /obj/item/radio/headset/headset_eng(src)
+	new /obj/item/clothing/glasses/meson/atmos(src)
 	new /obj/item/cartridge/atmos(src)
 	new /obj/item/storage/toolbox/mechanical(src)
 	if(prob(50))

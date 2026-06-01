@@ -1,13 +1,10 @@
 /datum/action/item_action/advanced/ninja/ninja_sword_recall
-	name = "Recall Energy Katana"
-	desc = "Teleports the Energy Katana linked to this suit to its wearer. Energy cost: 200"
-	use_itemicon = FALSE
+	name = "Призыв энерго-катаны"
+	desc = "Телепортирует вашу энерго-катану к вам. Затраты энергии: 200"
 	check_flags = FALSE
-	charge_type = ADV_ACTION_TYPE_RECHARGE
 	charge_max = 0.5 SECONDS
 	button_icon_state = "energy_katana_green"
-	icon_icon = 'icons/obj/ninjaobjects.dmi'
-	button_icon = 'icons/mob/actions/actions_ninja.dmi'
+	button_icon = 'icons/obj/ninjaobjects.dmi'
 	background_icon_state = "background_green"
 	action_initialisation_text = "Katana Recall System"
 
@@ -23,7 +20,7 @@
 	var/inview = TRUE
 
 	if(!energyKatana)
-		to_chat(ninja, span_warning("Could not locate your Energy Katana!"))
+		balloon_alert(ninja, "не удалось найти!")
 		return
 
 	if(energyKatana in ninja)
@@ -35,9 +32,8 @@
 		inview = FALSE
 
 	if(!ninjacost(200))	//Статичная цена в 200 энергии
-		for(var/datum/action/item_action/advanced/ninja/ninja_sword_recall/ninja_action in actions)
-			ninja_action.use_action()
-			break
+		var/datum/action/item_action/advanced/ninja/ninja_sword_recall/ninja_sword_recall = locate() in ninja.actions
+		ninja_sword_recall.use_action()
 		if(iscarbon(energyKatana.loc))
 			var/mob/living/carbon/sword_holder = energyKatana.loc
 			sword_holder.drop_item_ground(energyKatana, force = TRUE)
@@ -49,8 +45,8 @@
 				energyKatana.returnToOwner(ninja, 1)
 				return
 			energyKatana.spark_system.start()
-			playsound(ninja, "sparks", 50, TRUE, -9)
-			ninja.visible_message(span_danger("\the [energyKatana] flies towards [ninja]!"),span_warning("You hold out your hand and \the [energyKatana] flies towards you!"))
+			playsound(ninja, SFX_SPARKS, 50, TRUE, -9)
+			ninja.visible_message(span_danger("[DECLENT_RU_CAP(energyKatana, NOMINATIVE)] летит навстречу [ninja.declent_ru(DATIVE)]!"), span_warning("Вы протягиваете руку и [energyKatana.declent_ru(NOMINATIVE)] летит к вам!"))
 			energyKatana.throw_at(ninja, distance+1, energyKatana.throw_speed)
 
 		else //Else just TP it to us.

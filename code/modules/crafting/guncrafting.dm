@@ -2,6 +2,8 @@
 // The weapons themselves are children of other weapons and should be contained in their respective files.
 
 // PARTS //
+/obj/item/weaponcrafting
+	abstract_type = /obj/item/weaponcrafting
 
 /obj/item/weaponcrafting/receiver
 	name = "modular receiver"
@@ -26,10 +28,8 @@
 /obj/item/weaponcrafting/revolverbarrel/steel
 	name = "steel revolver barrel"
 	desc = "High quality heavy steel gun barrel to increase stability."
-	icon = 'icons/obj/improvised.dmi'
 	icon_state = "s_rev_barrel"
 	new_fire_sound = 'sound/weapons/gunshots/1rev257S.ogg'
-
 
 // CRAFTING //
 
@@ -62,7 +62,6 @@
 	icon = 'icons/obj/improvised.dmi'
 	icon_state = "ishotgunstep1"
 
-
 /obj/item/weaponcrafting/ishotgunconstruction/screwdriver_act(mob/living/user, obj/item/I)
 	. = TRUE
 	if(!I.use_tool(src, user, volume = I.tool_volume))
@@ -75,13 +74,11 @@
 	to_chat(user, span_notice("You screw the pins into place, securing the pipe to the receiver."))
 	qdel(src)
 
-
 /obj/item/weaponcrafting/ishotgunconstruction2
 	name = "very conspicuous metal construction"
 	desc = "A long pipe attached to a trigger assembly."
 	icon = 'icons/obj/improvised.dmi'
 	icon_state = "ishotgunstep1"
-
 
 /obj/item/weaponcrafting/ishotgunconstruction2/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weaponcrafting/stock))
@@ -103,13 +100,11 @@
 
 	return ..()
 
-
 /obj/item/weaponcrafting/ishotgunconstruction3
 	name = "extremely conspicuous metal construction"
 	desc = "A receiver-barrel shotgun assembly with a loose wooden stock. There's no way you can fire it without the stock coming loose."
 	icon = 'icons/obj/improvised.dmi'
 	icon_state = "ishotgunstep2"
-
 
 /obj/item/weaponcrafting/ishotgunconstruction3/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/stack/packageWrap))

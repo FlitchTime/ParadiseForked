@@ -1,34 +1,33 @@
 /// How long the chat message's spawn-in animation will occur for
-#define CHAT_MESSAGE_SPAWN_TIME		(0.2 SECONDS)
+#define CHAT_MESSAGE_SPAWN_TIME (0.2 SECONDS)
 /// How long the chat message will exist prior to any exponential decay
-#define CHAT_MESSAGE_LIFESPAN		(5 SECONDS)
+#define CHAT_MESSAGE_LIFESPAN (5 SECONDS)
 /// How long the chat message's end of life fading animation will occur for
-#define CHAT_MESSAGE_EOL_FADE		(0.7 SECONDS)
+#define CHAT_MESSAGE_EOL_FADE (0.7 SECONDS)
 /// Grace period for fade before we actually delete the chat message
-#define CHAT_MESSAGE_GRACE_PERIOD 	(0.2 SECONDS)
+#define CHAT_MESSAGE_GRACE_PERIOD (0.2 SECONDS)
 /// Factor of how much the message index (number of messages) will account to exponential decay
-#define CHAT_MESSAGE_EXP_DECAY		0.7
+#define CHAT_MESSAGE_EXP_DECAY 0.7
 /// Factor of how much height will account to exponential decay
-#define CHAT_MESSAGE_HEIGHT_DECAY	0.9
+#define CHAT_MESSAGE_HEIGHT_DECAY 0.9
 /// Approximate height in pixels of an 'average' line, used for height decay
-#define CHAT_MESSAGE_APPROX_LHEIGHT	11
+#define CHAT_MESSAGE_APPROX_LHEIGHT 11
 /// Max width of chat message in pixels
-#define CHAT_MESSAGE_WIDTH			112
+#define CHAT_MESSAGE_WIDTH 112
 /// Max length of chat message in characters
-#define CHAT_MESSAGE_MAX_LENGTH		110
+#define CHAT_MESSAGE_MAX_LENGTH 110
 /// Maximum precision of float before rounding errors occur (in this context)
-#define CHAT_LAYER_Z_STEP			0.0001
+#define CHAT_LAYER_Z_STEP 0.0001
 /// The number of z-layer 'slices' usable by the chat message layering
-#define CHAT_LAYER_MAX_Z			(CHAT_LAYER_MAX - CHAT_LAYER) / CHAT_LAYER_Z_STEP
+#define CHAT_LAYER_MAX_Z (CHAT_LAYER_MAX - CHAT_LAYER) / CHAT_LAYER_Z_STEP
 /// The dimensions of the chat message icons
-#define CHAT_MESSAGE_ICON_SIZE 		9
-
+#define CHAT_MESSAGE_ICON_SIZE 9
 
 /**
-  * # Chat Message Overlay
-  *
-  * Datum for generating a message overlay on the map
-  */
+ * # Chat Message Overlay
+ *
+ * Datum for generating a message overlay on the map
+ */
 /datum/chatmessage
 	/// The visual element of the chat messsage
 	var/image/message
@@ -49,7 +48,6 @@
 	var/animate_start = 0
 	/// Our animation lifespan, how long this message will last
 	var/animate_lifespan = 0
-
 
 /**
  * Constructs a chat message overlay
@@ -72,7 +70,6 @@
 		return
 	INVOKE_ASYNC(src, PROC_REF(generate_image), text, target, owner, language, extra_classes, lifespan)
 
-
 /datum/chatmessage/Destroy()
 	if(!QDELETED(owned_by))
 		if(REALTIMEOFDAY < animate_start + animate_lifespan)
@@ -93,15 +90,13 @@
 	message = null
 	return ..()
 
-
 /**
-  * Calls qdel on the chatmessage when its parent is deleted, used to register qdel signal
-  */
+ * Calls qdel on the chatmessage when its parent is deleted, used to register qdel signal
+ */
 /datum/chatmessage/proc/on_parent_qdel()
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		qdel(src)
-
 
 /**
  * Generates a chat message image representation
@@ -173,7 +168,7 @@
 		target.chat_color_darkened = colorize_string(chat_color_name_to_use, 0.85, 0.85)
 		target.chat_color_name = chat_color_name_to_use
 
-	if(language?.runechat_span)	// we can use this for custom language icon prefixes later, like on emotes
+	if(language?.runechat_span) // we can use this for custom language icon prefixes later, like on emotes
 		LAZYADD(extra_classes, language.runechat_span)
 
 	text = "[prefixes?.Join("&nbsp;")][text]"
@@ -192,7 +187,6 @@
 
 	var/datum/callback/our_callback = CALLBACK(src, PROC_REF(finish_image_generation), mheight, target, owner, complete_text, lifespan)
 	SSrunechat.message_queue += our_callback
-
 
 ///finishes the image generation after the MeasureText() call in generate_image().
 ///necessary because after that call the proc can resume at the end of the tick and cause overtime.
@@ -220,12 +214,12 @@
 			// When choosing to update the remaining time we have to be careful not to update the
 			// scheduled time once the EOL has been executed.
 			if(time_spent >= time_before_fade)
-				if(m.message.pixel_y < starting_height)
-					var/max_height = m.message.pixel_y + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
+				if(m.message.pixel_z < starting_height)
+					var/max_height = m.message.pixel_z + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
 					if(max_height > 0)
-						animate(m.message, pixel_y = m.message.pixel_y + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
-				else if(mheight + starting_height >= m.message.pixel_y)
-					animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
+						animate(m.message, pixel_z = m.message.pixel_z + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
+				else if(mheight + starting_height >= m.message.pixel_z)
+					animate(m.message, pixel_z = m.message.pixel_z + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
 				continue
 
 			var/remaining_time = time_before_fade * (CHAT_MESSAGE_EXP_DECAY ** idx++) * (CHAT_MESSAGE_HEIGHT_DECAY ** combined_height)
@@ -243,12 +237,12 @@
 
 			// We run this after the alpha animate, because we don't want to interrup it, but also don't want to block it by running first
 			// Sooo instead we do this. bit messy but it fuckin works
-			if(m.message.pixel_y < starting_height)
-				var/max_height = m.message.pixel_y + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
+			if(m.message.pixel_z < starting_height)
+				var/max_height = m.message.pixel_z + m.approx_lines * CHAT_MESSAGE_APPROX_LHEIGHT - starting_height
 				if(max_height > 0)
-					animate(m.message, pixel_y = m.message.pixel_y + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
-			else if(mheight + starting_height >= m.message.pixel_y)
-				animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
+					animate(m.message, pixel_z = m.message.pixel_z + max_height, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
+			else if(mheight + starting_height >= m.message.pixel_z)
+				animate(m.message, pixel_z = m.message.pixel_z + mheight, time = CHAT_MESSAGE_SPAWN_TIME, flags = ANIMATION_PARALLEL)
 
 	// Reset z index if relevant
 	if(current_z_idx >= CHAT_LAYER_MAX_Z)
@@ -259,8 +253,8 @@
 	SET_PLANE_EXPLICIT(message, RUNECHAT_PLANE, message_turf)
 	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA|KEEP_APART
 	message.alpha = 0
-	message.pixel_y = starting_height
-	message.pixel_x = -target.base_pixel_x
+	message.pixel_z = starting_height
+	message.pixel_w = -target.base_pixel_w
 	message.maptext_width = CHAT_MESSAGE_WIDTH
 	message.maptext_height = mheight * 1.25 // We add extra because some characters are superscript, like actions
 	message.maptext_x = (CHAT_MESSAGE_WIDTH - owner.bound_width) * -0.5
@@ -301,7 +295,6 @@
 	// Register with the runechat SS to handle destruction
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), src), lifespan + CHAT_MESSAGE_GRACE_PERIOD, TIMER_DELETE_ME, SSrunechat)
 
-
 /// Returns the current alpha of the message based on the time spent
 /datum/chatmessage/proc/get_current_alpha(time_spent)
 	if(time_spent < CHAT_MESSAGE_SPAWN_TIME)
@@ -313,13 +306,11 @@
 
 	return (1 - ((time_spent - time_before_fade) / CHAT_MESSAGE_EOL_FADE)) * 255
 
-
 /datum/chatmessage/proc/adjust_message_z(datum/source, turf/old_turf, turf/new_turf, same_z_layer)
 	SIGNAL_HANDLER
 	// Replanes the message if the user of the message changed z
 	if(!same_z_layer)
 		SET_PLANE_EXPLICIT(message, RUNECHAT_PLANE, new_turf)
-
 
 /datum/chatmessage/proc/adjust_message_loc(atom/movable/signal_movable, atom/old_loc, movement_dir, forced)
 	SIGNAL_HANDLER
@@ -364,7 +355,6 @@
 
 	signal_targets = next_signal_targets
 
-
 /**
  * Creates a message overlay at a defined location for a given speaker
  *
@@ -384,24 +374,15 @@
 	// Display visual above source
 	new /datum/chatmessage(raw_message, speaker, src, language, spans)
 
-
 /**
-  * Proc to allow atoms to set their own runechat colour
-  *
-  * This is a proc designed to be overridden in places if you want a specific atom to use a specific runechat colour
-  * Exampls include consoles using a colour based on their screen colour, and mobs using a colour based off of a customisation property
-  *
-  */
+ * Proc to allow atoms to set their own runechat colour
+ *
+ * This is a proc designed to be overridden in places if you want a specific atom to use a specific runechat colour
+ * Exampls include consoles using a colour based on their screen colour, and mobs using a colour based off of a customisation property
+ *
+ */
 /atom/proc/get_runechat_color()
 	return chat_color
-
-
-// Tweak these defines to change the available color ranges
-#define CM_COLOR_SAT_MIN 0.6
-#define CM_COLOR_SAT_MAX 0.7
-#define CM_COLOR_LUM_MIN 0.65
-#define CM_COLOR_LUM_MAX 0.75
-
 
 /**
  * Gets a color for a name, will return the same color for a given string consistently within a round.atom
@@ -449,7 +430,6 @@
 		if(5)
 			return "#[num2hex(c, 2)][num2hex(m, 2)][num2hex(x, 2)]"
 
-
 #undef CHAT_MESSAGE_SPAWN_TIME
 #undef CHAT_MESSAGE_LIFESPAN
 #undef CHAT_MESSAGE_EOL_FADE
@@ -462,6 +442,7 @@
 #undef CHAT_LAYER_Z_STEP
 #undef CHAT_LAYER_MAX_Z
 #undef CHAT_MESSAGE_ICON_SIZE
+
 #undef CM_COLOR_LUM_MAX
 #undef CM_COLOR_LUM_MIN
 #undef CM_COLOR_SAT_MAX

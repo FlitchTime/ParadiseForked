@@ -6,17 +6,15 @@
 	school = "transmutation"
 
 	base_cooldown = 1 MINUTES
-	clothes_req = TRUE
 	cooldown_min = 20 SECONDS //100 deciseconds reduction per rank
 
 	action_icon_state = "cluwne"
-
 
 /mob/living/carbon/human/proc/makeCluwne()
 	if(!get_int_organ(/obj/item/organ/internal/brain/cluwne))
 		var/obj/item/organ/internal/brain/cluwne/idiot_brain = new
 		internal_organs |= idiot_brain	//Well, everything's for recursion prevention.
-		idiot_brain.insert(src, make_cluwne = FALSE)
+		idiot_brain.insert(src, special = ORGAN_MANIPULATION_NOEFFECT, make_cluwne = FALSE)
 		idiot_brain.dna = dna.Clone()
 	else
 		return
@@ -81,5 +79,5 @@
 		qdel(G)
 
 	equip_to_slot_or_del(new /obj/item/clothing/under/lawyer/black, ITEM_SLOT_CLOTH_INNER)
-	equip_to_slot_or_del(new /obj/item/clothing/shoes/black, ITEM_SLOT_FEET)
+	equip_to_slot_or_del(new /obj/item/clothing/shoes/color/black, ITEM_SLOT_FEET)
 

@@ -6,12 +6,11 @@
 	desc = "A board for pinning important notices upon."
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "nboard"
-	density = FALSE
 	anchored = TRUE
 	max_integrity = 150
 	var/notices = 0
 
-/obj/structure/noticeboard/Initialize()
+/obj/structure/noticeboard/Initialize(mapload)
 	. = ..()
 	for(var/obj/item/paper/paper in loc)
 		paper.forceMove(src)
@@ -25,7 +24,6 @@
 			break
 		. += image(src.icon, icon_state = "[src.icon_state][I]")
 
-
 /obj/structure/noticeboard/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/paper))	//attaching papers!!
 		if(!user.drop_transfer_item_to_loc(I, src))
@@ -37,7 +35,6 @@
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
-
 
 /obj/structure/noticeboard/attack_hand(mob/user)
 	add_fingerprint(user)
@@ -111,7 +108,7 @@
 /obj/item/noticeboard/screwdriver_act(mob/living/user, obj/item/I)
 	if(!isturf(user.loc))
 		return
-	var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
+	var/direction = tgui_input_list(usr, "In which direction?", "Select direction.", list("North", "East", "South", "West", "Cancel"))
 	if(direction == "Cancel")
 		return
 	if(QDELETED(src))

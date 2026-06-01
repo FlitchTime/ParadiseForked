@@ -1,10 +1,10 @@
 /datum/disease/virus/gbs
-	name = "GBS"
-	agent = "Gravitokinetic Bipotential SADS+"
+	name = "ГБС"
+	agent = "Гравитокинетический Бипотенциальный SADS+"
 	spread_flags = CONTACT
-	cures = list("diphenhydramine","sulfur")
+	cures = list("diphenhydramine", "sulfur")
 	cure_prob = 15
-	severity = BIOHAZARD
+	severity = DISEASE_SEVERITY_BIOHAZARD
 
 /datum/disease/virus/gbs/stage_act()
 	if(!..())
@@ -22,32 +22,32 @@
 			else if(prob(5))
 				affected_mob.emote("gasp")
 			if(prob(10))
-				to_chat(affected_mob, span_danger("You're starting to feel very weak..."))
+				to_chat(affected_mob, span_danger("Вы начинаете чувствовать себя очень слабым..."))
 		if(4)
 			if(prob(10))
 				affected_mob.emote("cough")
 			affected_mob.adjustToxLoss(5)
 		if(5)
-			to_chat(affected_mob, span_userdanger("Your body feels as if it's trying to rip itself open..."))
+			to_chat(affected_mob, span_userdanger("Ваше тело будто пытается разорваться изнутри..."))
 			if(prob(50))
 				affected_mob.delayed_gib()
 
 /datum/disease/virus/gbs/non_con
-	name = "Non-Contagious GBS"
-	agent = "gibbis"
+	name = "Незаразный ГБС"
+	agent = "Гиббис"
 	spread_flags = NON_CONTAGIOUS
 	cures = list("cryoxadone")
 	cure_prob = 10
 	can_immunity = FALSE
 
 /datum/disease/virus/fake_gbs
-	name = "GBS"
-	desc = "If left untreated death will occur."
-	agent = "Gravitokinetic Bipotential SADS-"
+	name = "ГБС"
+	desc = "Если не лечить, наступит смерть."
+	agent = "Гравитокинетический Бипотенциальный SADS-"
 	spread_flags = CONTACT
-	cures = list("diphenhydramine","sulfur")
+	cures = list("diphenhydramine", "sulfur")
 	cure_prob = 15
-	severity = BIOHAZARD
+	severity = DISEASE_SEVERITY_BIOHAZARD
 
 /datum/disease/virus/fake_gbs/stage_act()
 	if(!..())
@@ -63,7 +63,7 @@
 			else if(prob(5))
 				affected_mob.emote("gasp")
 			if(prob(10))
-				to_chat(affected_mob, span_danger("You're starting to feel very weak..."))
+				to_chat(affected_mob, span_danger("Вы начинаете чувствовать себя очень слабым..."))
 		if(4, 5)
 			if(prob(10))
 				affected_mob.emote("cough")

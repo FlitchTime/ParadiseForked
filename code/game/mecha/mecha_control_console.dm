@@ -1,14 +1,12 @@
 /obj/machinery/computer/mecha
 	name = "exosuit control console"
-	icon = 'icons/obj/machines/computer.dmi'
 	icon_keyboard = "rd_key"
 	icon_screen = "mecha"
-	light_color = LIGHT_COLOR_FADEDPURPLE
+	light_color = LIGHT_COLOR_LAVENDER
 	req_access = list(ACCESS_ROBOTICS)
 	circuit = /obj/item/circuitboard/mecha_control
 	var/list/located = list()
 	var/screen = 0
-	var/stored_data = list()
 
 /obj/machinery/computer/mecha/attack_ai(mob/user)
 	return attack_hand(user)
@@ -39,10 +37,7 @@
 		if(tr_data)
 			data["beacons"] += list(tr_data)
 
-	data["stored_data"] = stored_data
-
 	return data
-
 
 /obj/machinery/computer/mecha/ui_act(action, params)
 	if(..())
@@ -51,7 +46,7 @@
 		if("send_message")
 			var/obj/item/mecha_parts/mecha_tracking/MT = locateUID(params["mt"])
 			if(istype(MT))
-				var/message = strip_html_simple(input(usr, "Input message", "Transmit message") as text)
+				var/message = strip_html_simple(tgui_input_text(usr, "Input message", "Transmit message"))
 				if(!message || !trim(message) || ..())
 					return FALSE
 				var/obj/mecha/M = MT.in_mecha()
@@ -63,14 +58,6 @@
 			if(istype(MT))
 				MT.shock()
 				return TRUE
-		if("get_log")
-			var/obj/item/mecha_parts/mecha_tracking/MT = locateUID(params["mt"])
-			if(istype(MT))
-				stored_data = MT.get_mecha_log()
-				return TRUE
-		if("clear_log")
-			stored_data = list()
-			return TRUE
 
 /obj/item/mecha_parts/mecha_tracking
 	name = "Exosuit tracking beacon"
@@ -81,33 +68,6 @@
 	origin_tech = "programming=2;magnets=2"
 	var/ai_beacon = FALSE //If this beacon allows for AI control. Exists to avoid using istype() on checking.
 
-/obj/item/mecha_parts/mecha_tracking/proc/get_mecha_info()
-	if(!in_mecha())
-		return FALSE
-	var/obj/mecha/M = loc
-	var/list/answer[0]
-	answer["reference"] = "\ref[src]"
-	answer["name"] = sanitize(replacetext(M.name,"\"","'")) // Double apostrophes break JSON
-	if(M.cell)
-		answer["cell"] = 1
-		answer["cell_capacity"] = M.cell.maxcharge
-		answer["cell_current"] = M.get_charge()
-		answer["cell_percentage"] = round(M.cell.percent())
-	else
-		answer["cell"] = 0
-	answer["integrity"] = round((M.obj_integrity/M.max_integrity*100), 0.01)
-	answer["airtank"] = M.return_pressure()
-	answer["pilot"] = "[M.occupant||"None"]"
-	var/area/area = get_area(M)
-	answer["location"] = "[sanitize(area.name)||"Unknown"]"
-	answer["equipment"] = "[M.selected||"None"]"
-	if(istype(M, /obj/mecha/working))
-		var/obj/mecha/working/RM = M
-		answer["hascargo"] = 1
-		answer["cargo"] = length(RM.cargo) / RM.cargo_capacity * 100
-
-	return answer
-
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_info_text()
 	if(!in_mecha())
 		return FALSE
@@ -117,10 +77,12 @@
 	var/answer = {"<b>Name:</b> [M.name]
 						<b>Integrity:</b> [M.obj_integrity / M.max_integrity * 100]%
 						<b>Cell charge:</b> [isnull(cell_charge)?"Not found":"[M.cell.percent()]%"]
-						<b>Airtank:</b> [M.return_pressure()]kPa
+						<b>Airtank:</b> [M.internal_tank.return_pressure()]kPa
 						<b>Pilot:</b> [M.occupant||"None"]
-						<b>Location:</b> [sanitize(A.name)||"Unknown"]
-						<b>Active equipment:</b> [M.selected||"None"]<br>"}
+						<b>Location:</b> [sanitize(A.name)||UNKNOWN_STATUS_RUS]
+						<b>Left Hand:</b> [M.selected_equipment_in_hands[MECH_HAND_LEFT] || "None"]<br>
+						<b>Right Hand:</b> [M.selected_equipment_in_hands[MECH_HAND_RIGHT]|| "None"]<br>
+						"}
 	if(istype(M, /obj/mecha/working))
 		var/obj/mecha/working/RM = M
 		answer += "<b>Used cargo space:</b> [length(RM.cargo) / RM.cargo_capacity * 100]%<br>"
@@ -141,10 +103,11 @@
 	if(M.cell)
 		data["cellCharge"] = M.cell.charge
 		data["cellMaxCharge"] = M.cell.charge
-	data["airtank"] = M.return_pressure()
+	data["airtank"] = M.internal_tank.return_pressure()
 	data["pilot"] = M.occupant
 	data["location"] = get_area(M)
-	data["active"] = M.selected
+	data["active_left"] = M.selected_equipment_in_hands[MECH_HAND_LEFT]
+	data["active_right"] = M.selected_equipment_in_hands[MECH_HAND_RIGHT]
 	if(istype(M, /obj/mecha/working/ripley))
 		var/obj/mecha/working/ripley/RM = M
 		data["cargoUsed"] = length(RM.cargo)
@@ -164,12 +127,6 @@
 	if(M)
 		M.emp_act(2)
 	qdel(src)
-
-/obj/item/mecha_parts/mecha_tracking/proc/get_mecha_log()
-	if(!in_mecha())
-		return list()
-	var/obj/mecha/M = loc
-	return M.get_log_tgui()
 
 /obj/item/mecha_parts/mecha_tracking/ai_control
 	name = "exosuit AI control beacon"

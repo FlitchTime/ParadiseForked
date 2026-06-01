@@ -7,7 +7,6 @@
 	blacklisted = TRUE
 	tail = "wryntail"
 	eyes = "wryn_eyes_s"
-	punchdamagelow = 0
 	punchdamagehigh = 1
 	warning_low_pressure = -300
 	hazard_low_pressure = 1
@@ -61,16 +60,18 @@
 		TRAIT_NO_SCAN,
 		TRAIT_TEMPERATURE_MOVEMENT,
 		TRAIT_STRONG_PULLING,
+		TRAIT_RESIST_COLD,
+		TRAIT_LIVERLESS_METABOLISM,
 	)
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
 	bodyflags = HAS_SKIN_COLOR | HAS_BODY_ACCESSORY
 
 	dies_at_threshold = TRUE
 
-	reagent_tag = PROCESS_ORG
+	reagent_tag = ORGANIC
 	base_color = "#704300"
 	flesh_color = "#704300"
-	blood_color = "#FFFF99"
+	blood_color = BLOOD_COLOR_WRYN
 	blood_species = "Wryn"
 	//Default styles for created mobs.
 	default_hair = "Normal antennae"
@@ -91,6 +92,9 @@
 		wryn_sting = new
 		wryn_sting.Grant(H)
 
+/datum/species/wryn/gain_muscles(mob/living/target, default, max_level, can_become_stronger)
+	..(target, STRENGTH_LEVEL_WEAK, max_level, can_become_stronger)
+
 /datum/species/wryn/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	var/datum/action/innate/wryn/wryn_sting/wryn_sting = locate() in H.actions
@@ -109,8 +113,7 @@
 	name = "wryn action"
 	button_icon = 'icons/mob/actions/actions_wryn.dmi'
 	background_icon_state = "bg_wryn"
-	icon_icon = 'icons/mob/actions/actions_wryn.dmi'
-
+	button_icon = 'icons/mob/actions/actions_wryn.dmi'
 
 //Define the Sting Action
 /datum/action/innate/wryn/wryn_sting
@@ -121,7 +124,7 @@
 	var/button_on = FALSE
 
 //What happens when you click the Button?
-/datum/action/innate/wryn/wryn_sting/Trigger(left_click = TRUE)
+/datum/action/innate/wryn/wryn_sting/Trigger(mob/clicker, trigger_flags)
 	if(!..())
 		return
 	var/mob/living/carbon/user = owner
@@ -145,15 +148,13 @@
 	if(button_on)
 		button_icon_state = "sting_on"
 		name = "Жало врина \[ГОТОВО\]"
-		button.name = name
 	else
 		button_icon_state = "sting_off"
 		name = "Жало врина"
-		button.name = name
 	..()
 
 //Select a Target from a List
-/datum/action/innate/wryn/wryn_sting/proc/select_target(var/mob/living/carbon/human/user)
+/datum/action/innate/wryn/wryn_sting/proc/select_target(mob/living/carbon/human/user)
 	var/list/names = list()
 	for(var/mob/living/carbon/human/M in orange(1))
 		names += M
@@ -188,7 +189,7 @@
 		user.adjustStaminaLoss(20)		//You can't sting infinitely, Wryn - take some Stamina loss
 		var/dam = rand(3, 7)
 		target.apply_damage(dam, BRUTE, organ)
-		playsound(user.loc, 'sound/weapons/bladeslice.ogg', 50, 0)
+		playsound(user.loc, 'sound/weapons/bladeslice.ogg', 50, FALSE)
 		add_attack_logs(user, target, "Stung by Wryn Stinger - [dam] Brute damage to [organ].")
 		if(HAS_TRAIT(target, TRAIT_RESTRAINED))			//Apply tiny BURN damage if target is restrained
 			if(prob(50))
@@ -214,13 +215,13 @@
 	if(target.handcuffed && node && user.zone_selected == BODY_ZONE_HEAD)
 		switch(alert(user, "Вы хотите вырвать усики этому существу?", "OH SHIT", "Да", "Нет"))
 			if("Да")
-				user.visible_message(span_notice("[user] начина[pluralize_ru(user.gender,"ет","ют")] яростно отрывать усики [target]."))
-				to_chat(target, span_danger("<b>[user] схватил[genderize_ru(user.gender,"","а","о","и")] ваши усики и яростно тян[pluralize_ru(user.gender,"ет","ут")] их!<b>"))
+				user.visible_message(span_notice("[user] начина[PLUR_ET_YUT(user)] яростно отрывать усики [target]."))
+				to_chat(target, span_danger("<b>[user] схватил[GEND_A_O_I(user)] ваши усики и яростно тян[PLUR_ET_UT(user)] их!<b>"))
 				if(do_after(user, 25 SECONDS, target, NONE))
 					node.remove(target)
 					node.forceMove(get_turf(target))
 					to_chat(user, span_notice("Вы слышите громкий хруст, когда безжалостно отрываете усики [target]."))
-					to_chat(target, span_danger("Вы слышите невыносимый хруст, когда [user] вырыва[pluralize_ru(user.gender,"ет","ют")] усики из вашей головы."))
+					to_chat(target, span_danger("Вы слышите невыносимый хруст, когда [user] вырыва[PLUR_ET_YUT(user)] усики из вашей головы."))
 					to_chat(target, span_danger("<b>Стало так тихо...</b>"))
 
 					add_attack_logs(user, target, "Antennae removed")
@@ -231,15 +232,15 @@
 		..()
 
 /mob/living/carbon/human/proc/adjustWax(amount)
- 	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
- 	if(!glands) return
- 	glands.wax = clamp(glands.wax + amount, 0, 75)
- 	return 1
+	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
+	if(!glands) return
+	glands.wax = clamp(glands.wax + amount, 0, 75)
+	return 1
 
 /mob/living/carbon/human/proc/getWax()
- 	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
- 	if(!glands) return 0
- 	return glands.wax
+	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
+	if(!glands) return 0
+	return glands.wax
 
 /mob/living/carbon/human/proc/toggle_producing()
 	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
@@ -248,5 +249,8 @@
 		glands.producing = !glands.producing
 
 /mob/living/carbon/human/proc/get_producing()
- 	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
- 	return glands ? glands.producing : FALSE
+	var/obj/item/organ/internal/wryn/glands/glands = get_int_organ(/obj/item/organ/internal/wryn/glands)
+	return glands ? glands.producing : FALSE
+
+/datum/species/wryn/compressor_grind(location)
+	new /obj/item/reagent_containers/honeycomb(location)

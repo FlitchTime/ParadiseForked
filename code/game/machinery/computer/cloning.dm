@@ -4,15 +4,6 @@
 /obj/machinery/computer/cloning
 	name = "biomass pod console"
 	desc = "Консоль для управления капсулой клонирования."
-	ru_names = list(
-		NOMINATIVE = "консоль капсулы клонирования",
-		GENITIVE = "консоли капсулы клонирования",
-		DATIVE = "консоли капсулы клонирования",
-		ACCUSATIVE = "консоль капсулы клонирования",
-		INSTRUMENTAL = "консолью капсулы клонирования",
-		PREPOSITIONAL = "консоли капсулы клонирования"
-	)
-	icon = 'icons/obj/machines/computer.dmi'
 	icon_keyboard = "med_key"
 	icon_screen = "dna"
 	circuit = /obj/item/circuitboard/cloning
@@ -32,9 +23,19 @@
 	// 1: The "Best" scan available
 	var/scan_mode = 1
 
-	light_color = LIGHT_COLOR_DARKBLUE
+	light_color = LIGHT_COLOR_DARK_BLUE
 
-/obj/machinery/computer/cloning/Initialize()
+/obj/machinery/computer/cloning/get_ru_names()
+	return list(
+		NOMINATIVE = "консоль капсулы клонирования",
+		GENITIVE = "консоли капсулы клонирования",
+		DATIVE = "консоли капсулы клонирования",
+		ACCUSATIVE = "консоль капсулы клонирования",
+		INSTRUMENTAL = "консолью капсулы клонирования",
+		PREPOSITIONAL = "консоли капсулы клонирования",
+	)
+
+/obj/machinery/computer/cloning/Initialize(mapload)
 	. = ..()
 	pods = list()
 	records = list()
@@ -46,7 +47,7 @@
 	return ..()
 
 /obj/machinery/computer/cloning/process()
-	if(!scanner || !pods.len || !autoprocess || stat & NOPOWER)
+	if(!scanner || !length(pods) || !autoprocess || stat & NOPOWER)
 		return
 
 	if(scanner.occupant && can_autoprocess())
@@ -64,30 +65,27 @@
 
 /obj/machinery/computer/cloning/proc/updatemodules()
 	src.scanner = findscanner()
-	releasecloner()
+	for(var/obj/machinery/clonepod/pod as anything in pods)
+		if(QDELETED(pod) || pod.connected != src)
+			pods -= pod
 	findcloner()
-	if(!selected_pod && pods.len)
+	if(!selected_pod && length(pods))
 		selected_pod = pods[1]
 
 /obj/machinery/computer/cloning/proc/findscanner()
-	var/obj/machinery/dna_scannernew/scannerf = null
-
 	//Try to find scanner on adjacent tiles first
-	for(dir in list(NORTH,EAST,SOUTH,WEST))
-		scannerf = locate(/obj/machinery/dna_scannernew, get_step(src, dir))
-		if(scannerf)
-			return scannerf
+	for(var/obj/machinery/dna_scannernew/scanner in orange(1, src))
+		return scanner
 
 	//Then look for a free one in the area
-	if(!scannerf)
-		var/area/search_area = get_area(src)
-		if(!search_area)
-			return
+	var/area/search_area = get_area(src)
+	if(!search_area)
+		return
 
-		for(var/obj/machinery/dna_scannernew/S in search_area.machinery_cache)
-			return S
+	for(var/obj/machinery/dna_scannernew/S in search_area.machinery_cache)
+		return S
 
-	return 0
+	return FALSE
 
 /obj/machinery/computer/cloning/proc/releasecloner()
 	for(var/obj/machinery/clonepod/P in pods)
@@ -96,13 +94,13 @@
 	pods.Cut()
 
 /obj/machinery/computer/cloning/proc/findcloner()
-	var/num = 1
-	for(var/obj/machinery/clonepod/P in get_area(src))
-		if(!P.connected)
-			pods += P
-			P.connected = src
-			P.name = "[initial(P.name)] #[num++]"
-
+	var/num = 1 + length(pods)
+	for(var/obj/machinery/clonepod/pod in get_area(src))
+		if(pod.connected || (pod in pods))
+			continue
+		pods += pod
+		pod.connected = src
+		pod.name = "[initial(pod.name)] #[num++]"
 
 /obj/machinery/computer/cloning/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -122,7 +120,6 @@
 
 	return ..()
 
-
 /obj/machinery/computer/cloning/multitool_act(mob/user, obj/item/I)
 	. = TRUE
 	if(!I.use_tool(src, user, volume = I.tool_volume))
@@ -139,10 +136,8 @@
 	clonepod.name = "[initial(clonepod.name)] #[length(pods)]"
 	balloon_alert(user, "устройства связаны")
 
-
 /obj/machinery/computer/cloning/attack_ai(mob/user)
 	return attack_hand(user)
-
 
 /obj/machinery/computer/cloning/attack_hand(mob/user)
 	if(..())
@@ -158,10 +153,9 @@
 	ui_interact(user)
 
 /obj/machinery/computer/cloning/deconstruct(disassembled = TRUE, mob/user)
-	if (emagged)
+	if(emagged)
 		circuit = /obj/item/circuitboard/broken
 	..()
-
 
 /obj/machinery/computer/cloning/emag_act(mob/user)
 	if(!emagged)
@@ -200,7 +194,7 @@
 	data["scanner"] = sanitize("[src.scanner]")
 
 	var/canpodautoprocess = 0
-	if(pods.len)
+	if(length(pods))
 		data["numberofpods"] = src.pods.len
 
 		var/list/tempods[0]
@@ -214,7 +208,7 @@
 			else if(pod.occupant && !(pod.stat & NOPOWER))
 				status = "cloning"
 			tempods.Add(list(list(
-				"pod" = "\ref[pod]",
+				"pod" = pod.UID(),
 				"name" = sanitize(capitalize(pod.name)),
 				"biomass" = pod.biomass,
 				"status" = status,
@@ -227,7 +221,7 @@
 	data["can_brainscan"] = can_brainscan() // You'll need tier 4s for this
 	data["scan_mode"] = scan_mode
 
-	if(scanner && pods.len && ((scanner.scan_level > 2) || canpodautoprocess))
+	if(scanner && length(pods) && ((scanner.scan_level > 2) || canpodautoprocess))
 		data["autoallowed"] = 1
 	else
 		data["autoallowed"] = 0
@@ -237,11 +231,11 @@
 	data["temp"] = temp
 	data["scantemp"] = scantemp
 	data["disk"] = src.diskette
-	data["selected_pod"] = "\ref[selected_pod]"
+	data["selected_pod"] = selected_pod.UID()
 	var/list/temprecords[0]
 	for(var/datum/dna2/record/R in records)
 		var/tempRealName = R.dna.real_name
-		temprecords.Add(list(list("record" = "\ref[R]", "realname" = sanitize(tempRealName))))
+		temprecords.Add(list(list("record" = R.UID(), "realname" = sanitize(tempRealName))))
 	data["records"] = temprecords
 
 	if(selected_pod && (selected_pod in pods) && selected_pod.biomass >= CLONE_BIOMASS)
@@ -279,7 +273,7 @@
 					menu = MENU_RECORDS
 				else
 					set_temp("Отказано в доступе.", "danger")
-					playsound(src, pick('sound/machines/button.ogg', 'sound/machines/button_alternate.ogg', 'sound/machines/button_meloboom.ogg'), 20)
+					playsound(src, SFX_BUTTON_DENIED, 20)
 			return
 
 	switch(action)
@@ -306,7 +300,7 @@
 			var/ref = params["ref"]
 			if(!length(ref))
 				return
-			active_record = locate(ref)
+			active_record = locateUID(ref)
 			if(istype(active_record))
 				if(isnull(active_record.ckey))
 					qdel(active_record)
@@ -316,7 +310,7 @@
 					if(active_record.implant)
 						H = locate(active_record.implant)
 					var/list/payload = list(
-						activerecord = "\ref[active_record]",
+						activerecord = active_record.UID(),
 						health = (H && istype(H)) ? H.sensehealth() : "",
 						realname = sanitize(active_record.dna.real_name),
 						unidentity = active_record.dna.uni_identity,
@@ -376,14 +370,14 @@
 			var/ref = params["ref"]
 			if(!length(ref))
 				return
-			var/obj/machinery/clonepod/selected = locate(ref)
+			var/obj/machinery/clonepod/selected = locateUID(ref)
 			if(istype(selected) && (selected in pods))
 				selected_pod = selected
 		if("clone")
 			var/ref = params["ref"]
 			if(!length(ref))
 				return
-			var/datum/dna2/record/C = locate(ref)
+			var/datum/dna2/record/C = locateUID(ref)
 			//Look for that player! They better be dead!
 			if(istype(C))
 				ui_modal_clear(src)
@@ -437,7 +431,7 @@
 
 	src.add_fingerprint(usr)
 
-/obj/machinery/computer/cloning/proc/scan_mob(mob/living/carbon/human/subject as mob, var/scan_brain = 0)
+/obj/machinery/computer/cloning/proc/scan_mob(mob/living/carbon/human/subject as mob, scan_brain = 0)
 	if(stat & NOPOWER)
 		return
 	if(scanner.stat & (NOPOWER|BROKEN))
@@ -508,17 +502,17 @@
 	if(!imp)
 		imp = new /obj/item/implant/health(subject)
 		imp.implant(subject)
-	R.implant = "\ref[imp]"
+	R.implant = imp.UID()
 
 	if(!isnull(subject.mind)) //Save that mind so traitors can continue traitoring after cloning.
-		R.mind = "\ref[subject.mind]"
+		R.mind = WEAKREF(subject.mind)
 
 	src.records += R
 	set_scan_temp(emagged ? "Жертва успешно отсканирована. [extra_info]" : "Субъект успешно отсканирован. [extra_info]", "good")
 	SStgui.update_uis(src)
 
 //Find a specific record by key.
-/obj/machinery/computer/cloning/proc/find_record(var/find_key)
+/obj/machinery/computer/cloning/proc/find_record(find_key)
 	var/selected_record = null
 	for(var/datum/dna2/record/R in src.records)
 		if(R.ckey == find_key)
@@ -533,24 +527,24 @@
 	return (scanner && scanner.scan_level > 3)
 
 /**
-  * Sets a temporary message to display to the user
-  *
-  * Arguments:
-  * * text - Text to display, null/empty to clear the message from the UI
-  * * style - The style of the message: (color name), info, success, warning, danger
-  */
+ * Sets a temporary message to display to the user
+ *
+ * Arguments:
+ * * text - Text to display, null/empty to clear the message from the UI
+ * * style - The style of the message: (color name), info, success, warning, danger
+ */
 /obj/machinery/computer/cloning/proc/set_temp(text = "", style = "info", update_now = FALSE)
 	temp = list(text = text, style = style)
 	if(update_now)
 		SStgui.update_uis(src)
 
 /**
-  * Sets a temporary scan message to display to the user
-  *
-  * Arguments:
-  * * text - Text to display, null/empty to clear the message from the UI
-  * * color - The color of the message: (color name)
-  */
+ * Sets a temporary scan message to display to the user
+ *
+ * Arguments:
+ * * text - Text to display, null/empty to clear the message from the UI
+ * * color - The color of the message: (color name)
+ */
 /obj/machinery/computer/cloning/proc/set_scan_temp(text = "", color = "", update_now = FALSE)
 	scantemp = list(text = text, color = color)
 	if(update_now)

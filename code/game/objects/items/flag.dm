@@ -3,6 +3,7 @@
 	desc = "It's a flag."
 	icon = 'icons/obj/flag.dmi'
 	icon_state = "ntflag"
+	slot_flags = ITEM_SLOT_NECK
 	lefthand_file = 'icons/mob/inhands/flags_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/flags_righthand.dmi'
 	item_flags = NO_PIXEL_RANDOM_DROP
@@ -12,10 +13,9 @@
 	custom_fire_overlay = "fire"
 	var/rolled = FALSE
 
-
 /obj/item/flag/attackby(obj/item/I, mob/user, params)
 	. = ..()
-	if(ATTACK_CHAIN_CANCEL_CHECK(.) || !I.get_heat() || (resistance_flags & ON_FIRE))
+	if(ATTACK_CHAIN_CANCEL_CHECK(.) || !I.get_temperature() || (resistance_flags & ON_FIRE))
 		return .
 	. |= ATTACK_CHAIN_SUCCESS
 	user.visible_message(
@@ -25,20 +25,18 @@
 	)
 	fire_act()
 
-
 /obj/item/flag/attack_self(mob/user)
 	rolled = !rolled
-	user.visible_message("<span class='notice'>[user] [rolled ? "rolls up" : "unfurls"] [src].</span>", "<span class='notice'>You [rolled ? "roll up" : "unfurl"] [src].</span>", "<span class='warning'>You hear fabric rustling.</span>")
+	user.visible_message(span_notice("[user] [rolled ? "rolls up" : "unfurls"] [src]."), span_notice("You [rolled ? "roll up" : "unfurl"] [src]."), span_warning("You hear fabric rustling."))
 	update_icon(UPDATE_ICON_STATE)
 
-/obj/item/flag/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = FALSE)
+/obj/item/flag/fire_act(exposed_temperature, exposed_volume)
 	..()
 	update_icon(UPDATE_ICON_STATE)
 
 /obj/item/flag/extinguish()
 	..()
 	update_icon(UPDATE_ICON_STATE)
-
 
 /obj/item/flag/update_icon_state()
 	updateFlagIcon()
@@ -52,15 +50,12 @@
 		item_state = "[item_state]_fire"
 	update_equipped_item(update_speedmods = FALSE)
 
-
 /obj/item/flag/proc/updateFlagIcon()
 	icon_state = initial(icon_state)
-
 
 /obj/item/flag/nt
 	name = "Nanotrasen flag"
 	desc = "A flag proudly boasting the logo of NT."
-	icon_state = "ntflag"
 
 /obj/item/flag/clown
 	name = "Clown Planet flag"
@@ -76,7 +71,6 @@
 	name = "Ian flag"
 	desc = "The banner of Ian, because SQUEEEEE."
 	icon_state = "ianflag"
-
 
 //Species flags
 
@@ -185,7 +179,6 @@
 /obj/item/flag/command
 	name = "Command flag"
 	desc = "The flag of the independent, sovereign nation of Command."
-	icon_state = "ntflag"
 
 //Antags
 
@@ -224,23 +217,19 @@
 /obj/item/flag/chameleon
 	name = "Chameleon flag"
 	desc = "A poor recreation of the official NT flag. It seems to shimmer a little."
-	icon_state = "ntflag"
 	origin_tech = "syndicate=1;magnets=4"
 	var/updated_icon_state = null
 	var/used = FALSE
 	var/obj/item/grenade/boobytrap = null
 	var/mob/trapper = null
 
-
 /obj/item/flag/chameleon/Initialize(mapload)
 	updated_icon_state = icon_state
 	. = ..()
 
-
 /obj/item/flag/chameleon/Destroy()
 	QDEL_NULL(boobytrap)
 	return ..()
-
 
 /obj/item/flag/chameleon/attack_self(mob/user)
 	if(used)
@@ -255,7 +244,7 @@
 
 	var/list/show_flag = list("EXIT" = null) + sortList(flag)
 
-	var/input_flag = input(user, "Choose a flag to disguise as.", "Choose a flag.") in show_flag
+	var/input_flag = tgui_input_list(user, "Choose a flag to disguise as.", "Choose a flag.", show_flag)
 
 	if(user && (src in user.contents))
 
@@ -268,12 +257,11 @@
 			desc = chosen_flag.desc
 			used = TRUE
 
-
 /obj/item/flag/chameleon/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/grenade))
+	if(isgrenade(I))
 		if(boobytrap)
 			to_chat(user, span_warning("There is already [boobytrap] installed."))
-			return ATTACK_CHAIN_PROCEED|ATTACK_CHAIN_NO_AFTERATTACK
+			return ATTACK_CHAIN_PROCEED_NO_AFTERATTACK
 		if(!user.drop_transfer_item_to_loc(I, src))
 			return ..()
 		boobytrap = I
@@ -285,7 +273,7 @@
 		add_attack_logs(user, src, "has hidden [I] ready for detonation in", ATKLOG_MOST)
 		return ATTACK_CHAIN_BLOCKED_ALL
 
-	if(I.get_heat() && !(resistance_flags & ON_FIRE) && boobytrap && trapper)
+	if(I.get_temperature() && !(resistance_flags & ON_FIRE) && boobytrap && trapper)
 		var/turf/bombturf = get_turf(src)
 		add_game_logs("has lit the [src] trapped with [boobytrap] by [key_name_log(trapper)] at [AREACOORD(bombturf)].", user)
 		investigate_log("[key_name_log(user)] has lit the [src] trapped with [boobytrap] by [key_name_log(trapper)].", INVESTIGATE_BOMB)
@@ -295,14 +283,13 @@
 
 	return ..()
 
-
 /obj/item/flag/chameleon/screwdriver_act(mob/user, obj/item/I)
 	if(!boobytrap || user != trapper)
 		return
 	. = TRUE
 	if(!I.use_tool(src, user, 0, volume = I.tool_volume))
 		return
-	to_chat(user, "<span class='notice'>You remove [boobytrap] from [src].</span>")
+	to_chat(user, span_notice("You remove [boobytrap] from [src]."))
 	boobytrap.forceMove(get_turf(src))
 	boobytrap = null
 	trapper = null
@@ -323,6 +310,6 @@
 /obj/item/flag/chameleon/updateFlagIcon()
 	icon_state = updated_icon_state
 
-/obj/item/flag/chameleon/depot/New()
-	..()
+/obj/item/flag/chameleon/depot/Initialize(mapload)
+	. = ..()
 	boobytrap = new /obj/item/grenade/gas/plasma(src)

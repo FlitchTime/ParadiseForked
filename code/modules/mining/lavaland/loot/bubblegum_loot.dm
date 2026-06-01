@@ -1,6 +1,16 @@
 /obj/structure/closet/crate/necropolis/bubblegum
 	name = "bubblegum chest"
 
+/obj/structure/closet/crate/necropolis/bubblegum/get_ru_names()
+	return list(
+		NOMINATIVE = "сундук Бубльгума",
+		GENITIVE = "сундука Бубльгума",
+		DATIVE = "сундуку Бубльгума",
+		ACCUSATIVE = "сундук Бубльгума",
+		INSTRUMENTAL = "сундуком Бубльгума",
+		PREPOSITIONAL = "сундуке Бубльгума",
+	)
+
 /obj/structure/closet/crate/necropolis/bubblegum/populate_contents()
 	new /obj/item/clothing/suit/space/hostile_environment(src)
 	new /obj/item/clothing/head/helmet/space/hostile_environment(src)
@@ -10,6 +20,16 @@
 /obj/structure/closet/crate/necropolis/bubblegum/crusher
 	name = "bloody bubblegum chest"
 
+/obj/structure/closet/crate/necropolis/bubblegum/crusher/get_ru_names()
+	return list(
+		NOMINATIVE = "кровавый сундук Бубльгума",
+		GENITIVE = "кровавого сундука Бубльгума",
+		DATIVE = "кровавому сундуку Бубльгума",
+		ACCUSATIVE = "кровавый сундук Бубльгума",
+		INSTRUMENTAL = "кровавым сундуком Бубльгума",
+		PREPOSITIONAL = "кровавом сундуке Бубльгума",
+	)
+
 /obj/structure/closet/crate/necropolis/bubblegum/crusher/populate_contents()
 	. = ..()
 	new /obj/item/crusher_trophy/demon_claws(src)
@@ -18,17 +38,27 @@
 
 /obj/item/mayhem
 	name = "mayhem in a bottle"
-	desc = "A magically infused bottle of blood, the scent of which will drive anyone nearby into a murderous frenzy."
+	desc = "Зачарованная бутыль с кровью, чей аромат повергает всех вокруг в убийственное безумие."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "vial"
+
+/obj/item/mayhem/get_ru_names()
+	return list(
+		NOMINATIVE = "бутылка хаоса",
+		GENITIVE = "бутылки хаоса",
+		DATIVE = "бутылке хаоса",
+		ACCUSATIVE = "бутылку хаоса",
+		INSTRUMENTAL = "бутылкой хаоса",
+		PREPOSITIONAL = "бутылке хаоса",
+	)
 
 /obj/item/mayhem/attack_self(mob/user)
 	for(var/mob/living/carbon/human/H in range(7,user))
 		spawn()
 			var/obj/effect/mine/pickup/bloodbath/B = new(H)
 			B.mineEffect(H)
-	to_chat(user, "<span class='notice'>You shatter the bottle!</span>")
-	playsound(user.loc, 'sound/effects/glassbr1.ogg', 100, 1)
+	to_chat(user, span_notice("Вы разбиваете бутылку!"))
+	playsound(user.loc, 'sound/effects/glassbr1.ogg', 100, TRUE)
 	qdel(src)
 
 // Blood Contract
@@ -38,25 +68,35 @@
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "scroll2"
 	color = "#FF0000"
-	desc = "Mark your target for death."
+	desc = "Отметьте цель для смертной казни."
 	var/used = FALSE
+
+/obj/item/blood_contract/get_ru_names()
+	return list(
+		NOMINATIVE = "кровавый контракт",
+		GENITIVE = "кровавого контракта",
+		DATIVE = "кровавому контракту",
+		ACCUSATIVE = "кровавый контракт",
+		INSTRUMENTAL = "кровавым контрактом",
+		PREPOSITIONAL = "кровавом контракте",
+	)
 
 /obj/item/blood_contract/attack_self(mob/user)
 	if(used)
 		return
 
 	used = TRUE
-	var/choice = tgui_input_list(user,"Who do you want dead?","Choose Your Victim", GLOB.player_list)
+	var/choice = tgui_input_list(user, "Кого вы желаете уничтожить?", "Выбор жертвы", GLOB.player_list)
 
 	if(!choice)
 		used = FALSE
 		return
 	else if(!isliving(choice))
-		to_chat(user, "[choice] is already dead!")
+		to_chat(user, "[choice] уже мертв!")
 		used = FALSE
 		return
 	else if(choice == user)
-		to_chat(user, "You feel like writing your own name into a cursed death warrant would be unwise.")
+		to_chat(user, "Писать собственное имя в проклятый смертный приказ было бы неразумно.")
 		used = FALSE
 		return
 	else
@@ -68,7 +108,7 @@
 		var/datum/objective/survive/survive = new
 		survive.owner = L.mind
 		L.mind.objectives += survive
-		to_chat(L, "<span class='userdanger'>You've been marked for death! Don't let the demons get you!</span>")
+		to_chat(L, span_userdanger("Вы обречены на смерть! Не дайте демонам добраться до вас!"))
 		L.color = "#FF0000"
 		spawn()
 			var/obj/effect/mine/pickup/bloodbath/B = new(L)
@@ -77,7 +117,7 @@
 		for(var/mob/living/carbon/human/H in GLOB.player_list)
 			if(H.stat == DEAD || H == L)
 				continue
-			to_chat(H, "<span class='userdanger'>You have an overwhelming desire to kill [L]. [L.p_they(TRUE)] [L.p_have()] been marked red! Go kill [L.p_them()]!</span>")
+			to_chat(H, span_userdanger("Вы испытываете непреодолимое желание убить [L]. [GEND_HE_SHE_CAP(L)] помечен[GEND_A_O_Y(L)] красным! УБЕЙТЕ [uppertext(GEND_HIS_HER(L))]!"))
 			H.put_in_hands(new /obj/item/kitchen/knife/butcher(H))
 
 	qdel(src)
@@ -104,7 +144,7 @@
 	for(var/mob/living/M in targets_to_fuck_up)
 		var/turf/T = get_turf(M)
 		M.Immobilize(1 SECONDS)
-		to_chat(M, "<span class='colossus'><b>NO! I REFUSE TO LET YOU THINK YOU HAVE WON. I SHALL END YOUR INSIGNIFICANT LIFE!</b></span>")
+		to_chat(M, span_colossus("<b>НЕТ! Я НЕ ПОЗВОЛЮ ТЕБЕ ДУМАТЬ, ЧТО ТЫ ПОБЕДИЛ! Я ПОЛОЖУ КОНЕЦ ТВОЕЙ ЖАЛКОЙ ЖИЗНИ!</b>"))
 		new /obj/effect/temp_visual/bubblegum_hands/leftpaw(T)
 		new /obj/effect/temp_visual/bubblegum_hands/leftthumb(T)
 		sleep(8)
@@ -130,7 +170,7 @@
 	for(var/mob/living/M in probably_bubblearena)
 		var/turf/T = get_turf(M)
 		M.Immobilize(1 SECONDS)
-		to_chat(M, "<span class='colossus'><b>Now... get out of my home.</b></span>")
+		to_chat(M, span_colossus("<b>А теперь... убирайся из моего дома.</b>"))
 		new /obj/effect/temp_visual/bubblegum_hands/leftpaw(T)
 		new /obj/effect/temp_visual/bubblegum_hands/leftthumb(T)
 		sleep(8)
@@ -146,7 +186,6 @@
 		var/turf/target_turf = pick(spawn_exit)
 		O.forceMove(target_turf)
 
-
 // Soulscythe
 
 #define MAX_BLOOD_LEVEL 100
@@ -155,14 +194,6 @@
 /obj/item/soulscythe
 	name = "soulscythe"
 	desc = "Старый пережиток ада, созданный дьяволами, чтобы утвердить себя в качестве лидера над демонами. Он становится сильнее, пока в нем заточена мощная душа."
-	ru_names = list(
-		NOMINATIVE = "коса души",
-		GENITIVE = "косы души",
-		DATIVE = "косе души",
-		ACCUSATIVE = "косу души",
-		INSTRUMENTAL = "косой души",
-		PREPOSITIONAL = "косе души"
-	)
 	icon = 'icons/obj/lavaland/artefacts.dmi'
 	icon_state = "soulscythe"
 	item_state = "soulscythe"
@@ -189,6 +220,16 @@
 	/// Cooldown between attacks
 	COOLDOWN_DECLARE(attack_cooldown)
 
+/obj/item/soulscythe/get_ru_names()
+	return list(
+		NOMINATIVE = "коса души",
+		GENITIVE = "косы души",
+		DATIVE = "косе души",
+		ACCUSATIVE = "косу души",
+		INSTRUMENTAL = "косой души",
+		PREPOSITIONAL = "косе души",
+	)
+
 /obj/item/soulscythe/Initialize(mapload)
 	. = ..()
 	soul = new(src)
@@ -196,15 +237,24 @@
 	RegisterSignal(soul, COMSIG_MOB_ATTACK_RANGED, PROC_REF(on_attack))
 	RegisterSignal(soul, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_attack))
 	RegisterSignal(soul, COMSIG_MOB_ATTACK_RANGED_SECONDARY, PROC_REF(on_secondary_attack))
-	RegisterSignal(soul, COMSIG_MOB_LOGIN, PROC_REF(on_login))
-	RegisterSignal(soul, COMSIG_MOB_LOGOUT, PROC_REF(on_logout))
 	RegisterSignal(src, COMSIG_OBJ_INTEGRITY_CHANGED, PROC_REF(on_integrity_change))
 	RegisterSignal(soul, COMSIG_BLOOD_LEVEL_TICK, PROC_REF(on_blood_level_tick))
 	ADD_TRAIT(src, TRAIT_CHASM_DESTROYED, INNATE_TRAIT)
 
+/obj/item/soulscythe/ComponentInitialize()
+	. = ..()
+	AddComponent( \
+		/datum/component/cleave_attack, \
+		arc_size = 180, \
+		swing_speed_mod = 2.5, \
+		afterswing_slowdown = 0.25, \
+		slowdown_duration = 1 SECONDS, \
+		swing_sound = SFX_CHOP_SWING_HEAVY \
+	)
+
 /obj/item/soulscythe/examine(mob/user)
 	. = ..()
-	. += soul.ckey ? span_nicegreen("В нем заточена душа.") : span_danger("В нем нет души.")
+	. += soul.ckey ? span_green("В нем заточена душа.") : span_danger("В нем нет души.")
 
 /obj/item/soulscythe/attack(mob/living/attacked, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	. = ..()
@@ -213,7 +263,7 @@
 
 /obj/item/soulscythe/attack_hand(mob/user, list/modifiers)
 	if(soul.ckey && !soul.faction_check_mob(user))
-		to_chat(user, span_warning("Ты не можешь поднять [src.declent_ru(ACCUSATIVE)]!"))
+		to_chat(user, span_warning("Ты не можешь поднять [declent_ru(ACCUSATIVE)]!"))
 		return
 	return ..()
 
@@ -227,22 +277,17 @@
 	if(soul.ckey)
 		reset_spin() //resume spinnage
 
-/obj/item/soulscythe/proc/on_login(mob/source)
-	SIGNAL_HANDLER
-	source.client.show_popup_menus = FALSE
-
-/obj/item/soulscythe/proc/on_logout(mob/source)
-	SIGNAL_HANDLER
-	source?.canon_client?.show_popup_menus = TRUE
-
-
 /obj/item/soulscythe/attack_self(mob/user, modifiers)
 	if(using || soul.ckey || soul.stat)
 		return
 	using = TRUE
 	balloon_alert(user, "ты поднимаешь косу...")
 	ADD_TRAIT(src, TRAIT_NODROP, type)
-	var/mob/chosen_one = safepick(SSghost_spawns.poll_candidates(question = "Вы хотите сыгрыть за косу душ?", role = ROLE_PAI, poll_time = 20 SECONDS, source = src, role_cleanname = src.declent_ru(ACCUSATIVE)))
+	var/mob/chosen_one = safepick(SSghost_spawns.poll_candidates(question = "Вы хотите сыгрыть за косу душ?", role = ROLE_PAI, poll_time = 20 SECONDS, source = src, role_cleanname = declent_ru(ACCUSATIVE)))
+
+	if(QDELETED(src) || QDELETED(user))
+		return
+
 	on_poll_concluded(user, chosen_one)
 
 /// Ghost poll has concluded and a candidate has been chosen.
@@ -255,7 +300,7 @@
 
 	soul.possess_by_player(ghost.ckey)
 	LAZYOR(soul.languages, master.languages) //Make sure the sword can understand and communicate with the master.
-	soul.faction = list("\ref[master]")
+	soul.faction = list(PERSONAL_FACTION(master))
 	soul.default_language = master.get_default_language()
 	balloon_alert(master, "коса светится")
 	add_overlay("soulscythe_gem")
@@ -393,11 +438,11 @@
 		return
 	COOLDOWN_START(src, attack_cooldown, 3 SECONDS)
 	var/obj/projectile/projectile = new /obj/projectile/soulscythe(get_turf(src))
-	projectile.preparePixelProjectile(attacked_atom, get_turf(attacked_atom), soul)
+	projectile.preparePixelProjectile(attacked_atom, soul)
 	projectile.firer = soul
 	projectile.firer_source_atom = src
-	projectile.fire(null, attacked_atom)
-	visible_message(span_danger("[declent_ru(NOMINATIVE)] стреляет в [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Ты стреляешь в [attacked_atom.declent_ru(ACCUSATIVE)]!"))
+	projectile.fire()
+	visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] стреля[PLUR_ET_YUT(src)] в [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Вы стреляете в [attacked_atom.declent_ru(ACCUSATIVE)]!"))
 	playsound(src, 'sound/magic/fireball.ogg', 50, TRUE)
 
 /obj/item/soulscythe/proc/slash_target(atom/attacked_atom)
@@ -406,13 +451,13 @@
 		if(attacked_mob.stat != DEAD)
 			give_blood(15)
 		attacked_mob.apply_damage(damage = force * (faction_check(attacked_mob.faction, MINING_FACTIONS) ? 2 : 1), sharp = TRUE)
-		to_chat(attacked_mob, span_userdanger("Тебя разрубает [declent_ru(NOMINATIVE)]!"))
-		visible_message(span_danger("[declent_ru(NOMINATIVE)] разрубает [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Ты разрубаешь [attacked_atom.declent_ru(ACCUSATIVE)]!"))
+		to_chat(attacked_mob, span_userdanger("Вас разруба[PLUR_ET_YUT(src)] [declent_ru(NOMINATIVE)]!"))
+		visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] разруба[PLUR_ET_YUT(src)] [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Вы разрубаете [attacked_atom.declent_ru(ACCUSATIVE)]!"))
 		playsound(src, 'sound/weapons/bladeslice.ogg', 50, TRUE)
 	else if((ismachinery(attacked_atom) || isstructure(attacked_atom)) && use_blood(5))
 		var/obj/attacked_obj = attacked_atom
 		attacked_obj.take_damage(force, BRUTE, MELEE, FALSE)
-		visible_message(span_danger("[declent_ru(NOMINATIVE)] бьёт [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Ты бьешь [attacked_atom.declent_ru(ACCUSATIVE)]!"))
+		visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] бь[PLUR_YOT_YUT(src)] [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Вы бьёте [attacked_atom.declent_ru(ACCUSATIVE)]!"))
 		playsound(src, 'sound/effects/meteorimpact.ogg', 50, TRUE)
 	else
 		return
@@ -430,12 +475,12 @@
 	COOLDOWN_START(src, attack_cooldown, 5 SECONDS)
 	animate(src)
 	charging = TRUE
-	visible_message(span_danger("[declent_ru(NOMINATIVE)] начинает заряжаться..."))
+	visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] начинает заряжаться..."))
 	balloon_alert(soul, "ты начинаешь заряжаться...")
 	if(!do_after(soul, 2 SECONDS, target = src, timed_action_flags = DA_IGNORE_TARGET_LOC_CHANGE))
 		balloon_alert(soul, "прервано!")
 		return
-	visible_message(span_danger("[declent_ru(NOMINATIVE)] бросается на [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Ты бросаешься на [attacked_atom.declent_ru(ACCUSATIVE)]!"))
+	visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] бросается на [attacked_atom.declent_ru(ACCUSATIVE)]!"), span_notice("Ты бросаешься на [attacked_atom.declent_ru(ACCUSATIVE)]!"))
 	new /obj/effect/temp_visual/mook_dust(get_turf(src))
 	playsound(src, 'sound/weapons/thudswoosh.ogg', 50, TRUE)
 	SpinAnimation(1)
@@ -453,14 +498,6 @@
 
 /mob/living/simple_animal/soulscythe
 	name = "mysterious spirit"
-	ru_names = list(
-		NOMINATIVE = "таинственный дух",
-		GENITIVE = "таинственного духа",
-		DATIVE = "таинственному духу",
-		ACCUSATIVE = "таинственный дух",
-		INSTRUMENTAL = "таинственным духом",
-		PREPOSITIONAL = "таинственном духе"
-	)
 	maxHealth = 200
 	health = 200
 	icon = 'icons/mob/mob.dmi'
@@ -475,10 +512,20 @@
 	/// Blood level, used for movement and abilities in a soulscythe
 	var/blood_level = MAX_BLOOD_LEVEL
 
+/mob/living/simple_animal/soulscythe/get_ru_names()
+	return list(
+		NOMINATIVE = "таинственный дух",
+		GENITIVE = "таинственного духа",
+		DATIVE = "таинственному духу",
+		ACCUSATIVE = "таинственный дух",
+		INSTRUMENTAL = "таинственным духом",
+		PREPOSITIONAL = "таинственном духе",
+	)
+
 /mob/living/simple_animal/soulscythe/get_status_tab_items()
 	var/list/status_tab_data = ..()
 	. = status_tab_data
-	status_tab_data[++status_tab_data.len] = list("Запас крови:", "[blood_level]/[MAX_BLOOD_LEVEL]")
+	status_tab_data[++status_tab_data.len] = list("Кровь:", "[blood_level]/[MAX_BLOOD_LEVEL]")
 
 /mob/living/simple_animal/soulscythe/Life(seconds_per_tick, times_fired)
 	. = ..()
@@ -488,30 +535,5 @@
 /mob/living/simple_animal/soulscythe/adjustHealth(amount, updating_health, blocked, damage_type, forced)
 	return STATUS_UPDATE_NONE
 
-/obj/projectile/soulscythe
-	name = "soulslash"
-	ru_names = list(
-		NOMINATIVE = "рассечение души",
-		GENITIVE = "рассечения души",
-		DATIVE = "рассечению души",
-		ACCUSATIVE = "рассечение души",
-		INSTRUMENTAL = "рассечением души",
-		PREPOSITIONAL = "рассечении души"
-	)
-	icon_state = "soulslash"
-	flag = MELEE //jokair
-	damage = 15
-	light_range = 1
-	light_power = 1
-	light_color = LIGHT_COLOR_BLOOD_MAGIC
-
-/obj/projectile/soulscythe/on_hit(atom/target, blocked = 0, pierce_hit)
-	if (isliving(target))
-		var/mob/living/as_living = target
-		if(firer.faction_check_mob(as_living))
-			damage *= 0
-		if(faction_check(as_living.faction, MINING_FACTIONS))
-			damage *= 2
-	return ..()
-
 #undef MAX_BLOOD_LEVEL
+#undef BLOOD_LEVEL_PER_SECOND

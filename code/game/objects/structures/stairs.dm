@@ -42,12 +42,11 @@
 	if(force_open_above)
 		build_signal_listener()
 
-/obj/structure/stairs/proc/on_exit(datum/source, atom/movable/leaving, atom/newloc)
+/obj/structure/stairs/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
 
 	if(leaving == src)
 		return //Let's not block ourselves.
-	var/direction = get_dir_multiz(src, newloc)
 
 	if(!isobserver(leaving) && isTerminator() && direction == dir)
 		leaving.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
@@ -74,7 +73,6 @@
 		climber.pulling?.move_from_pull(climber, loc, climber.glide_size)
 		for(var/mob/living/buckled as anything in climber.buckled_mobs)
 			buckled.pulling?.move_from_pull(buckled, loc, buckled.glide_size)
-
 
 /obj/structure/stairs/vv_edit_var(var_name, var_value)
 	. = ..()
@@ -134,8 +132,6 @@
 	desc = "Everything you need to call something a staircase, aside from the stuff you actually step on."
 	icon = 'icons/obj/stairs.dmi'
 	icon_state = "stairs_frame"
-	density = FALSE
-	anchored = FALSE
 	interaction_flags_click = NEED_HANDS | ALLOW_RESTING
 	/// What type of stack will this drop on deconstruction?
 	var/frame_stack = /obj/item/stack/rods
@@ -188,7 +184,6 @@
 	new frame_stack(get_turf(src), frame_stack_amount)
 	qdel(src)
 
-
 /obj/structure/stairs_frame/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -223,7 +218,6 @@
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
-
 
 #undef STAIR_TERMINATOR_AUTOMATIC
 #undef STAIR_TERMINATOR_NO

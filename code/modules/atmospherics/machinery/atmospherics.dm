@@ -11,13 +11,12 @@ Pipelines + Other Objects -> Pipe network
 /obj/machinery/atmospherics
 	anchored = TRUE
 	resistance_flags = FIRE_PROOF
-	max_integrity = 200
-	plane = GAME_PLANE
-	idle_power_usage = 0
-	active_power_usage = 0
 	power_channel = ENVIRON
 	on_blueprints = TRUE
-	layer = GAS_PIPE_HIDDEN_LAYER  //under wires
+	armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 100, ACID = 70)
+	layer = GAS_PIPE_HIDDEN_LAYER //under wires
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_IGNORE_MOBILITY
+
 	/// Generic over VISIBLE and HIDDEN, should be less than 0.01, or you'll reorder non-pipe things.
 	var/layer_offset = 0.0
 	/// Can this be unwrenched?
@@ -47,12 +46,14 @@ Pipelines + Other Objects -> Pipe network
 	/// The image of the pipe/device used for ventcrawling
 	var/image/pipe_vision_img
 
-
-
-/obj/machinery/atmospherics/New()
-	if (!armor)
-		armor = list("melee" = 25, "bullet" = 10, "laser" = 10, "energy" = 100, "bomb" = 0, "bio" = 100, "rad" = 100, "fire" = 100, "acid" = 70)
-	..()
+/obj/machinery/atmospherics/Initialize(mapload)
+	var/turf/turf_loc = null
+	if(isturf(loc))
+		turf_loc = loc
+	SSspatial_grid.add_grid_awareness(src, SPATIAL_GRID_CONTENTS_TYPE_ATMOS)
+	SSspatial_grid.add_grid_membership(src, turf_loc, SPATIAL_GRID_CONTENTS_TYPE_ATMOS)
+	. = ..()
+	SSair.atmos_machinery += src
 
 	if(!pipe_color)
 		pipe_color = color
@@ -61,29 +62,22 @@ Pipelines + Other Objects -> Pipe network
 	if(!pipe_color_check(pipe_color))
 		pipe_color = null
 
-/obj/machinery/atmospherics/Initialize()
-	. = ..()
-	SSair.atmos_machinery += src
-
 /obj/machinery/atmospherics/proc/atmos_init()
 	// Updates all pipe overlays and underlays
 	update_underlays()
 
-
 /obj/machinery/atmospherics/Destroy()
 	SSair.atmos_machinery -= src
-	SSair.deferred_pipenet_rebuilds -= src
+	SSair.pipenets_to_build -= src
 	for(var/mob/living/mob in contents) //ventcrawling is serious business
 		mob.stop_ventcrawling()
 	QDEL_NULL(pipe_vision_img) //we have to qdel it, or it might keep a ref somewhere else
 	return ..()
 
-
 /obj/machinery/atmospherics/examine(mob/living/user)
 	. = ..()
 	if((vent_movement & VENTCRAWL_ENTRANCE_ALLOWED) && is_ventcrawler(user))
-		. += span_info("Alt-click to crawl through it.")
-
+		. += span_notice("Alt-click to crawl through it.")
 
 /obj/machinery/atmospherics/set_frequency(new_frequency)
 	SSradio.remove_object(src, frequency)
@@ -101,19 +95,17 @@ Pipelines + Other Objects -> Pipe network
 			SET_PLANE_IMPLICIT(src, GAME_PLANE)
 			layer = GAS_PIPE_VISIBLE_LAYER + layer_offset
 
-
 /obj/machinery/atmospherics/proc/update_pipe_image()
 	pipe_vision_img = image(src, loc = src.loc, layer = ABOVE_HUD_LAYER + src.layer, dir = src.dir)
 	var/turf/T = get_turf(src)
 	SET_PLANE_EXPLICIT(pipe_vision_img, PIPECRAWL_IMAGES_PLANE, T)
-
 
 /obj/machinery/atmospherics/proc/check_icon_cache()
 	if(!SSair.icon_manager)
 		return FALSE
 	return TRUE
 
-/obj/machinery/atmospherics/proc/color_cache_name(var/obj/machinery/atmospherics/node)
+/obj/machinery/atmospherics/proc/color_cache_name(obj/machinery/atmospherics/node)
 	//Don't use this for standard pipes
 	if(!istype(node))
 		return null
@@ -160,7 +152,6 @@ Pipelines + Other Objects -> Pipe network
 /obj/machinery/atmospherics/proc/returnPipenet()
 	return
 
-
 /**
  * Getter of a list of pipenets
  *
@@ -168,7 +159,6 @@ Pipelines + Other Objects -> Pipe network
  */
 /obj/machinery/atmospherics/proc/return_pipenets()
 	return list()
-
 
 /obj/machinery/atmospherics/proc/returnPipenetAir()
 	return
@@ -182,10 +172,10 @@ Pipelines + Other Objects -> Pipe network
 /obj/machinery/atmospherics/proc/build_network(remove_deferral = FALSE)
 	// Called to build a network from this node
 	if(remove_deferral)
-		SSair.deferred_pipenet_rebuilds -= src
+		SSair.pipenets_to_build -= src
 
 /obj/machinery/atmospherics/proc/defer_build_network()
-	SSair.deferred_pipenet_rebuilds += src
+	SSair.pipenets_to_build += src
 
 /obj/machinery/atmospherics/proc/disconnect(obj/machinery/atmospherics/reference)
 	return
@@ -194,16 +184,15 @@ Pipelines + Other Objects -> Pipe network
 	if(P)
 		P.other_atmosmch -= src
 
-
 /obj/machinery/atmospherics/wrench_act(mob/living/user, obj/item/I)
 	. = TRUE
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return .
-	if(level == 1 && (our_turf.transparent_floor == TURF_TRANSPARENT) && istype(src, /obj/machinery/atmospherics/pipe))
+	if(level == 1 && HAS_TRAIT(src, TRAIT_UNDERFLOOR)) // if non-pipe somehow gets under floor - check non-pipe's code, not here
 		to_chat(user, span_danger("You cannot interact with something that's under the floor!"))
 		return .
-	if(level == 1 && our_turf.intact)
+	if(level == 1 && our_turf.underfloor_accessibility != UNDERFLOOR_INTERACTABLE)
 		to_chat(user, span_danger("You must remove the plating first."))
 		return .
 	if(!can_unwrench)
@@ -213,8 +202,8 @@ Pipelines + Other Objects -> Pipe network
 		to_chat(user, span_warning("You cannot unwrench [src], turn it off first."))
 		return .
 
-	var/datum/gas_mixture/int_air = return_air()
-	var/datum/gas_mixture/env_air = loc.return_air()
+	var/datum/gas_mixture/int_air = return_obj_air()
+	var/datum/gas_mixture/env_air = our_turf.get_readonly_air()
 
 	var/unsafe_wrenching = FALSE
 	var/internal_air = int_air ? int_air.return_pressure() : 0
@@ -235,7 +224,7 @@ Pipelines + Other Objects -> Pipe network
 		span_notice("You have unfastened [src]."),
 		span_italics("You hear ratcheting."),
 	)
-	investigate_log("was <span class='warning'>REMOVED</span> by [key_name_log(usr)]", INVESTIGATE_ATMOS)
+	investigate_log("was [span_warning("REMOVED")] by [key_name_log(usr)]", INVESTIGATE_ATMOS)
 
 	//You unwrenched a pipe full of pressure? let's splat you into the wall silly.
 	if(unsafe_wrenching)
@@ -246,18 +235,16 @@ Pipelines + Other Objects -> Pipe network
 
 	deconstruct(TRUE)
 
-
 /obj/machinery/atmospherics/attackby(obj/item/I, mob/user, params)
 	var/turf/our_turf = get_turf(src)
 	if(!our_turf)
 		return ATTACK_CHAIN_BLOCKED_ALL
 
-	if(our_turf.transparent_floor == TURF_TRANSPARENT)
+	if(HAS_TRAIT(src, TRAIT_UNDERFLOOR))
 		to_chat(user, span_warning("You cannot interact with something that's under the floor!"))
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
-
 
 //Called when an atmospherics object is unwrenched while having a large pressure difference
 //with it's locs air contents.
@@ -266,8 +253,9 @@ Pipelines + Other Objects -> Pipe network
 		return
 
 	if(!pressures)
-		var/datum/gas_mixture/int_air = return_air()
-		var/datum/gas_mixture/env_air = loc.return_air()
+		var/datum/gas_mixture/int_air = return_obj_air()
+		var/turf/T = get_turf(src)
+		var/datum/gas_mixture/env_air = T.get_readonly_air()
 		pressures = int_air.return_pressure() - env_air.return_pressure()
 
 	var/fuck_you_dir = get_dir(src, user)
@@ -280,7 +268,7 @@ Pipelines + Other Objects -> Pipe network
 	if(can_unwrench && !(obj_flags & NODECONSTRUCT))
 		var/obj/item/pipe/stored = new(loc, null, null, src)
 		if(!disassembled)
-			stored.obj_integrity = stored.max_integrity * 0.5
+			stored.update_integrity(stored.max_integrity * 0.5)
 		transfer_fingerprints_to(stored)
 	..()
 
@@ -310,7 +298,6 @@ Pipelines + Other Objects -> Pipe network
 		A.addMember(src)
 	build_network()
 
-
 /**
  * Find a connecting /obj/machinery/atmospherics in specified direction, called by relaymove()
  * used by ventcrawling mobs to check if they can move inside a pipe in a specific direction
@@ -323,7 +310,6 @@ Pipelines + Other Objects -> Pipe network
 			continue
 		if(check_connect_types(target, src))
 			return target
-
 
 #define VENT_SOUND_DELAY (3 SECONDS)
 
@@ -352,19 +338,17 @@ Pipelines + Other Objects -> Pipe network
 		break
 
 	if(!target_move)
-		if(direction & initialize_directions)
-			user.stop_ventcrawling()
+		if(HAS_TRAIT(user, TRAIT_MOVE_VENTCRAWLING) && (vent_movement & VENTCRAWL_ENTRANCE_ALLOWED))
+			user.handle_ventcrawl(src)
 		return
 
 	if(!(target_move.vent_movement & VENTCRAWL_ALLOWED))
 		return
 
 	user.abstract_move(target_move)
-	// user.loc = target_move	// we are using loc change instead of forceMove to avoid perspective reset. paradise is special
 
 	var/list/pipenetdiff = return_pipenets() ^ target_move.return_pipenets()
-	if(length(pipenetdiff))
-		user.update_pipe_vision()
+	user.update_pipe_vision(full_refresh = !!length(pipenetdiff))
 
 	if(world.time - user.last_played_vent > VENT_SOUND_DELAY)
 		user.last_played_vent = world.time
@@ -381,19 +365,17 @@ Pipelines + Other Objects -> Pipe network
 	our_client.set_eye(target_move)
 	// Let's smooth out that movement with an animate yeah?
 	// If the new x is greater (move is left to right) we get a negative offset. vis versa
-	our_client.pixel_x = (x - target_move.x) * world.icon_size
-	our_client.pixel_y = (y - target_move.y) * world.icon_size
+	our_client.pixel_x = (x - target_move.x) * ICON_SIZE_X
+	our_client.pixel_y = (y - target_move.y) * ICON_SIZE_Y
 	animate(our_client, pixel_x = 0, pixel_y = 0, time = 0.03 SECONDS)
 	our_client.move_delay = world.time + 0.03 SECONDS
 
 #undef VENT_SOUND_DELAY
 
-
 /obj/machinery/atmospherics/click_alt(mob/living/user)
 	if((vent_movement & VENTCRAWL_ALLOWED) && istype(user))
 		user.handle_ventcrawl(src)
 		return CLICK_ACTION_SUCCESS
-
 
 /obj/machinery/atmospherics/proc/change_color(new_color)
 	//only pass valid pipe colors please ~otherwise your pipe will turn invisible
@@ -439,7 +421,7 @@ Pipelines + Other Objects -> Pipe network
 		else
 			underlays += SSair.icon_manager.get_atmos_icon("underlay", direction, color_cache_name(node), "retracted" + icon_connect_type)
 
-/obj/machinery/atmospherics/singularity_pull(S, current_size)
+/obj/machinery/atmospherics/singularity_pull(atom/singularity, current_size)
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 	return ..()
@@ -451,7 +433,6 @@ Pipelines + Other Objects -> Pipe network
 //Used for certain children of obj/machinery/atmospherics to not show pipe vision when mob is inside it.
 /obj/machinery/atmospherics/proc/can_see_pipes()
 	return TRUE
-
 
 /**
  * Turns the machine either on, or off. If this is done by a user, display a message to them.
@@ -465,10 +446,10 @@ Pipelines + Other Objects -> Pipe network
 	if(!powered())
 		return
 	on = !on
+	SEND_SIGNAL(src, COMSIG_ATMOS_MACHINE_SET_ON, on)
 	update_icon()
 	if(user)
 		to_chat(user, span_notice("You toggle [src] [on ? "on" : "off"]."))
-
 
 /obj/machinery/atmospherics/proc/set_welded(new_value)
 	if(welded == new_value)
@@ -479,3 +460,8 @@ Pipelines + Other Objects -> Pipe network
 	update_icon()
 	update_pipe_image()
 
+/obj/machinery/atmospherics/proc/update_params(list/params)
+	return
+
+/obj/machinery/atmospherics/proc/get_data()
+	return list()

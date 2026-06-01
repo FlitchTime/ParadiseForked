@@ -11,7 +11,7 @@
 
 /datum/wires/vending/interactable(mob/user)
 	var/obj/machinery/vending/V = holder
-	if(!istype(user, /mob/living/silicon) && V.seconds_electrified && V.shock(user, 100))
+	if(!issilicon(user) && V.seconds_electrified && V.shock(user, 100))
 		return FALSE
 	if(V.panel_open)
 		return TRUE
@@ -26,16 +26,25 @@
 	. += "A [V.scan_id ? "purple" : "yellow"] light is on."
 
 /datum/wires/vending/on_pulse(wire)
-	var/obj/machinery/vending/V = holder
+	var/obj/machinery/vending/vending = holder
 	switch(wire)
 		if(WIRE_THROW_ITEM)
-			V.shoot_inventory = !V.shoot_inventory
+			vending.shoot_inventory = !vending.shoot_inventory
+			vending.aggressive = !vending.aggressive
+			if(vending.aggressive)
+				vending.create_proximity_monitor()
+			else
+				vending.remove_proximity_monitor()
+
 		if(WIRE_CONTRABAND)
-			V.extended_inventory = !V.extended_inventory
+			vending.extended_inventory = !vending.extended_inventory
+
 		if(WIRE_ELECTRIFY)
-			V.seconds_electrified = 30
+			vending.seconds_electrified = 30
+
 		if(WIRE_IDSCAN)
-			V.scan_id = !V.scan_id
+			vending.scan_id = !vending.scan_id
+
 	..()
 
 /datum/wires/vending/on_cut(wire, mend)

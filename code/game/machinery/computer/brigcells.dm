@@ -1,18 +1,17 @@
 /obj/machinery/computer/brigcells
-    name = "cell management computer"
-    desc = "Используется для управления тюремными камерами."
-    icon_keyboard = "security_key"
-    icon_screen = "cell_monitor"
-    use_power = IDLE_POWER_USE
-    idle_power_usage = 250
-    active_power_usage = 500
-    circuit = /obj/item/circuitboard/brigcells
-    light_color = LIGHT_COLOR_DARKRED
-    req_access = list(ACCESS_BRIG)
+	name = "cell management computer"
+	desc = "Используется для управления тюремными камерами."
+	icon_keyboard = "security_key"
+	icon_screen = "cell_monitor"
+	idle_power_usage = 250
+	active_power_usage = 500
+	circuit = /obj/item/circuitboard/brigcells
+	light_color = COLOR_SOFT_RED
+	req_access = list(ACCESS_BRIG)
 
 /obj/machinery/computer/brigcells/attack_ai(mob/user)
-    attack_hand(user)
-    ui_interact(user)
+	attack_hand(user)
+	ui_interact(user)
 
 /obj/machinery/computer/brigcells/attack_hand(mob/user)
 	if(stat & (BROKEN|NOPOWER))
@@ -44,27 +43,27 @@
 		timer["brigged_by"] = T.officer
 		timer["time_set_seconds"] = round(T.timetoset / 10, 1)
 		timer["time_left_seconds"] = round(T.timeleft(), 1)
-		timer["ref"] = "\ref[T]"
+		timer["ref"] = T.UID()
 		timers[++timers.len] += timer
 	timers = sortByKey(timers, "cell_id")
 	data["cells"] = timers
 	return data
 
 /obj/machinery/computer/brigcells/ui_act(action, params)
-	if (..())
+	if(..())
 		return FALSE
 
 	if(!allowed(usr))
 		to_chat(usr, span_warning("Access denied."))
-		playsound(src, pick('sound/machines/button.ogg', 'sound/machines/button_alternate.ogg', 'sound/machines/button_meloboom.ogg'), 20)
+		playsound(src, SFX_BUTTON_DENIED, 20)
 		return FALSE
 
-	if (action == "release")
+	if(action == "release")
 		var/ref = params["ref"]
-		var/obj/machinery/door_timer/T = locate(ref)
-		if (T)
+		var/obj/machinery/door_timer/T = locateUID(ref)
+		if(T)
 			T.timer_end()
-			T.Radio.autosay("Timer stopped manually from a cell management console.", T.name, SEC_FREQ, list(z))
+			radio_announce("Timer stopped manually from a cell management console.", T.name, SEC_FREQ, T)
 		return TRUE
 
 	return FALSE

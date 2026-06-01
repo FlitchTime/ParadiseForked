@@ -11,12 +11,11 @@
 	icon = 'icons/obj/engines_and_power/power.dmi'
 	anchored = TRUE
 	on_blueprints = TRUE
-	var/datum/powernet/powernet = null
 	use_power = NO_POWER_USE
-	idle_power_usage = 0
-	active_power_usage = 0
+	///The powernet our machine is connected to.
+	var/datum/powernet/powernet = null
 
-/obj/machinery/power/Destroy()
+/obj/machinery/power/Destroy(force)
 	disconnect_from_network()
 	return ..()
 
@@ -46,9 +45,9 @@
 	else
 		return 0
 
-/obj/machinery/power/proc/avail()
+/obj/machinery/power/proc/avail(amount)
 	if(powernet)
-		return powernet.avail
+		return amount ? powernet.avail >= amount : powernet.avail
 	else
 		return 0
 
@@ -132,7 +131,6 @@
 	powernet.remove_machine(src)
 	return TRUE
 
-
 /obj/machinery/power/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -149,7 +147,6 @@
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
-
 
 ///////////////////////////////////////////
 // Powernet handling helpers
@@ -207,7 +204,6 @@
 // GLOBAL PROCS for powernets handling
 //////////////////////////////////////////
 
-
 // returns a list of all power-related objects (nodes, cable, junctions) in turf,
 // excluding source, that match the direction d
 // if unmarked==1, only return those with no powernet
@@ -244,7 +240,7 @@
 
 	worklist[O] = TRUE //start propagating from the passed object
 
-	while(index<=worklist.len) //until we've exhausted all power objects
+	while(index<=length(worklist)) //until we've exhausted all power objects
 		P = worklist[index] //get the next power object found
 		index++
 
@@ -268,7 +264,6 @@
 		if(!PM.connect_to_network()) //couldn't find a node on its turf...
 			PM.disconnect_from_network() //... so disconnect if already on a powernet
 
-
 //Merge two powernets, the bigger (in cable length term) absorbing the other
 /proc/merge_powernets(datum/powernet/net1, datum/powernet/net2)
 	if(!net1 || !net2) //if one of the powernet doesn't exist, return
@@ -278,7 +273,7 @@
 		return
 
 	//We assume net1 is larger. If net2 is in fact larger we are just going to make them switch places to reduce on code.
-	if(net1.cables.len < net2.cables.len)	//net2 is larger than net1. Let's switch them around
+	if(length(net1.cables) < length(net2.cables))	//net2 is larger than net1. Let's switch them around
 		var/temp = net1
 		net1 = net2
 		net2 = temp
@@ -309,10 +304,10 @@
 
 	var/mob/living/carbon/human/h_victim = victim
 	if(ishuman(h_victim) && h_victim.wearing_shock_proof_gloves())
-		return FALSE	//to avoid spamming with insulated glvoes on
+		return FALSE //to avoid spamming with insulated glvoes on
 
 	var/area/source_area
-	if(istype(power_source, /area))
+	if(isarea(power_source))
 		source_area = power_source
 		power_source = source_area.get_apc()
 	if(istype(power_source, /obj/structure/cable))
@@ -324,7 +319,7 @@
 
 	if(istype(power_source, /datum/powernet))
 		PN = power_source
-	else if(istype(power_source, /obj/item/stock_parts/cell))
+	else if(iscell(power_source))
 		cell = power_source
 	else if(isapc(power_source))
 		var/obj/machinery/power/apc/apc = power_source
@@ -359,14 +354,13 @@
 	else if(istype(power_source, /datum/powernet))
 		var/drained_power = drained_energy/GLOB.CELLRATE //convert from "joules" to "watts"
 		PN.delayedload += (min(drained_power, max(PN.newavail - PN.delayedload, 0)))
-	else if (istype(power_source, /obj/item/stock_parts/cell))
+	else if(iscell(power_source))
 		cell.use(drained_energy)
 	return drained_energy
 
 ////////////////////////////////////////////////
 // Misc.
 ///////////////////////////////////////////////
-
 
 // return a knot cable (O-X) if one is present in the turf
 // null if there's none
@@ -379,7 +373,6 @@
 	return null
 
 /area/proc/get_apc()
-	for(var/thing in GLOB.apcs)
-		var/obj/machinery/power/apc/APC = thing
-		if(APC.area == src)
-			return APC
+	for(var/obj/machinery/power/apc/apc as anything in GLOB.apcs)
+		if(apc.area == src)
+			return apc

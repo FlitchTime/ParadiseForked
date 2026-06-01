@@ -15,37 +15,38 @@
 	buckle_requires_restraints = TRUE
 	buckle_lying = 90
 
-
-/obj/machinery/atmospherics/pipe/New()
-	..()
+/obj/machinery/atmospherics/pipe/Initialize(mapload)
+	. = ..()
 	//so pipes under walls are hidden
-	if(istype(get_turf(src), /turf/simulated/wall) || istype(get_turf(src), /turf/simulated/wall/shuttle))
+	if(iswallturf(get_turf(src)) || istype(get_turf(src), /turf/simulated/wall/shuttle))
 		level = 1
 
+	AddElement(/datum/element/undertile)
+
 /obj/machinery/atmospherics/pipe/Destroy()
-	releaseAirToTurf()
-	QDEL_NULL(air_temporary)
+	var/turf/turf = get_turf(src)
+	turf.blind_release_air(air_temporary)
 
-	var/turf/T = loc
-	for(var/obj/machinery/atmospherics/meter/meter in T)
+	for(var/obj/machinery/atmospherics/meter/meter in turf)
 		if(meter.target == src)
-			var/obj/item/pipe_meter/PM = new (T)
-			meter.transfer_fingerprints_to(PM)
+			var/obj/item/pipe_meter/pipe_meter = new (turf)
+			meter.transfer_fingerprints_to(pipe_meter)
 			qdel(meter)
+	parent?.members.RemoveAll(src)
 	. = ..()
-
 	// if we're somehow by ourself
-	if(parent && !QDELETED(parent) && parent.members.len == 1 && parent.members[1] == src)
+	if(!QDELETED(parent) && length(parent?.members) == 0)
 		qdel(parent)
 	parent = null
+
+/obj/machinery/atmospherics/pipe/proc/clear_parent()
+	parent?.members.RemoveAll(src)
 
 /obj/machinery/atmospherics/pipe/returnPipenet(obj/machinery/atmospherics/A)
 	return parent
 
-
 /obj/machinery/atmospherics/pipe/return_pipenets()
 	return list(parent)
-
 
 /obj/machinery/atmospherics/proc/pipeline_expansion()
 	return null
@@ -56,13 +57,8 @@
 
 	return 1
 
-/obj/machinery/atmospherics/pipe/proc/releaseAirToTurf()
-	if(air_temporary)
-		var/turf/T = loc
-		T.assume_air(air_temporary)
-		air_update_turf()
-
-/obj/machinery/atmospherics/pipe/return_air()
+/obj/machinery/atmospherics/pipe/return_obj_air()
+	RETURN_TYPE(/datum/gas_mixture)
 	if(!parent)
 		return 0
 	return parent.air
@@ -71,11 +67,6 @@
 	if(!parent)
 		return 0
 	return parent.air
-
-/obj/machinery/atmospherics/pipe/remove_air(amount)
-	if(!parent)
-		return 0
-	return parent.air.remove(amount)
 
 /obj/machinery/atmospherics/pipe/build_network(remove_deferral = FALSE)
 	if(!parent)
@@ -86,7 +77,7 @@
 /obj/machinery/atmospherics/pipe/setPipenet(datum/pipeline/P)
 	parent = P
 
-/obj/machinery/atmospherics/pipe/color_cache_name(var/obj/machinery/atmospherics/node)
+/obj/machinery/atmospherics/pipe/color_cache_name(obj/machinery/atmospherics/node)
 	if(istype(node, /obj/machinery/atmospherics/pipe/manifold) || istype(node, /obj/machinery/atmospherics/pipe/manifold4w))
 		if(pipe_color == node.pipe_color)
 			return node.pipe_color

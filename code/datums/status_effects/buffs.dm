@@ -2,7 +2,6 @@
 
 /datum/status_effect/his_grace
 	id = "his_grace"
-	duration = -1
 	tick_interval = 0.4 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/his_grace
 	var/bloodlust = 0
@@ -24,10 +23,14 @@
 
 /datum/status_effect/his_grace/on_apply()
 	owner.add_status_effect_absorption(source = id, effect_type = list(STUN, WEAKEN, STAMCRIT, PARALYZE, KNOCKDOWN))
+	ADD_TRAIT(owner, TRAIT_DEFLECT_BOLAS, HIS_GRACE_TRAIT)
+	owner.ignore_slowdown(TRAIT_STATUS_EFFECT(id))
 	return ..()
 
 /datum/status_effect/his_grace/on_remove()
 	owner.remove_status_effect_absorption(source = id, effect_type = list(STUN, WEAKEN, STAMCRIT, PARALYZE, KNOCKDOWN))
+	REMOVE_TRAIT(owner, TRAIT_DEFLECT_BOLAS, HIS_GRACE_TRAIT)
+	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/his_grace/tick(seconds_between_ticks)
 	var/mob/living/carbon/human/human = owner
@@ -80,21 +83,21 @@
 	alert_type = /atom/movable/screen/alert/status_effect/shadow_mend
 
 /atom/movable/screen/alert/status_effect/shadow_mend
-	name = "Shadow Mend"
-	desc = "Shadowy energies wrap around your wounds, sealing them at a price. After healing, you will slowly lose health every three seconds for thirty seconds."
+	name = "Теневой исцеление"
+	desc = "Тёмные энергии обволакивают ваши раны, запечатывая их, но за определённую цену. После исцеления вы будете медленно терять здоровье каждые 3 секунды, в течение 30 секунд."
 	icon_state = "shadow_mend"
 
 /datum/status_effect/shadow_mend/on_apply()
-	owner.visible_message("<span class='notice'>Violet light wraps around [owner]'s body!</span>", "<span class='notice'>Violet light wraps around your body!</span>")
-	playsound(owner, 'sound/magic/teleport_app.ogg', 50, 1)
+	owner.visible_message(span_notice("Фиолетовый свет обволакивает тело [owner]!"), span_notice("Фиолетовый свет обволакивает ваше тело!"))
+	playsound(owner, 'sound/magic/teleport_app.ogg', 50, TRUE)
 	return ..()
 
 /datum/status_effect/shadow_mend/tick(seconds_between_ticks)
 	owner.heal_overall_damage(15, 15)
 
 /datum/status_effect/shadow_mend/on_remove()
-	owner.visible_message("<span class='warning'>The violet light around [owner] glows black!</span>", "<span class='warning'>The tendrils around you cinch tightly and reap their toll...</span>")
-	playsound(owner, 'sound/magic/teleport_diss.ogg', 50, 1)
+	owner.visible_message(span_warning("Фиолетовый свет вокруг [owner] становится чёрным!"), span_warning("Щупальца вокруг вас сжимаются и забирают свою цену..."))
+	playsound(owner, 'sound/magic/teleport_diss.ogg', 50, TRUE)
 	owner.apply_status_effect(STATUS_EFFECT_VOID_PRICE)
 
 /datum/status_effect/shadow_empower
@@ -102,13 +105,13 @@
 	alert_type = /atom/movable/screen/alert/status_effect/shadow_empower
 
 /atom/movable/screen/alert/status_effect/shadow_empower
-	name = "Darkness empower"
-	desc = "Your body is enhanced with darkness and heals much stronger."
+	name = "Усиление тьмой"
+	desc = "Ваше тело усилено тьмой, и теперь вы исцеляетесь гораздо лучше."
 	icon_state = "glare"
 
 /datum/status_effect/shadow_empower/on_apply()
-	to_chat(owner, span_revenbignotice("You feel empowered with darkness!"))
-	playsound(owner, 'sound/magic/teleport_app.ogg', 50, 1)
+	to_chat(owner, span_revenbignotice("Вы чувствуете себя усиленным тьмой!"))
+	playsound(owner, 'sound/magic/teleport_app.ogg', 50, TRUE)
 	return TRUE
 
 /datum/status_effect/shadow_empower/tick(seconds_between_ticks)
@@ -126,8 +129,8 @@
 			human.check_and_regenerate_organs()
 
 /datum/status_effect/shadow_empower/on_remove()
-	to_chat(owner, span_revenbignotice("You feel exhausted! Darkness no longer supports you!"))
-	playsound(owner, 'sound/magic/teleport_diss.ogg', 50, 1)
+	to_chat(owner, span_revenbignotice("Вы чувствуете истощение! Тьма больше не поддерживает вас!"))
+	playsound(owner, 'sound/magic/teleport_diss.ogg', 50, TRUE)
 
 /datum/status_effect/void_price
 	id = "void_price"
@@ -138,8 +141,8 @@
 	var/price = 3
 
 /atom/movable/screen/alert/status_effect/void_price
-	name = "Void Price"
-	desc = "Black tendrils cinch tightly against you, digging wicked barbs into your flesh."
+	name = "Цена бездны"
+	desc = "Чёрные щупальца сжимают вас, впиваясь зловещими шипами в вашу плоть."
 	icon_state = "shadow_mend"
 
 /datum/status_effect/void_price/tick(seconds_between_ticks)
@@ -157,10 +160,9 @@
 	alert_type = /atom/movable/screen/alert/status_effect/blooddrunk
 
 /atom/movable/screen/alert/status_effect/blooddrunk
-	name = "Blood-Drunk"
-	desc = "You are drunk on blood! Your pulse thunders in your ears! Nothing can harm you!" //not true, and the item description mentions its actual effect
+	name = "Одурманенный кровью"
+	desc = "Вы одурманены кровью! Ваш пульс бьётся в ушах! Ничто не может причинить вам вреда!" //not true, and the item description mentions its actual effect
 	icon_state = "blooddrunk"
-
 
 /datum/status_effect/blooddrunk/on_apply()
 	if(ishuman(owner))
@@ -177,7 +179,6 @@
 	owner.playsound_local(get_turf(owner), 'sound/effects/singlebeat.ogg', 40, TRUE, use_reverb = FALSE)
 	return TRUE
 
-
 /datum/status_effect/blooddrunk/on_remove()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
@@ -190,7 +191,6 @@
 	add_attack_logs(owner, owner, "lost blood-drunk stun immunity", ATKLOG_ALL)
 	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))
 	owner.remove_status_effect_absorption(source = id, effect_type = list(STUN, WEAKEN, KNOCKDOWN))
-
 
 /datum/status_effect/exercised
 	id = "Exercised"
@@ -206,12 +206,9 @@
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
 
-
 /datum/status_effect/banana_power
 	id = "banana_power"
-	duration = -1
 	status_type = STATUS_EFFECT_REFRESH
-	tick_interval = 1 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/banana_power
 	/// Basic heal per tick.
 	var/basic_heal_amt = 10
@@ -222,25 +219,21 @@
 	/// A list of integers, one for each remaining banana effect.
 	var/list/active_instances = list()
 
-
 /datum/status_effect/banana_power/on_apply()
-	to_chat(owner, span_boldnotice("Banana juices surge through your veins, you feel invincible!"))
+	to_chat(owner, span_boldnotice("Сок бананов наполняет ваши вены, вы чувствуете себя непобедимым!"))
 	apply_banana_power()
 	return TRUE
-
 
 /datum/status_effect/banana_power/refresh(effect, ...)
 	apply_banana_power()
 	..()
-
 
 /datum/status_effect/banana_power/proc/apply_banana_power()
 	tolerance++
 	active_instances += instance_duration
 	owner.remove_CC()
 	if(tolerance > 2)
-		to_chat(owner, span_warning("Eating so many bananas will not enhance healing, only prolong it and make weaker!"))
-
+		to_chat(owner, span_warning("Съедание такого количества бананов не усилит исцеление, а только продлит его и сделает слабее!"))
 
 /datum/status_effect/banana_power/tick(seconds_between_ticks)
 	var/active_instances_length = length(active_instances)
@@ -265,21 +258,17 @@
 	if(tolerance <= 1 && !length(active_instances))
 		qdel(src)
 
-
 /atom/movable/screen/alert/status_effect/banana_power
-	name = "Banana power"
-	desc = "Your body has been infused with banana juices, you will heal damage over time!"
+	name = "Сила бананов"
+	desc = "Ваше тело наполнено соком бананов, и теперь вы постепенно исцеляете урон!"
 	icon = 'icons/mob/actions/actions.dmi'
 	icon_state = "banana_power"
-
 
 //Hippocratic Oath: Applied when the Rod of Asclepius is activated.
 /datum/status_effect/hippocraticOath
 	id = "Hippocratic Oath"
-	status_type = STATUS_EFFECT_UNIQUE
-	duration = -1
 	tick_interval = 25
-	examine_text = "<span class='notice'>They seem to have an aura of healing and helpfulness about them.</span>"
+	examine_text = span_notice_alt("Кажется, они окружены аурой исцеления и доброжелательности.")
 	alert_type = null
 
 	var/datum/component/aura_healing/aura_healing
@@ -309,28 +298,28 @@
 
 	//Makes the user passive, it's in their oath not to harm!
 	ADD_TRAIT(owner, TRAIT_PACIFISM, "hippocraticOath")
-	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	H.add_hud_to(owner)
+	var/datum/atom_hud/med_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
+	med_hud.show_to(owner)
 	return ..()
 
 /datum/status_effect/hippocraticOath/on_remove()
 	QDEL_NULL(aura_healing)
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, "hippocraticOath")
-	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	H.remove_hud_from(owner)
+	var/datum/atom_hud/med_hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
+	med_hud.hide_from(owner)
 
 /datum/status_effect/hippocraticOath/tick(seconds_between_ticks)
 	if(owner.stat == DEAD)
 		if(deathTick < 4)
 			deathTick += 1
 		else
-			owner.visible_message("<span class='notice'>[owner]'s soul is absorbed into the rod, relieving the previous snake of its duty.</span>")
+			owner.visible_message(span_notice("Душа [owner] поглощается посохом, освобождая предыдущую змею от её обязанностей."))
 			var/mob/living/simple_animal/hostile/retaliate/poison/snake/healSnake = new(owner.loc)
 			var/list/chems = list("bicaridine", "perfluorodecalin", "kelotane")
 			healSnake.poison_type = pick(chems)
 			healSnake.name = "Asclepius's Snake"
 			healSnake.real_name = "Asclepius's Snake"
-			healSnake.desc = "A mystical snake previously trapped upon the Rod of Asclepius, now freed of its burden. Unlike the average snake, its bites contain chemicals with minor healing properties."
+			healSnake.desc = "Мистическая змея, ранее заключённая в Посохе Асклепия, теперь освобождена от своей ноши. В отличие от обычной змеи, её укусы содержат химические вещества с лёгкими целебными свойствами."
 			new /obj/effect/decal/cleanable/ash(owner.loc)
 			new /obj/item/rod_of_asclepius(owner.loc)
 			qdel(owner)
@@ -344,25 +333,25 @@
 				if(hand)
 					itemUser.drop_l_hand(TRUE)
 					if(itemUser.put_in_l_hand(newRod, TRUE))
-						to_chat(itemUser, "<span class='notice'>The Rod of Asclepius suddenly grows back out of your arm!</span>")
+						to_chat(itemUser, span_notice("Посох Асклепия внезапно вырастает из вашей руки!"))
 					else
 						if(!itemUser.get_organ(BODY_ZONE_L_ARM))
 							new /obj/item/organ/external/arm(itemUser)
 						new /obj/item/organ/external/hand(itemUser)
 						itemUser.update_body()
 						itemUser.put_in_l_hand(newRod, TRUE)
-						to_chat(itemUser, "<span class='notice'>Your arm suddenly grows back with the Rod of Asclepius still attached!</span>")
+						to_chat(itemUser, span_notice("Ваша рука внезапно отрастает, и Посох Асклепия всё ещё прикреплён к ней!"))
 				else
 					itemUser.drop_r_hand(TRUE)
 					if(itemUser.put_in_r_hand(newRod, TRUE))
-						to_chat(itemUser, "<span class='notice'>The Rod of Asclepius suddenly grows back out of your arm!</span>")
+						to_chat(itemUser, span_notice("Посох Асклепия внезапно вырастает из вашей руки!"))
 					else
 						if(!itemUser.get_organ(BODY_ZONE_R_ARM))
 							new /obj/item/organ/external/arm/right(itemUser)
 						new /obj/item/organ/external/hand/right(itemUser)
 						itemUser.update_body()
 						itemUser.put_in_r_hand(newRod, TRUE)
-						to_chat(itemUser, "<span class='notice'>Your arm suddenly grows back with the Rod of Asclepius still attached!</span>")
+						to_chat(itemUser, span_notice("Ваша рука внезапно отрастает, и Посох Асклепия всё ещё прикреплён к ней!"))
 
 			//Because a servant of medicines stops at nothing to help others, lets keep them on their toes and give them an additional boost.
 			if(itemUser.health < itemUser.maxHealth)
@@ -373,12 +362,10 @@
 			if(update)
 				owner.updatehealth("Hippocratic Oath")
 
-
 /atom/movable/screen/alert/status_effect/regenerative_core
-	name = "Reinforcing Tendrils"
-	desc = "You can move faster than your broken body could normally handle!"
+	name = "Регенеративное ядро"
+	desc = "Вы можете двигаться быстрее, чем ваше повреждённое тело обычно позволяет!"
 	icon_state = "regenerative_core"
-	name = "Regenerative Core Tendrils"
 
 /datum/status_effect/regenerative_core
 	id = "Regenerative Core"
@@ -386,9 +373,12 @@
 	status_type = STATUS_EFFECT_REPLACE
 	alert_type = /atom/movable/screen/alert/status_effect/regenerative_core
 
-
 /datum/status_effect/regenerative_core/on_apply()
 	owner.ignore_slowdown(TRAIT_STATUS_EFFECT(id))
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.add_fracture_ignore_trait(src)
+
 	owner.heal_overall_damage(25, 25, affect_robotic = TRUE)
 	owner.remove_CC()
 	if(ishuman(owner))
@@ -397,31 +387,33 @@
 		if(is_mining_level(H.z) || istype(get_area(H), /area/ruin/space/bubblegum_arena))
 			for(var/obj/item/organ/external/bodypart as anything in H.bodyparts)
 				bodypart.stop_internal_bleeding()
-				bodypart.mend_fracture()
+				bodypart.stop_arterial_bleeding()
+				if(bodypart.has_fracture() && bodypart.fracture.can_mend_by_aura_heal)
+					bodypart.mend_fracture()
 		else
-			to_chat(owner, "<span class='warning'>...But the core was weakened, it is not close enough to the rest of the legions of the necropolis.</span>")
+			to_chat(owner, span_warning("...Но ядро ослаблено, оно не достаточно близко к остальным легионам некрополя."))
 	else
 		owner.set_bodytemperature(BODYTEMP_NORMAL)
 	return TRUE
 
-
 /datum/status_effect/regenerative_core/on_remove()
 	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))
-
+	if(!ishuman(owner))
+		return
+	var/mob/living/carbon/human/human_owner = owner
+	human_owner.remove_fracture_ignore_trait(src)
 
 /atom/movable/screen/alert/status_effect/fleshmend
-	name = "Fleshmend"
-	desc = "Our wounds are rapidly healing"
+	name = "Регенерация плоти"
+	desc = "Наши раны быстро заживают."
 	icon_state = "fleshmend"
 
 /datum/status_effect/fleshmend
 	id = "fleshmend"
-	duration = -1
 	status_type = STATUS_EFFECT_REFRESH
-	tick_interval = 1 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/fleshmend
 	/// This diminishes the healing of fleshmend the higher it is.
-	var/tolerance = 1
+	var/tolerance = 0
 	/// This diminishes the healing of fleshmend if the user is cold when it is activated
 	var/freezing = FALSE
 	/// Number of heal ticks.
@@ -430,11 +422,9 @@
 	var/list/active_instances = list()
 	var/ticks = 0
 
-
 /datum/status_effect/fleshmend/on_apply()
 	apply_new_fleshmend()
 	return TRUE
-
 
 /datum/status_effect/fleshmend/refresh(effect, ...)
 	apply_new_fleshmend()
@@ -442,10 +432,14 @@
 
 /datum/status_effect/fleshmend/proc/apply_new_fleshmend()
 	tolerance += 1
-	freezing = (owner.bodytemperature + 50 <= owner.dna.species.body_temperature)
-	if(freezing)
-		to_chat(owner, span_warning("Our healing's effectiveness is reduced by our cold body!"))
 	active_instances += instance_duration
+	freezing = (owner.bodytemperature + 50 <= owner.dna.species.body_temperature)
+
+	if(freezing || tolerance > 1)
+		owner.balloon_alert(owner, "эффективность регенерации снижена")
+	else
+		owner.balloon_alert(owner, "быстрая регенерация плоти")
+
 
 /datum/status_effect/fleshmend/tick(seconds_between_ticks)
 	if(LAZYLEN(active_instances) >= 1)
@@ -472,61 +466,72 @@
 
 		active_instances -= expired_instances
 
-	tolerance = max(tolerance - 0.05, 1)
-	if(tolerance <= 1 && length(active_instances) == 0)
-		qdel(src)
+	tolerance = max(tolerance - 0.1, 1)
 
+	if(length(active_instances) <= 0)
+		qdel(src)
 
 /datum/status_effect/speedlegs
 	id = "gottagofast"
-	duration = -1
-	status_type = STATUS_EFFECT_UNIQUE
-	tick_interval = 4 SECONDS
 	alert_type = null
 	var/stacks = 0
 	/// A reference to the changeling's changeling antag datum.
 	var/datum/antagonist/changeling/cling
 
-
 /datum/status_effect/speedlegs/on_apply()
-	cling = owner?.mind?.has_antag_datum(/datum/antagonist/changeling)
+	cling = IS_CHANGELING(owner)
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/strained_muscles)
+	cling.chem_charges -= CLING_MUSCLES_CHEMICALCOST
 	return TRUE
 
-
 /datum/status_effect/speedlegs/tick(seconds_between_ticks)
-	if(owner.body_position == LYING_DOWN)
-		to_chat(owner, span_danger("We are unable to use our legs, while lying!"))
-		qdel(src)
-	else if(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) * 3)
-		to_chat(owner, span_danger("Our muscles relax without the energy to strengthen them."))
-		owner.Weaken(6 SECONDS)
+	if(owner.stat || owner.staminaloss >= owner.get_max_stamina() || cling.chem_charges <= (stacks * CLING_MUSCLES_MODIFICATOR) + CLING_CHEM_RECHARGE_RATE)
+		owner.balloon_alert(owner, "мы истощены!")
+		owner.Knockdown(6 SECONDS)
 		qdel(src)
 	else
 		stacks++
-		cling.chem_charges -= stacks * 3 //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
-		if(stacks == 7) //Warning message that the stacks are getting too high
-			to_chat(owner, span_warning("Our legs are really starting to hurt..."))
-
-
-/datum/status_effect/speedlegs/before_remove()
-	if(stacks < 3 && !(owner.stat || owner.staminaloss >= 90 || cling.chem_charges <= (stacks + 1) * 3)) //We don't want people to turn it on and off fast, however, we need it forced off if the 3 later conditions are met.
-		to_chat(owner, span_notice("Our muscles just tensed up, they will not relax so fast."))
-		return FALSE
-	return TRUE
-
+		if(stacks == CLING_MUSCLES_STACKS)
+			owner.balloon_alert(owner, "наши ноги болят!")
+		else if(stacks > CLING_MUSCLES_STACKS) //Warning message that the stacks are getting too high
+			cling.chem_charges -= (stacks * CLING_MUSCLES_MODIFICATOR) + CLING_CHEM_RECHARGE_RATE  //At first the changeling may regenerate chemicals fast enough to nullify fatigue, but it will stack
 
 /datum/status_effect/speedlegs/on_remove()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/strained_muscles)
-	if(!owner.IsWeakened())
-		to_chat(owner, span_notice("Our muscles relax."))
-		if(stacks >= 7)
-			to_chat(owner, span_danger("We collapse in exhaustion."))
-			owner.Weaken(6 SECONDS)
-			owner.emote("gasp")
-	cling.genetic_damage += stacks
+	if(stacks >= CLING_MUSCLES_STACKS)
+		owner.balloon_alert(owner, "наши мышцы истощены")
+		owner.Knockdown(6 SECONDS)
+		owner.emote("gasp")
+	else
+		owner.balloon_alert(owner, "наши мышцы расслабляются")
 	cling = null
 
+/datum/status_effect/chameleon
+	id = "chameleonskin"
+	alert_type = null
+	var/stacks = 0
+	var/datum/antagonist/changeling/cling
+
+/datum/status_effect/chameleon/on_apply()
+	cling = IS_CHANGELING(owner)
+	cling.chem_charges -= CLING_CHAMELEON_CHEMICALCOST
+	owner.balloon_alert(owner, "кожа становится прозрачной!")
+	return TRUE
+
+/datum/status_effect/chameleon/tick(seconds_between_ticks)
+	if(owner.stat || cling.chem_charges <= CLING_CHAMELEON_CONSUMPTION + CLING_CHEM_RECHARGE_RATE)
+		qdel(src)
+	else
+		cling.chem_charges -= CLING_CHAMELEON_CONSUMPTION
+		if((world.time - owner.last_movement) >= 10)
+			owner.alpha_add(standartize_alpha(-50), ALPHA_SOURCE_CHAMELEON_CLING)
+		else
+			owner.alpha_add(standartize_alpha(150), ALPHA_SOURCE_CHAMELEON_CLING)
+
+/datum/status_effect/chameleon/on_remove()
+	owner.balloon_alert(owner, "кожа снова видна")
+	owner.alpha_set(1, ALPHA_SOURCE_CHAMELEON_CLING)
+	cling = null
 
 /datum/status_effect/panacea
 	id = "panacea"
@@ -535,16 +540,14 @@
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
 
-
 /datum/status_effect/panacea/tick(seconds_between_ticks)
 	owner.heal_damages(tox = 5, brain = 5)	//Has the same healing as 20 charcoal, but happens faster
-	owner.radiation = max(0, owner.radiation - 70) //Same radiation healing as pentetic
+	owner.adjustToxLoss(-70) //Same radiation healing as pentetic
 	owner.AdjustDrunk(-12 SECONDS) //50% stronger than antihol
 	owner.reagents.remove_all_type(/datum/reagent/consumable/ethanol, 10)
 	for(var/datum/reagent/reagent in owner.reagents.reagent_list)
 		if(!reagent.harmless)
 			owner.reagents.remove_reagent(reagent.id, 2)
-
 
 /datum/status_effect/terror/regeneration
 	id = "terror_regen"
@@ -559,21 +562,17 @@
 	duration = 250
 	alert_type = null
 
-
 /datum/status_effect/terror/food_regen/tick(seconds_between_ticks)
 	owner.adjustBruteLoss(-(owner.maxHealth/20))
 
-
 /datum/status_effect/hope
 	id = "hope"
-	duration = -1
 	tick_interval = 2 SECONDS
-	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/hope
 
 /atom/movable/screen/alert/status_effect/hope
-	name = "Hope."
-	desc = "A ray of hope beyond dispair."
+	name = "Надежда"
+	desc = "Луч надежды сквозь отчаяние."
 	icon_state = "hope"
 
 /datum/status_effect/hope/tick(seconds_between_ticks)
@@ -593,36 +592,34 @@
 		hope_message()
 
 /datum/status_effect/hope/proc/hope_message()
-	var/list/hope_messages = list("You are filled with [pick("hope", "determination", "strength", "peace", "confidence", "robustness")].",
-							"Don't give up!",
-							"You see your [pick("friends", "family", "coworkers", "self")] [pick("rooting for you", "cheering you on", "worrying about you")].",
-							"You can't give up now, keep going!",
-							"But you refused to die!",
-							"You have been through worse, you can do this!",
-							"People need you, do not [pick("give up", "stop", "rest", "pass away", "falter", "lose hope")] yet!",
-							"This person is not nearly as robust as you!",
-							"You ARE robust, don't let anyone tell you otherwise!",
-							"[owner], don't lose hope, the future of the station depends on you!",
-							"Do not follow the light yet!")
-	var/list/un_hopeful_messages = list("DON'T FUCKING DIE NOW COWARD!",
+	var/list/hope_messages = list(
+		"Вы чувствуете, как вас переполняет [pick("надежда", "решимость", "сила", "ярость", "адреналин", "робаст")]!",
+		"Не вздумайте сдаваться!",
+		"Вы видишьте как [pick("друзья", "семья", "коллеги")] [pick("болеют за вас", "поддерживают вас", "переживают за вас")].",
+		"Вы не можете сдаться, продолжайте жить!",
+		"Вы пережили и не такое — соберите свою волю в кулак!",
+		"Люди нуждаются в вас, не [pick("сдавайтесь", "останавливайтесь", "уходите", "колеблитесь", "теряйте надежду")]!",
+		"Этот человек не такой робастный, как вы!",
+		"Вы РОБАСТ, не позволяйте никому говорить обратное!",
+		"[owner], не теряйте надежду, будущее станции зависит от вас!",
+		"Не идите за светом, пока что!"
+	)
+	var/list/un_hopeful_messages = list("НЕ СМЕЙ СДОХНУТЬ, ТРУС!",
 							"Git Gud, [owner]",
-							"I bet a [pick("vox", "vulp", "nian", "tajaran", "baldie")] could do better than you!",
-							"You hear people making fun of you for getting robusted.")
+							"Держу пари, [pick("вокс", "вульпа", "ниан", "таяра", "лысый")] справился бы лучше, чем ты!",
+							"Ты слышишь, как люди смеются над тобой за то, что тебя заробастили.")
 	if(prob(99))
-		to_chat(owner, "<span class='notice'>[pick(hope_messages)]</span>")
+		to_chat(owner, span_notice("[pick(hope_messages)]"))
 	else
-		to_chat(owner, "<span class='cultitalic'>[pick(un_hopeful_messages)]</span>")
-
+		to_chat(owner, span_cultitalic("[pick(un_hopeful_messages)]"))
 
 /datum/status_effect/thrall_net
 	id = "thrall_net"
 	tick_interval = 2 SECONDS
-	duration = -1
 	alert_type = null
 	var/blood_cost_per_tick = 5
 	var/list/target_UIDs = list()
 	var/datum/antagonist/vampire/vamp
-
 
 /datum/status_effect/thrall_net/on_creation(mob/living/new_owner, datum/antagonist/vampire/V, ...)
 	. = ..()
@@ -642,7 +639,6 @@
 
 		target_UIDs += M.current.UID()
 		M.current.Beam(owner, "sendbeam", time = 2 SECONDS, maxdistance = 7)
-
 
 /datum/status_effect/thrall_net/tick(seconds_between_ticks)
 	var/total_damage = 0
@@ -673,11 +669,9 @@
 	if(!vamp.bloodusable || length(target_UIDs) <= 1) // if there is one left in the list, its only the vampire.
 		qdel(src)
 
-
 /datum/status_effect/thrall_net/on_remove()
 	. = ..()
 	vamp = null
-
 
 /datum/status_effect/bloodswell
 	id = "bloodswell"
@@ -686,13 +680,11 @@
 	alert_type = /atom/movable/screen/alert/status_effect/blood_swell
 	var/bonus_damage_applied = FALSE
 
-
 /atom/movable/screen/alert/status_effect/blood_swell
-	name = "Blood Swell"
-	desc = "Your body has been infused with crimson magics, your resistance to attacks has greatly increased!"
+	name = "Кровавый прилив"
+	desc = "Ваше тело наполнено багровой магией, ваша устойчивость к атакам значительно повысилась!"
 	icon = 'icons/mob/actions/actions.dmi'
 	icon_state = "blood_swell_status"
-
 
 /datum/status_effect/bloodswell/on_apply()
 	. = ..()
@@ -715,7 +707,6 @@
 		human_owner.physiology.punch_damage_high += 14
 		human_owner.physiology.punch_stun_threshold += 10	//higher chance to stun but not 100%
 
-
 /datum/status_effect/bloodswell/on_remove()
 	if(!ishuman(owner))
 		return
@@ -735,33 +726,27 @@
 		human_owner.physiology.punch_damage_high -= 14
 		human_owner.physiology.punch_stun_threshold -= 10
 
-
 /datum/status_effect/blood_rush
 	id = "bloodrush"
 	alert_type = /atom/movable/screen/alert/status_effect/blood_rush
 	duration = 10 SECONDS
 
-
 /datum/status_effect/blood_rush/on_apply()
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/blood_rush)
 	return TRUE
 
-
 /datum/status_effect/blood_rush/on_remove()
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/blood_rush)
 
-
 /atom/movable/screen/alert/status_effect/blood_rush
-	name = "Blood Rush"
-	desc = "Your body is infused with blood magic, boosting your movement speed."
+	name = "Кровавый рывок"
+	desc = "Ваше тело наполнено магией крови, увеличивая вашу скорость передвижения."
 	icon = 'icons/mob/actions/actions.dmi'
 	icon_state = "blood_rush_status"
 
 /datum/status_effect/dragon_strength //less powerfull than hope, but works the same way
 	id = "dragon strength"
-	duration = -1
 	tick_interval = 3 SECONDS
-	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
 
 /datum/status_effect/dragon_strength/tick(seconds_between_ticks)
@@ -781,32 +766,36 @@
 		hope_message()
 
 /datum/status_effect/dragon_strength/proc/hope_message()
-	var/list/hope_messages = list("You are filled with [pick("determination", "strength", "robustness", "power")].",
-							"Your most pleasant memories flash through your mind.",
-							"You can't give up, keep going!",
-							"Pull yourself together!",
-							"You are the strongest hunter, you can handle it!",
-							"Don't forget how you got this amulet, hunter!",
-							"All these persons are not nearly as powerful as you!",
-							"You ARE robust, don't you dare die now!",
-							"Some stupid scars can't stop you!",
-							"You still have monsters to kill, don't die!")
-	to_chat(owner, "<span class='notice'>[pick(hope_messages)]</span>")
+	var/list/hope_messages = list(
+		"Вы наполняетесь [pick("решимостью", "силой", "робастом", "мощью")].",
+		"Ваши самые приятные воспоминания проносятся перед глазами.",
+		"Ты не можешь сдаться, продолжай!",
+		"Соберись, тряпка!",
+		"Ты — сильнейший охотник, ты справишься!",
+		"Не забывай, как ты получил этот амулет, охотник!",
+		"Все эти люди не такие мощные, как ты!",
+		"Ты РОБАСТ, не смей сдохнуть сейчас!",
+		"Какие-то тупые шрамы тебя не остановят!",
+		"У тебя ещё есть монстры, которых нужно убить, не умирай!"
+	)
+	to_chat(owner, span_notice("[pick(hope_messages)]"))
 
 /datum/status_effect/dragon_strength/proc/war_message()
-	var/list/war_messages = list("You feel incredible strength in your heart.",
-							"You feel a pleasant smell of human blood.",
-							"You feel envious glances.",
-							"You want to kill someone.",
-							"All your glorious battles flash through your memory.",
-							"No one can conquer you.",
-							"You can feel fire in your soul.",
-							"Don't forget how you got this amulet, hunter.")
-	to_chat(owner, "<span class='warning'>[pick(war_messages)]</span>")
+	var/list/war_messages = list(
+		"Вы чувствуете невероятную силу в своём сердце.",
+		"Вы чувствуете приятный запах человеческой крови.",
+		"Вы чувствуете завистливые взгляды.",
+		"Вам хочется кого-нибудь убить.",
+		"Все ваши славные битвы проносятся перед глазами.",
+		"Никто не сможет победить вас.",
+		"Вы чувствуете огонь в своей душе.",
+		"Не забывай, как ты получил этот амулет, охотник."
+	)
+	to_chat(owner, span_warning("[pick(war_messages)]"))
 
 /atom/movable/screen/alert/status_effect/dash
-	name = "Dash"
-	desc = "You have the ability to dash!"
+	name = "Рывок"
+	desc = "Вы способны совершать рывок!"
 	icon = 'icons/mob/actions/actions.dmi'
 	icon_state = "genetic_jump"
 
@@ -816,10 +805,7 @@
 	tick_interval = 0
 	alert_type = /atom/movable/screen/alert/status_effect/dash
 
-
 /datum/status_effect/drill_payback
-	duration = -1
-	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
 	var/drilled_successfully = FALSE
 	var/times_warned = 0
@@ -840,7 +826,7 @@
 
 /datum/status_effect/drill_payback/tick(seconds_between_ticks)
 	if(!drilled_successfully && (get_dist(owner, drilled) >= 9)) // No privelegies for that who leave his target.
-		to_chat(owner, span_userdanger("Get back to the safe, they are going to get the drill!"))
+		to_chat(owner, span_userdanger("Возвращайся в укрытие, они сейчас доберутся до дрели!"))
 		times_warned++
 		if(times_warned >= 6)
 			owner.remove_status_effect(STATUS_EFFECT_DRILL_PAYBACK)
@@ -852,13 +838,12 @@
 		if(update)
 			owner.updatehealth("drill_payback")
 
-
 /datum/status_effect/drill_payback/on_remove()
 	..()
 	owner.clear_fullscreen("payback")
 
 /atom/movable/screen/alert/status_effect/lavaland_freaky_leg
-	name = "freaky legs"
+	name = "Жуткие ноги"
 	desc = "Поедание человеческих конечностей себя оправдало!"
 	icon_state = "freaky_legs"
 
@@ -876,7 +861,7 @@
 	owner.unignore_slowdown(TRAIT_STATUS_EFFECT(id))
 
 /atom/movable/screen/alert/status_effect/lavaland_eternal_bleeding_fix
-	name = "thick red paste"
+	name = "Густая красная паста"
 	desc = "Вы чувствуете, как вам становится слегка лучше."
 	icon_state = "thick_red_paste"
 
@@ -890,12 +875,13 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/hum = owner
 		for(var/obj/item/organ/external/bodypart as anything in hum.bodyparts)
-			if(bodypart.has_internal_bleeding() && prob(7))
+			if((bodypart.has_internal_bleeding() || bodypart.has_arterial_bleeding()) && prob(7))
 				to_chat(hum, span_notice("Вы чувствуете сильное жжение в [bodypart.declent_ru(PREPOSITIONAL)], а затем облегчение. Судя по всему, ваши повреждённые кровеносные сосуды восстанавливаются!"))
 				bodypart.stop_internal_bleeding()
+				bodypart.stop_arterial_bleeding()
 
 /atom/movable/screen/alert/status_effect/lavaland_night_vision
-	name = "xeno sticks"
+	name = "Ксено-сетчатка"
 	desc = "Вы начинаете лучше видеть в темноте."
 	icon_state = "xeno_sticks"
 
@@ -917,8 +903,8 @@
 		human.set_vision_override(null)
 
 /atom/movable/screen/alert/status_effect/lavaland_blood_regen
-	name = "abu ghosh"
-	desc = "Вы чувствуете, что ваша кровь начала регенерировать быстрее."
+	name = "Кроветворение"
+	desc = "Вы чувствуете, что ваша кровь начала восстанавливаться быстрее."
 	icon_state = "abu_ghosh"
 
 /datum/status_effect/lavaland_blood_regen
@@ -926,7 +912,6 @@
 	status_type = STATUS_EFFECT_REFRESH
 	duration = 5 MINUTES
 	alert_type = /atom/movable/screen/alert/status_effect/lavaland_blood_regen
-
 
 /datum/status_effect/lavaland_blood_regen/tick(seconds_between_ticks)
 	if(ishuman(owner))
@@ -981,17 +966,13 @@
 
 /atom/movable/screen/alert/status_effect/adrenaline
 	name = "Прилив адреналина"
-	desc = "Твоя стамина полностью восстановлена. Регенерация увеличена, а длительность станов уменьшена."
+	desc = "Твоя стамина полностью восстановлена. Длительность станов уменьшена."
 	icon_state = "adrenaline"
 
 /datum/status_effect/adrenaline
 	id = "adrenaline"
 	duration = 5 SECONDS
-	status_type = STATUS_EFFECT_UNIQUE
-	tick_interval = 1 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/adrenaline
-
-	var/heal_amount = 15
 
 /datum/status_effect/adrenaline/on_apply()
 	var/update_flags = STATUS_UPDATE_NONE
@@ -999,12 +980,79 @@
 	owner.add_status_effect_absorption(source = id, effect_type = list(STUN, WEAKEN, STAMCRIT, PARALYZE, KNOCKDOWN))
 	return TRUE | update_flags
 
+/datum/status_effect/adrenaline/on_remove()
+	owner.remove_status_effect_absorption(source = id, effect_type = list(STUN, WEAKEN, STAMCRIT, PARALYZE, KNOCKDOWN))
 
-/datum/status_effect/adrenaline/tick(seconds_between_ticks)
+/atom/movable/screen/alert/status_effect/adrenaline/prototype
+	desc = "Твоя стамина полностью восстановлена. Регенерация увеличена, а длительность станов уменьшена."
+
+/datum/status_effect/adrenaline/prototype
+	alert_type = /atom/movable/screen/alert/status_effect/adrenaline/prototype
+	var/heal_amount = 15
+
+/datum/status_effect/adrenaline/prototype/tick(seconds_between_ticks)
 	var/update = NONE
 	update |= owner.heal_overall_damage(heal_amount, heal_amount, updating_health = FALSE)
 	if(update)
 		owner.updatehealth("adrenaline")
 
+
+/atom/movable/screen/alert/status_effect/heal
+	name = "Лечение нанитами"
+	desc = "Регенерация увеличена."
+	icon_state = "fleshmend"
+
+/datum/status_effect/heal
+	id = "heal"
+	duration = 8 SECONDS
+	alert_type = /atom/movable/screen/alert/status_effect/heal
+	var/heal_amount = 10
+
+/datum/status_effect/heal/tick(seconds_between_ticks)
+	var/update = NONE
+	update |= owner.heal_overall_damage(heal_amount, heal_amount, updating_health = FALSE)
+	if(update)
+		owner.updatehealth("heal")
+
 /datum/status_effect/adrenaline/on_remove()
 	owner.remove_status_effect_absorption(source = id, effect_type = list(STUN, WEAKEN, STAMCRIT, PARALYZE, KNOCKDOWN))
+
+/// Gives you a brief period of anti-gravity
+/datum/status_effect/jump_jet
+	id = "jump_jet"
+	alert_type = null
+	duration = 5 SECONDS
+
+/datum/status_effect/jump_jet/on_apply()
+	owner.AddElement(/datum/element/forced_gravity, 0)
+	return TRUE
+
+/datum/status_effect/jump_jet/on_remove()
+	owner.RemoveElement(/datum/element/forced_gravity, 0)
+
+
+/// Gives a short period of time when the fracture occurs.
+/datum/status_effect/ignore_fracture
+	id = "ignore_fracture"
+	alert_type = null
+	duration = 10 SECONDS
+
+/datum/status_effect/ignore_fracture/on_creation(
+		mob/living/new_owner,
+		duration = 10 SECONDS,
+	)
+	src.duration = duration
+	return ..()
+
+/datum/status_effect/ignore_fracture/on_apply()
+	if(!ishuman(owner))
+		return
+	var/mob/living/carbon/human/human_owner = owner
+	human_owner.add_fracture_ignore_trait(src)
+	return TRUE
+
+/datum/status_effect/ignore_fracture/on_remove()
+	if(!ishuman(owner))
+		return
+	var/mob/living/carbon/human/human_owner = owner
+	human_owner.remove_fracture_ignore_trait(src)

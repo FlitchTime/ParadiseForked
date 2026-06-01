@@ -1,4 +1,5 @@
 // Everything in this file should be protected
+/// The directory in which ALL log files should be stored
 GLOBAL_VAR(log_directory)
 GLOBAL_PROTECT(log_directory)
 GLOBAL_VAR(world_game_log)
@@ -23,8 +24,12 @@ GLOBAL_VAR(http_log)
 GLOBAL_PROTECT(http_log)
 GLOBAL_VAR(sql_log)
 GLOBAL_PROTECT(sql_log)
+GLOBAL_VAR(mapmanip_log)
+GLOBAL_PROTECT(mapmanip_log)
 GLOBAL_VAR(round_id)
 GLOBAL_PROTECT(round_id)
+GLOBAL_VAR(signal_log)
+GLOBAL_PROTECT(signal_log)
 
 #ifdef REFERENCE_TRACKING
 GLOBAL_VAR(gc_log)

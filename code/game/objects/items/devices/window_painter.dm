@@ -3,7 +3,6 @@
 	icon_state = "window_painter"
 	var/colour = "#ffffff"
 
-
 	var/list/paintable_windows = list(
 			/obj/structure/window/reinforced,
 			/obj/structure/window/basic,
@@ -11,15 +10,13 @@
 			/obj/structure/window/full/basic,
 			/obj/machinery/door/window)
 
-
 /obj/item/pipe_painter/window_painter/Initialize(mapload)
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 	mode = "paint"
 
-
 /obj/item/pipe_painter/window_painter/attack_self(mob/user)
-	var/choice = input(user,"Painter options") in list("Pipette","Choose Color","Color Presets")
+	var/choice = tgui_input_list(user, "Painter options", , list("Pipette", "Choose Color", "Color Presets"))
 	switch(choice)
 		if("Pipette")
 			mode = "pipette"
@@ -32,14 +29,14 @@
 			update_icon(UPDATE_OVERLAYS)
 		if("Color Presets")
 			mode = "paint"
-			colour = input("Which color do you want to use?", name, colour) in GLOB.pipe_colors
+			colour = tgui_input_list(usr, "Which color do you want to use?", name, GLOB.pipe_colors, colour)
 			update_icon(UPDATE_OVERLAYS)
 
-
-/obj/item/pipe_painter/window_painter/afterattack(atom/A, mob/user, proximity, params)
-	if(!is_type_in_list(A, paintable_windows) || !in_range(user, A))
+/obj/item/pipe_painter/window_painter/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!is_type_in_list(target, paintable_windows) || !in_range(user, target))
 		return
-	var/obj/structure/window/W = A
+
+	var/obj/structure/window/W = target
 
 	if(mode == "paint")
 		W.color = colour
@@ -49,7 +46,6 @@
 		mode = "paint"
 		to_chat(user, span_notice("You copy color of this window."))
 		update_icon(UPDATE_OVERLAYS)
-
 
 /obj/item/pipe_painter/window_painter/update_overlays()
 	. = ..()

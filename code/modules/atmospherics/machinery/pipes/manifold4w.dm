@@ -6,7 +6,6 @@
 
 	volume = 140
 
-	dir = SOUTH
 	initialize_directions = NORTH|SOUTH|EAST|WEST
 
 	var/obj/machinery/atmospherics/node1
@@ -16,19 +15,14 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/pipe/manifold4w/New()
-	..()
+/obj/machinery/atmospherics/pipe/manifold4w/Initialize(mapload)
+	. = ..()
+	
 	alpha = 255
 	icon = null
 
 /obj/machinery/atmospherics/pipe/manifold4w/pipeline_expansion()
 	return list(node1, node2, node3, node4)
-
-/obj/machinery/atmospherics/pipe/manifold4w/process_atmos()
-	if(!parent)
-		..()
-	else
-		. = PROCESS_KILL
 
 /obj/machinery/atmospherics/pipe/manifold4w/Destroy()
 	. = ..()
@@ -88,7 +82,6 @@
 	if(node4)
 		node4.update_underlays()
 
-
 /obj/machinery/atmospherics/pipe/manifold4w/update_overlays()
 	. = ..()
 
@@ -100,7 +93,6 @@
 	. += SSair.icon_manager.get_atmos_icon("manifold", color = pipe_color, state = "4way" + icon_connect_type)
 	. += SSair.icon_manager.get_atmos_icon("manifold", state = "clamps_4way" + icon_connect_type)
 	update_underlays()
-
 
 /obj/machinery/atmospherics/pipe/manifold4w/update_underlays()
 	if(!..())
@@ -128,7 +120,6 @@
 	for(var/check_dir in directions)
 		add_underlay(source_turf, direction = check_dir, icon_connect_type = src.icon_connect_type)
 
-
 // A check to make sure both nodes exist - self-delete if they aren't present
 /obj/machinery/atmospherics/pipe/manifold4w/check_nodes_exist()
 	if(!node1 && !node2 && !node3 && !node4)
@@ -136,10 +127,6 @@
 		return 0 // 0: No nodes exist
 	// 1: 1-4 nodes exist, we continue existing
 	return 1
-
-/obj/machinery/atmospherics/pipe/manifold4w/hide(i)
-	if(level == 1 && issimulatedturf(loc))
-		invisibility = i ? INVISIBILITY_MAXIMUM : 0
 
 /obj/machinery/atmospherics/pipe/manifold4w/atmos_init()
 	..()
@@ -167,19 +154,15 @@
 					node4 = target
 				break
 
-	var/turf/T = src.loc			// hide if turf is not intact
-	if(!T.transparent_floor)
-		hide(T.intact)
 	update_icon()
 
 /obj/machinery/atmospherics/pipe/manifold4w/visible
 	icon_state = "map_4way"
 	level = 2
-	plane = GAME_PLANE
 	layer = GAS_PIPE_VISIBLE_LAYER
 
 /obj/machinery/atmospherics/pipe/manifold4w/visible/scrubbers
-	name="4-way scrubbers pipe manifold"
+	name = "4-way scrubbers pipe manifold"
 	desc = "A manifold composed of scrubbers pipes"
 	icon_state = "map_4way-scrubbers"
 	connect_types = list(3)
@@ -189,7 +172,7 @@
 	color = PIPE_COLOR_RED
 
 /obj/machinery/atmospherics/pipe/manifold4w/visible/supply
-	name="4-way air supply pipe manifold"
+	name = "4-way air supply pipe manifold"
 	desc = "A manifold composed of supply pipes"
 	icon_state = "map_4way-supply"
 	connect_types = list(2)
@@ -212,10 +195,7 @@
 
 /obj/machinery/atmospherics/pipe/manifold4w/hidden
 	icon_state = "map_4way"
-	level = 1
 	alpha = 128		//set for the benefit of mapping - this is reset to opaque when the pipe is spawned in game
-	plane = GAME_PLANE
-	layer = GAS_PIPE_HIDDEN_LAYER
 
 /obj/machinery/atmospherics/pipe/manifold4w/hidden/scrubbers
 	name="4-way scrubbers pipe manifold"

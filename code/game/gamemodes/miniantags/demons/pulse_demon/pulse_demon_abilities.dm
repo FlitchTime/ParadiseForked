@@ -2,12 +2,12 @@
 #define PULSEDEMON_REMOTE_DRAIN_MULTIPLIER 5
 
 #define PD_UPGRADE_HIJACK_SPEED "Speed"
-#define PD_UPGRADE_DRAIN_SPEED  "Absorption"
-#define PD_UPGRADE_HEALTH_LOSS  "Endurance"
+#define PD_UPGRADE_DRAIN_SPEED "Absorption"
+#define PD_UPGRADE_HEALTH_LOSS "Endurance"
 #define PD_UPGRADE_HEALTH_REGEN "Recovery"
-#define PD_UPGRADE_MAX_HEALTH   "Strength"
-#define PD_UPGRADE_HEALTH_COST  "Efficiency"
-#define PD_UPGRADE_MAX_CHARGE   "Capacity"
+#define PD_UPGRADE_MAX_HEALTH "Strength"
+#define PD_UPGRADE_HEALTH_COST "Efficiency"
+#define PD_UPGRADE_MAX_CHARGE "Capacity"
 
 /obj/effect/proc_holder/spell/pulse_demon
 	school = "pulse demon"
@@ -20,10 +20,10 @@
 	var/upgrade_cost = 1 KW
 	var/requires_area = FALSE
 	base_cooldown = 20 SECONDS
-	level_max = 4
 
-/obj/effect/proc_holder/spell/pulse_demon/New()
+/obj/effect/proc_holder/spell/pulse_demon/Initialize(mapload)
 	. = ..()
+
 	update_info()
 
 /obj/effect/proc_holder/spell/pulse_demon/proc/update_info()
@@ -33,7 +33,7 @@
 	else
 		name = "[initial(name)][cast_cost == 0 ? "" : " ([format_si_suffix(cast_cost)]W)"]"
 		desc = "[initial(desc)][spell_level == level_max ? "" : " It costs [format_si_suffix(upgrade_cost)]W to upgrade."]"
-	action.button.name = name
+	action.name = name
 	action.desc = desc
 	action.UpdateButtonIcon()
 
@@ -198,7 +198,7 @@
 
 /obj/effect/proc_holder/spell/pulse_demon/overload/proc/detonate(obj/machinery/target)
 	if(!QDELETED(target))
-		explosion(get_turf(target), 0, 1, 1, 0)
+		explosion(get_turf(target), devastation_range = 0, heavy_impact_range = 1, light_impact_range = 1, flash_range = 0)
 		if(!QDELETED(target))
 			qdel(target)
 
@@ -249,7 +249,7 @@
 	create_attack_logs = FALSE
 	var/base_message = "see messages you shouldn't!"
 
-/obj/effect/proc_holder/spell/pulse_demon/toggle/New(initstate = FALSE)
+/obj/effect/proc_holder/spell/pulse_demon/toggle/Initialize(mapload, initstate = FALSE)
 	. = ..()
 	do_toggle(initstate, null)
 
@@ -489,3 +489,12 @@
 	return TRUE
 
 #undef KW
+#undef PULSEDEMON_REMOTE_DRAIN_MULTIPLIER
+
+#undef PD_UPGRADE_HIJACK_SPEED
+#undef PD_UPGRADE_DRAIN_SPEED
+#undef PD_UPGRADE_HEALTH_LOSS
+#undef PD_UPGRADE_HEALTH_REGEN
+#undef PD_UPGRADE_MAX_HEALTH
+#undef PD_UPGRADE_HEALTH_COST
+#undef PD_UPGRADE_MAX_CHARGE

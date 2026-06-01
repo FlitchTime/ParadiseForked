@@ -23,7 +23,7 @@
 
 	return chassis.Adjacent(target)
 
-/obj/item/mecha_parts/mecha_equipment/drill/action(atom/target)
+/obj/item/mecha_parts/mecha_equipment/drill/action(atom/target, list/modifiers)
 	if(!action_checks(target))
 		return FALSE
 	if(isspaceturf(target))
@@ -32,14 +32,12 @@
 		var/obj/target_obj = target
 		if(target_obj.resistance_flags & UNACIDABLE)
 			return FALSE
-	if(isancientturf(target))
-		visible_message(span_notice("This rock appears to be resistant to all mining tools except pickaxes!"))
-		return FALSE
-	target.visible_message(span_warning("[chassis] starts to drill [target]."),
-						span_userdanger("[chassis] starts to drill [target]..."),
-						span_italics("You hear drilling."))
+	target.visible_message(
+		span_warning("[chassis] starts to drill [target]."),
+		span_userdanger("[chassis] starts to drill [target]..."),
+		span_italics("You hear drilling.")
+	)
 	if(do_after_cooldown(target))
-		log_message("Started drilling [target]")
 		set_ready_state(FALSE)
 		if(isturf(target))
 			var/turf/T = target
@@ -64,13 +62,11 @@
 
 /turf/simulated/wall/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
 	if(drill.do_after_mecha(src, 60 / drill.drill_level))
-		drill.log_message("Drilled through [src]")
 		dismantle_wall(TRUE, FALSE)
 
 /turf/simulated/wall/r_wall/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
 	if(drill.drill_level >= DRILL_HARDENED)
 		if(drill.do_after_mecha(src, 120 / drill.drill_level))
-			drill.log_message("Drilled through [src]")
 			dismantle_wall(TRUE, FALSE)
 	else
 		drill.occupant_message(span_danger("[src] is too durable to drill through."))
@@ -79,14 +75,12 @@
 	for(var/turf/simulated/mineral/M in range(drill.chassis, 1))
 		if(get_dir(drill.chassis, M) & drill.chassis.dir)
 			M.attempt_drill()
-	drill.log_message("Drilled through [src]")
 	drill.move_ores()
 
 /turf/simulated/floor/plating/asteroid/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
 	for(var/turf/simulated/floor/plating/asteroid/M in range(1, drill.chassis))
 		if((get_dir(drill.chassis, M) & drill.chassis.dir) && !M.dug)
 			M.getDug()
-	drill.log_message("Drilled through [src]")
 	drill.move_ores()
 
 /obj/item/mecha_parts/mecha_equipment/drill/proc/move_ores()
@@ -101,8 +95,10 @@
 	return FALSE
 
 /obj/item/mecha_parts/mecha_equipment/drill/proc/drill_mob(mob/living/target, mob/user)
-	target.visible_message(span_danger("[chassis] is drilling [target] with [src]!"),
-						span_userdanger("[chassis] is drilling you with [src]!"))
+	target.visible_message(
+		span_danger("[chassis] is drilling [target] with [src]!"),
+		span_userdanger("[chassis] is drilling you with [src]!")
+	)
 	add_attack_logs(user, target, "DRILLED with [src] ([uppertext(user.a_intent)]) ([uppertext(damtype)])")
 	if(target.stat == DEAD && target.getBruteLoss() >= 200)
 		add_attack_logs(user, target, "gibbed")
@@ -111,24 +107,26 @@
 		else
 			target.gib()
 	else
-		var/splatter_dir = get_dir(chassis, target)
+		var/splatter_angle = get_angle(chassis, target)
 		if(ishuman(target))
-			var/mob/living/carbon/human/H = target
-			var/obj/item/organ/external/target_part = H.get_organ(ran_zone(BODY_ZONE_CHEST))
-			H.apply_damage(10, BRUTE, BODY_ZONE_CHEST, H.run_armor_check(target_part, MELEE))
+			var/mob/living/carbon/human/target_human = target
+			var/obj/item/organ/external/target_part = target_human.get_organ(ran_zone(BODY_ZONE_CHEST))
+			target_human.apply_damage(10, BRUTE, BODY_ZONE_CHEST, target_human.run_armor_check(target_part, MELEE))
 
 			//blood splatters
-			blood_color = H.dna.species.blood_color
+			var/splatter_color = target_human.get_blood_color()
+			if(splatter_color)
+				new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_human.drop_location(), splatter_angle, splatter_color)
 
-			new /obj/effect/temp_visual/dir_setting/bloodsplatter(H.drop_location(), splatter_dir, blood_color)
-
-					//organs go everywhere
+			//organs go everywhere
 			if(target_part && prob(10 * drill_level))
 				target_part.droplimb()
 		else
 			target.adjustBruteLoss(10)
 			if(isalien(target))
-				new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(target.drop_location(), splatter_dir)
+				var/splatter_color = target.get_blood_color()
+				if(splatter_color)
+					new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(target.drop_location(), splatter_angle, splatter_color)
 
 /obj/item/mecha_parts/mecha_equipment/drill/diamonddrill
 	name = "diamond-tipped exosuit drill"
@@ -178,8 +176,8 @@
 		start_cooldown()
 		return TRUE
 
-/obj/item/mecha_parts/mecha_equipment/mining_scanner/action(atom/target)
-	melee_attack_chain(chassis.occupant, target)
+/obj/item/mecha_parts/mecha_equipment/mining_scanner/action(atom/target, list/modifiers)
+	melee_attack_chain(chassis.occupant, target, modifiers)
 	return TRUE
 
 #undef DRILL_BASIC

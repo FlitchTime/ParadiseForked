@@ -6,34 +6,30 @@
 SUBSYSTEM_DEF(ping)
 	name = "Ping"
 	priority = FIRE_PRIORITY_PING
-	wait = 4 SECONDS
-	flags = SS_NO_INIT
-	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 	init_stage = INITSTAGE_EARLY
-	cpu_display = SS_CPUDISPLAY_LOW
-	ss_id = "ping"
+	wait = 4 SECONDS
+	ss_flags = SS_NO_INIT
+	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
 	var/list/currentrun = list()
-
 
 /datum/controller/subsystem/ping/stat_entry(msg)
 	msg = "P:[length(GLOB.clients)]"
 	return ..()
 
-
 /datum/controller/subsystem/ping/fire(resumed = FALSE)
 	// Prepare the new batch of clients
-	if (!resumed)
+	if(!resumed)
 		src.currentrun = GLOB.clients.Copy()
 
 	// De-reference the list for sanic speeds
 	var/list/currentrun = src.currentrun
 
-	while (currentrun.len)
-		var/client/client = currentrun[currentrun.len]
+	while(length(currentrun))
+		var/client/client = currentrun[length(currentrun)]
 		currentrun.len--
 
-		if (client?.tgui_panel?.is_ready())
+		if(client?.tgui_panel?.is_ready())
 			// Send a soft ping
 			client.tgui_panel.window.send_message("ping/soft", list(
 				// Slightly less than the subsystem timer (somewhat arbitrary)
@@ -41,5 +37,5 @@ SUBSYSTEM_DEF(ping)
 				"afk" = client.is_afk(3.5 SECONDS),
 			))
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return

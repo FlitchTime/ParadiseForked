@@ -23,7 +23,7 @@
 				mode = 1
 
 			to_chat(user, "Changed printing mode to '[mode == 2 ? "Rename Paper" : "Write Paper"]'")
-			playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
+			playsound(src.loc, 'sound/effects/pop.ogg', 50, FALSE)
 
 	return
 
@@ -47,32 +47,25 @@
 	//name = "paperwork printer"
 	name = "paper dispenser"
 	icon = 'icons/obj/bureaucracy.dmi'
-	icon_state = "paper_bin1"
+	icon_state = "paper_bin"
 	item_state = "sheet-metal"
-
 
 /obj/item/form_printer/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	return ATTACK_CHAIN_PROCEED
 
-
-/obj/item/form_printer/afterattack(atom/target, mob/living/user, flag, params)
-	if(!target || !flag)
+/obj/item/form_printer/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!target || !proximity_flag)
 		return
 
-	if(istype(target, /obj/structure/table))
+	if(istable(target))
 		deploy_paper(get_turf(target))
 
 /obj/item/form_printer/attack_self(mob/user as mob)
 	deploy_paper(get_turf(src))
 
-/obj/item/form_printer/proc/deploy_paper(var/turf/T)
+/obj/item/form_printer/proc/deploy_paper(turf/T)
 	T.visible_message(span_notice("\The [src.loc] dispenses a sheet of crisp white paper."))
 	new /obj/item/paper(T)
-
-
-//Personal shielding for the combat module.
-/obj/item/borg
-	var/powerneeded // Percentage of power remaining required to run item
 
 /obj/item/borg/destroyer/mobility
 	name = "mobility module"

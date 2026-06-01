@@ -37,7 +37,7 @@
 	var/mob/living/carbon/human/H = usr
 	if(!( ishuman(H)))
 		return 1
-	if((usr == src.loc || (in_range(src, usr) && istype(src.loc, /turf))))
+	if((usr == src.loc || (in_range(src, usr) && isturf(src.loc))))
 		usr.set_machine(src)
 		if(href_list["spell_teleport"])
 			if(src.uses >= 1)
@@ -45,24 +45,24 @@
 	attack_self(H)
 	return
 
-/obj/item/teleportation_scroll/proc/teleportscroll(var/mob/user)
+/obj/item/teleportation_scroll/proc/teleportscroll(mob/user)
 
 	var/A
 
-	A = tgui_input_list(user, "Area to jump to", "BOOYEA", GLOB.teleportlocs)
+	A = tgui_input_list(user, "Area to jump to", "BOOYEA", SSmapping.teleportlocs)
 
 	if(!A)
 		return
 
-	var/area/thearea = GLOB.teleportlocs[A]
+	var/area/thearea = SSmapping.teleportlocs[A]
 
 	if(user.incapacitated() || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
 		return
-	if(!((user == loc || (in_range(src, user) && istype(src.loc, /turf)))))
+	if(!((user == loc || (in_range(src, user) && isturf(src.loc)))))
 		return
 
 	if(thearea.tele_proof && !istype(thearea, /area/wizard_station))
-		to_chat(user, "<span class='warning'>A mysterious force disrupts your arcane spell matrix, and you remain where you are.</span>")
+		to_chat(user, span_warning("A mysterious force disrupts your arcane spell matrix, and you remain where you are."))
 		return
 
 	var/datum/effect_system/fluid_spread/smoke/smoke = new
@@ -80,11 +80,11 @@
 			if(clear)
 				L+=T
 
-	if(!L.len)
-		to_chat(user, "<span class='warning'>The spell matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry.</span>")
+	if(!length(L))
+		to_chat(user, span_warning("The spell matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry."))
 		return
 
-	if(user && user.buckled)
+	if(user?.buckled)
 		user.buckled.unbuckle_mob(user, force = TRUE)
 
 	if(user && user.has_buckled_mobs())
@@ -93,7 +93,7 @@
 	var/list/tempL = L
 	var/attempt = null
 	var/success = FALSE
-	while(tempL.len)
+	while(length(tempL))
 		attempt = pick(tempL)
 		user.forceMove(attempt)
 		if(get_turf(user) == attempt)

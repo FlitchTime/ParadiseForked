@@ -5,21 +5,10 @@
 	desc = "Массивная, слегка шумящая машина с  тяжелыми стальными прессами. \
 	Она используется для чеканки монет из различных матриалов. \
 	На корпусе расположена панель управления с настройками для выбора металла и нанесения уникальных штампов."
-
-	ru_names = list(
-		NOMINATIVE = "монетный пресс",
-		GENITIVE = "монетного пресса",
-		DATIVE = "монетному прессу",
-		ACCUSATIVE = "монетный пресс",
-		INSTRUMENTAL = "монетным прессом",
-		PREPOSITIONAL = "монетном прессе",
-	)
-
 	icon = 'icons/obj/economy.dmi'
 	icon_state = "coin_press"
 	density = TRUE
 	anchored = TRUE
-
 
 	/// How many coins did the machine make in total.
 	var/total_coins = 0
@@ -30,6 +19,15 @@
 	/// Inserted money bag.
 	var/obj/item/storage/bag/money/money_bag
 
+/obj/machinery/mineral/mint/get_ru_names()
+	return list(
+		NOMINATIVE = "монетный пресс",
+		GENITIVE = "монетного пресса",
+		DATIVE = "монетному прессу",
+		ACCUSATIVE = "монетный пресс",
+		INSTRUMENTAL = "монетным прессом",
+		PREPOSITIONAL = "монетном прессе",
+	)
 
 /obj/machinery/mineral/mint/Initialize(mapload)
 	. = ..()
@@ -78,7 +76,7 @@
 
 /obj/machinery/mineral/mint/ui_assets(mob/user)
 	return list(
-		get_asset_datum(/datum/asset/spritesheet/materials)
+		get_asset_datum(/datum/asset/spritesheet_batched/materials)
 	)
 
 /obj/machinery/mineral/mint/ui_data(mob/user)
@@ -131,7 +129,7 @@
 			if(material.amount < MINERAL_MATERIAL_AMOUNT)
 				to_chat(usr, span_warning("Недостаточно [material.name] для извлечения!"))
 				return
-			var/num_sheets = tgui_input_number(usr, "Сколько кусков вы хотите извлечь?", "Извлечь [material.name]", max_value = round(material.amount / MINERAL_MATERIAL_AMOUNT), min_value = 1)
+			var/num_sheets = tgui_input_number(usr, "Сколько единиц [material.name] вы хотите извлечь?", "Извлечение материала", max_value = round(material.amount / MINERAL_MATERIAL_AMOUNT), min_value = 1)
 			if(isnull(num_sheets))
 				return
 			materials.retrieve_sheets(num_sheets, chosen_material)
@@ -141,12 +139,10 @@
 /obj/machinery/mineral/mint/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/storage/bag/money))
 		if(money_bag)
-			to_chat(user, span_notice("Внутри уже есть [money_bag.declent_ru(NOMINATIVE)]!"))
-			balloon_alert(usr, "место уже занято!")
+			balloon_alert(usr, "слот для мешка занят!")
 			return ATTACK_CHAIN_PROCEED
 		if(!user.drop_from_active_hand())
 			return ATTACK_CHAIN_PROCEED
-		to_chat(user, span_notice("Вы помещаете [I.declent_ru(ACCUSATIVE)] в [declent_ru(ACCUSATIVE)]."))
 		balloon_alert(usr, "мешок помещён")
 		I.forceMove(src)
 		money_bag = I
@@ -160,8 +156,7 @@
 		return
 	if(length(money_bag.contents) >= money_bag.storage_slots)
 		active = FALSE
-		visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] прекращает производство, чтобы избежать переполнения."))
-		balloon_alert_to_viewers("мешок переполнен")
+		balloon_alert_to_viewers("мешок переполнен!")
 		update_icon(UPDATE_ICON_STATE)
 		SStgui.update_uis(src)
 		return
@@ -170,8 +165,7 @@
 	var/datum/material/material = materials.materials[chosen_material]
 	if(!materials.can_use_amount(COIN_COST, chosen_material))
 		active = FALSE
-		visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] прекращает производство из-за нехватки материала."))
-		balloon_alert_to_viewers("материал кончился")
+		balloon_alert_to_viewers("недостаточно материала!")
 		update_icon(UPDATE_ICON_STATE)
 		SStgui.update_uis(src)
 		return
@@ -184,10 +178,10 @@
 /obj/machinery/mineral/mint/proc/try_make_coins(mob/user)
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	if(!money_bag)
-		visible_message(span_warning("[capitalize(declent_ru(NOMINATIVE))] не может работать без денежного мешка!"))
+		visible_message(span_warning("[DECLENT_RU_CAP(src, NOMINATIVE)] не может работать без денежного мешка!"))
 		return
 	if(length(money_bag.contents) == money_bag.storage_slots)
-		visible_message(span_warning("[capitalize(money_bag.declent_ru(NOMINATIVE))] полон!"))
+		visible_message(span_warning("[DECLENT_RU_CAP(money_bag, NOMINATIVE)] полон!"))
 		return
 	if(!materials.can_use_amount(COIN_COST, chosen_material))
 		visible_message(span_warning("Недостаточно выбранного материала для производства!"))

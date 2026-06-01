@@ -11,8 +11,6 @@
 
 	var/obj/machinery/portable_atmospherics/connected_device
 
-	on = FALSE
-
 /obj/machinery/atmospherics/unary/portables_connector/Destroy()
 	if(connected_device)
 		connected_device.disconnect()
@@ -20,7 +18,6 @@
 
 /obj/machinery/atmospherics/unary/portables_connector/update_icon_state()
 	icon_state = "connector"
-
 
 /obj/machinery/atmospherics/unary/portables_connector/update_underlays()
 	if(..())
@@ -30,13 +27,13 @@
 			return
 		add_underlay(T, node, dir)
 
-/obj/machinery/atmospherics/unary/portables_connector/process_atmos()
-	..()
+/obj/machinery/atmospherics/unary/portables_connector/process_atmos(seconds)
 	if(!connected_device)
-		return 0
-	if(parent)
-		parent.update = 1
+		return FALSE
 
+	if(parent)
+		parent.update = TRUE
+		connected_device.update_icon(UPDATE_OVERLAYS)
 
 /obj/machinery/atmospherics/unary/portables_connector/wrench_act(mob/living/user, obj/item/I)
 	if(connected_device)
@@ -44,8 +41,8 @@
 		return TRUE
 	return ..()
 
-
 /obj/machinery/atmospherics/unary/portables_connector/portableConnectorReturnAir()
 	return connected_device.portableConnectorReturnAir()
 
 /obj/proc/portableConnectorReturnAir()
+	return

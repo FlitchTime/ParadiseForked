@@ -1,9 +1,9 @@
 /mob/living/simple_animal/hostile/megafauna
 	name = "megafauna"
-	desc = "Attack the weak point for massive damage."
+	desc = "Атакуйте слабое место для нанесения массивного урона."
+	abstract_type = /mob/living/simple_animal/hostile/megafauna
 	health = 1000
 	maxHealth = 1000
-	a_intent = INTENT_HARM
 	sentience_type = SENTIENCE_BOSS
 	environment_smash = ENVIRONMENT_SMASH_RWALLS
 	obj_damage = 400
@@ -27,9 +27,10 @@
 	dodging = FALSE // This needs to be false until someone fixes megafauna pathing so they dont lag-switch teleport at you (09-15-2023)
 	AI_delay_max = 0 SECONDS
 	var/list/crusher_loot
-	var/medal_type
-	var/score_type = BOSS_SCORE
-	var/elimination = 0
+	var/achievement_type
+	var/crusher_achievement_type
+	var/score_achievement_type
+	var/elimination = FALSE
 	var/anger_modifier = 0
 	var/obj/item/gps/internal_gps
 	var/internal_type
@@ -46,10 +47,22 @@
 	var/enraged_unique_loot
 	/// Only one loot from hardmode
 
+/mob/living/simple_animal/hostile/megafauna/get_ru_names()
+	return list(
+		NOMINATIVE = "мегафауна",
+		GENITIVE = "мегафауны",
+		DATIVE = "мегафауне",
+		ACCUSATIVE = "мегафауну",
+		INSTRUMENTAL = "мегафауной",
+		PREPOSITIONAL = "мегафауне",
+	)
+
 /mob/living/simple_animal/hostile/megafauna/Initialize(mapload)
 	. = ..()
 	if(internal_type && true_spawn)
 		internal = new internal_type(src)
+	if(islist(crusher_loot))
+		crusher_loot = string_list(crusher_loot)
 	for(var/action_type in attack_action_types)
 		var/datum/action/innate/megafauna_attack/attack_action = new action_type()
 		attack_action.Grant(src)
@@ -61,14 +74,10 @@
 		minbodytemp = 0, \
 	)
 
-/mob/living/simple_animal/hostile/megafauna/Destroy()
-	QDEL_NULL(internal_gps)
-	return ..()
-
 /mob/living/simple_animal/hostile/megafauna/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	if(target)
 		DestroySurroundings() //So they can path through chasms.
-	if(nest && nest.parent && get_dist(nest.parent, src) > nest_range)
+	if(nest?.parent && get_dist(nest.parent, src) > nest_range)
 		var/turf/closest = get_turf(nest.parent)
 		for(var/i = 1 to nest_range)
 			closest = get_step(closest, get_dir(closest, src))
@@ -84,8 +93,10 @@
 	// this happens before the parent call because `del_on_death` may be set
 	if(can_die() && !(flags & ADMIN_SPAWNED))
 		var/datum/status_effect/crusher_damage/C = has_status_effect(STATUS_EFFECT_CRUSHERDAMAGETRACKING)
+		var/crusher_kill = FALSE
 		if(C && crusher_loot && C.total_damage >= maxHealth * 0.6)
 			spawn_crusher_loot()
+			crusher_kill = TRUE
 		if(enraged && length(loot) && enraged_loot) //Don't drop a disk if the boss drops no loot. Important for legion.
 			if(enraged_unique_loot)
 				loot += enraged_unique_loot
@@ -93,7 +104,7 @@
 				if(M.client)
 					loot += enraged_loot //Disk for each miner / borg.
 		if(!elimination)	//used so the achievment only occurs for the last legion to die.
-			grant_achievement(medal_type,score_type)
+			grant_achievement(achievement_type, score_achievement_type, crusher_kill)
 			SSblackbox.record_feedback("tally", "megafauna_kills", 1, "[initial(name)]")
 	return ..()
 
@@ -133,8 +144,9 @@
 	if(!L)
 		return FALSE
 	visible_message(
-		"<span class='danger'>[src] devours [L]!</span>",
-		"<span class='userdanger'>You feast on [L], restoring your health!</span>")
+		span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] пожирает [L.declent_ru(ACCUSATIVE)]!"),
+		span_userdanger("Вы пожираете [L.declent_ru(ACCUSATIVE)], восстанавливая своё здоровье!")
+	)
 	if(!is_station_level(z) || client) //NPC monsters won't heal while on station
 		adjustBruteLoss(-L.maxHealth/2)
 	if(L.mind)
@@ -144,13 +156,11 @@
 
 /mob/living/simple_animal/hostile/megafauna/ex_act(severity, target)
 	switch(severity)
-		if(1)
+		if(EXPLODE_DEVASTATE)
 			adjustBruteLoss(250)
-
-		if(2)
+		if(EXPLODE_HEAVY)
 			adjustBruteLoss(100)
-
-		if(3)
+		if(EXPLODE_LIGHT)
 			adjustBruteLoss(50)
 
 /mob/living/simple_animal/hostile/megafauna/GiveTarget(atom/new_target)
@@ -167,7 +177,6 @@
 		mob_attack_logs += "[time_stamp()] Aggrod on [L][COORD(L)] at [COORD(src)]"
 	..()
 
-
 /mob/living/simple_animal/hostile/megafauna/lose_target()
 	var/mob/living/L = target
 	if(istype(L) && L.mind)
@@ -179,31 +188,31 @@
 	recovery_time = world.time + buffer_time
 	ranged_cooldown = world.time + buffer_time
 
-/mob/living/simple_animal/hostile/megafauna/proc/grant_achievement(medaltype, scoretype, crusher_kill)
-	if(!medal_type || (flags & ADMIN_SPAWNED) || !SSmedals.hub_enabled) //Don't award medals if the medal type isn't set
+/mob/living/simple_animal/hostile/megafauna/proc/grant_achievement(medaltype, scoretype, crusher_kill, list/grant_achievement = list())
+	if(!achievement_type || (flags & ADMIN_SPAWNED) || !SSachievements.achievements_enabled) //Don't award medals if the medal type isn't set
 		return FALSE
 
-	for(var/mob/living/L in view(7,src))
-		if(L.stat || !L.client)
+	for(var/mob/living/mob in view(7, src))
+		if(mob.stat || !mob.client)
 			continue
-		var/client/C = L.client
-		SSmedals.UnlockMedal("Boss [BOSS_KILL_MEDAL]", C)
-		SSmedals.UnlockMedal("[medaltype] [BOSS_KILL_MEDAL]", C)
-		SSmedals.SetScore(BOSS_SCORE, C, 1)
-		SSmedals.SetScore(score_type, C, 1)
+		var/client/mob_client = mob.client
+		mob_client.give_award(/datum/award/achievement/boss/boss_killer, mob)
+		mob_client.give_award(achievement_type, mob)
+		if(crusher_kill && istype(mob.get_active_hand(), /obj/item/twohanded/kinetic_crusher))
+			mob_client.give_award(crusher_achievement_type, mob)
+		mob_client.give_award(/datum/award/score/boss_score, mob) //Score progression for bosses killed in general
+		mob_client.give_award(score_achievement_type, mob) //Score progression for specific boss killed
 	return TRUE
-
 
 /mob/living/simple_animal/hostile/megafauna/DestroySurroundings()
 	. = ..()
-	for(var/turf/simulated/floor/chasm/C in circlerangeturfs(src, 1))
+	for(var/turf/simulated/floor/chasm/C in circle_range_turfs(src, 1))
 		C.set_density(FALSE) //I hate it.
 		addtimer(CALLBACK(C, TYPE_PROC_REF(/atom, set_density), TRUE), 2 SECONDS)	// Needed to make them path. I hate it.
 
-
 /datum/action/innate/megafauna_attack
 	name = "Megafauna Attack"
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	button_icon_state = ""
 	var/mob/living/simple_animal/hostile/megafauna/M
 	var/chosen_message

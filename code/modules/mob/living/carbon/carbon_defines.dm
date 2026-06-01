@@ -1,10 +1,13 @@
 /mob/living/carbon
+	abstract_type = /mob/living/carbon
 	gender = MALE
 	pressure_resistance = 15
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
 	blood_volume = BLOOD_VOLUME_NORMAL
 	rotate_on_lying = TRUE
 	pull_hand = null
+	throw_range = 3
+	looting_icon_mode = LOOT_ICON_FLAT_ICON
 	var/list/stomach_contents
 	var/list/processing_patches
 	var/list/internal_organs	= list()
@@ -12,7 +15,6 @@
 
 	var/life_tick = 0      // The amount of life ticks that have processed on this mob.
 
-	var/obj/item/handcuffed = null //Whether or not the mob is handcuffed
 	var/obj/item/legcuffed = null  //Same as handcuffs but for legs. Bear traps use this.
 
 	var/obj/item/head = null
@@ -27,6 +29,9 @@
 
 	var/wetlevel = 0 //how wet the mob is
 
+	/// Last mind to control this mob, for blood-based cloning
+	var/datum/mind/last_mind = null
+
 	var/co2overloadtime = null
 	var/dreaming = 0 //How many dream images we have left to send
 	var/nightmare = 0
@@ -35,4 +40,24 @@
 	var/revival_in_progress = FALSE
 	/// Just a timer stamp for [/mob/living/carbon/relaymove]
 	var/last_stomach_attack
+	///Whether or not the mob is currently handcuffed, defined as the handcuff item restraining them
+	var/obj/item/restraints/handcuffs/handcuffed = null
+	///used to track how many times the mob has tried breaking away from their handcuffs since being cuffed. Reset to zero in update_handcuffed()
+	var/cuff_breakout_attempts = 0
 
+	var/last_pain_message = ""
+	COOLDOWN_DECLARE(pain_cd)
+
+	var/list/overlays_standing[TOTAL_LAYERS]
+
+/mob/living/carbon/vv_edit_var(var_name, var_value)
+	switch(var_name)
+		if(NAMEOF(src, handcuffed))
+			set_handcuffed(var_value)
+			. = TRUE
+
+	if(!isnull(.))
+		datum_flags |= DF_VAR_EDITED
+		return
+
+	return ..()

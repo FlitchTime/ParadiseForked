@@ -7,7 +7,6 @@
 
 	volume = 70
 
-	dir = SOUTH
 	initialize_directions = SOUTH|NORTH
 
 	var/obj/machinery/atmospherics/node1
@@ -22,8 +21,8 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/pipe/simple/New()
-	..()
+/obj/machinery/atmospherics/pipe/simple/Initialize(mapload)
+	. = ..()
 	// Pipe colors and icon states are handled by an image cache - so color and icon should
 	//  be null. For mapping purposes color is defined in the object definitions.
 	icon = null
@@ -67,14 +66,11 @@
 							node2 = target
 							break
 
-		var/turf/our_turf = loc
-		if(our_turf.transparent_floor == TURF_NONTRANSPARENT)
-			hide(our_turf.intact)	// hide if turf is not intact
 		update_icon()
 
-
 /obj/machinery/atmospherics/pipe/simple/check_pressure(pressure)
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/turf/location = get_turf(src)
+	var/datum/gas_mixture/environment = location.get_readonly_air()
 
 	var/pressure_difference = pressure - environment.return_pressure()
 
@@ -90,7 +86,7 @@
 
 /obj/machinery/atmospherics/pipe/simple/proc/burst()
 	src.visible_message(span_danger("\The [src] bursts!"))
-	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
+	playsound(src.loc, 'sound/effects/bang.ogg', 25, TRUE)
 	var/datum/effect_system/fluid_spread/smoke/smoke = new
 	smoke.set_up(amount = 1, location = src.loc)
 	smoke.start()
@@ -138,7 +134,6 @@
 	if(node2)
 		node2.update_underlays()
 
-
 /obj/machinery/atmospherics/pipe/simple/update_overlays()
 	. = ..()
 
@@ -152,10 +147,8 @@
 	else
 		. += SSair.icon_manager.get_atmos_icon("pipe", color = pipe_color, state = pipe_icon + "exposed[node1?1:0][node2?1:0]" + icon_connect_type)
 
-
 /obj/machinery/atmospherics/pipe/simple/update_underlays()
 	return
-
 
 // A check to make sure both nodes exist - self-delete if they aren't present
 /obj/machinery/atmospherics/pipe/simple/check_nodes_exist()
@@ -164,8 +157,3 @@
 		return 0 // 0: No nodes exist
 	// 1: 1-2 nodes exist, we continue existing
 	return 1
-
-
-/obj/machinery/atmospherics/pipe/simple/hide(i)
-	if(level == 1 && issimulatedturf(loc))
-		invisibility = i ? INVISIBILITY_MAXIMUM : 0

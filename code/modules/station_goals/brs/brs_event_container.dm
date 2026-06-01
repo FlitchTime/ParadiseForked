@@ -75,28 +75,38 @@
 
 /datum/brs_event_container/normal
 	available_events = list(
-		new /datum/event_meta(EVENT_LEVEL_NONE, "Атмосферная аномалия",		/datum/event/anomaly/anomaly_pyro,		60),
-		new /datum/event_meta(EVENT_LEVEL_NONE, "Вортекс-аномалия",			/datum/event/anomaly/anomaly_vortex,	60),
-		new /datum/event_meta(EVENT_LEVEL_NONE, "Блюспейс-аномалия",		/datum/event/anomaly/anomaly_bluespace,	60),
-		new /datum/event_meta(EVENT_LEVEL_NONE, "Флюкс-аномалия",			/datum/event/anomaly/anomaly_flux,		60),
-		new /datum/event_meta(EVENT_LEVEL_NONE, "Гравитационная аномалия",	/datum/event/anomaly/anomaly_grav,		60),
+		new /datum/event_meta(
+			EVENT_LEVEL_NONE, EVENT_ANOMALY, /datum/event/anomaly, 300),
 
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Телепортация живых",			/datum/event/bluespace_rift_event/teleport_living,							500),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Поменять местами живых",		/datum/event/bluespace_rift_event/teleport_living/shuffle,					500),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Телепортация живых далеко",	/datum/event/bluespace_rift_event/teleport_living/within_z,					500),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_TELEPORT_LIVINGS, /datum/event/bluespace_rift_event/teleport_living, 500),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_SWAP_LIVINGS, /datum/event/bluespace_rift_event/teleport_living/shuffle, 500),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_TELEPORT_LIVINGS_FAR, /datum/event/bluespace_rift_event/teleport_living/within_z, 500),
 
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Взрывы",						/datum/event/bluespace_rift_event/explosions,								200),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "ЭМИ",						/datum/event/bluespace_rift_event/explosions/em_pulses,						300),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Вспышки",					/datum/event/bluespace_rift_event/explosions/flashes,						400),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Дым",						/datum/event/bluespace_rift_event/explosions/smoke,							400),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Искры",						/datum/event/bluespace_rift_event/explosions/sparks,						500),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_EXPLOSIONS, /datum/event/bluespace_rift_event/explosions, 200),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_EMP, /datum/event/bluespace_rift_event/explosions/em_pulses, 300),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_FLASHES, /datum/event/bluespace_rift_event/explosions/flashes, 400),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_SMOKE, /datum/event/bluespace_rift_event/explosions/smoke, 400),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_SPARKS, /datum/event/bluespace_rift_event/explosions/sparks, 500),
 
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Химические взрывы",			/datum/event/bluespace_rift_event/explosions/random_chem_effect,			100),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Опасные химические взрывы",	/datum/event/bluespace_rift_event/explosions/random_chem_effect/dangerous,	100),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Клоунские химические взрывы",/datum/event/bluespace_rift_event/explosions/random_chem_effect/funny,		100),
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Испачкать пол",				/datum/event/bluespace_rift_event/explosions/random_chem_effect/dirt,		100),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_CHEM_EXPLOSIONS, /datum/event/bluespace_rift_event/explosions/random_chem_effect, 100),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_DANGEROUS_CHEM_EXPLOSIONS, /datum/event/bluespace_rift_event/explosions/random_chem_effect/dangerous, 100),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_CLOWN_CHEM_EXPLOSIONS, /datum/event/bluespace_rift_event/explosions/random_chem_effect/funny, 100),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_STAIN_FLOOR, /datum/event/bluespace_rift_event/explosions/random_chem_effect/dirt, 100),
 
-		new /datum/event_meta/bluespace_rift_event_meta(EVENT_LEVEL_NONE, "Снег",						/datum/event/bluespace_rift_event/snow,										200),
+		new /datum/event_meta/bluespace_rift_event_meta(
+			EVENT_LEVEL_NONE, EVENT_BRS_SNOW, /datum/event/bluespace_rift_event/snow, 200),
 	)
 
 /**
@@ -189,7 +199,7 @@
 /datum/event/bluespace_rift_event/teleport_living/shuffle/start()
 	if(num_objects_to_teleport < 2)
 		return
-	for(var/i in 1 to FLOOR(num_objects_to_teleport / 2, 1))
+	for(var/i in 1 to floor(num_objects_to_teleport / 2))
 		var/mob1 = pick_n_take(objects_in_range)
 		var/mob2 = pick_n_take(objects_in_range)
 		var/mob1_was_here = get_turf(mob1)
@@ -243,13 +253,7 @@
 	for(var/i in 1 to num_explosions)
 		var/radius = rand(min_explosion_radius, max_explosion_radius)
 		var/epicenter = pick_n_take(turfs_in_range)
-		explosion(
-			epicenter,
-			light_impact_range = radius,
-			flash_range = radius,
-			flame_range =  radius,
-			cause = "Bluespace rift event \"[event_meta.name]\""
-		)
+		explosion(epicenter, light_impact_range = radius, flash_range = radius, flame_range =  radius, cause = "Bluespace rift event \"[event_meta.name]\"")
 
 /datum/event/bluespace_rift_event/explosions/end()
 	..()
@@ -405,12 +409,18 @@
 
 		var/turf/simulated/t_turf = turf
 
-		t_turf.air.temperature = T0C - 1
-		t_turf.air_update_turf()
+		var/datum/milla_safe/bluespace_rift_snow/milla = new()
+		milla.invoke_async(t_turf)
 
 		if(locate(/obj/effect/snowcloud, t_turf))
 			continue
 		new /obj/effect/snow(t_turf)
+
+/datum/milla_safe/bluespace_rift_snow
+
+/datum/milla_safe/bluespace_rift_snow/on_run(turf/location)
+	var/datum/gas_mixture/env = get_turf_air(location)
+	env.set_temperature(T0C - 1)
 
 /datum/event/bluespace_rift_event/snow/end()
 	..()

@@ -157,6 +157,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Ebi_maki
 	name = "ebi maki roll"
 	desc = "A large unsliced roll of Ebi Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Ebi_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Ebi
@@ -179,6 +180,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Ikura_maki
 	name = "ikura maki roll"
 	desc = "A large unsliced roll of Ikura Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Ikura_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Ikura
@@ -201,6 +203,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Sake_maki
 	name = "sake maki roll"
 	desc = "A large unsliced roll of Sake Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Sake_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Sake
@@ -223,6 +226,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/SmokedSalmon_maki
 	name = "smoked salmon maki roll"
 	desc = "A large unsliced roll of Smoked Salmon Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "SmokedSalmon_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_SmokedSalmon
@@ -245,6 +249,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Tamago_maki
 	name = "tamago maki roll"
 	desc = "A large unsliced roll of Tamago Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Tamago_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Tamago
@@ -267,6 +272,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Inari_maki
 	name = "inari maki roll"
 	desc = "A large unsliced roll of Inari Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Inari_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Inari
@@ -289,6 +295,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Masago_maki
 	name = "masago maki roll"
 	desc = "A large unsliced roll of Masago Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Masago_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Masago
@@ -311,6 +318,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Tobiko_maki
 	name = "tobiko maki roll"
 	desc = "A large unsliced roll of Tobkio Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Tobiko_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Tobiko
@@ -355,6 +363,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/Tai_maki
 	name = "tai maki roll"
 	desc = "A large unsliced roll of Tai Sushi."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/seafood.dmi'
 	icon_state = "Tai_maki"
 	slice_path = /obj/item/reagent_containers/food/snacks/sushi_Tai
@@ -384,7 +393,6 @@
 	tastes = list("grilled eel" = 1, "seaweed" = 1)
 	foodtype = MEAT
 
-
 /obj/item/reagent_containers/food/snacks/crayfish_raw_small
 	name = "small raw crayfish"
 	desc = "A raw crayfish of a small size."
@@ -396,7 +404,6 @@
 	list_reagents = list("protein" = 1.5, "vitamin" = 1)
 	tastes = list("raw crayfish" = 1)
 	foodtype = MEAT|RAW
-
 
 /obj/item/reagent_containers/food/snacks/crayfish_raw
 	name = "raw crayfish"
@@ -411,7 +418,6 @@
 	foodtype = MEAT|RAW
 	///Cooldown timestamp for pinching.
 	COOLDOWN_DECLARE(pinch_cooldown)
-
 
 /obj/item/reagent_containers/food/snacks/crayfish_raw/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	if(!COOLDOWN_FINISHED(src, pinch_cooldown))
@@ -434,7 +440,6 @@
 
 	target.apply_damage(5, BRUTE, def_zone)
 
-
 /obj/item/reagent_containers/food/snacks/crayfish_cooked_small
 	name = "cooked small crayfish"
 	desc = "Boiled crayfish, aromatic and well seasoned... But wheres the beer?"
@@ -447,13 +452,11 @@
 	tastes = list("crayfish" = 1)
 	foodtype = MEAT
 
-
 /obj/item/reagent_containers/food/snacks/crayfish_cooked_small/mr_chang
 	name = "spicy small lobster"
 	desc = "Wait, thats not a lobster! But still tasty dish with a special Mr.Chang's ingredient."
 	list_reagents = list("nutriment" = 1, "msg" = 2, "sugar" = 1)
 	foodtype = MEAT|FRIED
-
 
 /obj/item/reagent_containers/food/snacks/crayfish_cooked
 	name = "cooked crayfish"
@@ -466,7 +469,6 @@
 	list_reagents = list("nutriment" = 4, "vitamin" = 2)
 	tastes = list("crayfish" = 1)
 	foodtype = MEAT
-
 
 /obj/item/reagent_containers/food/snacks/crayfish_cooked/mr_chang
 	name = "spicy lobster"

@@ -1,11 +1,11 @@
 /datum/surgery/limb_augmentation
-	name = "Augment Limb"
+	name = "Аугментация части тела"
 	steps = list(
 		/datum/surgery_step/generic/cut_open,
 		/datum/surgery_step/generic/clamp_bleeders,
 		/datum/surgery_step/generic/retract_skin,
 		/datum/surgery_step/proxy/open_organ,
-		/datum/surgery_step/augment
+		/datum/surgery_step/augment,
 	)
 	possible_locs = list(
 		BODY_ZONE_CHEST,
@@ -29,7 +29,7 @@
 		return FALSE
 
 /datum/surgery_step/augment
-	name = "augment limb with robotic part"
+	name = "установка синтетической части тела"
 	begin_sound = 'sound/surgery/organ1.ogg'
 	fail_sound = 'sound/effects/meatslap.ogg'
 	allowed_tools = list(/obj/item/robot_parts = 100)
@@ -39,13 +39,13 @@
 	var/obj/item/robot_parts/p = tool
 	if(p.part)
 		if(!(target_zone in p.part))
-			to_chat(user, span_warning("[tool] cannot be used to augment this limb!"))
+			user.balloon_alert(user, "несовместимая часть тела!")
 			return SURGERY_BEGINSTEP_ABORT
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message(
-		"[user] starts augmenting [affected] with [tool].",
-		"You start augmenting [affected] with [tool].",
+		span_notice("[user] начина[PLUR_ET_YUT(user)] аугментировать [affected.declent_ru(ACCUSATIVE)] [target] с помощью [tool.declent_ru(GENITIVE)]."),
+		span_notice("Вы начинаете аугментировать [affected.declent_ru(ACCUSATIVE)] [target] с помощью [tool.declent_ru(GENITIVE)]."),
 		chat_message_type = MESSAGE_TYPE_COMBAT
 	)
 	return ..()
@@ -54,8 +54,8 @@
 	var/obj/item/robot_parts/L = tool
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message(
-		span_notice("[user] has finished augmenting [affected] with [tool]."),
-		span_notice("You augment [affected] with [tool]."),
+		span_notice("[user] заверша[PLUR_ET_YUT(user)] аугментацию [affected.declent_ru(GENITIVE)] [target]."),
+		span_notice("Вы завершаете аугментацию [affected.declent_ru(GENITIVE)] [target]."),
 		chat_message_type = MESSAGE_TYPE_COMBAT
 	)
 

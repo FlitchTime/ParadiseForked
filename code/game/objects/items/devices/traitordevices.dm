@@ -4,7 +4,6 @@ Miscellaneous traitor devices
 
 BATTERER
 
-
 */
 
 /*
@@ -17,14 +16,6 @@ effective or pretty fucking useless.
 /obj/item/batterer
 	name = "mind batterer"
 	desc = "Странное устройство с двумя антеннами."
-	ru_names = list(
-		NOMINATIVE = "подавитель разума",
-		GENITIVE = "подавителя разума",
-		DATIVE = "подавителю разума",
-		ACCUSATIVE = "подавитель разума",
-		INSTRUMENTAL = "подавителем разума",
-		PREPOSITIONAL = "подавителе разума"
-	)
 	icon = 'icons/obj/device.dmi'
 	icon_state = "batterer"
 	throwforce = 5
@@ -37,11 +28,19 @@ effective or pretty fucking useless.
 
 	var/charges = 3
 
+/obj/item/batterer/get_ru_names()
+	return list(
+		NOMINATIVE = "подавитель разума",
+		GENITIVE = "подавителя разума",
+		DATIVE = "подавителю разума",
+		ACCUSATIVE = "подавитель разума",
+		INSTRUMENTAL = "подавителем разума",
+		PREPOSITIONAL = "подавителе разума",
+	)
 
 /obj/item/batterer/examine(mob/user)
 	. = ..()
-	. += span_notice("У [declent_ru(GENITIVE)] осталось [charges] заряд[declension_ru(charges, "", "а", "ов")].")
-
+	. += span_notice("У [declent_ru(GENITIVE)] осталось [charges] заряд[DECL_CREDIT(charges)].")
 
 /obj/item/batterer/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
 	if(!user)
@@ -61,16 +60,13 @@ effective or pretty fucking useless.
 			M.Slowed(10 SECONDS)
 			M.Confused(6 SECONDS)
 
-	playsound(loc, 'sound/misc/interference.ogg', 50, 1)
+	playsound(loc, 'sound/misc/interference.ogg', 50, TRUE)
 	charges--
-	to_chat(user,span_notice("Вы активируете [declent_ru(ACCUSATIVE)]. У него осталось [charges] заряд[declension_ru(charges, "", "а", "ов")]."))
+	to_chat(user,span_notice("Вы активируете [declent_ru(ACCUSATIVE)]. У него осталось [charges] заряд[DECL_CREDIT(charges)]."))
 	addtimer(CALLBACK(src, PROC_REF(recharge)), 3 MINUTES)
-
 
 /obj/item/batterer/proc/recharge()
 	charges++
-
-
 
 /*
 		The radioactive microlaser, a device disguised as a health analyzer used to irradiate people.
@@ -87,14 +83,6 @@ effective or pretty fucking useless.
 /obj/item/rad_laser
 	name = "Health Analyzer"
 	desc = "Ручной сканер тела, способный определить жизненные показатели субъекта. К концу сканера прикреплён необычный микролазер."
-	ru_names = list(
-		NOMINATIVE = "анализатор здоровья",
-		GENITIVE = "анализатора здоровья",
-		DATIVE = "анализатору здоровья",
-		ACCUSATIVE = "анализатор здоровья",
-		INSTRUMENTAL = "анализатором здоровья",
-		PREPOSITIONAL = "анализаторе здоровья"
-	)
 	icon = 'icons/obj/device.dmi'
 	icon_state = "health2"
 	item_state = "healthanalyzer"
@@ -104,17 +92,24 @@ effective or pretty fucking useless.
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 3
-	throw_range = 7
 	materials = list(MAT_METAL=400)
 	origin_tech = "magnets=3;biotech=5;syndicate=1"
 	var/intensity = 5 // how much damage the radiation does
 	var/wavelength = 10 // time it takes for the radiation to kick in, in seconds
 	var/used = 0 // is it cooling down?
 
+/obj/item/rad_laser/get_ru_names()
+	return list(
+		NOMINATIVE = "анализатор здоровья",
+		GENITIVE = "анализатора здоровья",
+		DATIVE = "анализатору здоровья",
+		ACCUSATIVE = "анализатор здоровья",
+		INSTRUMENTAL = "анализатором здоровья",
+		PREPOSITIONAL = "анализаторе здоровья",
+	)
 
 /obj/item/rad_laser/update_icon_state()
 	icon_state = used ? "health1" : "health2"
-
 
 /obj/item/rad_laser/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	if(used)
@@ -123,31 +118,27 @@ effective or pretty fucking useless.
 
 	. = ATTACK_CHAIN_PROCEED_SUCCESS
 	add_attack_logs(user, target, "Irradiated by [src]")
-	user.visible_message(span_notice("[user] анализиру[pluralize_ru(user.gender, "ет", "ют")] жизненные показатели [target]."))
+	user.visible_message(span_notice("[user] анализиру[PLUR_ET_YUT(user)] жизненные показатели [target]."))
 	var/cooldown = round(max(100,(((intensity*8)-(wavelength/2))+(intensity*2))*10))
 	used = TRUE
 	update_icon(UPDATE_ICON_STATE)
 	addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), cooldown)
+	to_chat(user, span_warning("[target] успешно облучен[GEND_A_O_Y(target)]."))
 	addtimer(CALLBACK(src, PROC_REF(delayed_effect), target), (wavelength + (intensity * 4)) SECONDS)
-
 
 /obj/item/rad_laser/proc/reset_cooldown()
 	used = FALSE
 	update_icon(UPDATE_ICON_STATE)
 
-
 /obj/item/rad_laser/proc/delayed_effect(mob/living/target)
 	if(QDELETED(target))
 		return
 	if(intensity >= 5)
-		target.Paralyse((intensity * 40 / 3) SECONDS)
-		target.apply_effect(intensity * 10, IRRADIATE)
-
+		target.apply_effect(round(intensity / 0.075), EFFECT_UNCONSCIOUS) // to save you some math, this is a round(intensity * (4/3)) second long knockout
 
 /obj/item/rad_laser/attack_self(mob/user)
 	..()
 	interact(user)
-
 
 /obj/item/rad_laser/interact(mob/user)
 	user.set_machine(src)
@@ -162,7 +153,6 @@ effective or pretty fucking useless.
 	var/datum/browser/popup = new(user, "radlaser", "Интерфейс радиационного излучателя", 400, 240)
 	popup.set_content(dat)
 	popup.open()
-
 
 /obj/item/rad_laser/Topic(href, href_list)
 	if(..())
@@ -183,7 +173,18 @@ effective or pretty fucking useless.
 	attack_self(usr)
 	add_fingerprint(usr)
 
-
+/// Checks if a given atom is in range of a radio jammer, returns TRUE if it is.
+/proc/is_within_radio_jammer_range(atom/source)
+	var/turf/source_turf = get_turf(source)
+	if(!source_turf)
+		return FALSE
+	for(var/obj/item/jammer/jammer as anything in GLOB.active_jammers)
+		var/turf/jammer_turf = get_turf(jammer)
+		if(!jammer_turf)
+			continue
+		if(IN_GIVEN_RANGE(source_turf, jammer_turf, jammer.range))
+			return TRUE
+	return FALSE
 
 /obj/item/jammer
 	name = "radio jammer"
@@ -191,13 +192,12 @@ effective or pretty fucking useless.
 	icon = 'icons/obj/device.dmi'
 	icon_state = "jammer"
 	var/active = FALSE
+	/// The range of devices to disable while active
 	var/range = 12
-
 
 /obj/item/jammer/Destroy()
 	GLOB.active_jammers -= src
 	return ..()
-
 
 /obj/item/jammer/attack_self(mob/user)
 	to_chat(user, span_notice("You [active ? "deactivate" : "activate"] the [src]."))
@@ -227,21 +227,17 @@ effective or pretty fucking useless.
 	var/saving_throw_distance = 3
 	var/flawless = FALSE
 
-
 /obj/item/teleporter/Destroy()
-	if(isprocessing)
+	if(datum_flags & DF_ISPROCESSING)
 		STOP_PROCESSING(SSobj, src)
 	return ..()
-
 
 /obj/item/teleporter/examine(mob/user)
 	. = ..()
 	. += span_notice("[src] has <b>[charges]</b> out of <b>[max_charges]</b> charges left.")
 
-
 /obj/item/teleporter/update_icon_state()
 	icon_state = "[base_icon_state]-[charges]"
-
 
 /obj/item/teleporter/attack_self(mob/user)
 	attempt_teleport(user, FALSE)
@@ -256,7 +252,6 @@ effective or pretty fucking useless.
 	if(prob(10))
 		charges++
 		update_icon(UPDATE_ICON_STATE)
-
 
 /obj/item/teleporter/emp_act(severity)
 	if(!prob(50 / severity))
@@ -283,7 +278,6 @@ effective or pretty fucking useless.
 	visible_message(span_warning("The [src] activates and blinks out of existence!"))
 	do_sparks(2, TRUE, src)
 	qdel(src)
-
 
 /obj/item/teleporter/proc/attempt_teleport(mob/living/user, EMP_D = FALSE)
 	pulledby?.stop_pulling()
@@ -322,7 +316,7 @@ effective or pretty fucking useless.
 	if(charges > 0) //While we want EMP triggered teleports to drain charge, we also do not want it to go negative charge, as such we need this check here
 		charges--
 		update_icon(UPDATE_ICON_STATE)
-		if(!isprocessing)
+		if(!(datum_flags & DF_ISPROCESSING))
 			START_PROCESSING(SSobj, src)
 
 	var/turf/destination = pick(turfs)
@@ -330,9 +324,9 @@ effective or pretty fucking useless.
 		var/turf/fragging_location = destination
 		telefrag(fragging_location, user)
 		user.forceMove(destination)
-		playsound(mobloc, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		playsound(mobloc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		new/obj/effect/temp_visual/teleport_abductor/syndi_teleporter(mobloc)
-		playsound(destination, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		playsound(destination, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		new/obj/effect/temp_visual/teleport_abductor/syndi_teleporter(destination)
 	else if(EMP_D == FALSE && !(length(bagholding) && !flawless)) // This is where the fun begins
 		var/direction = get_dir(user, destination)
@@ -340,10 +334,8 @@ effective or pretty fucking useless.
 	else // Emp activated? Bag of holding? No saving throw for you
 		get_fragged(user, destination)
 
-
 /obj/item/teleporter/proc/tile_check(turf/check_turf)
 	return isfloorturf(check_turf) || isspaceturf(check_turf) || isopenspaceturf(check_turf)
-
 
 /obj/item/teleporter/proc/dir_correction(mob/user) //Direction movement, screws with teleport distance and saving throw, and thus must be removed first
 	var/temp_direction = user.dir
@@ -352,7 +344,6 @@ effective or pretty fucking useless.
 			user.dir = EAST
 		if(NORTHWEST, SOUTHWEST)
 			user.dir = WEST
-
 
 /obj/item/teleporter/proc/panic_teleport(mob/living/user, turf/destination, direction = NORTH)
 	var/saving_throw
@@ -393,27 +384,25 @@ effective or pretty fucking useless.
 	var/turf/fragging_location = new_destination
 	telefrag(fragging_location, user)
 	user.forceMove(new_destination)
-	playsound(mobloc, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(mobloc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	new /obj/effect/temp_visual/teleport_abductor/syndi_teleporter(mobloc)
 	new /obj/effect/temp_visual/teleport_abductor/syndi_teleporter(new_destination)
-	playsound(new_destination, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-
+	playsound(new_destination, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/teleporter/proc/get_fragged(mob/user, turf/destination)
 	var/turf/mobloc = get_turf(user)
 	user.forceMove(destination)
-	playsound(mobloc, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(mobloc, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	new /obj/effect/temp_visual/teleport_abductor/syndi_teleporter(mobloc)
 	new /obj/effect/temp_visual/teleport_abductor/syndi_teleporter(destination)
-	playsound(destination, "sparks", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	playsound(destination, "sound/magic/disintegrate.ogg", 50, TRUE)
-	destination.ex_act(rand(1,2))
-	for(var/obj/item/thing as anything in user.get_equipped_items(TRUE, TRUE))
+	playsound(destination, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(destination, 'sound/magic/disintegrate.ogg', 50, TRUE)
+	destination.ex_act(rand(EXPLODE_DEVASTATE, EXPLODE_HEAVY))
+	for(var/obj/item/thing as anything in user.get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		if(!user.drop_item_ground(thing))
 			qdel(thing)
-	to_chat(user, span_dangerbigger("You teleport into the wall, the teleporter tries to save you, but--"))
+	to_chat(user, span_biggerdanger("You teleport into the wall, the teleporter tries to save you, but--"))
 	user.gib()
-
 
 /obj/item/teleporter/proc/telefrag(turf/fragging_location, mob/user)
 	for(var/mob/living/target in fragging_location)//Hit everything in the turf
@@ -421,10 +410,8 @@ effective or pretty fucking useless.
 		target.Weaken(6 SECONDS)
 		to_chat(target, span_warning("[user] teleports into you, knocking you to the floor with the bluespace wave!"))
 
-
 /obj/item/paper/teleporter
 	name = "Teleporter Guide"
-	icon_state = "paper"
 	info = {"<b>Instructions on your new prototype syndicate teleporter</b><br>
 	<br>
 	This teleporter will teleport the user 4-8 meters in the direction they are facing. Unlike the cult veil shifter, you can not drag people with you.<br>
@@ -436,20 +423,16 @@ effective or pretty fucking useless.
 	Do not expose the teleporter to electromagnetic pulses or attempt to use with a bag of holding, unwanted malfunctions may occur.
 "}
 
-
 /obj/item/storage/box/syndie_kit/teleporter
 	name = "syndicate teleporter kit"
-
 
 /obj/item/storage/box/syndie_kit/teleporter/populate_contents()
 	new /obj/item/teleporter(src)
 	new /obj/item/paper/teleporter(src)
 	new /obj/item/clothing/glasses/chameleon/meson(src)
 
-
 /obj/effect/temp_visual/teleport_abductor/syndi_teleporter
 	duration = 5
-
 
 /obj/item/teleporter/admin
 	desc = "A strange syndicate version of a cult veil shifter. \n This one seems EMP proof, and with much better safety protocols."
@@ -457,13 +440,11 @@ effective or pretty fucking useless.
 	max_charges = 8
 	flawless = TRUE
 
-
 /obj/item/teleporter/admin/update_icon_state()
-	icon_state = "[base_icon_state]-[CEILING(charges / 2, 1)]"
+	icon_state = "[base_icon_state]-[ceil(charges / 2)]"
 
-
-#define ION_CALLER_AI_TARGETING		"AI targeting"
-#define ION_CALLER_COMMS_TARGETING	"Telecomms targeting"
+#define ION_CALLER_AI_TARGETING "AI targeting"
+#define ION_CALLER_COMMS_TARGETING "Telecomms targeting"
 
 /obj/item/ion_caller
 	name = "low-orbit ion cannon remote"
@@ -475,17 +456,14 @@ effective or pretty fucking useless.
 	var/static/next_comms_strike = -1
 	COOLDOWN_DECLARE(ioncaller_ai_cooldown)
 
-
 /obj/item/ion_caller/Initialize(mapload)
 	. = ..()
 	update_icon(UPDATE_OVERLAYS)
 	GLOB.ioncallers_list += src
 
-
 /obj/item/ion_caller/Destroy()
 	GLOB.ioncallers_list -= src
 	. = ..()
-
 
 /obj/item/ion_caller/update_overlays()
 	. = ..()
@@ -495,7 +473,6 @@ effective or pretty fucking useless.
 
 	if(next_comms_strike <= world.time)
 		. += "[initial(icon_state)]_tele"
-
 
 /obj/item/ion_caller/examine(mob/user)
 	. = ..()
@@ -508,11 +485,9 @@ effective or pretty fucking useless.
 	else
 		. += "<b>[span_green("\"Telecomm Suppresser\"")]</b> satellite will be ready to fire in [DisplayTimeText(next_comms_strike - world.time)]."
 
-
 /obj/item/ion_caller/proc/options_visual_update()
 	update_icon(UPDATE_OVERLAYS)
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_icon), UPDATE_OVERLAYS), recharge_time)
-
 
 /obj/item/ion_caller/proc/usability_check(mob/user, area_check = TRUE, satellite_check = NONE, silent)
 	if(area_check && !is_type_in_list(get_area(src), SSmapping.existing_station_areas))
@@ -537,7 +512,6 @@ effective or pretty fucking useless.
 
 	return TRUE
 
-
 /obj/item/ion_caller/attack_self(mob/user)
 	if(!usability_check(user))
 		return
@@ -550,7 +524,7 @@ effective or pretty fucking useless.
 	if(usability_check(area_check = FALSE, satellite_check = ION_CALLER_COMMS_TARGETING, silent = TRUE))
 		choices[ION_CALLER_COMMS_TARGETING] = mutable_appearance(icon = src.icon, icon_state = "ISD_tele_prev")
 
-	if(choices.len <= 1)
+	if(length(choices) <= 1)
 		to_chat(user, span_notice("It is not ready to be used yet."))
 		return
 

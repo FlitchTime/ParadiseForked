@@ -34,9 +34,6 @@
 
 // Procs that give information about the status of the mob
 
-/mob/proc/can_hear()
-	return TRUE
-
 /mob/proc/has_vision(information_only = FALSE)
 	return 1
 
@@ -57,3 +54,5 @@
 /mob/proc/update_stamina_hud()
 	return
 
+/mob/proc/update_nutrition_hud()
+	return

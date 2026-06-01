@@ -4,7 +4,6 @@
 	icon_state = "explosive_old"
 	origin_tech = "materials=2;combat=3;biotech=4;syndicate=4"
 	implant_state = "implant-syndicate"
-	activated = BIOCHIP_ACTIVATED_ACTIVE
 	actions_types = list(/datum/action/item_action/hands_free/activate/always)
 	trigger_causes = BIOCHIP_TRIGGER_DEATH_ONCE // Not surviving that
 	implant_data = /datum/implant_fluff/explosive
@@ -14,10 +13,9 @@
 	var/heavy = 0.4
 	var/delay = (0.7 SECONDS)
 
-
 /obj/item/implant/explosive/death_trigger(mob/source, gibbed)
-	activate("death")
-
+	if(!HAS_TRAIT(imp_in, TRAIT_PREVENT_IMPLANT_AUTO_EXPLOSION))
+		activate("death")
 
 /obj/item/implant/explosive/activate(cause)
 	if(!cause || QDELETED(imp_in))
@@ -33,12 +31,13 @@
 	detonating = TRUE
 	to_chat(imp_in, span_danger("You activate your microbomb bio-chip."))
 
+	. = ..()
+
 	if(delay <= 7)	//If the delay is short, just blow up already jeez
 		self_destruct()
 		return
 
 	timed_explosion()
-
 
 /**
  * Gib the implantee and delete their destructible contents.
@@ -47,7 +46,7 @@
 	if(QDELETED(imp_in))
 		return
 
-	explosion(src, heavy, medium, weak, weak, flame_range = weak, cause = src)
+	explosion(src, devastation_range = heavy, heavy_impact_range = medium, light_impact_range = weak, flame_range = weak, cause = src)
 
 	// In case something happens to the implantee between now and the self-destruct
 	var/current_location = get_turf(imp_in)
@@ -70,7 +69,6 @@
 	imp_in.gib()
 	qdel(src)
 
-
 /obj/item/implant/explosive/proc/timed_explosion()
 	imp_in.visible_message(span_warning("[imp_in] starts beeping ominously!"))
 	playsound(loc, 'sound/items/timer.ogg', 30, FALSE)
@@ -87,30 +85,32 @@
 	sleep(wait_delay)
 	self_destruct()
 
-
 /obj/item/implant/explosive/implant(mob/living/carbon/human/source, mob/user, force = FALSE)
-	var/obj/item/implant/explosive/same_imp = locate(type) in source
-	if(same_imp && same_imp != src)
-		same_imp.heavy += heavy
-		same_imp.medium += medium
-		same_imp.weak += weak
-		same_imp.delay += delay
-		qdel(src)
-		return TRUE
-	return ..()
+	. = ..()
+	if(!.)
+		return
 
+	var/obj/item/implant/explosive/same_imp = locate(type) in source
+	if(!same_imp || same_imp == src)
+		return
+
+	same_imp.heavy += heavy
+	same_imp.medium += medium
+	same_imp.weak += weak
+	same_imp.delay += delay
+	qdel(src)
+	return TRUE
 
 /obj/item/implant/explosive/macro
 	name = "macrobomb bio-chip"
 	desc = "And boom goes the weasel. And everything else nearby."
-	icon_state = "explosive_old"
 	origin_tech = "materials=3;combat=5;biotech=4;syndicate=5"
+	trigger_causes = BIOCHIP_TRIGGER_DEATH_ANY // So it can trigger again after being canceled.
 	weak = 16
 	medium = 8
 	heavy = 4
 	delay = (7 SECONDS)
 	implant_data = new /datum/implant_fluff/explosive_macro
-
 
 /obj/item/implant/explosive/macro/activate(cause)
 	if(!cause || QDELETED(imp_in))
@@ -118,38 +118,39 @@
 	if(cause == "action_button" && alert(imp_in, "Are you sure you want to activate your macrobomb bio-chip? This will cause you to explode and gib!", "Macrobomb Bio-chip Confirmation", "Yes", "No") != "Yes")
 		return FALSE
 	to_chat(imp_in, span_notice("You activate your macrobomb bio-chip."))
+	. = ..()
 	timed_explosion()
 
-
 /obj/item/implant/explosive/macro/implant(mob/living/carbon/human/source, mob/user, force = FALSE)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/implant/explosive/same_imp = locate(type) in source
 	if(same_imp && same_imp != src)
 		return FALSE
 	same_imp = locate(/obj/item/implant/explosive) in source
-	if(same_imp && same_imp != src)
-		heavy += same_imp.heavy
-		medium += same_imp.medium
-		weak += same_imp.weak
-		delay += same_imp.delay
-		qdel(same_imp)
-	return ..()
+	if(!same_imp || same_imp == src)
+		return
 
+	heavy += same_imp.heavy
+	medium += same_imp.medium
+	weak += same_imp.weak
+	delay += same_imp.delay
+	qdel(same_imp)
 
 /obj/item/implanter/explosive
 	name = "bio-chip implanter (micro-explosive)"
 	imp = /obj/item/implant/explosive
-
 
 /obj/item/implantcase/explosive
 	name = "bio-chip case - 'Micro Explosive'"
 	desc = "A glass case containing a micro explosive bio-chip."
 	imp = /obj/item/implant/explosive
 
-
 /obj/item/implanter/explosive_macro
 	name = "bio-chip implanter (macro-explosive)"
 	imp = /obj/item/implant/explosive/macro
-
 
 /obj/item/implantcase/explosive_macro
 	name = "bio-chip case - 'Macro Explosive'"

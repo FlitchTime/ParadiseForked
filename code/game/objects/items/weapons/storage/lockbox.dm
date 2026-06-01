@@ -1,11 +1,13 @@
 /obj/item/storage/lockbox
 	name = "lockbox"
 	desc = "A locked box."
+	icon = 'icons/obj/storage/boxes.dmi'
 	icon_state = "lockbox+l"
-	item_state = "syringe_kit"
+	righthand_file = 'icons/mob/inhands/storage_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/storage_lefthand.dmi'
+	item_state = "lockbox"
 	w_class = WEIGHT_CLASS_BULKY
 	max_w_class = WEIGHT_CLASS_NORMAL
-	max_combined_w_class = 14 //The sum of the w_classes of all the items in this storage item.
 	storage_slots = 4
 	req_access = list(ACCESS_ARMORY)
 	var/locked = TRUE
@@ -14,13 +16,11 @@
 	var/icon_closed = "lockbox"
 	var/icon_broken = "lockbox+b"
 
-
 /obj/item/storage/lockbox/update_icon_state()
 	if(broken)
 		icon_state = icon_broken
 		return
 	icon_state = locked ? icon_locked : icon_closed
-
 
 /obj/item/storage/lockbox/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)	// to allow storing special items
@@ -62,22 +62,25 @@
 
 	return ..()
 
+/obj/item/storage/lockbox/dump_storage(mob/user, obj/item/storage/target)
+	if(locked)
+		user?.balloon_alert(user, "заперто")
+		return
+	return ..()
 
 /obj/item/storage/lockbox/show_to(mob/user)
 	if(locked)
-		to_chat(user, "<span class='warning'>It's locked!</span>")
+		to_chat(user, span_warning("It's locked!"))
 	else
 		..()
 	return
-
 
 /obj/item/storage/lockbox/can_be_inserted(obj/item/W, stop_messages = 0)
 	if(!locked)
 		return ..()
 	if(!stop_messages)
-		to_chat(usr, "<span class='notice'>[src] is locked!</span>")
+		to_chat(usr, span_notice("[src] is locked!"))
 	return FALSE
-
 
 /obj/item/storage/lockbox/emag_act(mob/user)
 	if(!broken)
@@ -87,13 +90,17 @@
 		desc = "It appears to be broken."
 		update_icon()
 		if(user)
-			to_chat(user, "<span class='notice'>You unlock \the [src].</span>")
+			to_chat(user, span_notice("You unlock \the [src]."))
 		origin_tech = null //wipe out any origin tech if it's unlocked in any way so you can't double-dip tech levels at R&D.
 
-
 /obj/item/storage/lockbox/hear_talk(mob/living/M, list/message_pieces)
+	if(locked)
+		return
+
+	..()
 
 /obj/item/storage/lockbox/hear_message(mob/living/M, msg)
+	return
 
 /obj/item/storage/lockbox/mindshield
 	name = "Lockbox (Mindshield Implants)"
@@ -117,7 +124,7 @@
 
 /obj/item/storage/lockbox/sibyl_system_mod/populate_contents()
 	for(var/i in 1 to 10)
-		new /obj/item/sibyl_system_mod(src)
+		new /obj/item/gun_module/sibyl(src)
 
 /obj/item/storage/lockbox/clusterbang
 	name = "lockbox (clusterbang)"
@@ -127,11 +134,27 @@
 /obj/item/storage/lockbox/clusterbang/populate_contents()
 	new /obj/item/grenade/clusterbuster(src)
 
+/obj/item/storage/lockbox/suppression
+	name = "Lockbox (Suppression Implants)"
+	desc = "Содержит био-чипы \"Подавление\" для ограничения навыков боевых искусств."
+	req_access = list(ACCESS_SECURITY)
+
+/obj/item/storage/lockbox/suppression/populate_contents()
+	new /obj/item/implantcase/suppression(src)
+	new /obj/item/implanter/suppression(src)
+
+/obj/item/storage/lockbox/suppression/cargo
+
+/obj/item/storage/lockbox/suppression/cargo/populate_contents()
+	for(var/i in 1 to 3)
+		new /obj/item/implantcase/suppression(src)
+	new /obj/item/implanter/suppression(src)
+
 /obj/item/storage/lockbox/medal
 	name = "medal box"
 	desc = "A locked box used to store medals of honor."
 	icon_state = "medalbox+l"
-	item_state = "syringe_kit"
+	item_state = "medalbox"
 	w_class = WEIGHT_CLASS_NORMAL
 	max_w_class = WEIGHT_CLASS_SMALL
 	max_combined_w_class = 20
@@ -169,6 +192,20 @@
 	max_combined_w_class = 4 //The sum of the w_classes of all the items in this storage item.
 	storage_slots = 1
 
+/obj/item/storage/lockbox/research/modsuit
+	name = "Plating lockbox"
+	desc = "Большой защитный кейс. Электронный замок выглядит довольно уязвимым."
+
+/obj/item/storage/lockbox/research/modsuit/emp_act(severity) //I want emp to get around it, it's not a gun, I just want people not to always make sec / med modsuits.
+	. = ..()
+	if(!broken || !prob(50 / severity))
+		return
+
+	locked = FALSE
+	broken = TRUE
+	update_icon(UPDATE_ICON_STATE)
+	origin_tech = null //wipe out any origin tech if it's unlocked in any way so you can't double-dip tech levels at R&D.
+
 /obj/item/storage/lockbox/research/mantis
 	name = "lockbox(hidden blade implant)"
 	req_access = list(ACCESS_ARMORY)
@@ -178,7 +215,7 @@
 	new /obj/item/organ/internal/cyberimp/arm/toolset/mantisblade/shellguard/l(src)
 
 /obj/item/storage/lockbox/medal/hardmode_box
-	name = "\improper HRD-MDE program medal box"
+	name = "HRD-MDE program medal box"
 	desc = "A locked box used to store medals of pride. Use a fauna research disk on the box to transmit the data and print a medal."
 	req_access = list(ACCESS_MINING) //No grubby assistant hands on my hard earned medals
 	can_hold = list(/obj/item/clothing/accessory, /obj/item/coin) //Whoops almost gave miners boxes that could store 12 legion cores. Scoped to accessory if they want to store neclaces or hope or something in there. Or a coin collection.
@@ -189,10 +226,8 @@
 	. = ..()
 	number_of_megafauna = length(subtypesof(/obj/item/disk/fauna_research))
 
-
 /obj/item/storage/lockbox/medal/hardmode_box/populate_contents()
 	return
-
 
 /obj/item/storage/lockbox/medal/hardmode_box/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/disk/fauna_research))

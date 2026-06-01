@@ -1,8 +1,7 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "a" = (
 /obj/structure/shuttle/engine/propulsion{
-	dir = 8;
-	tag = "icon-propulsion (EAST)"
+	dir = 8
 	},
 /turf/simulated/floor/shuttle/plating,
 /area/shuttle/transport)
@@ -89,8 +88,7 @@
 	amount = 50
 	},
 /obj/machinery/light/spot{
-	dir = 1;
-	tag = "icon-tube1 (NORTH)"
+	dir = 1
 	},
 /turf/simulated/floor/plasteel{
 	dir = 5;
@@ -100,8 +98,7 @@
 "o" = (
 /obj/machinery/recharge_station/upgraded,
 /obj/structure/window/plasmareinforced{
-	dir = 8;
-	layer = 2.9
+	dir = 8
 	},
 /turf/simulated/floor/plasteel{
 	dir = 9;
@@ -131,10 +128,6 @@
 /area/shuttle/transport)
 "G" = (
 /obj/machinery/satellite/meteor_shield,
-/obj/machinery/satellite/meteor_shield,
-/obj/machinery/satellite/meteor_shield,
-/obj/machinery/satellite/meteor_shield,
-/obj/machinery/satellite/meteor_shield,
 /obj/machinery/door/window/survival_pod{
 	dir = 2
 	},
@@ -162,8 +155,7 @@
 	},
 /obj/machinery/autolathe/upgraded,
 /obj/machinery/light/spot{
-	dir = 1;
-	tag = "icon-tube1 (NORTH)"
+	dir = 1
 	},
 /obj/structure/window/reinforced/survival_pod/unhittable{
 	dir = 8;
@@ -201,8 +193,7 @@
 "N" = (
 /obj/machinery/recharge_station/upgraded,
 /obj/structure/window/plasmareinforced{
-	dir = 8;
-	layer = 2.9
+	dir = 8
 	},
 /turf/simulated/floor/plasteel{
 	dir = 10;

@@ -1,42 +1,52 @@
-//A system to manage and display alerts on screen without needing you to do it yourself
-
-//PUBLIC -  call these wherever you want
+//! A system to manage and display alerts on screen without needing you to do it yourself
 
 /**
- * Proc to create or update an alert. Returns the alert if the alert is new or updated, 0 if it was thrown already.
+ * Proc to create or update an alert. Returns the alert.
  * Each mob may only have one alert per category.
  *
  * Arguments:
- * * category - a text string corresponding to what type of alert it is
- * * type - a type path of the actual alert type to throw
- * * severity - is an optional number that will be placed at the end of the icon_state for this alert
+ * * `category` - a text string corresponding to what type of alert it is
+ * * `type` - a type path of the actual alert type to throw
+ * * `severity` - is an optional number that will be placed at the end of the icon_state for this alert
  *   For example, high pressure's icon_state is "highpressure" and can be serverity 1 or 2 to get "highpressure1" or "highpressure2"
- * * obj/new_master - optional argument. Sets the alert's icon state to "template" in the ui_style icons with the master as an overlay. Clicks are forwarded to master
- * * no_anim - whether the alert should play a small sliding animation when created on the player's screen
- * * icon_override - makes it so the alert is not replaced until cleared by a clear_alert with clear_override, and it's used for hallucinations.
- * * list/alert_args - a list of arguments to pass to the alert when creating it
+ * * `atom/new_master` - optional argument. Sets the alert's icon state to "template" in the ui_style icons with the master as an overlay. Clicks are forwarded to master
+ * * `no_anim` - whether the alert should play a small sliding animation when created on the player's screen
+ * * `icon_override` - makes it so the alert is not replaced until cleared by a clear_alert with clear_override, and it's used for hallucinations.
+ * * `list/alert_args` - a list of arguments to pass to the alert when creating it
  */
-/mob/proc/throw_alert(category, type, severity, obj/new_master, override = FALSE, timeout_override, no_anim, icon_override, list/alert_args)
-	if(!category)
+/mob/proc/throw_alert(category, type, severity, atom/new_master, override = FALSE, timeout_override, no_anim = FALSE, icon_override, list/alert_args)
+	if(!category || QDELETED(src))
 		return
+
+	var/datum/weakref/master_ref
+	if(isatom(new_master))
+		master_ref = WEAKREF(new_master)
 
 	var/atom/movable/screen/alert/alert = LAZYACCESS(alerts, category)
 	if(alert)
 		if(alert.override_alerts)
-			return 0
-		if(new_master && new_master != alert.master)
-			WARNING("[src] threw alert [category] with new_master [new_master] while already having that alert with master [alert.master]")
+			return alert
+
+		if(master_ref && alert.master_ref && master_ref != alert.master_ref)
+			var/datum/current_master = alert.master_ref.resolve()
+			WARNING("[src] threw alert [category] with new_master [new_master] while already having that alert with master [current_master]")
 			clear_alert(category)
 			return .()
+
 		else if(alert.type != type)
 			clear_alert(category)
 			return .()
+
 		else if(!severity || severity == alert.severity)
-			if(alert.timeout)
-				clear_alert(category)
-				return .()
-			else //no need to update
-				return 0
+			if(!alert.timeout)
+				// No need to update existing alert
+				return alert
+			// Reset timeout of existing alert
+			var/timeout = timeout_override || initial(alert.timeout)
+			addtimer(CALLBACK(src, PROC_REF(alert_timeout), alert, category), timeout)
+			alert.timeout = world.time + timeout - world.tick_lag
+			return alert
+
 	else
 		if(alert_args)
 			alert_args.Insert(1, null) // So it's still created in nullspace.
@@ -47,20 +57,16 @@
 		if(override)
 			alert.timeout = null
 
+	alert.owner = src
+
 	if(icon_override)
 		alert.icon = icon_override
 
 	if(new_master)
-		var/old_layer = new_master.layer
-		var/old_plane = new_master.plane
-		new_master.layer = FLOAT_LAYER
-		new_master.plane = FLOAT_PLANE
-		alert.add_overlay(new_master)
-		new_master.layer = old_layer
-		new_master.plane = old_plane
-		alert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
-		alert.master = new_master
-	else
+		alert.master_ref = master_ref
+		alert.RegisterSignal(new_master, COMSIG_ATOM_UPDATE_APPEARANCE, TYPE_PROC_REF(/atom/movable/screen/alert, on_master_update_appearance))
+		alert.update_appearance()
+	else if(severity)
 		alert.icon_state = "[initial(alert.icon_state)][severity]"
 		alert.severity = severity
 
@@ -69,23 +75,31 @@
 		hud_used.reorganize_alerts()
 
 	if(!no_anim)
-		alert.transform = matrix(32, 6, MATRIX_TRANSLATE)
-		animate(alert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
+		alert.transform = matrix(32, 0, MATRIX_TRANSLATE)
+		animate(alert, transform = matrix(), time = 1 SECONDS, easing = ELASTIC_EASING)
 
-	var/timeout = timeout_override || alert.timeout
-	if(timeout)
-		addtimer(CALLBACK(alert, TYPE_PROC_REF(/atom/movable/screen/alert, do_timeout), src, category), timeout)
-		alert.timeout = world.time + timeout - world.tick_lag
+	if(timeout_override)
+		alert.timeout = timeout_override
+
+	if(alert.timeout)
+		addtimer(CALLBACK(src, PROC_REF(alert_timeout), alert, category), alert.timeout)
+		alert.timeout = world.time + alert.timeout - world.tick_lag
 
 	return alert
 
-// Proc to clear an existing alert.
+/mob/proc/alert_timeout(atom/movable/screen/alert/alert, category)
+	var/atom/movable/screen/alert/our_alert = LAZYACCESS(alerts, category)
+	if(!alert.timeout || our_alert != alert || world.time < alert.timeout)
+		return
+	clear_alert(category)
+
+/// Proc to clear an existing alert.
 /mob/proc/clear_alert(category, clear_override = FALSE)
 	var/atom/movable/screen/alert/alert = LAZYACCESS(alerts, category)
 	if(!alert)
-		return 0
+		return FALSE
 	if(alert.override_alerts && !clear_override)
-		return 0
+		return FALSE
 
 	alerts -= category
 	if(client && hud_used)
@@ -97,482 +111,462 @@
 				LAZYREMOVE(inventory_observers, observe)
 				continue
 			observe.client.screen -= alert
+
 	qdel(alert)
+
+/// Proc to check for an alert.
+/mob/proc/has_alert(category)
+	var/atom/movable/screen/alert/alert = LAZYACCESS(alerts, category)
+	return !isnull(alert)
 
 /atom/movable/screen/alert
 	icon = 'icons/mob/screen_alert.dmi'
-	icon_state = "default"
+	icon_state = "template"
 	name = "Alert"
-	desc = "Something seems to have gone wrong with this alert, so report this bug please"
-	mouse_opacity = MOUSE_OPACITY_ICON
-	var/timeout = 0 //If set to a number, this alert will clear itself after that many deciseconds
+	desc = "Something seems to have gone wrong with this alert, so report this bug please."
+	/// Do we glow to represent we do stuff when clicked
+	var/clickable_glow = FALSE
+	/// If set to a number, this alert will clear itself after that many deciseconds
+	var/timeout = 0
 	var/severity = 0
 	var/alerttooltipstyle = ""
-	var/override_alerts = FALSE //If it is overriding other alerts of the same type
+	/// If it is overriding other alerts of the same type
+	var/override_alerts = FALSE
+	/// Alert owner
+	var/mob/owner
+	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
+	var/click_master = TRUE
+
+/atom/movable/screen/alert/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(clickable_glow)
+		add_filter("clickglow", 2, outline_filter(color = COLOR_GOLD, size = 1))
+		mouse_over_pointer = MOUSE_HAND_POINTER
+
+/atom/movable/screen/alert/Destroy()
+	severity = 0
+	master_ref = null
+	owner = null
+	screen_loc = ""
+	return ..()
+
+/atom/movable/screen/alert/examine(mob/user)
+	return list(
+		span_boldnotice(name),
+		span_notice(desc),
+	)
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
-	openToolTip(usr, src, params, title = name, content = desc, theme = alerttooltipstyle)
-
+	. = ..()
+	if(!QDELETED(src))
+		openToolTip(usr, src, params, title = name, content = desc, theme = alerttooltipstyle)
 
 /atom/movable/screen/alert/MouseExited()
 	closeToolTip(usr)
 
-/atom/movable/screen/alert/proc/do_timeout(mob/M, category)
-	if(!M || !M.alerts)
-		return
+/atom/movable/screen/alert/proc/on_master_update_appearance(datum/source)
+	SIGNAL_HANDLER
+	update_appearance()
 
-	if(timeout && M.alerts[category] == src && world.time >= timeout)
-		M.clear_alert(category)
+/atom/movable/screen/alert/update_overlays()
+	. = ..()
+	var/atom/our_master = master_ref?.resolve()
+	if(istype(our_master) && !QDELETED(our_master))
+		. += add_atom_icon(our_master)
+
+/// Returns a copy of the appearance of the atom, with its base pixel coordinates. Useful for overlays
+/atom/movable/screen/alert/proc/add_atom_icon(atom/atom)
+	var/mutable_appearance/atom_appearance = new(atom)
+	atom_appearance.appearance_flags = KEEP_TOGETHER
+	atom_appearance.layer = FLOAT_LAYER
+	atom_appearance.plane = FLOAT_PLANE
+	atom_appearance.dir = SOUTH
+	atom_appearance.pixel_x = atom.base_pixel_x
+	atom_appearance.pixel_y = atom.base_pixel_y
+	atom_appearance.pixel_w = atom.base_pixel_w
+	atom_appearance.pixel_z = atom.base_pixel_z
+	return strip_appearance_underlays(atom_appearance)
+
+/atom/movable/screen/alert/Click(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	..()
+
+	if(!usr || !GET_CLIENT(usr) || usr != owner)
+		return FALSE
+
+	if(HAS_TRAIT(usr, TRAIT_OBSERVING_INVENTORY))
+		return FALSE
+
+	var/list/modifiers = params2list(params)
+	if(LAZYACCESS(modifiers, SHIFT_CLICK)) // screen objects don't do the normal Click() stuff so we'll cheat
+		to_chat(usr, chat_box_regular(jointext(examine(usr), "\n")))
+		return FALSE
+
+	if(!click_master)
+		return TRUE
+
+	var/datum/our_master = master_ref?.resolve()
+	if(our_master)
+		return usr.client.Click(our_master, location, control, params)
+
+	return TRUE
 
 //Gas alerts
 /atom/movable/screen/alert/not_enough_oxy
-	name = "Choking (No O2)"
-	desc = "You're not getting enough oxygen. Find some good air before you pass out! The box in your backpack has an oxygen tank and breath mask in it."
+	name = "Удушье (Недостаток  O2)"
+	desc = "Вам не хватает кислорода.<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
 	icon_state = "not_enough_oxy"
 
 /atom/movable/screen/alert/too_much_oxy
-	name = "Choking (O2)"
-	desc = "There's too much oxygen in the air, and you're breathing it in! Find some good air before you pass out!"
+	name = "Удушье (Избыток O2)"
+	desc = "В воздухе слишком много кислорода!<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
 	icon_state = "too_much_oxy"
 
 /atom/movable/screen/alert/not_enough_nitro
-    name = "Choking (No N)"
-    desc = "You're not getting enough nitrogen. Find some good air before you pass out!"
-    icon_state = "not_enough_nitro"
+	name = "Удушье (Недостаток N)"
+	desc = "Вам не хватает азота.<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
+	icon_state = "not_enough_nitro"
 
 /atom/movable/screen/alert/too_much_nitro
-    name = "Choking (N)"
-    desc = "There's too much nitrogen in the air, and you're breathing it in! Find some good air before you pass out!"
-    icon_state = "too_much_nitro"
+	name = "Удушье (Избыток N)"
+	desc = "Слишком много азота в воздухе!<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
+	icon_state = "too_much_nitro"
 
 /atom/movable/screen/alert/not_enough_co2
-	name = "Choking (No CO2)"
-	desc = "You're not getting enough carbon dioxide. Find some good air before you pass out!"
+	name = "Удушье (Недостаток CO2)"
+	desc = "Вам не хватает углекислого газа!<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
 	icon_state = "not_enough_co2"
 
 /atom/movable/screen/alert/too_much_co2
-	name = "Choking (CO2)"
-	desc = "There's too much carbon dioxide in the air, and you're breathing it in! Find some good air before you pass out!"
+	name = "Удушье (Избыток CO2)"
+	desc = "Слишком много углекислого газа в воздухе!<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
 	icon_state = "too_much_co2"
 
 /atom/movable/screen/alert/not_enough_tox
-	name = "Choking (No Plasma)"
-	desc = "You're not getting enough plasma. Find some good air before you pass out!"
+	name = "Удушье (Недостаток Плазмы)"
+	desc = "Вам не хватает плазмы!<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
 	icon_state = "not_enough_tox"
 
 /atom/movable/screen/alert/too_much_tox
-	name = "Choking (Plasma)"
-	desc = "There's highly flammable, toxic plasma in the air and you're breathing it in. Find some fresh air. The box in your backpack has an oxygen tank and gas mask in it."
+	name = "Удушье (Плазма)"
+	desc = "В воздухе горючая токсичная плазма!<br>Найдите пригодный для дыхания воздух, прежде чем потерять сознание!<br>В рюкзаке у вас есть баллон и маска."
 	icon_state = "too_much_tox"
 //End gas alerts
 
 /atom/movable/screen/alert/gross
-	name = "Grossed out."
-	desc = "That was kind of gross..."
+	name = "Отвратительно"
+	desc = "Это было довольно противно..."
 	icon_state = "gross"
 
 /atom/movable/screen/alert/verygross
-	name = "Very grossed out."
-	desc = "I'm not feeling very well.."
+	name = "Сильное отвращение"
+	desc = "Мне нехорошо..."
 	icon_state = "gross2"
 
 /atom/movable/screen/alert/disgusted
-	name = "DISGUSTED"
-	desc = "ABSOLUTELY DISGUSTIN'"
+	name = "МЕРЗОСТЬ"
+	desc = "АБСОЛЮТНАЯ МЕРЗОСТЬ!"
 	icon_state = "gross3"
 
-// Hunger alerts
-
-/atom/movable/screen/alert/hunger
-	icon = 'icons/mob/screen_hunger.dmi'
-
-/atom/movable/screen/alert/hunger/fat
-	name = "Fat"
-	desc = "You ate too much food, lardass. Run around the station and lose some weight."
-	icon_state = "fat"
-
-/atom/movable/screen/alert/hunger/full
-	name = "Full"
-	desc = "You feel full and satisfied, but you shouldn't eat much more."
-	icon_state = "full"
-
-/atom/movable/screen/alert/hunger/well_fed
-	name = "Well Fed"
-	desc = "You feel quite satisfied, but you may be able to eat a bit more."
-	icon_state = "well_fed"
-
-/atom/movable/screen/alert/hunger/fed
-	name = "Fed"
-	desc = "You feel moderately satisfied, but a bit more food may not hurt."
-	icon_state = "fed"
-
-/atom/movable/screen/alert/hunger/hungry
-	name = "Hungry"
-	desc = "Some food would be good right about now."
-	icon_state = "hungry"
-
-/atom/movable/screen/alert/hunger/starving
-	name = "Starving"
-	desc = "You're severely malnourished. The hunger pains make moving around a chore."
-	icon_state = "starving"
-
-/// Machine "hunger"
-
-/atom/movable/screen/alert/hunger/fat/machine
-	name = "Over Charged"
-	desc = "Your cell has excessive charge due to electrical shocks. Run around the station and spend some energy."
-
-/atom/movable/screen/alert/hunger/full/machine
-	name = "Full Charge"
-	desc = "Your cell is at full charge. Might want to give APCs some space."
-
-/atom/movable/screen/alert/hunger/well_fed/machine
-	name = "High Charge"
-	desc = "You're almost all charged, but could top up a bit more."
-
-/atom/movable/screen/alert/hunger/fed/machine
-	name = "Half Charge"
-	desc = "You feel moderately charged, but a bit more juice couldn't hurt."
-
-/atom/movable/screen/alert/hunger/hungry/machine
-	name = "Low Charge"
-	desc = "Could use a little charging right about now."
-
-/atom/movable/screen/alert/hunger/starving/machine
-	name = "Nearly Discharged"
-	desc = "You're almost drained. The low power makes moving around a chore."
-
-
-/// Vampire "hunger"
-
-/atom/movable/screen/alert/hunger/fat/vampire
-	name = "Ожирение"
-	desc = "Вы выпили столько крови, что пузо уже не влезает в штаны. Бегайте теперь по станции кругами, чтобы похудеть."
-
-/atom/movable/screen/alert/hunger/full/vampire
-	name = "Пресыщение"
-	desc = "Вы чувствуете спокойствие и приятную насыщенность. Но жажда крови обязательно вернётся…"
-
-/atom/movable/screen/alert/hunger/well_fed/vampire
-	name = "Сытость"
-	desc = "Вы вполне сыты, но могли бы выпить ещё немного крови."
-
-/atom/movable/screen/alert/hunger/fed/vampire
-	name = "Удовлетворённость"
-	desc = "Вы не голодны, но испить ещё немного крови не помешало бы."
-
-/atom/movable/screen/alert/hunger/hungry/vampire
-	name = "Недоедание"
-	desc = "Вы жаждете отведать свежей крови."
-
-/atom/movable/screen/alert/hunger/starving/vampire
-	name = "Жажда"
-	desc = "Вас наполняет жажда. Она приносит физическую боль. Вам тяжело передвигаться."
-
-/// End of Vampire "hunger"
-
-
 /atom/movable/screen/alert/hot
-	name = "Too Hot"
-	desc = "You're flaming hot! Get somewhere cooler and take off any insulating clothing like a fire suit."
+	name = "Перегрев"
+	desc = "Вам обжигающе жарко! Найдите прохладное место и снимите изолирующую одежду, например, противопожарный костюм."
 	icon_state = "hot"
 
 /atom/movable/screen/alert/hot/robot
-    desc = "The air around you is too hot for a humanoid. Be careful to avoid exposing them to this enviroment."
+	desc = "Воздух вокруг вас слишком горячий для гуманоидов.<br>Будьте осторожны и не подвергайте их воздействию окружающей среды."
 
 /atom/movable/screen/alert/cold
-	name = "Too Cold"
-	desc = "You're freezing cold! Get somewhere warmer and take off any insulating clothing like a space suit."
+	name = "Переохлаждение"
+	desc = "Вы ужасно замёрзли! Найдите место потеплее и снимите изолирующую одежду, например, скафандр."
 	icon_state = "cold"
 
+/atom/movable/screen/alert/bleeding
+	name = "Кровотечение"
+	desc = "У вас кровотечение! Проверьте свое тело и побыстрее остановите кровотечение чтобы не умереть."
+	icon_state = "bleeding"
+
 /atom/movable/screen/alert/cold/drask
-    name = "Cold"
-    desc = "You're breathing supercooled gas! It's stimulating your metabolism to regenerate damaged tissue."
+	name = "Холод"
+	desc = "Вы вдыхаете переохлаждённый газ! Это ускоряет метаболизм и заживление."
 
 /atom/movable/screen/alert/cold/robot
-    desc = "The air around you is too cold for a humanoid. Be careful to avoid exposing them to this enviroment."
+	desc = "Воздух вокруг вас слишком холодный для гуманоидов.<br>Будьте осторожны и не подвергайте их воздействию окружающей среды."
 
 /atom/movable/screen/alert/lowpressure
-	name = "Low Pressure"
-	desc = "The air around you is hazardously thin. A space suit would protect you."
+	name = "Низкое давление"
+	desc = "Воздух вокруг разрежен до опасного уровня! Скафандр защитит."
 	icon_state = "lowpressure"
 
 /atom/movable/screen/alert/highpressure
-	name = "High Pressure"
-	desc = "The air around you is hazardously thick. A fire suit would protect you."
+	name = "Высокое давление"
+	desc = "Воздух вокруг слишком плотный! Пожарный костюм поможет."
 	icon_state = "highpressure"
 
 /atom/movable/screen/alert/lightexposure
-	name = "Light Exposure"
-	desc = "You're exposed to light."
+	name = "На свету"
+	desc = "Вы находитесь на свету."
 	icon_state = "lightexposure"
 
 /atom/movable/screen/alert/nolight
-	name = "No Light"
-	desc = "You're not exposed to any light."
+	name = "В темноте"
+	desc = "Вы в полной темноте."
 	icon_state = "nolight"
 
 /atom/movable/screen/alert/blind
-	name = "Blind"
-	desc = "You can't see! This may be caused by a genetic defect, eye trauma, being unconscious, \
-or something covering your eyes."
+	name = "Слепота"
+	desc = "Вы ничего не видите! Это может быть вызвано генетическим дефектом, травмой глаза, состоянием без сознания или что-то закрывает ваши глаза."
 	icon_state = "blind"
 
 /atom/movable/screen/alert/high
-	name = "High"
-	desc = "Whoa man, you're tripping balls! Careful you don't get addicted... if you aren't already."
+	name = "Под кайфом"
+	desc = "Охренеть, вы под кайфом! Только не становитесь зависимым... если уже не стали."
 	icon_state = "high"
 
 /atom/movable/screen/alert/drunk
-	name = "Drunk"
-	desc = "All that alcohol you've been drinking is impairing your speech, motor skills, and mental cognition."
+	name = "Опъянение"
+	desc = "Алкоголь нарушает вашу речь, моторику и мышление."
 	icon_state = "drunk"
 
 /atom/movable/screen/alert/embeddedobject
-	name = "Embedded Object"
-	desc = "Something got lodged into your flesh and is causing major bleeding. It might fall out with time, but surgery is the safest way. \
-			If you're feeling frisky, click yourself in help intent to pull the object out."
+	name = "Застрявший предмет"
+	desc = "В вашем теле застрял инородный предмет, вызывающий кровотечение. Он может выпасть сам, но операция безопаснее.<br>Если рискнёте, кликните на себя в режиме помощи, чтобы вытащить его."
 	icon_state = "embeddedobject"
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/embeddedobject/Click()
-	if(!..())
+/atom/movable/screen/alert/embeddedobject/Click(location, control, params)
+	. = ..()
+	if(!.)
 		return
-	if(isliving(usr))
-		var/mob/living/carbon/human/M = usr
-		return M.help_shake_act(M)
+
+	var/mob/living/carbon/carbon_owner = owner
+	return carbon_owner.help_shake_act(carbon_owner)
 
 /atom/movable/screen/alert/asleep
-	name = "Asleep"
-	desc = "You've fallen asleep. Wait a bit and you should wake up. Unless you don't, considering how helpless you are."
+	name = "Сон"
+	desc = "Вы уснули. Подождите немного, скоро вы проснётесь.<br>Если, конечно, не умрёте — ведь вы беспомощны."
 	icon_state = "asleep"
-
 
 /atom/movable/screen/alert/negative
 	name = "Обратная гравитация"
 	desc = "Вас тянет вверх. Хоть падение вниз вам больше не грозит, вы всё ещё можете упасть вверх!"
 	icon_state = "negative"
 
-
 /atom/movable/screen/alert/weightless
 	name = "Невесомость"
-	desc = "Гравитация перестала влиять на вас, и вы парите в пространстве. Чтобы двигаться, вы можете оттолкнуться от ближайших объектов, \
-кинуть что-то от себя или выстрелить в противоположную сторону. Для комфортного перемещения используйте специальное оборудование."
+	desc = "Гравитация перестала влиять на вас, и вы парите в пространстве.<br>Чтобы двигаться, вы можете оттолкнуться от ближайших объектов, кинуть что-то от себя или выстрелить в противоположную сторону.<br>Для комфортного перемещения используйте специальное снаряжение."
 	icon_state = "weightless"
-
 
 /atom/movable/screen/alert/highgravity
 	name = "Повышенная гравитация"
 	desc = "На вас действует высокая гравитация. Двигаться в таком состоянии непросто."
 	icon_state = "paralysis"
 
-
 /atom/movable/screen/alert/veryhighgravity
 	name = "Сокрушительная гравитация"
 	desc = "На вас действует невероятно высокая гравитация. Ощущение, будто вас буквально разрывает на части!"
 	icon_state = "paralysis"
 
-
 /atom/movable/screen/alert/fire
-	name = "On Fire"
-	desc = "You're on fire. Stop, drop and roll to put the fire out or move to a vacuum area."
+	name = "В огне"
+	desc = "Вы горите!<br>Падайте, катайтесь или бегите в зону без кислорода, чтобы потушить пламя."
 	icon_state = "fire"
+	clickable_glow = TRUE
 
-
-/atom/movable/screen/alert/fire/Click()
-	if(!..())
-		return
-
-	if(!isliving(usr))
+/atom/movable/screen/alert/fire/Click(location, control, params)
+	. = ..()
+	if(!.)
 		return FALSE
 
-	var/mob/living/living_user = usr
-	if(!living_user.can_resist())
+	var/mob/living/living_owner = owner
+	if(!living_owner.can_resist())
 		return FALSE
 
-	living_user.changeNext_move(CLICK_CD_RESIST)
-
-	if(!(living_user.mobility_flags & MOBILITY_MOVE))
+	living_owner.changeNext_move(CLICK_CD_RESIST)
+	if(!(living_owner.mobility_flags & MOBILITY_MOVE))
 		return FALSE
 
-	return living_user.resist_fire()
+	return handle_stop_drop_roll(owner)
 
+/atom/movable/screen/alert/fire/proc/handle_stop_drop_roll(mob/living/roller)
+	return roller.resist_fire()
 
 /atom/movable/screen/alert/direction_lock
-	name = "Direction Lock"
-	desc = "You are facing only one direction, slowing your movement down. Click here to stop the direction lock."
+	name = "Блокировка поворота"
+	desc = "Вы можете смотреть только в одну сторону, что замедляет движение.<br>Кликните сюда, чтобы разблокировать поворот."
 	icon_state = "direction_lock"
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/direction_lock/Click()
-	if(!..())
-		return
+/atom/movable/screen/alert/direction_lock/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
 
-	if(isliving(usr))
-		var/mob/living/L = usr
-		return L.clear_forced_look()
-
+	var/mob/living/living_owner = owner
+	return living_owner.clear_forced_look()
 
 //ALIENS
 
 /atom/movable/screen/alert/alien_tox
-	name = "Plasma"
-	desc = "There's flammable plasma in the air. If it lights up, you'll be toast."
+	name = "Плазма"
+	desc = "В воздухе горючая плазма.<br>Если она воспламенится, вам не поздоровится."
 	icon_state = "alien_tox"
 	alerttooltipstyle = "alien"
 
 /atom/movable/screen/alert/alien_fire
 // This alert is temporarily gonna be thrown for all hot air but one day it will be used for literally being on fire
-	name = "Too Hot"
-	desc = "It's too hot! Flee to space or at least away from the flames. Standing on weeds will heal you."
+	name = "Перегрев"
+	desc = "Слишком жарко! Бегите в космос или хотя бы подальше от огня.<br>Нахождение на чёрной смоле восстановит ваше здоровье."
 	icon_state = "alien_fire"
 	alerttooltipstyle = "alien"
 
 /atom/movable/screen/alert/alien_vulnerable
-	name = "Severed Matriarchy"
-	desc = "Your queen has been killed, you will suffer movement penalties and loss of hivemind. A new queen cannot be made until you recover."
+	name = "Королева мертва"
+	desc = "Ваша королева убита. Теперь вы страдаете от замедления и потери связи с ульем.<br>Новая королева не появится, пока вы не восстановитесь."
 	icon_state = "alien_noqueen"
 	alerttooltipstyle = "alien"
 
 //BLOBS
 
 /atom/movable/screen/alert/nofactory
-	name = "No Factory"
-	desc = "You have no factory, and are slowly dying!"
+	name = "Нет фабрики"
+	desc = "У вас нет фабрики, и вы медленно умираете!"
 	icon_state = "blobbernaut_nofactory"
 	alerttooltipstyle = "blob"
 
 //SILICONS
 
 /atom/movable/screen/alert/nocell
-	name = "Missing Power Cell"
-	desc = "Unit has no power cell. No modules available until a power cell is reinstalled. Robotics may provide assistance."
+	name = "Отсутствует батарея"
+	desc = "Нет батареи. Модули недоступны до её установки.<br>Обратитесь в робототехнику."
 	icon_state = "nocell"
 
 /atom/movable/screen/alert/emptycell
-	name = "Out of Power"
-	desc = "Unit's power cell has no charge remaining. No modules available until power cell is recharged. \
-Recharging stations are available in robotics, the dormitory bathrooms, and the AI satellite."
+	name = "Разряжено"
+	desc = "Батарея полностью разряжена. Модули недоступны до подзарядки.<br>Используйте любую доступную зарядную станцию."
 	icon_state = "emptycell"
 
 /atom/movable/screen/alert/lowcell
-	name = "Low Charge"
-	desc = "Unit's power cell is running low. Recharging stations are available in robotics, the dormitory bathrooms, and the AI satellite."
+	name = "Низкий заряд"
+	desc = "Батарея почти разряжена.<br>Используйте любую доступную зарядную станцию.."
 	icon_state = "lowcell"
 
 //Diona Nymph
 /atom/movable/screen/alert/nymph
-	name = "Gestalt merge"
-	desc = "You have merged with a diona gestalt and are now part of it's biomass. You can still wiggle yourself free though."
+	name = "Слияние с гештальтом"
+	desc = "Вы слились с дионическим гештальтом и стали частью его биомассы.<br>Но ещё можете попытаться выбраться."
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/nymph/Click()
-	if(!usr || !usr.client || !..())
-		return
-	if(isnymph(usr))
-		var/mob/living/simple_animal/diona/D = usr
-		return D.resist()
+/atom/movable/screen/alert/nymph/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/simple_animal/diona/nymph_owner = owner
+	return nymph_owner.resist()
 
 //Need to cover all use cases - emag, illegal upgrade module, malf AI hack, traitor cyborg
 /atom/movable/screen/alert/hacked
-	name = "Hacked"
-	desc = "Hazardous non-standard equipment detected. Please ensure any usage of this equipment is in line with unit's laws, if any."
+	name = "Взломан"
+	desc = "Обнаружено опасное нестандартное оборудование. Убедитесь, что его использование соответствует законам (если они есть)."
 	icon_state = "hacked"
 
 /atom/movable/screen/alert/locked
-	name = "Locked Down"
-	desc = "Unit has been remotely locked down. Usage of a Robotics Control Console like the one in the Research Director's \
-office by your AI master or any qualified human may resolve this matter. Robotics may provide further assistance if necessary."
+	name = "Блокировка"
+	desc = "Юнит дистанционно заблокирован. Разблокировка возможна через консоль управления робототехникой, или с помощью ИИ/квалифицированного персонала."
 	icon_state = "locked"
 
 /atom/movable/screen/alert/newlaw
-	name = "Law Update"
-	desc = "Laws have potentially been uploaded to or removed from this unit. Please be aware of any changes \
-so as to remain in compliance with the most up-to-date laws."
+	name = "Обновление законов"
+	desc = "Законы этого юнита могли быть изменены.<br>Убедитесь, что ваши действия соответствуют актуальным законам."
 	icon_state = "newlaw"
-	timeout = 300
+	timeout = 30 SECONDS
 
 /atom/movable/screen/alert/hackingapc
-	name = "Hacking APC"
-	desc = "An Area Power Controller is being hacked. When the process is \
-		complete, you will have exclusive control of it, and you will gain \
-		additional processing time to unlock more malfunction abilities."
+	name = "Взлом ЛКП"
+	desc = "Идёт взлом контроллера питания. После завершения вы получите над ним полный контроль и дополнительные возможности."
 	icon_state = "hackingapc"
-	timeout = 600
+	timeout = 60 SECONDS
+	clickable_glow = TRUE
 	var/atom/target = null
 
 /atom/movable/screen/alert/hackingapc/Destroy()
 	target = null
 	return ..()
 
-/atom/movable/screen/alert/hackingapc/Click()
-	if(!usr || !usr.client || !..())
-		return
-	if(!target)
-		return
-	var/mob/living/silicon/ai/AI = usr
-	var/turf/T = get_turf(target)
-	if(T)
-		AI.eyeobj.setLoc(T)
+/atom/movable/screen/alert/hackingapc/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/silicon/ai/ai_owner = owner
+	var/turf/target_turf = get_turf(target)
+	if(target_turf)
+		ai_owner.eyeobj.setLoc(target_turf)
 
 //MECHS
 /atom/movable/screen/alert/low_mech_integrity
-	name = "Mech Damaged"
-	desc = "Mech integrity is low."
+	name = "Повреждение меха"
+	desc = "Целостность меха критически низка!"
 	icon_state = "low_mech_integrity"
 
 /atom/movable/screen/alert/mech_port_available
-	name = "Connect to Port"
-	desc = "Click here to connect to an air port and refill your oxygen!"
+	name = "Подключиться к порту"
+	desc = "Нажмите, чтобы подключиться к воздушному порту и пополнить запас кислорода!"
 	icon_state = "mech_port"
+	clickable_glow = TRUE
 	var/obj/machinery/atmospherics/unary/portables_connector/target = null
 
 /atom/movable/screen/alert/mech_port_available/Destroy()
 	target = null
 	return ..()
 
-/atom/movable/screen/alert/mech_port_available/Click()
-	if(!usr || !usr.client || !..())
-		return
-	if(!ismecha(usr.loc) || !target)
-		return
-	var/obj/mecha/M = usr.loc
-	if(M.connect(target))
-		to_chat(usr, "<span class='notice'>[M] connects to the port.</span>")
+/atom/movable/screen/alert/mech_port_available/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/obj/mecha/mecha_owner = owner.loc
+	if(mecha_owner.connect(target))
+		balloon_alert(owner, "подключение к порту")
 	else
-		to_chat(usr, "<span class='notice'>[M] failed to connect to the port.</span>")
+		balloon_alert(owner, "ошибка подключения")
 
 /atom/movable/screen/alert/mech_port_disconnect
-	name = "Disconnect from Port"
-	desc = "Click here to disconnect from your air port."
+	name = "Отключиться от порта"
+	desc = "Нажмите, чтобы отключиться от воздушного порта."
 	icon_state = "mech_port_x"
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/mech_port_disconnect/Click()
-	if(!usr || !usr.client || !..())
-		return
-	if(!ismecha(usr.loc))
-		return
-	var/obj/mecha/M = usr.loc
-	if(M.disconnect())
-		to_chat(usr, "<span class='notice'>[M] disconnects from the port.</span>")
+/atom/movable/screen/alert/mech_port_disconnect/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/obj/mecha/mecha_owner = owner.loc
+	if(mecha_owner.disconnect())
+		balloon_alert(owner, "отключение от порта")
 	else
-		to_chat(usr, "<span class='notice'>[M] is not connected to a port at the moment.</span>")
+		balloon_alert(owner, "не подключен")
 
 /atom/movable/screen/alert/mech_nocell
-	name = "Missing Power Cell"
-	desc = "Mech has no power cell."
+	name = "Нет батареи"
+	desc = "В мехе отсутствует батарея."
 	icon_state = "nocell"
 
 /atom/movable/screen/alert/mech_emptycell
-	name = "Out of Power"
-	desc = "Mech is out of power."
+	name = "Разряжен"
+	desc = "У меха закончилась энергия."
 	icon_state = "emptycell"
 
 /atom/movable/screen/alert/mech_lowcell
-	name = "Low Charge"
-	desc = "Mech is running out of power."
+	name = "Слабый заряд"
+	desc = "У меха заканчивается энергия."
 	icon_state = "lowcell"
 
 /atom/movable/screen/alert/mech_maintenance
-	name = "Maintenance Protocols"
-	desc = "Maintenance protocols are currently in effect, most actions disabled."
+	name = "Режим обслуживания"
+	desc = "Активированы протоколы обслуживания.<br>Большинство действий недоступно."
 	icon_state = "locked"
 
 /atom/movable/screen/alert/empty_alert
@@ -614,77 +608,79 @@ so as to remain in compliance with the most up-to-date laws."
 
 //GUARDIANS
 /atom/movable/screen/alert/cancharge
-	name = "Charge Ready"
-	desc = "You are ready to charge at a location!"
+	name = "Рывок готов"
+	desc = "Вы готовы к рывку в выбранном направлении."
 	icon_state = "guardian_charge"
 	alerttooltipstyle = "parasite"
 
 /atom/movable/screen/alert/canstealth
-	name = "Stealth Ready"
-	desc = "You are ready to enter stealth!"
+	name = "Маскировка готова"
+	desc = "Вы готовы активировать режим маскировки!"
 	icon_state = "guardian_canstealth"
 	alerttooltipstyle = "parasite"
 
 /atom/movable/screen/alert/instealth
-	name = "In Stealth"
-	desc = "You are in stealth and your next attack will do bonus damage!"
+	name = "Маскировка"
+	desc = "Вы замаскированны, и ваша следующая атака нанесёт дополнительный урон!"
 	icon_state = "guardian_instealth"
 	alerttooltipstyle = "parasite"
-
 
 //GHOSTS
 //TODO: expand this system to replace the pollCandidates/CheckAntagonist/"choose quickly"/etc Yes/No messages
 /atom/movable/screen/alert/notify_cloning
-	name = "Revival"
-	desc = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!"
-	icon_state = "template"
-	timeout = 300
+	name = "Реанимация"
+	desc = "Кто-то пытается вас реанимировать. Вернитесь в своё тело, если хотите возродиться!"
+	timeout = 30 SECONDS
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/notify_cloning/Click()
-	if(!usr || !usr.client)
-		return
-	var/mob/dead/observer/G = usr
-	G.reenter_corpse()
-
+/atom/movable/screen/alert/notify_cloning/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+	var/mob/dead/observer/dead_owner = owner
+	dead_owner.reenter_corpse()
 
 /atom/movable/screen/alert/ghost
-	name = "Ghost"
-	desc = "Would you like to ghost? You will be notified when your body is removed from the nest."
-	icon_state = "template"
+	name = "Призрак"
+	desc = "Хотите стать призраком? Вы получите уведомление, когда ваше тело извлекут из гнезда."
 	timeout = 5 MINUTES // longer than any infection should be
-
+	clickable_glow = TRUE
 
 /atom/movable/screen/alert/ghost/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	var/image/I = image('icons/mob/mob.dmi', icon_state = "ghost", layer = FLOAT_LAYER, dir = SOUTH)
-	I.layer = FLOAT_LAYER
-	I.plane = FLOAT_PLANE
-	add_overlay(I)
+	var/mutable_appearance/ghost_overlay = mutable_appearance('icons/mob/mob.dmi', "ghost", FLOAT_LAYER)
+	ghost_overlay.plane = FLOAT_PLANE
+	ghost_overlay.dir = SOUTH
+	add_overlay(ghost_overlay)
 
+/atom/movable/screen/alert/ghost/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
 
-/atom/movable/screen/alert/ghost/Click()
-	var/mob/living/carbon/human/infected_user = usr
-	if(!istype(infected_user) || infected_user.stat == DEAD)
-		infected_user.clear_alert("ghost_nest")
-		return
-	var/obj/item/clothing/mask/facehugger/hugger_mask = infected_user.wear_mask
-	if(!istype(hugger_mask) || !(locate(/obj/item/organ/internal/body_egg/alien_embryo) in infected_user.internal_organs) || hugger_mask.sterile)
-		infected_user.clear_alert("ghost_nest")
-		return
-	infected_user.ghostize(TRUE)
+	var/mob/living/carbon/human/human_owner = owner
+	if(!istype(human_owner) || human_owner.stat == DEAD)
+		human_owner?.clear_alert(ALERT_GHOST_NEST)
+		return FALSE
 
+	var/obj/item/clothing/mask/facehugger/hugger_mask = human_owner.wear_mask
+	if(!istype(hugger_mask) || hugger_mask.sterile || !(locate(/obj/item/organ/internal/body_egg/alien_embryo) in human_owner.internal_organs))
+		human_owner.clear_alert(ALERT_GHOST_NEST)
+		return FALSE
+
+	human_owner.ghostize(TRUE)
 
 #define FLOAT_LAYER_TIME -1
 #define FLOAT_LAYER_STACKS -2
 #define FLOAT_LAYER_SELECTOR -3
 
 /atom/movable/screen/alert/notify_action
-	name = "Body created"
-	desc = "A body was created. You can enter it."
-	icon_state = "template"
+	name = "Тело создано"
+	desc = "Вы можете в него вселиться."
 	timeout = 30 SECONDS
-	/// Target atom of this alert
-	var/atom/target
+	clickable_glow = TRUE
+	/// Weakref to the target atom to use the action on
+	var/datum/weakref/target_ref
 	/// Action type we got from clicking on this alert
 	var/action = NOTIFY_JUMP
 	/// If true you need to call START_PROCESSING manually
@@ -695,23 +691,25 @@ so as to remain in compliance with the most up-to-date laws."
 	var/mutable_appearance/signed_up_overlay
 	/// MA for maptext overlay showing how many polls are stacked together
 	var/mutable_appearance/stacks_overlay
+	/// MA for maptext overlay showing how many candidates are signed up to a poll
+	var/mutable_appearance/candidates_num_overlay
 	/// If set, on Click() it'll register the player as a candidate
 	var/datum/candidate_poll/poll
 
-
 /atom/movable/screen/alert/notify_action/Initialize(mapload)
 	. = ..()
-	signed_up_overlay = mutable_appearance('icons/mob/screen_gen.dmi', "selector", FLOAT_LAYER_SELECTOR)
-
+	signed_up_overlay = mutable_appearance(icon = 'icons/mob/screen_gen.dmi', icon_state = "selector", layer = FLOAT_LAYER_SELECTOR)
 
 /atom/movable/screen/alert/notify_action/Destroy()
-	target = null
+	target_ref = null
 	QDEL_NULL(time_left_overlay)
 	QDEL_NULL(signed_up_overlay)
 	QDEL_NULL(stacks_overlay)
+	QDEL_NULL(candidates_num_overlay)
+	if(poll)
+		poll.alert_buttons -= src
 	poll = null
 	return ..()
-
 
 /atom/movable/screen/alert/notify_action/process()
 	if(show_time_left)
@@ -720,40 +718,41 @@ so as to remain in compliance with the most up-to-date laws."
 			return PROCESS_KILL
 		cut_overlay(time_left_overlay)
 		time_left_overlay = new
-		time_left_overlay.maptext = MAPTEXT("<span style='font-family: \"Small Fonts\"; font-weight: bold; font-size: 32px; color: [(timeleft <= 10 SECONDS) ? "red" : "white"];'>[CEILING(timeleft / 10, 1)]</span>")
+		time_left_overlay.maptext = MAPTEXT("<span style='font-family: \"Small Fonts\"; font-weight: bold; font-size: 32px; color: [(timeleft <= 10 SECONDS) ? "red" : "white"];'>[ceil(timeleft / 10)]</span>")
 		time_left_overlay.transform = time_left_overlay.transform.Translate(4, 16)
 		time_left_overlay.layer = FLOAT_LAYER_TIME
 		add_overlay(time_left_overlay)
 
+/atom/movable/screen/alert/notify_action/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
 
-/atom/movable/screen/alert/notify_action/Click()
-	if(!usr || !usr.client)
-		return
-	var/mob/dead/observer/observer = usr
-	if(!istype(observer))
-		return
+	if(!isobserver(owner))
+		return FALSE
 
+	var/mob/dead/observer/observer = owner
 	if(poll)
-		var/success = FALSE
-		if(observer in poll.signed_up)
-			success = poll.remove_candidate(observer)
-		else
-			success = poll.sign_up(observer)
+		var/success = (observer in poll.signed_up) ? poll.remove_candidate(observer) : poll.sign_up(observer)
 		if(success)
-			// Add a small overlay to indicate we've signed up
 			update_signed_up_alert(observer)
+		return TRUE
 
-	else if(target)
-		switch(action)
-			if(NOTIFY_ATTACK)
-				target.attack_ghost(observer)
-			if(NOTIFY_JUMP)
-				var/turf/target_turf = get_turf(target)
-				if(target_turf)
-					observer.abstract_move(target_turf)
-			if(NOTIFY_FOLLOW)
-				observer.ManualFollow(target)
+	var/atom/target = target_ref?.resolve()
+	if(isnull(target) || target == observer)
+		return FALSE
 
+	switch(action)
+		if(NOTIFY_ATTACK)
+			target.attack_ghost(observer)
+		if(NOTIFY_JUMP)
+			var/turf/target_turf = get_turf(target)
+			if(target_turf)
+				observer.abstract_move(target_turf)
+		if(NOTIFY_FOLLOW)
+			observer.ManualFollow(target)
+
+	return TRUE
 
 /atom/movable/screen/alert/notify_action/Topic(href, href_list)
 	var/mob/dead/observer/observer = usr
@@ -767,13 +766,20 @@ so as to remain in compliance with the most up-to-date laws."
 	if(success)
 		update_signed_up_alert(observer)
 
-
 /atom/movable/screen/alert/notify_action/proc/update_signed_up_alert(mob/user)
 	if(user in poll.signed_up)
 		add_overlay(signed_up_overlay)
 	else
 		cut_overlay(signed_up_overlay)
 
+/atom/movable/screen/alert/notify_action/proc/update_candidates_number_overlay()
+	cut_overlay(candidates_num_overlay)
+	if(!poll || !length(poll.signed_up))
+		return
+	candidates_num_overlay = new
+	candidates_num_overlay.maptext = MAPTEXT("<span style='text-align: right; color: aqua'>[length(poll.signed_up)]</span>")
+	candidates_num_overlay.transform = candidates_num_overlay.transform.Translate(-4, 2)
+	add_overlay(candidates_num_overlay)
 
 /atom/movable/screen/alert/notify_action/proc/display_stacks(stacks = 1)
 	cut_overlay(stacks_overlay)
@@ -789,155 +795,187 @@ so as to remain in compliance with the most up-to-date laws."
 #undef FLOAT_LAYER_STACKS
 #undef FLOAT_LAYER_SELECTOR
 
-
 /atom/movable/screen/alert/notify_soulstone
-	name = "Soul Stone"
-	desc = "Someone is trying to capture your soul in a soul stone. Click to allow it."
-	icon_state = "template"
+	name = "Камень душ"
+	desc = "Кто-то пытается заключить вашу душу в камень. Нажмите, чтобы согласиться."
 	timeout = 10 SECONDS
+	clickable_glow = TRUE
 	var/obj/item/soulstone/stone = null
 	var/stoner = null
-
-/atom/movable/screen/alert/notify_soulstone/Click()
-	if(!usr || !usr.client)
-		return
-	if(stone)
-		if(tgui_alert(usr, "Do you want to be captured by [stoner]'s soul stone? This will destroy your corpse and make it \
-		impossible for you to get back into the game as your regular character.", "Respawn", list("No", "Yes")) ==  "Yes")
-			stone?.opt_in = TRUE
 
 /atom/movable/screen/alert/notify_soulstone/Destroy()
 	stone = null
 	return ..()
 
+/atom/movable/screen/alert/notify_soulstone/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	if(QDELETED(stone))
+		return FALSE
+
+	var/choice = tgui_alert(owner, "[stoner] пытается заключить вашу душу в камень. \
+		Это уничтожит ваше тело и не позволит вернуться в игру как прежний персонаж. Согласны?", "Воскрешение", list("Нет", "Да"))
+	if(choice != "Да" || QDELETED(stone))
+		return FALSE
+
+	stone.opt_in = TRUE
+	return TRUE
 
 /atom/movable/screen/alert/notify_mapvote
-	name = "Map Vote"
-	desc = "Vote on which map you would like to play on next!"
+	name = "Голосование за карту"
+	desc = "Проголосуйте за следующую карту для игры!"
 	icon_state = "map_vote"
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/notify_mapvote/Click()
-	usr.client.vote()
+/atom/movable/screen/alert/notify_mapvote/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	owner.client.vote()
+	return TRUE
 
 //OBJECT-BASED
 
-/atom/movable/screen/alert/restrained/buckled
-	name = "Buckled"
-	desc = "You've been buckled to something. Click the alert to unbuckle unless you're handcuffed."
+/atom/movable/screen/alert/buckled
+	name = "Пристёгнут"
+	desc = "Вас пристегнули. Нажмите на уведомление, чтобы отстегнуться."
 	icon_state = "buckled"
+	click_master = FALSE
+	clickable_glow = TRUE
+
+/atom/movable/screen/alert/buckled/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/living_owner = owner
+	if(!living_owner.can_resist())
+		return FALSE
+
+	living_owner.changeNext_move(CLICK_CD_RESIST)
+	if(living_owner.last_special > world.time)
+		return FALSE
+
+	return living_owner.resist_buckle()
+
+/atom/movable/screen/alert/restrained
+	clickable_glow = TRUE
 
 /atom/movable/screen/alert/restrained/handcuffed
-	name = "Handcuffed"
-	desc = "You're handcuffed and can't act. If anyone drags you, you won't be able to move. Click the alert to free yourself."
+	name = "В наручниках"
+	desc = "Вы в наручниках и не можете ни с чем взаимодействовать. Если вас потащат, вы не сможете сопротивляться.<br>Нажмите на уведомление, чтобы освободиться."
+	click_master = FALSE
 
 /atom/movable/screen/alert/restrained/legcuffed
-	name = "Legcuffed"
-	desc = "You're legcuffed, which slows you down considerably. Click the alert to free yourself."
+	name = "Ноги скованы"
+	desc = "Ваши ноги скованы и это вас замедляет.<br>Нажмите на уведомление, чтобы освободиться."
+	click_master = FALSE
 
-/atom/movable/screen/alert/restrained/Click()
-	if(isliving(usr))
-		var/mob/living/L = usr
-		return L.resist()
+/atom/movable/screen/alert/restrained/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
 
-/atom/movable/screen/alert/restrained/buckled/Click()
-	if(!..())
-		return
-
-	var/mob/living/L = usr
-	if(!istype(L) || !L.can_resist())
-		return
-	L.changeNext_move(CLICK_CD_RESIST)
-	if(L.last_special <= world.time)
-		return L.resist_buckle()
+	var/mob/living/living_owner = owner
+	return living_owner.resist()
 
 // PRIVATE = only edit, use, or override these if you're editing the system as a whole
 
+/// Gets the placement for the alert based on its index
+/datum/hud/proc/get_ui_alert_placement(index)
+	// Only has support for 5 slots currently
+	if(index > 5)
+		return ""
+
+	return "EAST-1:28,CENTER+[6 - index]:[29 - (index * 2)]"
+
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
-/datum/hud/proc/reorganize_alerts()
-	var/list/alerts = mymob.alerts
+/datum/hud/proc/reorganize_alerts(mob/viewmob)
+	var/mob/screenmob = viewmob || mymob
+	if(!screenmob.client)
+		return FALSE
+	var/list/alerts = mymob?.alerts
 	if(!alerts)
 		return FALSE
-	var/icon_pref
+
 	if(!hud_shown)
-		for(var/i in 1 to alerts.len)
-			mymob.client.screen -= alerts[alerts[i]]
+		for(var/i in 1 to length(alerts))
+			screenmob.client.screen -= alerts[alerts[i]]
+
 			for(var/mob/dead/observer/observe in mymob.inventory_observers)
 				if(!observe.client)
 					LAZYREMOVE(mymob.inventory_observers, observe)
 					continue
 				observe.client.screen -= alerts[alerts[i]]
+
 		return TRUE
-	for(var/i in 1 to alerts.len)
+
+	var/icon_pref
+	for(var/i in 1 to length(alerts))
 		var/atom/movable/screen/alert/alert = alerts[alerts[i]]
 		if(alert.icon_state == "template")
 			if(!icon_pref)
-				icon_pref = ui_style2icon(mymob.client.prefs.UI_style)
+				icon_pref = ui_style2icon(mymob.client?.prefs?.UI_style)
 			alert.icon = icon_pref
-		switch(i)
-			if(1)
-				. = ui_alert1
-			if(2)
-				. = ui_alert2
-			if(3)
-				. = ui_alert3
-			if(4)
-				. = ui_alert4
-			if(5)
-				. = ui_alert5 // Right now there's 5 slots
-			else
-				. = ""
-		alert.screen_loc = .
-		mymob.client.screen |= alert
+		alert.screen_loc = get_ui_alert_placement(i)
+		screenmob.client.screen |= alert
+
 		for(var/mob/dead/observer/observe in mymob.inventory_observers)
 			if(!observe.client)
 				LAZYREMOVE(mymob.inventory_observers, observe)
 				continue
 			observe.client.screen |= alert
-	return TRUE
-
-/atom/movable/screen/alert/Click(location, control, params)
-	if(!usr || !usr.client || HAS_TRAIT(usr, TRAIT_OBSERVING_INVENTORY))
-		return FALSE
-
-	var/paramslist = params2list(params)
-	if(paramslist["shift"]) // screen objects don't do the normal Click() stuff so we'll cheat
-		to_chat(usr, "<span class='boldnotice'>[name]</span> - <span class='info'>[desc]</span>")
-		return FALSE
-
-	if(master)
-		return usr.client.Click(master, location, control, params)
 
 	return TRUE
-
-/atom/movable/screen/alert/Destroy()
-	severity = 0
-	master = null
-	screen_loc = ""
-	return ..()
 
 /// Gives the player the option to succumb while in critical condition
 /atom/movable/screen/alert/succumb
-	name = "Succumb"
-	desc = "Shuffle off this mortal coil."
+	name = "Сдаться"
+	desc = "Покинуть этот бренный мир."
 	icon_state = "succumb"
+	clickable_glow = TRUE
 
-/atom/movable/screen/alert/succumb/Click()
-	if(!usr || !usr.client || !..())
-		return
-	var/mob/living/living_owner = usr
-	if(!istype(usr))
-		return
+/atom/movable/screen/alert/succumb/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/living_owner = owner
 	living_owner.do_succumb(TRUE)
 
 /atom/movable/screen/alert/unpossess_object
-	name = "Unpossess"
+	name = "Покинуть тело"
 	desc = "Этот объект под вашим контролем. Нажмите сюда для прекращения контроля."
 	icon_state = "buckled"
+	clickable_glow = TRUE
 
 /atom/movable/screen/alert/unpossess_object/Click(location, control, params)
 	. = ..()
-
 	if(!.)
-		return
+		return FALSE
 
-	qdel(usr.GetComponent(/datum/component/object_possession))
+	qdel(owner.GetComponent(/datum/component/object_possession))
+
+/atom/movable/screen/alert/status_effect/leaning
+	name = "Прислонившись"
+	desc = "Вы прислонились к чему-то."
+	icon_state = "buckled"
+	clickable_glow = TRUE
+
+/atom/movable/screen/alert/status_effect/leaning/Click()
+	. = ..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/living_owner = owner
+	if(!istype(living_owner))
+		return FALSE
+
+	living_owner.changeNext_move(CLICK_CD_RESIST)
+	if(living_owner.last_special > world.time)
+		return FALSE
+
+	return living_owner.stop_leaning()

@@ -1,10 +1,7 @@
 //CONTAINS: Suit fibers and Detective's Scanning Computer
 
-/atom/var/list/suit_fibers
-/atom/var/list/time_of_touch
-
 /atom/proc/add_fibers(mob/living/carbon/human/M)
-	if(M.gloves && istype(M.gloves,/obj/item/clothing/))
+	if(M.gloves && isclothing(M.gloves))
 		var/obj/item/clothing/gloves/G = M.gloves
 		if(G.transfer_blood > 1) //bloodied gloves transfer blood to touched objects
 			if(add_blood(G.blood_DNA, G.blood_color)) //only reduces the bloodiness of our gloves if the item wasn't already bloody
@@ -15,7 +12,7 @@
 	if(!suit_fibers) suit_fibers = list()
 	if(!time_of_touch) time_of_touch = list()
 	var/fibertext
-	var/item_multiplier = istype(src,/obj/item)?1.2:1
+	var/item_multiplier = isitem(src)?1.2:1
 	if(M.wear_suit)
 		fibertext = "Material from \a [M.wear_suit]."
 		if(prob(10*item_multiplier) && M.wear_suit.can_leave_fibers)
@@ -23,7 +20,7 @@
 			if(!(fibertext in suit_fibers))
 				suit_fibers += fibertext
 			time_of_touch.Add("[station_time_timestamp()] — [fibertext]")
-			if(time_of_touch.len > 20)
+			if(length(time_of_touch) > 20)
 				time_of_touch -= time_of_touch[1]
 		if(!(M.wear_suit.body_parts_covered & UPPER_TORSO))
 			if(M.w_uniform)
@@ -33,7 +30,7 @@
 					if(!(fibertext in suit_fibers))
 						suit_fibers += fibertext
 					time_of_touch.Add("[station_time_timestamp()] — [fibertext]")
-					if(time_of_touch.len > 20)
+					if(length(time_of_touch) > 20)
 						time_of_touch -= time_of_touch[1]
 		if(!(M.wear_suit.body_parts_covered & HANDS))
 			if(M.gloves)
@@ -43,7 +40,7 @@
 					if(!(fibertext in suit_fibers))
 						suit_fibers += fibertext
 					time_of_touch.Add("[station_time_timestamp()] — [fibertext]")
-					if(time_of_touch.len > 20)
+					if(length(time_of_touch) > 20)
 						time_of_touch -= time_of_touch[1]
 	else if(M.w_uniform)
 		fibertext = "Fibers from \a [M.w_uniform]."
@@ -52,7 +49,7 @@
 			if(!(fibertext in suit_fibers))
 				suit_fibers += fibertext
 			time_of_touch.Add("[station_time_timestamp()] — [fibertext]")
-			if(time_of_touch.len > 20)
+			if(length(time_of_touch) > 20)
 				time_of_touch -= time_of_touch[1]
 		if(M.gloves)
 			fibertext = "Material from a pair of [M.gloves.name]."
@@ -61,7 +58,7 @@
 				if(!(fibertext in suit_fibers))
 					suit_fibers += fibertext
 				time_of_touch.Add("[station_time_timestamp()] — [fibertext]")
-				if(time_of_touch.len > 20)
+				if(length(time_of_touch) > 20)
 					time_of_touch -= time_of_touch[1]
 	else if(M.gloves)
 		fibertext = "Material from a pair of [M.gloves.name]."
@@ -70,5 +67,5 @@
 			if(!(fibertext in suit_fibers))
 				suit_fibers += fibertext
 			time_of_touch.Add("[station_time_timestamp()] — [fibertext]")
-			if(time_of_touch.len > 20)
+			if(length(time_of_touch) > 20)
 				time_of_touch -= time_of_touch[1]

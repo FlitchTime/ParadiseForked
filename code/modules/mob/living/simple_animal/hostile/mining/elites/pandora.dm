@@ -19,62 +19,72 @@
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora
 	name = "pandora"
-	desc = "A large magic box with similar power and design to the Hierophant.  Once it opens, it's not easy to close it."
+	desc = "Огромный магический ларец, чьи сила и дизайн схожи с Иерофантом. Если он откроется, закрыть его будет нелегко."
 	icon_state = "pandora"
 	icon_living = "pandora"
 	icon_aggro = "pandora"
 	icon_dead = "pandora_dead"
 	icon_gib = "syndicate_gib"
-
 	maxHealth = 1000
 	health = 1000
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	armour_penetration = 70
-	attacktext = "smashes into the side of"
+	attacktext = "врезается в"
 	attack_sound = 'sound/weapons/sonic_jackhammer.ogg'
-	throw_message = "merely dinks off of the"
+	throw_message = "просто отскакивает от"
 	ranged_cooldown_time = 20
 	speed = 2
 	move_to_delay = 10
-	mouse_opacity = MOUSE_OPACITY_ICON
 	death_sound = 'sound/magic/repulse.ogg'
-	deathmessage = "'s lights flicker, before its top part falls down."
+	deathmessage = "мерцает, после чего его верхняя часть с грохотом обрушивается."
 	loot_drop = /obj/item/clothing/accessory/necklace/pandora_hope
 	tts_seed = "Zyra"
 
-	attack_action_types = list(/datum/action/innate/elite_attack/chaser_burst,
-								/datum/action/innate/elite_attack/magic_box,
-								/datum/action/innate/elite_attack/pandora_teleport,
-								/datum/action/innate/elite_attack/aoe_squares)
+	attack_action_types = list(
+		/datum/action/innate/elite_attack/chaser_burst,
+		/datum/action/innate/elite_attack/magic_box,
+		/datum/action/innate/elite_attack/pandora_teleport,
+		/datum/action/innate/elite_attack/aoe_squares,
+	)
 
 	var/sing_shot_length = 8
 	var/cooldown_time = 2 SECONDS
 	var/chaser_speed = 3
 	var/recalculation_speed = 4 //How many times chasers moves before recalculating
 
+/mob/living/simple_animal/hostile/asteroid/elite/pandora/get_ru_names()
+	return list(
+		NOMINATIVE = "пандора",
+		GENITIVE = "пандоры",
+		DATIVE = "пандоре",
+		ACCUSATIVE = "пандору",
+		INSTRUMENTAL = "пандорой",
+		PREPOSITIONAL = "пандоре",
+	)
+
 /datum/action/innate/elite_attack/chaser_burst
-	name = "Chaser Burst"
+	name = "Преследователь"
 	button_icon_state = "singular_shot"
-	chosen_message = "<span class='boldwarning'>You fire a chaser after all mobs in view.</span>"
+	chosen_message = span_boldwarning_alt("Вы выпускаете преследующий снаряд за всеми мобами в поле зрения.")
 	chosen_attack_num = CHASER_BURST
 
 /datum/action/innate/elite_attack/magic_box
-	name = "Magic Box"
+	name = "Волшебная клетка"
 	button_icon_state = "magic_box"
-	chosen_message = "<span class='boldwarning'>You are now attacking with a box of magic squares.</span>"
+	chosen_message = span_boldwarning_alt("Теперь вы атакуете магическими квадратами.")
 	chosen_attack_num = MAGIC_BOX
 
 /datum/action/innate/elite_attack/pandora_teleport
-	name = "Line Teleport"
+	name = "Телепорт"
 	button_icon_state = "pandora_teleport"
-	chosen_message = "<span class='boldwarning'>You will now teleport to your target.</span>"
+	chosen_message = span_boldwarning_alt("Теперь вы будете телепортироваться к цели.")
 	chosen_attack_num = PANDORA_TELEPORT
 
 /datum/action/innate/elite_attack/aoe_squares
-	name = "AOE Blast"
+	name = "Взрыв по площади"
 	button_icon_state = "aoe_squares"
-	chosen_message = "<span class='boldwarning'>Your attacks will spawn an AOE blast at your target location.</span>"
+	chosen_message = span_boldwarning_alt("Ваши атаки будут создавать взрыв по области в месте попадания.")
 	chosen_attack_num = AOE_SQUARES
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/OpenFire()
@@ -135,7 +145,7 @@
 		C.damage = 30 * dif_mult
 		C.moving = 2
 		C.standard_moving_before_recalc = recalculation_speed
-		C.moving_dir = text2dir(pick("NORTH", "SOUTH", "EAST", "WEST"))
+		C.moving_dir = text2dir(pick(DIR_NAME_ENG_NORTH, DIR_NAME_ENG_SOUTH, DIR_NAME_ENG_EAST, DIR_NAME_ENG_WEST))
 		active_chasers += 1
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/singular_shot_line(procsleft, angleused, turf/T)
@@ -161,7 +171,7 @@
 	var/turf/source = get_turf(src)
 	new /obj/effect/temp_visual/hierophant/telegraph(turf_target, src)
 	new /obj/effect/temp_visual/hierophant/telegraph(source, src)
-	playsound(source,'sound/machines/airlock_open.ogg', 200, 1)
+	playsound(source,'sound/machines/airlock_open.ogg', 200, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(pandora_teleport_2), turf_target, source), 2)
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/pandora_teleport_2(turf/T, turf/source)
@@ -172,7 +182,7 @@
 	for(var/t in RANGE_TURFS(1, source))
 		spawn_blast(t)
 	animate(src, alpha = 0, time = 2, easing = EASE_OUT) //fade out
-	visible_message("<span class='hierophant'>[src] fades out!</span>")
+	visible_message(span_hierophant("[DECLENT_RU_CAP(src, NOMINATIVE)] растворяется в воздухе!"))
 	ADD_TRAIT(src, TRAIT_UNDENSE, PANDORA_TEPELORT_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(pandora_teleport_3), T), 2)
 
@@ -180,7 +190,7 @@
 	forceMove(T)
 	animate(src, alpha = 255, time = 2, easing = EASE_IN) //fade IN
 	REMOVE_TRAIT(src, TRAIT_UNDENSE, PANDORA_TEPELORT_TRAIT)
-	visible_message("<span class='hierophant'>[src] fades in!</span>")
+	visible_message(span_hierophant("[DECLENT_RU_CAP(src, NOMINATIVE)] материализуется!"))
 
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/proc/aoe_squares(target)
 	ranged_cooldown = world.time + cooldown_time * 2
@@ -203,11 +213,10 @@
 	monster_damage_boost = FALSE
 	friendly_fire_check = TRUE
 
-
 //Pandora's loot: Hope //Hope I know what to make it do
 /obj/item/clothing/accessory/necklace/pandora_hope
 	name = "Hope"
-	desc = "Found at the bottom of Pandora. After all the evil was released, this was the only thing left inside."
+	desc = "Находится на дне Пандоры. Когда всё зло было выпущено, это единственное, что осталось внутри."
 	icon = 'icons/obj/lavaland/elite_trophies.dmi'
 	icon_state = "hope"
 	item_state = "hope"
@@ -215,13 +224,21 @@
 	allow_duplicates = FALSE
 	resistance_flags = FIRE_PROOF
 
+/obj/item/clothing/accessory/necklace/pandora_hope/get_ru_names()
+	return list(
+		NOMINATIVE = "надежда",
+		GENITIVE = "надежды",
+		DATIVE = "надежде",
+		ACCUSATIVE = "надежду",
+		INSTRUMENTAL = "надеждой",
+		PREPOSITIONAL = "надежде",
+	)
 
 /obj/item/clothing/accessory/necklace/pandora_hope/on_attached(obj/item/clothing/under/new_suit, mob/attacher)
 	. = ..()
 	if(. && isliving(has_suit.loc))
 		var/mob/living/wearer = has_suit.loc
 		wearer.apply_status_effect(STATUS_EFFECT_HOPE)
-
 
 /obj/item/clothing/accessory/necklace/pandora_hope/on_removed(mob/detacher)
 	. = ..()
@@ -231,16 +248,13 @@
 			var/mob/living/wearer = old_suit.loc
 			wearer.remove_status_effect(STATUS_EFFECT_HOPE)
 
-
 /obj/item/clothing/accessory/necklace/pandora_hope/attached_equip(mob/living/user)
 	if(isliving(user))
 		user.apply_status_effect(STATUS_EFFECT_HOPE)
 
-
 /obj/item/clothing/accessory/necklace/pandora_hope/attached_unequip(mob/living/user)
 	if(isliving(user))
 		user.remove_status_effect(STATUS_EFFECT_HOPE)
-
 
 #undef CHASER_BURST
 #undef MAGIC_BOX

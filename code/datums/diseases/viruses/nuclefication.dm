@@ -1,13 +1,13 @@
+#define IRRADIATION_PROB 30
+
 /datum/disease/virus/nuclefication // YOU WILL NEVER ESCAPE
-	name = "Supermatter Dysplasia Syndrome"
-	agent = "Mutated Brain Cells"
-	desc = "Oh no..."
-	max_stages = 5
-	spread_flags = NON_CONTAGIOUS
+	name = "Синдром дисплазии суперматерии"
+	agent = "Мутировавшие клетки мозга"
+	desc = "О нет..."
 	cures = list()              // YOU
 	virus_heal_resistant = TRUE // CAN'T
 	can_immunity = FALSE		// ESCAPE
-	severity = DANGEROUS
+	severity = DISEASE_SEVERITY_BIOHAZARD
 	stage_prob = 5
 	can_contract_dead = TRUE
 	cure_text = null
@@ -32,7 +32,7 @@
 			if(stage_message == 2)
 				stage_prob = 1
 				stage_message++
-				to_chat(H, span_notice("You feel sick."))
+				to_chat(H, span_notice("Вы чувствуете себя больным."))
 			if(prob(2))
 				H.vomit()
 
@@ -41,16 +41,16 @@
 		if(3)
 			if(stage_message == 3)
 				stage_message++
-				to_chat(H, span_userdanger("You feel agony!"))
+				to_chat(H, span_userdanger("Вы чувствуете агонию!"))
 			if(prob(1))
 				destiny(H, FALSE)
 
-			radiate(H, 4, 70)
+			radiate(H)
 
 		if(4)
 			H.AdjustJitter(2 SECONDS)
 			if(stage_message == 4)
-				to_chat(H, span_boldnotice("The pain has gone away.."))
+				to_chat(H, span_boldnotice("Боль ушла..."))
 				ADD_TRAIT(H, TRAIT_NO_PAIN, name)
 				ADD_TRAIT(H, TRAIT_NO_PAIN_HUD, name)
 				H.update_damage_hud()
@@ -59,10 +59,10 @@
 			if(prob(1.5))
 				destiny(H, TRUE)
 
-			radiate(H, 6, 93)
+			radiate(H)
 
 		if(5)
-			H.visible_message(span_danger("[H] become a nucleation!"), span_userdanger("YOU TURN INTO A NUCLEATION AGAIN!"))
+			H.visible_message(span_danger("[H.declent_ru(NOMINATIVE)] превраща[PLUR_ET_YUT(affected_mob)]ся в нуклеацию!"), span_userdanger("ВЫ ПРЕВРАЩАЕТЕСЬ В НУКЛЕАЦИЮ. ОПЯТЬ!"))
 			H.setOxyLoss(0)
 			H.SetJitter(0)
 			var/mob/living/carbon/human/nucleat = H
@@ -84,33 +84,30 @@
 			continue
 		return organ_check
 
-/datum/disease/virus/nuclefication/proc/radiate(mob/living/carbon/H, rad_ammount = 2, rad_threshold = 47)
-	if(H.radiation < rad_threshold)
-		H.apply_effect(rad_ammount, IRRADIATE, negate_armor = TRUE)
-	if(H.getarmor(attack_flag = RAD) >= 100)
-		return
-	for(var/mob/living/carbon/L in range(1, H))
-		if(L == H)
-			continue
-		var/rad_block = L.getarmor(attack_flag = RAD)
-		if(rad_block >= 100)
-			continue
-		if(!rad_block)
-			to_chat(L, span_danger("You are enveloped by a soft green glow emanating from [H]."))
-		L.apply_effect(rad_ammount, IRRADIATE, rad_block)
+/datum/disease/virus/nuclefication/proc/radiate(mob/living/carbon/human)
+	if(prob(IRRADIATION_PROB))
+		SSradiation.irradiate(human)
+	radiation_pulse(
+		source = human,
+		max_range = 1,
+		chance = IRRADIATION_PROB,
+	)
+
 
 /datum/disease/virus/nuclefication/proc/destiny(mob/living/carbon/H, silenced = FALSE)
-	var/destiny = rand(1,3) // What is your destiny?
+	var/destiny = rand(1, 3) // What is your destiny?
 	switch(destiny)
 		if(1)
 			var/obj/item/organ/external/limb = check_available_limbs(H, FALSE)
 			if(limb)
 				H.apply_damage(50, def_zone = limb, silent = silenced)
 				if(!silenced)
-					to_chat(H, span_danger("You feel like you're being torn apart from the inside!"))
+					to_chat(H, span_danger("Вы чувствуете, будто вас разрывает изнутри!"))
 		if(2)
 			var/obj/item/organ/external/limb = check_available_limbs(H)
 			limb?.fracture()
 		if(3)
 			var/obj/item/organ/internal/organ = check_available_organs(H)
 			organ?.necrotize()
+
+#undef IRRADIATION_PROB

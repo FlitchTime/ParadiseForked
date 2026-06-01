@@ -19,7 +19,7 @@
 	antag_datum_type = /datum/antagonist/xenomorph/queen
 	tts_seed = "Queen"
 
-/mob/living/carbon/alien/humanoid/queen/New()
+/mob/living/carbon/alien/humanoid/queen/Initialize(mapload)
 	//there should only be one queen
 	for(var/mob/living/carbon/alien/humanoid/queen/Q in GLOB.alive_mob_list)
 		if(Q == src)
@@ -32,8 +32,7 @@
 
 	real_name = src.name
 	grant_all_babel_languages()
-	..()
-
+	. = ..()
 
 /mob/living/carbon/alien/humanoid/queen/get_caste_organs()
 	. = ..()
@@ -60,19 +59,16 @@
 	pixel_x = -16
 	var/datum/action/innate/small_sprite_alien/action_sprite
 
-
-/mob/living/carbon/alien/humanoid/queen/large/New()
+/mob/living/carbon/alien/humanoid/queen/large/Initialize(mapload)
+	. = ..()
 	action_sprite = new
 	action_sprite.Grant(src)
-	..()
-
 
 /mob/living/carbon/alien/humanoid/queen/large/Destroy()
 	if(action_sprite)
 		action_sprite.Remove(src)
 		action_sprite = null
 	return ..()
-
 
 /mob/living/carbon/alien/humanoid/queen/large/update_icons()
 	cut_overlays()
@@ -84,9 +80,8 @@
 	else
 		icon_state = "alien[caste]_s"
 
-	update_inv_r_hand()
-	update_inv_l_hand()
-	update_inv_pockets()
+	update_held_items()
+	update_pockets()
 	update_fire()
 
 	if(blocks_emissive)

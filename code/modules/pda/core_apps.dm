@@ -14,7 +14,8 @@
 
 	var/list/notifying = list()
 	for(var/datum/data/pda/P in pda.notifying_programs)
-		notifying["[P.UID()]"] = TRUE
+		notifying += "[P.UID()]"
+
 	data["notifying"] = notifying
 
 /datum/data/pda/app/main_menu/ui_act(action, list/params)
@@ -27,7 +28,11 @@
 		if("UpdateInfo")
 			pda.ownjob = pda.id.assignment
 			pda.ownrank = pda.id.rank
+			pda.owner = pda.id.registered_name
 			pda.update_appearance(UPDATE_NAME)
+			if(!pda.silent)
+				playsound(pda, 'sound/machines/terminal_processing.ogg', 15, TRUE)
+				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), pda, 'sound/machines/terminal_success.ogg', 15, TRUE), 1.3 SECONDS)
 		if("pai")
 			if(pda.pai)
 				if(pda.pai.loc != pda)
@@ -37,14 +42,15 @@
 						if(1)		// Configure pAI device
 							pda.pai.attack_self(usr)
 						if(2)		// Eject pAI device
-							var/turf/T = get_turf_or_move(pda.loc)
+							var/turf/T = get_turf(pda.loc)
 							if(T)
-								pda.pai.loc = T
+								pda.pai.forceMove(T)
 								pda.pai = null
+								playsound(pda, 'sound/machines/terminal_eject.ogg', 50, TRUE)
 
 /datum/data/pda/app/notekeeper
-	name = "Notekeeper"
-	icon = "sticky-note-o"
+	name = "Заметки"
+	icon = "sticky-note"
 	template = "pda_notes"
 
 	var/note
@@ -55,11 +61,14 @@
 		note = "Congratulations, your station has chosen the [pda.model_name]!"
 
 /datum/data/pda/app/notekeeper/update_ui(mob/user as mob, list/data)
-	data["note"] = note	// current pda notes
+	data["note"] = html_decode(note)	// current pda notes
 
 /datum/data/pda/app/notekeeper/ui_act(action, params)
 	if(..())
 		return
+
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 	. = TRUE
 
@@ -68,13 +77,14 @@
 			var/n = tgui_input_text(usr, "Please enter message", name, note, multiline = TRUE, encode = FALSE)
 			if(isnull(n))
 				return
+
 			if(pda.loc == usr)
 				note = n
 			else
 				pda.close(usr)
 
 /datum/data/pda/app/manifest
-	name = "Crew Manifest"
+	name = "Манифест экипажа"
 	icon = "user"
 	template = "pda_manifest"
 	update = PDA_APP_UPDATE_SLOW
@@ -84,7 +94,7 @@
 	data["manifest"] = GLOB.PDA_Manifest
 
 /datum/data/pda/app/atmos_scanner
-	name = "Atmospheric Scan"
+	name = "Атмосферный сканер"
 	icon = "fire"
 	template = "pda_atmos_scan"
 	category = "Utilities"
@@ -92,30 +102,31 @@
 
 /datum/data/pda/app/atmos_scanner/update_ui(mob/user as mob, list/data)
 	var/list/results = list()
-	var/turf/T = get_turf(user.loc)
-	if(!isnull(T))
-		var/datum/gas_mixture/environment = T.return_air()
+	var/turf/location = get_turf(user.loc)
+	if(!isnull(location))
+		var/datum/gas_mixture/environment = location.get_readonly_air()
 
-		var/pressure = environment.return_pressure()
-		var/total_moles = environment.total_moles()
+		var/list/gas_data = gas_mixture_parser_faster(environment)
+		var/pressure = gas_data[TLV_PRESSURE]
+		var/total_moles = gas_data[TLV_TOTAL_MOLES]
 
 		if(total_moles)
-			var/o2_level = environment.oxygen/total_moles
-			var/n2_level = environment.nitrogen/total_moles
-			var/co2_level = environment.carbon_dioxide/total_moles
-			var/plasma_level = environment.toxins/total_moles
-			var/unknown_level =  1-(o2_level+n2_level+co2_level+plasma_level)
-			results = list(
-				list("entry" = "Pressure", "units" = "kPa", "val" = "[round(pressure,0.1)]", "bad_high" = 120, "poor_high" = 110, "poor_low" = 95, "bad_low" = 80),
-				list("entry" = "Temperature", "units" = "C", "val" = "[round(environment.temperature-T0C,0.1)]", "bad_high" = 35, "poor_high" = 25, "poor_low" = 15, "bad_low" = 5),
-				list("entry" = "Oxygen", "units" = "%", "val" = "[round(o2_level*100,0.1)]", "bad_high" = 140, "poor_high" = 135, "poor_low" = 19, "bad_low" = 17),
-				list("entry" = "Nitrogen", "units" = "%", "val" = "[round(n2_level*100,0.1)]", "bad_high" = 105, "poor_high" = 85, "poor_low" = 50, "bad_low" = 40),
-				list("entry" = "Carbon Dioxide", "units" = "%", "val" = "[round(co2_level*100,0.1)]", "bad_high" = 10, "poor_high" = 5, "poor_low" = 0, "bad_low" = 0),
-				list("entry" = "Plasma", "units" = "%", "val" = "[round(plasma_level*100,0.01)]", "bad_high" = 0.5, "poor_high" = 0, "poor_low" = 0, "bad_low" = 0),
-				list("entry" = "Other", "units" = "%", "val" = "[round(unknown_level, 0.01)]", "bad_high" = 1, "poor_high" = 0.5, "poor_low" = 0, "bad_low" = 0)
-			)
+			var/datum/tlv/tlv
+			var/list/tlv_list = GLOB.human_tlv
+			for(var/gas_id, meta_list in GLOB.gas_meta)
+				var/list/gas_meta_list = meta_list
+				tlv = tlv_list[gas_id]
+				var/gas_value = gas_data[gas_id]
+				var/gas_level = gas_value / total_moles
+				results += list(list("entry" = gas_meta_list[META_GAS_NAME], "units" = "%", "val" = "[round(gas_level * 100, 0.1)]", "danger" = tlv.get_danger_level(gas_value)))
+
+			tlv = tlv_list[TLV_PRESSURE]
+			results += list(list("entry" = "Pressure", "units" = "kPa", "val" = "[round(pressure, 0.1)]", "danger" = tlv.get_danger_level(pressure)))
+			tlv = tlv_list[TLV_TEMPERATURE]
+			var/temperature = gas_data[TLV_TEMPERATURE]
+			results += list(list("entry" = "Temperature", "units" = "C", "val" = "[round(temperature - T0C, 0.1)]", "danger" = tlv.get_danger_level(temperature)))
 
 	if(isnull(results))
-		results = list(list("entry" = "pressure", "units" = "%", "val" = "0", "bad_high" = 120, "poor_high" = 110, "poor_low" = 95, "bad_low" = 80))
+		results = list(list("entry" = "pressure", "units" = "%", "val" = "0", "danger" = 0))
 
 	data["aircontents"] = results

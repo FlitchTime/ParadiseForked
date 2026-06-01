@@ -18,7 +18,7 @@
 	var/map_path = "[map_prefix][map_name].dmm"
 	if(fexists(map_path))
 		fdel(map_path)
-	var/saved_map = wrap_file(map_path)
+	var/saved_map = WRAP_FILE(map_path)
 	var/map_text = write_map(t1, t2, flags, saved_map)
 	saved_map << map_text
 	return saved_map
@@ -228,3 +228,11 @@
 		return "[name] = '[attr]'"
 	else
 		return ""
+
+#undef DMM_IGNORE_AREAS
+#undef DMM_IGNORE_TURFS
+#undef DMM_IGNORE_OBJS
+#undef DMM_IGNORE_NPCS
+#undef DMM_IGNORE_PLAYERS
+#undef DMM_IGNORE_MOBS
+#undef DMM_USE_JSON

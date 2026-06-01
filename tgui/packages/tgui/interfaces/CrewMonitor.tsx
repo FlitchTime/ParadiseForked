@@ -169,7 +169,8 @@ const CrewMonitorTable = ({ crewData }: CrewMonitorTableProps) => {
       <Input
         placeholder="Введите Имя, Должность или Локацию..."
         width="100%"
-        onInput={(_e, value) => setSearch(value)}
+        expensive
+        onChange={setSearch}
       />
       <Table
         m="0.5rem"
@@ -193,7 +194,7 @@ const CrewMonitorTable = ({ crewData }: CrewMonitorTableProps) => {
         {crew.filter(searcher).map((cm) => {
           const highlighted = data.highlightedNames.includes(cm.name);
           return (
-            <Table.Row key={cm.name} bold={!!cm.is_command}>
+            <Table.Row key={cm.ref} bold={!!cm.is_command}>
               <Table.Cell>
                 <Button.Checkbox
                   checked={highlighted}

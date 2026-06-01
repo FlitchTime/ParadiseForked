@@ -10,17 +10,19 @@
 
 /datum/gear/accessory/scarf/New()
 	..()
-	var/list/scarfs = list(/obj/item/clothing/accessory/scarf/red,
-					  	   /obj/item/clothing/accessory/scarf/green,
-					  	   /obj/item/clothing/accessory/scarf/darkblue,
-					  	   /obj/item/clothing/accessory/scarf/purple,
-					  	   /obj/item/clothing/accessory/scarf/yellow,
-					  	   /obj/item/clothing/accessory/scarf/orange,
-					  	   /obj/item/clothing/accessory/scarf/lightblue,
-					  	   /obj/item/clothing/accessory/scarf/white,
-					  	   /obj/item/clothing/accessory/scarf/black,
-					  	   /obj/item/clothing/accessory/scarf/zebra,
-					  	   /obj/item/clothing/accessory/scarf/christmas,)
+	var/list/scarfs = list(
+		/obj/item/clothing/accessory/scarf/red,
+		/obj/item/clothing/accessory/scarf/green,
+		/obj/item/clothing/accessory/scarf/darkblue,
+		/obj/item/clothing/accessory/scarf/purple,
+		/obj/item/clothing/accessory/scarf/yellow,
+		/obj/item/clothing/accessory/scarf/orange,
+		/obj/item/clothing/accessory/scarf/lightblue,
+		/obj/item/clothing/accessory/scarf/white,
+		/obj/item/clothing/accessory/scarf/black,
+		/obj/item/clothing/accessory/scarf/zebra,
+		/obj/item/clothing/accessory/scarf/christmas
+	)
 	gear_tweaks += new /datum/gear_tweak/path(scarfs, src, TRUE)
 
 /datum/gear/accessory/scarfstriped
@@ -30,9 +32,11 @@
 
 /datum/gear/accessory/scarfstriped/New()
 	..()
-	var/list/scarfs = list(/obj/item/clothing/accessory/stripedredscarf,
-						   /obj/item/clothing/accessory/stripedgreenscarf,
-						   /obj/item/clothing/accessory/stripedbluescarf,)
+	var/list/scarfs = list(
+		/obj/item/clothing/accessory/stripedredscarf,
+		/obj/item/clothing/accessory/stripedgreenscarf,
+		/obj/item/clothing/accessory/stripedbluescarf
+	)
 	gear_tweaks += new /datum/gear_tweak/path(scarfs, src, TRUE)
 
 /datum/gear/accessory/holobadge
@@ -57,16 +61,23 @@
 
 /datum/gear/accessory/tie/New()
 	..()
-	var/list/ties = list(/obj/item/clothing/accessory/blue,
-						 /obj/item/clothing/accessory/red,
-						 /obj/item/clothing/accessory/black,
-						 /obj/item/clothing/accessory/horrible,)
+	var/list/ties = list(
+		/obj/item/clothing/accessory/blue,
+		/obj/item/clothing/accessory/red,
+		/obj/item/clothing/accessory/black,
+		/obj/item/clothing/accessory/horrible
+	)
 	gear_tweaks += new /datum/gear_tweak/path(ties, src, TRUE)
 
 /datum/gear/accessory/stethoscope
 	index_name = "stethoscope"
 	path = /obj/item/clothing/accessory/stethoscope
-	allowed_roles = list(JOB_TITLE_CMO, JOB_TITLE_MINING_MEDIC, JOB_TITLE_DOCTOR, JOB_TITLE_INTERN, JOB_TITLE_PARAMEDIC, JOB_TITLE_BRIGDOC)
+	allowed_roles = list(JOB_TITLE_CMO, JOB_TITLE_MINING_MEDIC, JOB_TITLE_DOCTOR, JOB_TITLE_MEDICAL_INTERN, JOB_TITLE_PARAMEDIC, JOB_TITLE_BRIGDOC)
+
+/datum/gear/accessory/armguard
+	index_name = "armguard"
+	display_name = "Наручи"
+	path = /obj/item/clothing/accessory/armguard
 
 /datum/gear/accessory/ntrjacket
 	index_name = "jacket, nt rep"
@@ -84,16 +95,18 @@
 
 /datum/gear/accessory/cowboyshirt/New()
 	..()
-	var/list/shirts = list(/obj/item/clothing/accessory/cowboyshirt,
-						   /obj/item/clothing/accessory/cowboyshirt/short_sleeved,
-						   /obj/item/clothing/accessory/cowboyshirt/white,
-						   /obj/item/clothing/accessory/cowboyshirt/white/short_sleeved,
-						   /obj/item/clothing/accessory/cowboyshirt/pink,
-						   /obj/item/clothing/accessory/cowboyshirt/pink/short_sleeved,
-						   /obj/item/clothing/accessory/cowboyshirt/red,
-						   /obj/item/clothing/accessory/cowboyshirt/red/short_sleeved,
-						   /obj/item/clothing/accessory/cowboyshirt/navy,
-						   /obj/item/clothing/accessory/cowboyshirt/navy/short_sleeved,)
+	var/list/shirts = list(
+		/obj/item/clothing/accessory/cowboyshirt,
+		/obj/item/clothing/accessory/cowboyshirt/short_sleeved,
+		/obj/item/clothing/accessory/cowboyshirt/white,
+		/obj/item/clothing/accessory/cowboyshirt/white/short_sleeved,
+		/obj/item/clothing/accessory/cowboyshirt/pink,
+		/obj/item/clothing/accessory/cowboyshirt/pink/short_sleeved,
+		/obj/item/clothing/accessory/cowboyshirt/red,
+		/obj/item/clothing/accessory/cowboyshirt/red/short_sleeved,
+		/obj/item/clothing/accessory/cowboyshirt/navy,
+		/obj/item/clothing/accessory/cowboyshirt/navy/short_sleeved
+	)
 	gear_tweaks += new /datum/gear_tweak/path(shirts, src, TRUE)
 
 /datum/gear/accessory/locket
@@ -142,7 +155,7 @@
 /datum/gear/accessory/armband_job/medical
 	index_name = "armband, medical"
 	path = /obj/item/clothing/accessory/armband/med
-	allowed_roles = list(JOB_TITLE_CMO, JOB_TITLE_MINING_MEDIC, JOB_TITLE_DOCTOR, JOB_TITLE_INTERN, JOB_TITLE_CORONER, JOB_TITLE_PARAMEDIC, JOB_TITLE_BRIGDOC)
+	allowed_roles = list(JOB_TITLE_CMO, JOB_TITLE_MINING_MEDIC, JOB_TITLE_DOCTOR, JOB_TITLE_MEDICAL_INTERN, JOB_TITLE_CORONER, JOB_TITLE_PARAMEDIC, JOB_TITLE_BRIGDOC)
 
 /datum/gear/accessory/armband_job/emt
 	index_name = "armband, EMT"
@@ -152,7 +165,7 @@
 /datum/gear/accessory/armband_job/engineering
 	index_name = "armband, engineering"
 	path = /obj/item/clothing/accessory/armband/engine
-	allowed_roles = list(JOB_TITLE_CHIEF, JOB_TITLE_ENGINEER, JOB_TITLE_ATMOSTECH, JOB_TITLE_ENGINEER_TRAINEE)
+	allowed_roles = list(JOB_TITLE_CHIEF_ENGINEER, JOB_TITLE_ENGINEER, JOB_TITLE_ATMOSTECH, JOB_TITLE_ENGINEER_TRAINEE)
 
 /datum/gear/accessory/armband_job/hydro
 	index_name = "armband, hydroponics"
@@ -162,13 +175,13 @@
 /datum/gear/accessory/armband_job/sci
 	index_name = "armband, science"
 	path = /obj/item/clothing/accessory/armband/science
-	allowed_roles = list(JOB_TITLE_RD, JOB_TITLE_SCIENTIST, JOB_TITLE_SCIENTIST_STUDENT, JOB_TITLE_ROBOTICIST)
+	allowed_roles = list(JOB_TITLE_RD, JOB_TITLE_SCIENTIST, JOB_TITLE_SCIENCE_STUDENT, JOB_TITLE_ROBOTICIST)
 
 /datum/gear/accessory/holsters
 	index_name = "holster, select"
 	display_name = "Кобура"
 	path = /obj/item/clothing/accessory/holster/
-	allowed_roles = list(JOB_TITLE_HOS, JOB_TITLE_WARDEN, JOB_TITLE_DETECTIVE, JOB_TITLE_OFFICER, JOB_TITLE_BRIGDOC, JOB_TITLE_PILOT)
+	allowed_roles = list(JOB_TITLE_HOS, JOB_TITLE_WARDEN, JOB_TITLE_DETECTIVE, JOB_TITLE_OFFICER, JOB_TITLE_BRIGDOC, JOB_TITLE_PILOT, JOB_TITLE_CAPTAIN, JOB_TITLE_QUARTERMASTER, JOB_TITLE_RD, JOB_TITLE_HOP, JOB_TITLE_CMO, JOB_TITLE_CHIEF_ENGINEER)
 
 /datum/gear/accessory/holsters/New()
 	..()

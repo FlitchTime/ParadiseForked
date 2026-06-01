@@ -1,14 +1,12 @@
 /obj/machinery/floodlight
 	name = "emergency floodlight"
-	icon = 'icons/obj/floodlight.dmi'
-	icon_state = "flood00"
-	anchored = FALSE
+	icon = 'icons/obj/lighting.dmi'
+	icon_state = "floodlight_off"
 	density = TRUE
 	max_integrity = 100
 	integrity_failure = 80
 	light_power = 20
 	light_range = 14
-	light_system = STATIC_LIGHT
 	light_on = FALSE
 	var/on = FALSE
 	var/obj/item/stock_parts/cell/high/cell = null
@@ -19,7 +17,7 @@
 /obj/machinery/floodlight/get_cell()
 	return cell
 
-/obj/machinery/floodlight/Initialize()
+/obj/machinery/floodlight/Initialize(mapload)
 	. = ..()
 	cell = new(src)
 	mapVarInit()
@@ -27,7 +25,6 @@
 /obj/machinery/floodlight/Destroy()
 	QDEL_NULL(cell)
 	return ..()
-
 
 /obj/machinery/floodlight/proc/mapVarInit()
 	if(on)
@@ -37,7 +34,6 @@
 			return
 		set_light(l_on = TRUE)
 		update_icon(UPDATE_ICON_STATE)
-
 
 /obj/machinery/floodlight/examine(mob/user)
 	. = ..()
@@ -49,10 +45,15 @@
 		else
 			. += span_notice("The panel looks like it could be <b>pried</b> open, or <b>screwed</b> shut.")
 
-
 /obj/machinery/floodlight/update_icon_state()
-	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[on]"
+	icon_state = "floodlight_[on ? "on" : "off"]"
 
+	if(!open)
+		return
+	if(cell)
+		icon_state += "_cell"
+	else
+		icon_state += "_empty"
 
 /obj/machinery/floodlight/process()
 	if(!on)
@@ -63,7 +64,6 @@
 		update_icon(UPDATE_ICON_STATE)
 		set_light(l_on = FALSE)
 		visible_message(span_warning("[src] shuts down due to lack of power!"))
-
 
 /obj/machinery/floodlight/attack_ai()
 	return
@@ -106,7 +106,6 @@
 		set_light(l_on = TRUE)
 	update_icon(UPDATE_ICON_STATE)
 
-
 /obj/machinery/floodlight/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -128,7 +127,6 @@
 
 	return ..()
 
-
 /obj/machinery/floodlight/crowbar_act(mob/living/user, obj/item/I)
 	add_fingerprint(user)
 	if(!unlocked)
@@ -145,7 +143,6 @@
 	open = !open
 	update_icon(UPDATE_ICON_STATE)
 	return TRUE
-
 
 /obj/machinery/floodlight/screwdriver_act(mob/living/user, obj/item/I)
 	add_fingerprint(user)
@@ -167,7 +164,6 @@
 	update_icon(UPDATE_ICON_STATE)
 	return TRUE
 
-
 /obj/machinery/floodlight/wrench_act(mob/living/user, obj/item/I)
 	. = TRUE
 	if(!I.tool_use_check(user, 0))
@@ -175,7 +171,6 @@
 	if(anchored)
 		extinguish_light()
 	default_unfasten_wrench(user, I)
-
 
 /obj/machinery/floodlight/extinguish_light(force = FALSE)
 	if(on)

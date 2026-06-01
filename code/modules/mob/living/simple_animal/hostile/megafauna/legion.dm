@@ -22,11 +22,11 @@ Difficulty: Medium
 	maxHealth = 2500
 	icon_state = "mega_legion"
 	icon_living = "mega_legion"
-	desc = "One of many."
+	desc = "Один из многих."
 	icon = 'icons/mob/lavaland/96x96megafauna.dmi'
 	attacktext = "грызёт"
 	attack_sound = 'sound/misc/demon_attack1.ogg'
-	speak_emote = list("echoes")
+	speak_emote = list("отдаётся эхом")
 	armour_penetration = 50
 	melee_damage_lower = 40
 	melee_damage_upper = 40
@@ -45,25 +45,33 @@ Difficulty: Medium
 	ranged_cooldown_time = 20
 	var/charging = FALSE
 	var/firing_laser = FALSE
-	internal_type = /obj/item/gps/internal/legion
-	medal_type = BOSS_MEDAL_LEGION
-	score_type = LEGION_SCORE
+	achievement_type = /datum/award/achievement/boss/legion_kill
+	crusher_achievement_type = /datum/award/achievement/boss/legion_crusher
+	score_achievement_type = /datum/award/score/legion_score
 	loot = list(/obj/item/storm_staff)
 	crusher_loot = list(/obj/item/storm_staff, /obj/item/crusher_trophy/empowered_legion_skull)
 	enraged_loot = /obj/item/disk/fauna_research/legion
 	vision_range = 13
-	elimination = 1
+	elimination = TRUE
 	appearance_flags = PIXEL_SCALE|LONG_GLIDE
 	mouse_opacity = MOUSE_OPACITY_ICON
 	stat_attack = UNCONSCIOUS // Overriden from /tg/ - otherwise Legion starts chasing its minions
 
+/mob/living/simple_animal/hostile/megafauna/legion/get_ru_names()
+	return list(
+		NOMINATIVE = "Легион",
+		GENITIVE = "Легиона",
+		DATIVE = "Легиону",
+		ACCUSATIVE = "Легион",
+		INSTRUMENTAL = "Легионом",
+		PREPOSITIONAL = "Легионе",
+	)
 
 /mob/living/simple_animal/hostile/megafauna/legion/Initialize(mapload)
 	. = ..()
 	update_transform(2)
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 	AddElement(/datum/element/simple_flying)
-
 
 /mob/living/simple_animal/hostile/megafauna/legion/enrage()
 	health = 1250
@@ -79,7 +87,6 @@ Difficulty: Medium
 	legiontwo.maxHealth = 1250
 	legiontwo.enraged = TRUE
 
-
 /mob/living/simple_animal/hostile/megafauna/legion/unrage()
 	. = ..()
 	for(var/mob/living/simple_animal/hostile/megafauna/legion/other in GLOB.mob_list)
@@ -91,16 +98,14 @@ Difficulty: Medium
 	if(!QDELETED(src))
 		qdel(src) //Suprise, it's the one on lavaland that regrows to full.
 
-
 /mob/living/simple_animal/hostile/megafauna/legion/death(gibbed)
 	for(var/mob/living/simple_animal/hostile/megafauna/legion/other in GLOB.mob_list)
 		if(other != src)
 			other.loot = list(/obj/item/storm_staff)
 			other.crusher_loot = list(/obj/item/storm_staff, /obj/item/crusher_trophy/empowered_legion_skull)
 			return ..()
-	UnlockBlastDoors("11119")
+	elimination = FALSE
 	return ..()
-
 
 /mob/living/simple_animal/hostile/megafauna/legion/AttackingTarget()
 	. = ..()
@@ -113,7 +118,7 @@ Difficulty: Medium
 /mob/living/simple_animal/hostile/megafauna/legion/OpenFire(the_target)
 	if(world.time >= ranged_cooldown && !charging)
 		if(prob(30))
-			visible_message("<span class='warning'><b>[src] charges!</b></span>")
+			visible_message(span_warning("<b>[declent_ru(NOMINATIVE)] заряжается!</b>"))
 			SpinAnimation(speed = 20, loops = 5)
 			ranged = 0
 			retreat_distance = 0
@@ -140,8 +145,7 @@ Difficulty: Medium
 			A.GiveTarget(target)
 			A.friends = friends
 			A.faction = faction
-			visible_message("<span class='danger'>A monstrosity emerges from [src]</span>",
-			"<span class='userdanger'>You summon a big [A]!</span>")
+			visible_message(span_danger("Чудовище появляется из [declent_ru(ACCUSATIVE)]!"), span_userdanger("Вы призываете огромного [A.declent_ru(GENITIVE)]!"))
 			ranged_cooldown = world.time + 5 SECONDS
 		else
 			var/mob/living/simple_animal/hostile/asteroid/hivelord/legion/A
@@ -157,8 +161,7 @@ Difficulty: Medium
 						A.GiveTarget(target)
 			A.friends = friends
 			A.faction = faction
-			visible_message("<span class='danger'>A [A] emerges from [src]!</span>",
-			"<span class='userdanger'>You summon a [A]!</span>")
+			visible_message(span_danger("[A.declent_ru(ACCUSATIVE)] появляется из [declent_ru(GENITIVE)]!"), span_userdanger("Вы призываете [A.declent_ru(ACCUSATIVE)]!"))
 			ranged_cooldown = world.time + 2 SECONDS
 
 /mob/living/simple_animal/hostile/megafauna/legion/MoveToTarget()
@@ -197,19 +200,18 @@ Difficulty: Medium
 			if(faction_check(M.faction, faction, FALSE))
 				continue
 			if(M.stat == DEAD)
-				visible_message("<span class='danger'>[M] is disintegrated by the beam!</span>")
+				visible_message(span_danger("[M.declent_ru(ACCUSATIVE)] дезинтегрируется лучом!"))
+				to_chat(M, span_userdanger("Вас поражает луч дезинтеграции!"))
 				M.dust()
 			else if(M != src)
 				playsound(M,'sound/weapons/sear.ogg', 50, TRUE, -4)
-				to_chat(M, "<span class='userdanger'>You're struck by a disintegration laser!</span>")
+				to_chat(M, span_userdanger("You're struck by a disintegration laser!"))
 				var/limb_to_hit = M.get_organ(pick(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
 				var/armor = M.run_armor_check(limb_to_hit, LASER)
 				M.apply_damage(70 - ((health / maxHealth) * 20), BURN, limb_to_hit, armor)
 
-
 /mob/living/simple_animal/hostile/megafauna/legion/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE
-
 
 /mob/living/simple_animal/hostile/megafauna/legion/adjustHealth(
 	amount = 0,
@@ -238,10 +240,3 @@ Difficulty: Medium
 		A.GiveTarget(target)
 		A.friends = friends
 		A.faction = faction
-
-
-/obj/item/gps/internal/legion
-	icon_state = null
-	gpstag = "Mysterious Signal"
-	desc = "The message repeats."
-	invisibility = INVISIBILITY_ABSTRACT

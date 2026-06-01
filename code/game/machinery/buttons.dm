@@ -11,8 +11,7 @@
 	var/id_tag = "default"
 	var/active = FALSE
 	anchored = TRUE
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 10, bio = 100, rad = 100, fire = 90, acid = 70)
-	use_power = IDLE_POWER_USE
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 10, bio = 100, fire = 90, acid = 70)
 	idle_power_usage = 2
 	active_power_usage = 4
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
@@ -22,8 +21,8 @@
 
 	multitool_menu_type = /datum/multitool_menu/idtag/driver_button
 
-/obj/machinery/driver_button/New(turf/loc, var/w_dir=null)
-	..()
+/obj/machinery/driver_button/Initialize(mapload, w_dir = null)
+	. = ..()
 	switch(w_dir)
 		if(NORTH)
 			pixel_y = 25
@@ -35,10 +34,6 @@
 			pixel_x = -25
 	if(SSradio)
 		set_frequency(frequency)
-
-/obj/machinery/driver_button/Initialize()
-	. = ..()
-	set_frequency(frequency)
 
 /obj/machinery/driver_button/set_frequency(new_frequency)
 	SSradio.remove_object(src, frequency)
@@ -52,10 +47,8 @@
 	radio_connection = null
 	return ..()
 
-
 /obj/machinery/driver_button/update_icon_state()
 	icon_state = active ? "launcheract" : "launcherbtt"
-
 
 /obj/machinery/driver_button/attack_ai(mob/user as mob)
 	return attack_hand(user)
@@ -68,7 +61,6 @@
 	. = TRUE
 	multitool_menu_interact(user, I)
 
-
 /obj/machinery/driver_button/wrench_act(mob/user, obj/item/I)
 	. = TRUE
 	if(!I.use_tool(src, user, 3 SECONDS, volume = I.tool_volume))
@@ -77,12 +69,10 @@
 	new /obj/item/mounted/frame/driver_button(loc)
 	qdel(src)
 
-
 /obj/machinery/driver_button/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/detective_scanner))
 		return ATTACK_CHAIN_PROCEED
 	return ..()
-
 
 /obj/machinery/driver_button/attack_hand(mob/user as mob)
 
@@ -161,7 +151,6 @@
 	var/id = null
 	var/active = FALSE
 	anchored = TRUE
-	use_power = IDLE_POWER_USE
 	idle_power_usage = 2
 	active_power_usage = 4
 
@@ -185,12 +174,12 @@
 	active = TRUE
 	update_icon(UPDATE_ICON_STATE)
 
-	for(var/obj/machinery/sparker/M in GLOB.machines)
+	for(var/obj/machinery/sparker/M in SSmachines.get_by_type(/obj/machinery/sparker))
 		if(M.id == id)
 			spawn( 0 )
 				M.spark()
 
-	for(var/obj/machinery/igniter/M in GLOB.machines)
+	for(var/obj/machinery/igniter/M in SSmachines.get_by_type(/obj/machinery/igniter))
 		if(M.id == id)
 			use_power(50)
 			M.on = !( M.on )
@@ -200,7 +189,6 @@
 
 	active = FALSE
 	update_icon(UPDATE_ICON_STATE)
-
 
 /obj/machinery/ignition_switch/update_icon_state()
 	icon_state = active ? "launcheract" : "launcherbtt"

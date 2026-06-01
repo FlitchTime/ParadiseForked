@@ -1,5 +1,5 @@
 /obj/machinery/computer/HONKputer
-	name = "\improper HONKputer Mark I"
+	name = "HONKputer Mark I"
 	desc = "Яркий жёлтый компьютер. Воспользуйтесь им, если уровень ХОНКА упал до критически низкого уровня!"
 	icon = 'icons/obj/machines/HONKputer.dmi'
 	icon_state = "honkputer"
@@ -46,7 +46,7 @@
 				if(message_cooldown)
 					to_chat(usr, "Arrays recycling.  Please stand by.")
 					return
-				var/input = stripped_input(usr, "Please choose a message to transmit to your HONKbrothers on the homeworld. Transmission does not guarantee a response.", "To abort, send an empty message.", "")
+				var/input = tgui_input_text(usr, "Please choose a message to transmit to your HONKbrothers on the homeworld. Transmission does not guarantee a response.", "To abort, send an empty message.", "")
 				if(!input || !(usr in view(1,src)))
 					return
 				HONK_announce(input, usr)
@@ -74,7 +74,7 @@
 	user.set_machine(src)
 	var/dat = ""
 
-	if(istype(user, /mob/living/silicon))
+	if(issilicon(user))
 		to_chat(user, "This console is not networked to the rest of the grid.")
 		return
 
@@ -85,7 +85,6 @@
 				dat += "<br> <a href='byond://?src=[UID()];operation=MessageHonkplanet'>Send an emergency message to Honkplanet</a>"
 			else
 				dat += "<br> <a href='byond://?src=[UID()];operation=login'>Log In</a>"
-
 
 	dat += "<br> [(src.state != STATE_DEFAULT) ? "<a href='byond://?src=[UID()];operation=main'>Main Menu</a><br>" : ""]<a href='byond://?src=[user.UID()];mach_close=honkputer'>Close</a>"
 	var/datum/browser/popup = new(user, "honkputer", "HONKputer Interface", 400, 500)

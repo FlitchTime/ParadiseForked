@@ -1,22 +1,25 @@
-GLOBAL_LIST_EMPTY(construction_pipe_list)	//List of all pipe datums
-GLOBAL_LIST_EMPTY(rpd_pipe_list)			//Some pipes we don't want to be dispensable by the RPD, so we have a separate thing
+GLOBAL_LIST_EMPTY(construction_pipe_list) //List of all pipe datums
+GLOBAL_LIST_EMPTY(rpd_pipe_list) //Some pipes we don't want to be dispensable by the RPD, so we have a separate thing
 
 /datum/pipes
-	var/pipe_name		//What the pipe is called in the interface
-	var/pipe_id			//Use the pipe define for this
-	var/pipe_type		//Atmos, disposals etc.
-	var/pipe_category	//What category of pipe
-	var/bendy = FALSE	//Is this pipe bendy?
-	var/orientations	//Number of orientations (for interface purposes)
-	var/pipe_icon		//icon_state of the dispensed pipe (for interface purposes)
+	var/pipe_name //What the pipe is called in the interface
+	var/pipe_id //Use the pipe define for this
+	var/pipe_type //Atmos, disposals etc.
+	var/pipe_category //What category of pipe
+	var/bendy = FALSE //Is this pipe bendy?
+	var/orientations //Number of orientations (for interface purposes)
+	var/pipe_icon //icon_state of the dispensed pipe (for interface purposes)
+	var/pipe_icon_file
 	var/rpd_dispensable = FALSE
 
 /datum/pipes/atmospheric
 	pipe_type = PIPETYPE_ATMOS
 	pipe_category = PIPETYPE_ATMOS
+	pipe_icon_file = 'icons/obj/pipes_and_stuff/atmospherics/pipe-item.dmi'
 
 /datum/pipes/disposal
 	pipe_type = PIPETYPE_DISPOSAL
+	pipe_icon_file = 'icons/obj/pipes_and_stuff/not_atmos/disposal.dmi'
 
 //Normal pipes
 
@@ -267,7 +270,6 @@ GLOBAL_LIST_EMPTY(rpd_pipe_list)			//Some pipes we don't want to be dispensable 
 	pipe_name = "bent h/e pipe"
 	pipe_id = PIPE_HE_BENT
 	pipe_icon = "he"
-	bendy = TRUE
 	pipe_category = RPD_HEAT_PIPING
 
 /datum/pipes/atmospheric/he_junction
@@ -398,13 +400,21 @@ GLOBAL_LIST_EMPTY(rpd_pipe_list)			//Some pipes we don't want to be dispensable 
 	pipe_id = PIPE_DISPOSALS_JUNCTION_LEFT
 	pipe_icon = "pipe-j2"
 
-/proc/get_pipe_name(var/pipe_id, var/pipe_type)
+/datum/pipes/atmospheric/temperature_gate
+	pipe_name = "temperature gate"
+	pipe_id = PIPE_TEMPERATURE_GATE
+	orientations = 4
+	pipe_icon = "temperature_gate"
+	pipe_category = RPD_DEVICES
+	rpd_dispensable = TRUE
+
+/proc/get_pipe_name(pipe_id, pipe_type)
 	for(var/datum/pipes/P in GLOB.construction_pipe_list)
 		if(P.pipe_id == pipe_id && P.pipe_type == pipe_type)
 			return P.pipe_name
 	return "unknown pipe"
 
-/proc/get_pipe_icon(var/pipe_id)
+/proc/get_pipe_icon(pipe_id)
 	for(var/datum/pipes/P in GLOB.construction_pipe_list)
 		if(P.pipe_id == pipe_id)
 			return P.pipe_icon

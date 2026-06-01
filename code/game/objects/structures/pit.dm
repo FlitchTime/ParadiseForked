@@ -3,11 +3,8 @@
 	desc = "Watch your step, partner."
 	icon = 'icons/obj/pit.dmi'
 	icon_state = "pit1"
-	blend_mode = BLEND_DEFAULT
-	density = FALSE
 	anchored = TRUE
-	armor = list(melee = 50, bullet = 100, laser = 100, energy = 50, bomb = 50, bio = 50, rad = 50, fire = 50, acid = 50)
-	layer = 2.9
+	armor = list(melee = 50, bullet = 100, laser = 100, energy = 50, bomb = 50, bio = 50, fire = 50, acid = 50)
 	var/storage_capacity = 30
 	var/open = TRUE
 	var/icon_floor_type = null
@@ -16,8 +13,7 @@
 	return
 
 /obj/structure/pit/AllowDrop()
-    return TRUE
-
+	return TRUE
 
 /obj/structure/pit/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -71,10 +67,8 @@
 
 	return ..()
 
-
 /obj/structure/pit/update_icon_state()
 	icon_state = "pit[open][icon_floor_type]"
-
 
 /obj/structure/pit/Initialize(mapload)
 	. = ..()
@@ -113,12 +107,12 @@
 		if(iscarbon(A))
 			var/mob/living/carbon/M = A
 			M.update_tint()
-		if(istype(A, /obj/structure/closet))
+		if(iscloset(A))
 			for(var/mob/living/carbon/M in A.contents)
 				M.update_tint()
 	update_icon(UPDATE_ICON_STATE)
 
-/obj/structure/pit/proc/close(var/user)
+/obj/structure/pit/proc/close(user)
 	name = "mound"
 	desc = "Some things are better left buried."
 	open = FALSE
@@ -134,15 +128,12 @@
 			if(iscarbon(A))
 				var/mob/living/carbon/M = A
 				M.overlay_fullscreen("tint", /atom/movable/screen/fullscreen/blind)
-			if(istype(A, /obj/structure/closet))
+			if(iscloset(A))
 				for(var/mob/living/carbon/M in A.contents)
 					M.overlay_fullscreen("tint", /atom/movable/screen/fullscreen/blind)
 	update_icon(UPDATE_ICON_STATE)
 
-/obj/structure/pit/remove_air(amount)
-	return 0
-
-/obj/structure/pit/container_resist(mob/escapee)
+/obj/structure/pit/container_resist_act(mob/escapee)
 	var/breakout_time = 1.5 //2 minutes by default
 
 	if(open)
@@ -156,7 +147,7 @@
 	visible_message(span_danger("Something is scratching its way out of \the [src]!"))
 
 	for(var/i in 1 to (6*breakout_time * 2)) //minutes * 6 * 5seconds * 2
-		playsound(src.loc, 'sound/effects/squelch1.ogg', 100, 1)
+		playsound(src.loc, 'sound/effects/squelch1.ogg', 100, TRUE)
 
 		if(!do_after(escapee, 5 SECONDS))
 			to_chat(escapee, span_warning("You have stopped digging."))
@@ -169,7 +160,7 @@
 
 	to_chat(escapee, span_warning("You successfuly dig yourself out!"))
 	visible_message(span_danger("\the [escapee] emerges from \the [src]!"))
-	playsound(src.loc, 'sound/effects/squelch1.ogg', 100, 1)
+	playsound(src.loc, 'sound/effects/squelch1.ogg', 100, TRUE)
 	open()
 
 /obj/structure/pit/Destroy()
@@ -194,7 +185,6 @@
 //spoooky
 /obj/structure/pit/closed/grave
 	name = "grave"
-	icon_state = "pit0"
 
 /obj/structure/pit/closed/grave/Initialize(mapload)
 	. = ..()
@@ -234,14 +224,13 @@
 		nam += " " + pick(GLOB.last_names_female)
 	else
 		nam = pick(GLOB.first_names_male)
-		nam += " " + pick(GLOB.last_names)
+		nam += " " + pick(GLOB.last_names_male)
 	var/cur_year = GLOB.game_year
 	var/born = cur_year - rand(5,150)
 	var/died = max(cur_year - rand(0,70),born)
 
 	message = "Здесь упокоен [nam], [born] - [died]."
 	update_appearance(UPDATE_DESC)
-
 
 /obj/structure/gravemarker/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)

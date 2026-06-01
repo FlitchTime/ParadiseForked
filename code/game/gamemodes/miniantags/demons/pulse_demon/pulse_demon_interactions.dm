@@ -12,12 +12,12 @@
 	// escape out of whatever we've hijacked first
 	if(isapc(A) && !isturf(loc) && (A in hijacked_apcs))
 		A.attack_pulsedemon(src)
-	else if(current_weapon && istype(current_weapon, /obj/item/gun/energy))
+	else if(current_weapon && isenergygun(current_weapon))
 		// ironically, because ion guns override their emp_act, it's perfectly safe to be in one and be emp'd
 		var/obj/item/gun/energy/G = current_weapon
 		// we probably shouldn't be firing from inside a recharger or someone's bag
 		if(iscarbon(G.loc) || isturf(G.loc))
-			G.process_fire(A, src, FALSE)
+			G.fast_fire(A, src)
 			visible_message(span_danger("[G] fires itself at [A]!"), span_danger("You force [G] to fire at [A]!"), span_italics("You hear \a [G.fire_sound_text]!"))
 			changeNext_click(CLICK_CD_RANGE) // I can't actually find what the default gun fire cooldown is, so it's 1 second until someone enlightens me
 			return
@@ -44,28 +44,29 @@
 // returns TRUE if any [modifier]ClickOn was called
 /mob/living/simple_animal/demon/pulse_demon/proc/try_modified_click(atom/A, params)
 	var/list/modifiers = params2list(params)
-	if(modifiers["middle"])
-		if(modifiers["shift"])
+
+	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
+		if(LAZYACCESS(modifiers, SHIFT_CLICK))
 			MiddleShiftClickOn(A)
 		else
 			MiddleClickOn(A)
 		return TRUE
-	if(modifiers["shift"])
+
+	if(LAZYACCESS(modifiers, SHIFT_CLICK))
 		ShiftClickOn(A)
 		return TRUE
-	if(modifiers["alt"])
+
+	if(LAZYACCESS(modifiers, ALT_CLICK))
 		AltClickOn(A)
 		return TRUE
-	if(modifiers["ctrl"])
+
+	if(LAZYACCESS(modifiers, CTRL_CLICK))
 		CtrlClickOn(A)
 		return TRUE
+
 	return FALSE
 
 // check area for all of these, then do AI actions
-/mob/living/simple_animal/demon/pulse_demon/MiddleShiftClickOn(atom/A)
-	if(get_area(A) == controlling_area)
-		A.AIMiddleShiftClick(src)
-
 /mob/living/simple_animal/demon/pulse_demon/ShiftClickOn(atom/A)
 	if(get_area(A) == controlling_area)
 		A.AIShiftClick(src)

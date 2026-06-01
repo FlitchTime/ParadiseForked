@@ -16,7 +16,7 @@ BONUS
 
 /datum/symptom/vitiligo
 
-	name = "Vitiligo"
+	name = "Витилиго"
 	id = "vitiligo"
 	stealth = -3
 	resistance = -1
@@ -38,10 +38,9 @@ BONUS
 					H.s_tone = -85
 					H.update_body()
 				else
-					H.visible_message(span_warning("[H] looks a bit pale...</span>"), span_notice("Your skin suddenly appears lighter..."))
+					H.visible_message(span_warning("[H] выгляд[PLUR_IT_YAT(H)] немного бледным...</span>"), span_notice("Ваша кожа внезапно становится светлее..."))
 
 	return
-
 
 /*
 //////////////////////////////////////
@@ -61,7 +60,7 @@ BONUS
 
 /datum/symptom/revitiligo
 
-	name = "Revitiligo"
+	name = "Ревитилиго"
 	id = "revitiligo"
 	stealth = -3
 	resistance = -1
@@ -83,6 +82,6 @@ BONUS
 					H.s_tone = 85
 					H.update_body()
 				else
-					H.visible_message(span_warning("[H] looks a bit dark..."), span_warning("Your skin suddenly appears darker..."))
+					H.visible_message(span_warning("[H] выгляд[PLUR_IT_YAT(H)] немного темнее..."), span_warning("Ваша кожа внезапно становится темнее..."))
 
 	return

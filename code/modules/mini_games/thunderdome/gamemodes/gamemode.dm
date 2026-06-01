@@ -1,7 +1,3 @@
-#define CQC_ARENA_RADIUS	6 //how much tiles away from a center players will spawn
-#define RANGED_ARENA_RADIUS	10
-
-
 /**
  * This datum is designed to determine special settings for thunderdome battle.
  */
@@ -17,7 +13,6 @@
 /datum/thunderdome_gamemode/melee
 	name = "Thunderdome Melee Challenge"
 	arena_radius = CQC_ARENA_RADIUS
-	preview_icon = "thunderman_preview_CqC"
 	brawler_type = /obj/effect/mob_spawn/human/thunderdome/cqc
 	random_items_count = 2
 	item_pool = list(
@@ -37,6 +32,7 @@
 		/obj/item/storage/toolbox/syndicate = 1,
 		/obj/item/storage/box/syndie_kit/mantisblade = 1,
 		/obj/item/CQC_manual = 1,
+		/obj/item/storage/belt/security/judobelt = 1,
 		/obj/item/sleeping_carp_scroll = 1,
 		/obj/item/clothing/gloves/fingerless/rapid = 1,
 		/obj/item/storage/box/thunderdome/spears = 1,
@@ -54,7 +50,7 @@
 		/obj/item/storage/box/syndie_kit/dangertray = 1,
 		/obj/item/gun/magic/hook = 1,
 		/obj/item/twohanded/bamboospear = 1,
-		/obj/item/twohanded/required/chainsaw = 1,
+		/obj/item/twohanded/chainsaw_handmade = 1,
 		/obj/item/kitchen/knife/butcher/meatcleaver = 1,
 		/obj/item/rune_scimmy = 1,
 		/obj/item/twohanded/spear/bonespear/chitinspear = 1,
@@ -64,8 +60,7 @@
 		/obj/item/gun/magic/staff/spellblade = 1,
 		/obj/item/spellbook/oneuse/goliath_dash = 1,
 		/obj/item/his_grace/no_sound = 1,
-		)
-
+	)
 
 /datum/thunderdome_gamemode/ranged
 	name = "Thunderdome Ranger Challenge"
@@ -77,11 +72,12 @@
 	item_pool = list(
 		/obj/item/gun/energy/immolator/multi = 2,
 		/obj/item/gun/energy/gun/minigun = 1,
-		/obj/item/gun/projectile/automatic/mini_uzi = 2,
+		/obj/item/gun/projectile/automatic/smg/mini_uzi = 2,
 		/obj/item/gun/projectile/automatic/pistol/deagle = 2,
-		/obj/item/gun/projectile/automatic/wt550 = 2,
+		/obj/item/storage/box/syndie_kit/rsh12_revolver = 1,
+		/obj/item/gun/projectile/automatic/smg/wt550 = 2,
 		/obj/item/gun/projectile/automatic/l6_saw = 1,
-		/obj/item/gun/projectile/automatic/lasercarbine = 2,
+		/obj/item/gun/projectile/automatic/ik60 = 2,
 		/obj/item/gun/projectile/automatic/shotgun/bulldog = 2,
 		/obj/item/gun/projectile/revolver/mateba = 4,
 		/obj/item/gun/projectile/shotgun/automatic = 2,
@@ -90,8 +86,8 @@
 		/obj/item/gun/projectile/shotgun/riot/buckshot = 3,
 		/obj/item/gun/projectile/shotgun/boltaction = 1,
 		/obj/item/gun/projectile/shotgun/automatic/combat = 2,
-		/obj/item/gun/projectile/automatic/pistol/APS = 2,
-		/obj/item/gun/projectile/automatic/pistol/sp8/sp8ar = 1,
+		/obj/item/gun/projectile/automatic/pistol/aps = 2,
+		/obj/item/gun/projectile/automatic/pistol/sp8 = 1,
 		/obj/item/gun/projectile/automatic/pistol/m1911 = 2,
 		/obj/item/gun/projectile/revolver/golden = 2,
 		/obj/item/gun/projectile/revolver/nagant = 2,
@@ -113,16 +109,17 @@
 		/obj/item/gun/energy/decloner = 1,
 		/obj/item/gun/projectile/shotgun/automatic/dual_tube = 2,
 		/obj/item/gun/projectile/automatic/gyropistol = 2,
-		/obj/item/gun/projectile/automatic/sfg = 2,
-		/obj/item/gun/projectile/automatic/sp91rc = 2,
+		/obj/item/gun/projectile/automatic/smg/sfg = 2,
+		/obj/item/gun/projectile/automatic/smg/sp91rc = 2,
+		/obj/item/gun/projectile/automatic/smg/sparkle_a12 = 2,
 		/obj/item/gun/projectile/automatic/m90 = 2,
-		/obj/item/gun/projectile/automatic/rusted/aksu = 2,
-		/obj/item/gun/projectile/automatic/rusted/ppsh = 2,
+		/obj/item/gun/projectile/automatic/aks74u = 2,
+		/obj/item/gun/projectile/automatic/smg/ppsh = 2,
 		/obj/item/gun/projectile/automatic/shotgun/minotaur = 2,
 		/obj/item/gun/projectile/automatic/lr30 = 2,
 		/obj/item/gun/energy/sniperrifle = 1,
 		/obj/item/gun/energy/sniperrifle/pod_pilot = 1,
-		/obj/item/gun/energy/shock_revolver = 2,
+		/obj/item/gun/energy/tesla_cannon = 2,
 		/obj/item/gun/energy/pulse/turret = 1,
 		/obj/item/gun/energy/plasma_pistol = 2,
 		/obj/item/gun/energy/laser/scatter = 2,
@@ -130,7 +127,7 @@
 		/obj/item/gun/magic/staff/spellblade = 1,
 		/obj/item/spellbook/oneuse/goliath_dash = 1,
 		/obj/item/spellbook/oneuse/forcewall = 1,
-		)
+	)
 
 /datum/thunderdome_gamemode/mixed
 	name = "Thunderdome Mixed Challenge"
@@ -142,22 +139,24 @@
 	item_pool = list(
 		/obj/item/gun/energy/immolator/multi = 1,
 		/obj/item/gun/energy/gun/minigun = 1,
-		/obj/item/gun/projectile/automatic/mini_uzi = 1,
+		/obj/item/gun/projectile/automatic/smg/mini_uzi = 1,
 		/obj/item/gun/projectile/automatic/pistol/deagle = 1,
-		/obj/item/gun/projectile/automatic/wt550 = 1,
+		/obj/item/storage/box/syndie_kit/rsh12_revolver = 1,
+		/obj/item/gun/projectile/automatic/smg/wt550 = 1,
 		/obj/item/gun/projectile/automatic/l6_saw = 1,
-		/obj/item/gun/projectile/automatic/lasercarbine = 1,
+		/obj/item/gun/projectile/automatic/ik60 = 1,
 		/obj/item/gun/projectile/automatic/shotgun/bulldog = 1,
 		/obj/item/gun/magic/staff/slipping = 1,
 		/obj/item/gun/projectile/revolver/mateba = 3,
 		/obj/item/gun/projectile/shotgun/automatic = 2,
 		/obj/item/gun/projectile/shotgun/riot = 2,
+		/obj/item/gun/projectile/shotgun/winchester = 2,
 		/obj/item/gun/projectile/automatic/ak814 = 1,
 		/obj/item/gun/projectile/shotgun/riot/buckshot = 3,
 		/obj/item/gun/projectile/shotgun/boltaction = 1,
 		/obj/item/gun/projectile/shotgun/automatic/combat = 2,
-		/obj/item/gun/projectile/automatic/pistol/APS = 1,
-		/obj/item/gun/projectile/automatic/pistol/sp8/sp8ar = 1,
+		/obj/item/gun/projectile/automatic/pistol/aps = 1,
+		/obj/item/gun/projectile/automatic/pistol/sp8 = 1,
 		/obj/item/gun/projectile/automatic/pistol/m1911 = 1,
 		/obj/item/gun/projectile/revolver/golden = 1,
 		/obj/item/gun/projectile/revolver/nagant = 1,
@@ -183,6 +182,7 @@
 		/obj/item/storage/toolbox/syndicate = 1,
 		/obj/item/storage/box/syndie_kit/mantisblade = 1,
 		/obj/item/CQC_manual = 1,
+		/obj/item/storage/belt/security/judobelt = 1,
 		/obj/item/sleeping_carp_scroll = 1,
 		/obj/item/clothing/gloves/fingerless/rapid = 1,
 		/obj/item/storage/box/thunderdome/spears = 1,
@@ -207,22 +207,23 @@
 		/obj/item/gun/energy/decloner = 1,
 		/obj/item/gun/projectile/shotgun/automatic/dual_tube = 2,
 		/obj/item/gun/projectile/automatic/gyropistol = 1,
-		/obj/item/gun/projectile/automatic/sfg = 1,
-		/obj/item/gun/projectile/automatic/sp91rc = 1,
+		/obj/item/gun/projectile/automatic/smg/sfg = 1,
+		/obj/item/gun/projectile/automatic/smg/sp91rc = 1,
+		/obj/item/gun/projectile/automatic/smg/sparkle_a12 = 2,
 		/obj/item/gun/projectile/automatic/m90 = 1,
-		/obj/item/gun/projectile/automatic/rusted/aksu = 1,
-		/obj/item/gun/projectile/automatic/rusted/ppsh = 1,
+		/obj/item/gun/projectile/automatic/aks74u = 1,
+		/obj/item/gun/projectile/automatic/smg/ppsh = 1,
 		/obj/item/gun/projectile/automatic/shotgun/minotaur = 1,
 		/obj/item/gun/projectile/automatic/lr30 = 1,
 		/obj/item/gun/energy/sniperrifle = 1,
 		/obj/item/gun/energy/sniperrifle/pod_pilot = 1,
-		/obj/item/gun/energy/shock_revolver = 1,
+		/obj/item/gun/energy/tesla_cannon = 1,
 		/obj/item/gun/energy/pulse/turret = 1,
 		/obj/item/gun/energy/plasma_pistol = 1,
 		/obj/item/gun/energy/laser/scatter = 1,
 		/obj/item/gun/energy/bsg/prebuilt = 1,
 		/obj/item/twohanded/bamboospear = 1,
-		/obj/item/twohanded/required/chainsaw = 1,
+		/obj/item/twohanded/chainsaw_handmade = 1,
 		/obj/item/kitchen/knife/butcher/meatcleaver = 1,
 		/obj/item/rune_scimmy = 1,
 		/obj/item/twohanded/spear/bonespear/chitinspear = 1,
@@ -233,4 +234,4 @@
 		/obj/item/spellbook/oneuse/goliath_dash = 1,
 		/obj/item/spellbook/oneuse/forcewall = 1,
 		/obj/item/his_grace/no_sound = 1,
-		)
+	)

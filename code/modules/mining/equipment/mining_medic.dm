@@ -2,18 +2,15 @@
 Almost every mining medic related stuff
 */
 
+/obj/machinery/camera/portable/no_ai
+
+/obj/machinery/camera/portable/no_ai/can_AI_see(ai)
+	return FALSE
+
 /obj/item/clothing/accessory/camera
 	name = "mining camera"
 	desc = "Небольшая нагрудная видеокамера, обладающая массивным датчиком, позволяющим считывать датчики костюма с основной станции. \
 			Данный тип камер позволяет вести трансляцию как на планшет шахтёрского врача, так и в развлекательную сеть станции."
-	ru_names = list(
-		NOMINATIVE = "шахтёрская видеокамера",
-		GENITIVE = "шахтёрской видеокамеры",
-		DATIVE = "шахтёрской видеокамере",
-		ACCUSATIVE = "шахтёрскую видеокамеру",
-		INSTRUMENTAL = "шахтёрской видеокамерой",
-		PREPOSITIONAL = "шахтёрской видеокамере"
-	)
 	gender = FEMALE
 	lefthand_file = 'icons/mob/inhands/lavaland/misc_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/lavaland/misc_righthand.dmi'
@@ -26,7 +23,7 @@ Almost every mining medic related stuff
 	/// Is our camera on
 	var/on = FALSE
 	/// Our portable camera
-	var/obj/machinery/camera/portable/camera
+	var/obj/machinery/camera/portable/no_ai/camera
 	/// Can we see camera from intertainment network?
 	var/news_feed = FALSE
 	/// Main feed network
@@ -34,10 +31,22 @@ Almost every mining medic related stuff
 	/// Can detect multiz sensors
 	var/multiz = TRUE
 
+/obj/item/clothing/accessory/camera/get_ru_names()
+	return list(
+		NOMINATIVE = "шахтёрская видеокамера",
+		GENITIVE = "шахтёрской видеокамеры",
+		DATIVE = "шахтёрской видеокамере",
+		ACCUSATIVE = "шахтёрскую видеокамеру",
+		INSTRUMENTAL = "шахтёрской видеокамерой",
+		PREPOSITIONAL = "шахтёрской видеокамере",
+	)
+
 /obj/item/clothing/accessory/camera/Destroy()
-	GLOB.active_video_cameras -= src
-	camera.c_tag = null
-	QDEL_NULL(camera)
+	if(camera) // null until we activate
+		GLOB.active_entertainment_cameras -= camera
+		camera.c_tag = null
+		QDEL_NULL(camera)
+
 	return ..()
 
 /obj/item/clothing/accessory/camera/examine(mob/user)
@@ -77,13 +86,13 @@ Almost every mining medic related stuff
 /obj/item/clothing/accessory/camera/proc/update_camera_state(mob/living/carbon/user, force = FALSE)
 	if(on)
 		if(news_feed)
-			GLOB.active_video_cameras -= src
+			GLOB.active_entertainment_cameras -= camera
 		camera.c_tag = null
 		QDEL_NULL(camera)
 	else
 		if(news_feed)
 			camera = new(src, list(feed, "news"), user.name)
-			GLOB.active_video_cameras |= src
+			GLOB.active_entertainment_cameras |= camera
 		else
 			camera = new(src, list(feed), user.name)
 	on = !on
@@ -91,7 +100,7 @@ Almost every mining medic related stuff
 	if(!force)
 		balloon_alert(user, "камера [on ? "в" : "вы"]ключена")
 
-	for(var/obj/machinery/computer/security/telescreen/entertainment/TV in GLOB.machines)
+	for(var/obj/machinery/computer/security/telescreen/entertainment/TV in SSmachines.get_by_type(/obj/machinery/computer/security/telescreen/entertainment))
 		TV.update_icon(UPDATE_OVERLAYS)
 
 /obj/item/clothing/accessory/camera/update_icon_state()
@@ -113,38 +122,41 @@ Almost every mining medic related stuff
 
 /obj/item/clothing/accessory/camera/security
 	name = "security camera"
-	desc = "Небольшая нагрудная камера с логотипом НаноТрейзен. Окрашена в чёрные цвета. Позволяет демонстрировать ваше пренебрежение законом в прямом эфире. \
+	desc = "Небольшая нагрудная камера с логотипом \"Нанотрейзен\". Окрашена в чёрные цвета. Позволяет демонстрировать ваше пренебрежение законом в прямом эфире. \
 			Данный тип камер позволяет вести трансляцию как на планшет службы безопасности, так и в развлекательную сеть станции."
-	ru_names = list(
+	icon_state = "sec_camera"
+	item_state = "sec_camera"
+	slot = ACCESSORY_SLOT_DECOR //No one will remove their holster for a camera
+	feed = "secfeed"
+
+/obj/item/clothing/accessory/camera/security/get_ru_names()
+	return list(
 		NOMINATIVE = "нагрудная видеокамера",
 		GENITIVE = "нагрудной видеокамеры",
 		DATIVE = "нагрудной видеокамере",
 		ACCUSATIVE = "нагрудную видеокамеру",
 		INSTRUMENTAL = "нагрудной видеокамерой",
-		PREPOSITIONAL = "нагрудной видеокамере"
+		PREPOSITIONAL = "нагрудной видеокамере",
 	)
-	icon_state = "sec_camera"
-	item_state = "sec_camera"
-	slot = ACCESSORY_SLOT_DECOR //No one will remove their holster for a camera
-	feed = "secfeed"
-	multiz = TRUE //maybe change that, for now true
 
 /obj/item/storage/box/mining_cameras
 	name = "mining camera box"
 	desc = "Небольшая коробка, предназначенная для хранения шахтёрских видеокамер."
-	ru_names = list(
+	icon_state = "mining_camera_box"
+	storage_slots =  12
+	max_combined_w_class = INFINITY
+	can_hold = list(
+		/obj/item/clothing/accessory/camera,
+	)
+
+/obj/item/storage/box/mining_cameras/get_ru_names()
+	return list(
 		NOMINATIVE = "коробка с шахтёрскими видеокамерами",
 		GENITIVE = "коробки с шахтёрскими видеокамерами",
 		DATIVE = "коробке с шахтёрскими видеокамерами",
 		ACCUSATIVE = "коробку с шахтёрскими видеокамерами",
 		INSTRUMENTAL = "коробкой с шахтёрскими видеокамерами",
-		PREPOSITIONAL = "коробке с шахтёрскими видеокамерами"
-	)
-	icon_state = "mining_camera_box"
-	storage_slots =  12
-	max_combined_w_class = INFINITY
-	can_hold = list(
-		/obj/item/clothing/accessory/camera
+		PREPOSITIONAL = "коробке с шахтёрскими видеокамерами",
 	)
 
 /obj/item/storage/box/mining_cameras/populate_contents()
@@ -154,15 +166,17 @@ Almost every mining medic related stuff
 /obj/item/storage/box/sec_cameras
 	name = "mining camera box"
 	desc = "Небольшая коробка, предназначенная для хранения нагрудных видеокамер службы безопасности."
-	ru_names = list(
+	icon_state = "security_camera_box"
+
+/obj/item/storage/box/sec_cameras/get_ru_names()
+	return list(
 		NOMINATIVE = "коробка с нагрудными видеокамерами",
 		GENITIVE = "коробки с нагрудными видеокамерами",
 		DATIVE = "коробке с нагрудными видеокамерами",
 		ACCUSATIVE = "коробку с нагрудными видеокамерами",
 		INSTRUMENTAL = "коробкой с нагрудными видеокамерами",
-		PREPOSITIONAL = "коробке с нагрудными видеокамерами"
+		PREPOSITIONAL = "коробке с нагрудными видеокамерами",
 	)
-	icon_state = "security_camera_box"
 
 /obj/item/storage/box/sec_cameras/populate_contents()
 	for(var/i in 1 to 12)
@@ -170,20 +184,22 @@ Almost every mining medic related stuff
 
 /obj/item/camera_bug/mining
 	name = "mining camera monitor"
-	desc = "Небольшое устройство, считывающее данные с шахтёрских видеокамер. Позволяет следить за тем, как шахтёры борятся за жизнь на просторах Лаваленда."
-	ru_names = list(
-		NOMINATIVE = "шахтёрский монитор видеокамер",
-		GENITIVE = "шахтёрского монитора видеокамер",
-		DATIVE = "шахтёрскому монитору видеокамер",
-		ACCUSATIVE = "шахтёрский монитор видеокамер",
-		INSTRUMENTAL = "шахтёрским монитором видеокамер",
-		PREPOSITIONAL = "шахтёрском мониторе видеокамер"
-	)
+	desc = "Небольшое устройство, считывающее данные с шахтёрских видеокамер. Позволяет следить за тем, как шахтёры борятся за жизнь на просторах Лазиса."
 	icon_state = "mining_monitor"
 	lefthand_file = 'icons/mob/inhands/lavaland/misc_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/lavaland/misc_righthand.dmi'
 	item_state = "mining_monitor"
 	origin_tech = "engineering=3"
+
+/obj/item/camera_bug/mining/get_ru_names()
+	return list(
+		NOMINATIVE = "шахтёрский монитор видеокамер",
+		GENITIVE = "шахтёрского монитора видеокамер",
+		DATIVE = "шахтёрскому монитору видеокамер",
+		ACCUSATIVE = "шахтёрский монитор видеокамер",
+		INSTRUMENTAL = "шахтёрским монитором видеокамер",
+		PREPOSITIONAL = "шахтёрском мониторе видеокамер",
+	)
 
 /obj/item/camera_bug/mining/Initialize(mapload)
 	. = ..()
@@ -192,19 +208,21 @@ Almost every mining medic related stuff
 /obj/item/camera_bug/security
 	name = "security camera monitor"
 	desc = "Небольшой планшет, считывающий данные с нагрудных камер службы безопасности. Позволяет вам наблюдать в прямом эфире, как ваши офицеры поддерживают закон и порядок на станции. Данная модель крайне уязвима к ионным бурям."
-	ru_names = list(
-		NOMINATIVE = "офицерский монитор видеокамер",
-		GENITIVE = "офицерского монитора видеокамер",
-		DATIVE = "офицерскому монитору видеокамер",
-		ACCUSATIVE = "офицерский монитор видеокамер",
-		INSTRUMENTAL = "офицерским монитором видеокамер",
-		PREPOSITIONAL = "офицерском мониторе видеокамер"
-	)
 	icon_state = "sec_monitor"
 	lefthand_file = 'icons/mob/inhands/lavaland/misc_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/lavaland/misc_righthand.dmi'
 	item_state = "sec_monitor"
 	origin_tech = "engineering=3"
+
+/obj/item/camera_bug/security/get_ru_names()
+	return list(
+		NOMINATIVE = "офицерский монитор видеокамер",
+		GENITIVE = "офицерского монитора видеокамер",
+		DATIVE = "офицерскому монитору видеокамер",
+		ACCUSATIVE = "офицерский монитор видеокамер",
+		INSTRUMENTAL = "офицерским монитором видеокамер",
+		PREPOSITIONAL = "офицерском мониторе видеокамер",
+	)
 
 /obj/item/camera_bug/security/Initialize(mapload)
 	. = ..()

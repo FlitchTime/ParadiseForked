@@ -1,27 +1,27 @@
 /*
-/mob/living/carbon/human/say(message, verb = "says", sanitize = TRUE, ignore_speech_problems = FALSE, ignore_atmospherics = FALSE, ignore_languages = FALSE)
+/mob/living/carbon/human/say(message, verb = "говор%(ит,ят)%", sanitize = TRUE, ignore_speech_problems = FALSE, ignore_atmospherics = FALSE, ignore_languages = FALSE)
 	..(message, sanitize = sanitize, ignore_speech_problems = ignore_speech_problems, ignore_atmospherics = ignore_atmospherics)	//ohgod we should really be passing a datum here.
 */
 
 /mob/living/carbon/human/GetAltName()
 	if(name != GetVoice())
-		return " (as [get_id_name("Unknown")])"
+		return " (как [get_id_name(UNKNOWN_NAME_RUS)])"
 	return ..()
 
-
-/mob/living/carbon/human/say_understands(mob/other, datum/language/speaking = null)
+/mob/living/carbon/human/say_understands(atom/movable/other, datum/language/speaking = null)
 	if(dna?.species?.can_understand(other))
 		return TRUE
 
-	//These only pertain to common. Languages are handled by mob/say_understands()
-	if(!speaking)
-		if(isnymph(other) && LAZYLEN(other.languages) >= 2)	//They've sucked down some blood and can speak common now.
-			return TRUE
+	// These only pertain to common. Languages are handled by mob/say_understands()
+	if(!speaking && ismob(other))
+		if(isnymph(other))
+			var/mob/nymph = other
+			if(length(nymph.languages) >= 2) // They've sucked down some blood and can speak common now.
+				return TRUE
 		if(issilicon(other) || isbot(other) || isbrain(other) || isslime(other))
 			return TRUE
 
 	return ..()
-
 
 /mob/living/carbon/human/proc/HasVoiceChanger()
 	for(var/obj/item/gear in list(wear_mask, wear_suit, head))
@@ -39,7 +39,6 @@
 
 	return FALSE
 
-
 /mob/living/carbon/human/proc/HasTTSVoiceChanger()
 	for(var/obj/item/gear in list(wear_mask, wear_suit, head))
 		if(!gear)
@@ -50,7 +49,6 @@
 			return changer.tts_voice
 
 	return FALSE
-
 
 /mob/living/carbon/human/GetVoice()
 	var/has_changer = HasVoiceChanger()
@@ -67,7 +65,6 @@
 
 	return real_name
 
-
 /mob/living/carbon/human/GetTTSVoice()
 	var/has_changer_tts = HasTTSVoiceChanger()
 
@@ -83,7 +80,6 @@
 
 	return dna.tts_seed_dna
 
-
 /mob/living/carbon/human/IsVocal()
 	var/obj/item/organ/internal/cyberimp/mouth/translator/translator = get_organ_slot(INTERNAL_ORGAN_SPEECH_TRANSLATOR)
 	if(translator?.active && !mind?.miming)
@@ -95,7 +91,7 @@
 	if(TRAIT_NO_VOCAL_CORDS in dna?.species.inherent_traits)
 		return FALSE
 
-	// how do species that don't breathe talk? magic, that's what.
+	// How do species that don't breathe talk? magic, that's what.
 	var/breathes = !HAS_TRAIT(src, TRAIT_NO_BREATH)
 	var/obj/item/organ/internal/lungs = get_organ_slot(INTERNAL_ORGAN_LUNGS)
 	if((breathes && !lungs) || (breathes && lungs && lungs.is_dead()))
@@ -109,32 +105,25 @@
 /mob/living/carbon/human/cannot_speak_loudly()
 	return getOxyLoss() > 10 || AmountLoseBreath() >= 8 SECONDS
 
-
 /mob/living/carbon/human/proc/SetSpecialVoice(new_voice)
 	if(new_voice)
 		special_voice = new_voice
 
-
 /mob/living/carbon/human/proc/UnsetSpecialVoice()
 	special_voice = ""
 
-
 /mob/living/carbon/human/proc/GetSpecialVoice()
 	return special_voice
-
 
 /mob/living/carbon/human/proc/SetSpecialTTSVoice(new_voice)
 	if(new_voice)
 		special_tts_voice = new_voice
 
-
 /mob/living/carbon/human/proc/UnsetSpecialTTSVoice()
 	special_tts_voice = ""
 
-
 /mob/living/carbon/human/proc/GetSpecialTTSVoice()
 	return special_tts_voice
-
 
 /mob/living/carbon/human/handle_speech_problems(list/message_pieces, verb)
 	var/span = ""
@@ -204,7 +193,6 @@
 
 	return list("verb" = verb)
 
-
 /mob/living/carbon/human/handle_message_mode(message_mode, list/message_pieces, verb, used_radios)
 	switch(message_mode)
 		if(INTERCOM_MODE)
@@ -263,7 +251,6 @@
 					if(r_ear.talk_into(src, message_pieces, message_mode, verb))
 						return FALSE
 
-
 /mob/living/carbon/human/handle_speech_sound()
 	var/list/returns[3]
 	if(dna.species.speech_sounds && prob(dna.species.speech_chance))
@@ -271,7 +258,6 @@
 		returns[2] = 50
 		returns[3] = get_age_pitch()
 	return returns
-
 
 /mob/living/carbon/human/binarycheck()
 	. = FALSE
@@ -285,7 +271,6 @@
 		R = r_ear
 		if(R.translate_binary)
 			. = TRUE
-
 
 /mob/living/carbon/human/proc/forcesay(list/append)
 	if(stat != CONSCIOUS || !client)

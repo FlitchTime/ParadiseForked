@@ -26,8 +26,11 @@
 /mob/proc/CanContractDisease(datum/disease/D)
 	return TRUE
 
+/mob/living/carbon/true_devil/CanContractDisease(datum/disease/D)
+	return FALSE
+
 /mob/living/carbon/human/CanContractDisease(datum/disease/D)
-	if(!D.ignore_immunity && HAS_TRAIT(src, TRAIT_VIRUSIMMUNE))
+	if(!D.ignore_immunity && HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) || HAS_TRAIT(src, TRAIT_ABSOLUTE_VIRUSIMMUNE))
 		return FALSE
 	for(var/thing in D.required_organs)
 		if(!((locate(thing) in bodyparts) || (locate(thing) in internal_organs)))
@@ -70,7 +73,7 @@
 	return FALSE
 
 /mob/living/CheckBitesProtection(datum/disease/virus/V, zone = BODY_ZONE_CHEST)
-	return ..() || prob(run_armor_check(zone, "melee") / V.permeability_mod)
+	return ..() || prob(run_armor_check(zone, MELEE) / V.permeability_mod)
 
 /mob/living/carbon/human/CheckContactProtection(datum/disease/virus/V, zone)
 	if(..())
@@ -80,7 +83,7 @@
 	if(!zone)
 		zone_text = pick(40; BODY_ZONE_HEAD, 40; BODY_ZONE_CHEST, 10; BODY_ZONE_L_ARM, 10; BODY_ZONE_L_LEG)
 	else
-		if(istype(zone, /obj/item/organ/external))
+		if(isexternalorgan(zone))
 			var/obj/item/organ/external/E = zone
 			zone_text = E.limb_zone
 		else
@@ -132,7 +135,6 @@
 	if(istype(Clothing) && prob(100 * (1 - Clothing.permeability_coefficient)))
 		return TRUE
 	return FALSE
-
 
 /mob/proc/check_smart_brain()
 	return FALSE

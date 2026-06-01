@@ -4,7 +4,6 @@
  */
 /mob/living/proc/update_transform(resize = RESIZE_DEFAULT_SIZE)
 	var/matrix/ntransform = matrix(transform) //aka transform.Copy()
-	var/final_pixel_y = base_pixel_y + body_position_pixel_y_offset
 	/**
 	 * pixel x/y/w/z all discard values after the decimal separator.
 	 * That, coupled with the rendered interpolation, may make the
@@ -15,9 +14,9 @@
 	var/abs_pixel_y_offset = 0
 	var/translate = 0
 	if(current_size != RESIZE_DEFAULT_SIZE)
-		var/standing_offset = get_pixel_y_offset_standing(current_size)
+		var/standing_offset = get_transform_translation_size(current_size)
 		abs_pixel_y_offset = abs(standing_offset)
-		translate = (abs_pixel_y_offset - round(abs_pixel_y_offset)) * SIGN(standing_offset)
+		translate = (abs_pixel_y_offset - round(abs_pixel_y_offset)) * sign(standing_offset)
 	var/final_dir = dir
 	var/changed = FALSE
 
@@ -36,6 +35,7 @@
 	if(resize != RESIZE_DEFAULT_SIZE)
 		changed = TRUE
 		var/is_vertical = !lying_angle || !rotate_on_lying
+		var/new_translation = get_transform_translation_size(resize * current_size)
 		///scaling also affects translation, so we've to undo the old translate beforehand.
 		if(translate && is_vertical)
 			ntransform.Translate(0, -translate)
@@ -46,42 +46,32 @@
 		body_maptext_height_offset = initial(maptext_height) * (current_size - 1) * 0.5
 		maptext_height += body_maptext_height_offset - old_maptext_offset
 		//Update final_pixel_y so our mob doesn't go out of the southern bounds of the tile when standing
-		if(is_vertical) //But not if the mob has been rotated.
-			//Make sure the body position y offset is also updated
-			body_position_pixel_y_offset = get_pixel_y_offset_standing(current_size)
-			abs_pixel_y_offset = abs(body_position_pixel_y_offset)
-			var/new_translate = (abs_pixel_y_offset - round(abs_pixel_y_offset)) * SIGN(body_position_pixel_y_offset)
-			if(new_translate)
-				ntransform.Translate(0, new_translate)
-			final_pixel_y = base_pixel_y + body_position_pixel_y_offset
+		if(is_vertical && new_translation)
+			ntransform.Translate(0, new_translation)
 
 	if(!changed) //Nothing has been changed, nothing has to be done.
 		return
 
-	SEND_SIGNAL(src, COMSIG_PAUSE_FLOATING_ANIM, 0.3 SECONDS)
+	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, UPDATE_TRANSFORM_TRAIT)
+	addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_NO_FLOATING_ANIM, UPDATE_TRANSFORM_TRAIT), 0.3 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	//if true, we want to avoid any animation time, it'll tween and not rotate at all otherwise.
-	var/is_opposite_angle = SIMPLIFY_DEGREES(lying_angle + 180) == lying_prev
-	animate(src, transform = ntransform, time = is_opposite_angle ? 0 : UPDATE_TRANSFORM_ANIMATION_TIME, pixel_y = final_pixel_y, dir = final_dir, easing = (EASE_IN|EASE_OUT))
+	var/is_opposite_angle = REVERSE_ANGLE(lying_angle) == lying_prev
+	var/animate_time = is_opposite_angle ? 0 : UPDATE_TRANSFORM_ANIMATION_TIME
+	animate(src, transform = ntransform, time = animate_time, dir = final_dir, easing = (EASE_IN|EASE_OUT))
+
 	handle_transform_change()
 
 	SEND_SIGNAL(src, COMSIG_LIVING_POST_UPDATE_TRANSFORM, resize, lying_angle, is_opposite_angle)
 
-
 /mob/living/proc/handle_transform_change()
 	return
-
-
-/mob/living/carbon
-	var/list/overlays_standing[TOTAL_LAYERS]
-
 
 /mob/living/carbon/proc/apply_overlay(cache_index)
 	. = overlays_standing[cache_index]
 	if(.)
 		add_overlay(.)
 	SEND_SIGNAL(src, COMSIG_CARBON_APPLY_OVERLAY, cache_index, .)
-
 
 /mob/living/carbon/proc/remove_overlay(cache_index)
 	. = overlays_standing[cache_index]
@@ -90,72 +80,59 @@
 		overlays_standing[cache_index] = null
 	SEND_SIGNAL(src, COMSIG_CARBON_REMOVE_OVERLAY, cache_index, .)
 
-
-/mob/living/carbon/update_inv_handcuffed()
+/mob/living/carbon/update_worn_handcuffs()
 	remove_overlay(HANDCUFF_LAYER)
-	if(handcuffed)
-		overlays_standing[HANDCUFF_LAYER] = mutable_appearance(handcuffed.onmob_sheets[ITEM_SLOT_HANDCUFFED_STRING], "[handcuffed.item_state]_hands", layer = -HANDCUFF_LAYER)
+	if(!handcuffed)
+		return
+	var/mutable_appearance/handcuff_overlay = mutable_appearance(handcuffed.onmob_sheets[ITEM_SLOT_HANDCUFFED_STRING], "[handcuffed.item_state]_hands", layer = -HANDCUFF_LAYER)
+	if(handcuffed.blocks_emissive != EMISSIVE_BLOCK_NONE)
+		handcuff_overlay.overlays += emissive_blocker(handcuff_overlay.icon, handcuff_overlay.icon_state, src, alpha = handcuff_overlay.alpha)
+
+	overlays_standing[HANDCUFF_LAYER] = handcuff_overlay
 	apply_overlay(HANDCUFF_LAYER)
 
-
-/mob/living/carbon/update_inv_legcuffed()
+/mob/living/carbon/update_worn_legcuffs()
 	remove_overlay(LEGCUFF_LAYER)
-	if(legcuffed)
-		overlays_standing[LEGCUFF_LAYER] = mutable_appearance(legcuffed.onmob_sheets[ITEM_SLOT_LEGCUFFED_STRING], "[legcuffed.item_state]_legs", layer = -LEGCUFF_LAYER)
+	//clear_alert("legcuffed")
+	if(!legcuffed)
+		return
+
+	overlays_standing[LEGCUFF_LAYER] = mutable_appearance(legcuffed.onmob_sheets[ITEM_SLOT_LEGCUFFED_STRING], "[legcuffed.item_state]_legs", layer = -LEGCUFF_LAYER)
 	apply_overlay(LEGCUFF_LAYER)
+	//throw_alert("legcuffed", /atom/movable/screen/alert/restrained/legcuffed, new_master = src.legcuffed)
 
+/mob/living/carbon/update_held_items()
+	. = ..()
+	remove_overlay(HANDS_LAYER)
+	if(handcuffed)
+		drop_all_held_items()
+		return
 
-/mob/living/carbon/update_inv_r_hand()
-	remove_overlay(R_HAND_LAYER)
-	if(r_hand)
-		if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
-			r_hand.screen_loc = ui_rhand
-			client.screen += r_hand
-			for(var/mob/dead/observer/observe as anything in inventory_observers)
-				if(observe.client && observe.client.eye == src && observe.do_observe_target == src)
-					observe.client.screen += r_hand
-				else
-					LAZYREMOVE(inventory_observers, observe)
+	overlays_standing[HANDS_LAYER] = get_held_overlays()
+	apply_overlay(HANDS_LAYER)
 
-		var/t_state = r_hand.item_state ? r_hand.item_state : r_hand.icon_state
-
-		var/mutable_appearance/standing
-		if(dna && r_hand.sprite_sheets_inhand?[dna.species.name])
-			standing = mutable_appearance(r_hand.sprite_sheets_inhand[dna.species.name], "[t_state]_r", layer = -R_HAND_LAYER)
+/// Generate held item overlays
+/mob/living/carbon/proc/get_held_overlays()
+	var/list/hands = list()
+	for(var/obj/item/item in list(l_hand, r_hand))
+		update_item_on_hud(item, item == r_hand ? ui_rhand : ui_lhand)
+		var/icon_file
+		var/override_icon_state
+		var/species_name = dna && item.sprite_sheets_inhand?[dna.species.name] ? dna.species.name : null
+		if(species_name)
+			override_icon_state = item.item_state || item.icon_state
+			if(r_hand == item)
+				override_icon_state += "_r"
+			else
+				override_icon_state += "_l"
 		else
-			standing = mutable_appearance(r_hand.righthand_file, "[t_state]", layer = -R_HAND_LAYER)
-			standing = center_image(standing, r_hand.inhand_x_dimension, r_hand.inhand_y_dimension)
-		standing.color = r_hand.color
-		standing.alpha = r_hand.alpha
-		overlays_standing[R_HAND_LAYER] = standing
-	apply_overlay(R_HAND_LAYER)
+			if(r_hand == item)
+				icon_file = item.righthand_file
+			else
+				icon_file = item.lefthand_file
 
-
-/mob/living/carbon/update_inv_l_hand()
-	remove_overlay(L_HAND_LAYER)
-	if(l_hand)
-		if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
-			l_hand.screen_loc = ui_lhand
-			client.screen += l_hand
-			for(var/mob/dead/observer/observe as anything in inventory_observers)
-				if(observe.client && observe.client.eye == src && observe.do_observe_target == src)
-					observe.client.screen += l_hand
-				else
-					LAZYREMOVE(inventory_observers, observe)
-
-		var/t_state = l_hand.item_state ? l_hand.item_state : l_hand.icon_state
-
-		var/mutable_appearance/standing
-		if(dna && l_hand.sprite_sheets_inhand?[dna.species.name])
-			standing = mutable_appearance(l_hand.sprite_sheets_inhand[dna.species.name], "[t_state]_l", layer = -L_HAND_LAYER)
-		else
-			standing = mutable_appearance(l_hand.lefthand_file, "[t_state]", layer = -L_HAND_LAYER)
-			standing = center_image(standing, l_hand.inhand_x_dimension, l_hand.inhand_y_dimension)
-		standing.color = l_hand.color
-		standing.alpha = l_hand.alpha
-		overlays_standing[L_HAND_LAYER] = standing
-	apply_overlay(L_HAND_LAYER)
-
+		hands += item.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = icon_file, override_state = override_icon_state, isinhands = TRUE)
+	return hands
 
 /// Changes item's screen_loc position and adds it on client screen.
 /// If togleable_inventory is set to `TRUE`, additionally `/datum/hud/var/inventory_shown` will be checked.
@@ -190,14 +167,12 @@
 		return .
 	update_z_overlays(GET_TURF_PLANE_OFFSET(new_turf), TRUE)
 
-
 /mob/living/carbon/proc/refresh_loop(iter_cnt, rebuild = FALSE)
 	for(var/i in 1 to iter_cnt)
 		update_z_overlays(1, rebuild)
 		sleep(3)
 		update_z_overlays(0, rebuild)
 		sleep(3)
-
 
 // Rebuilding is a hack. We should really store a list of indexes into our existing overlay list or SOMETHING
 // IDK. will work for now though, which is a lot better then not working at all
@@ -212,12 +187,11 @@
 			continue
 		overlays_standing[i] = update_appearance_planes(cache_grouping, new_offset)
 
-
 #define NEXT_PARENT_COMMAND "next_parent"
 /// Takes a list of mutable appearances
 /// Returns a list in the form:
 /// 1 - a list of all mutable appearances that would need to be updated to change planes in the event of a z layer change, alnongside the commands required
-/// 	to properly track parents to update
+///	to properly track parents to update
 /// 2 - a list of all parents that will require updating
 /proc/build_planeed_apperance_queue(list/mutable_appearance/appearances)
 	var/list/queue
@@ -270,7 +244,7 @@
 		// We only need to loop over half the deltas to swap all the entries, any more and it'd be redundant
 		// We floor so as to avoid over flipping, and ending up flipping "back" a delta
 		// etc etc
-		var/target = FLOOR((upper_parent - lower_parent) / 2, 1)
+		var/target = floor((upper_parent - lower_parent) / 2)
 		for(var/delta_index in 1 to target)
 			var/old_lower = queue[lower_parent + delta_index]
 			queue[lower_parent + delta_index] = queue[upper_parent - delta_index]
@@ -304,7 +278,6 @@
 	// And when walked backwards allow for proper plane updating
 	var/list/return_pack = list(queue, parent_indexes)
 	return return_pack
-
 
 /atom/proc/update_appearance_planes(list/mutable_appearance/appearances, new_offset)
 	var/list/build_list = build_planeed_apperance_queue(appearances)

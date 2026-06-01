@@ -10,7 +10,7 @@
 
 /datum/outfit/devil_lawyer/post_equip(mob/living/carbon/human/human, visualsOnly = FALSE)
 	var/obj/item/card/id/id = human.wear_id
-    
+
 	if(!istype(id) || id.assignment) // either doesn't have a card, or the card is already written to
 		return
 
@@ -20,7 +20,7 @@
 	if(devilinfo)
 		name_to_use = devilinfo.info.truename // Having hell create an ID for you causes its risks
 
-	id.name = "[name_to_use]'s ID Card (Lawyer)"
+	id.name = "[name_to_use]’s ID Card (Lawyer)"
 	id.registered_name = name_to_use
 	id.assignment = "Lawyer"
 	id.rank = id.assignment

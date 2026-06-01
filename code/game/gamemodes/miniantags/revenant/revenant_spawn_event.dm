@@ -3,8 +3,7 @@
 /datum/event/revenant
 	var/key_of_revenant
 
-
-/datum/event/revenant/proc/get_revenant(var/end_if_fail = 0)
+/datum/event/revenant/proc/get_revenant(end_if_fail = 0)
 	var/deadMobs = 0
 	for(var/mob/M in GLOB.dead_mob_list)
 		deadMobs++
@@ -13,8 +12,8 @@
 		return
 
 	spawn()
-		var/list/candidates = SSghost_spawns.poll_candidates("Do you want to play as a revenant?", ROLE_REVENANT, TRUE, source = /mob/living/simple_animal/revenant)
-		if(!candidates.len)
+		var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите занять роль Ревенанта?", ROLE_REVENANT, TRUE, source = /mob/living/simple_animal/revenant)
+		if(!length(candidates))
 			key_of_revenant = null
 			kill()
 			return
@@ -50,3 +49,5 @@
 
 /datum/event/revenant/start()
 	get_revenant()
+
+#undef REVENANT_SPAWN_THRESHOLD

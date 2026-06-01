@@ -17,7 +17,7 @@ Bonus
 
 /datum/symptom/damage_converter
 
-	name = "Toxic Compensation"
+	name = "Компенсация токсинов"
 	id = "damage_converter"
 	stealth = 1
 	resistance = -4
@@ -41,7 +41,7 @@ Bonus
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 
-		var/list/parts = H.get_damaged_organs(1, 1, AFFECT_ORGANIC_ORGAN) //1,1 because it needs inputs.
+		var/list/parts = H.get_damaged_organs(1, 1, AFFECT_ORGANIC_EXTERNAL_PARTS) //1,1 because it needs inputs.
 
 		if(!length(parts))
 			return
@@ -74,7 +74,4 @@ Bonus
 			return
 
 	return 1
-
-
-
 

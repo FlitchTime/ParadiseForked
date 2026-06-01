@@ -31,6 +31,7 @@
 		TRAIT_NO_BIOCHIPS,
 		TRAIT_NO_CYBERIMPLANTS,
 		TRAIT_SPECIES_LIMBS,
+		TRAIT_NO_NUTRITION_EFFECTS,
 	)
 	clothing_flags = HAS_SOCKS
 	default_hair_colour = "#000000"
@@ -39,11 +40,11 @@
 	skinned_type = /obj/item/stack/sheet/wood
 
 	blood_species = "Diona"
-	blood_color = "#004400"
+	blood_color = BLOOD_COLOR_DIONA
 	flesh_color = "#907E4A"
 	butt_sprite = "diona"
 
-	reagent_tag = PROCESS_ORG
+	reagent_tag = ORGANIC
 
 	has_organ = list(
 		INTERNAL_ORGAN_LIVER = /obj/item/organ/internal/liver/diona,
@@ -88,9 +89,9 @@
 	)
 
 /datum/species/diona/can_understand(mob/other)
-	if(istype(other, /mob/living/simple_animal/diona))
+	if(isnymph(other))
 		return TRUE
-	
+
 	return FALSE
 
 /datum/species/diona/on_species_gain(mob/living/carbon/human/H)
@@ -98,12 +99,10 @@
 	H.gender = NEUTER
 	add_verb(H, /mob/living/carbon/human/proc/emote_creak)
 
-
 /datum/species/diona/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	remove_verb(H, /mob/living/carbon/human/proc/emote_creak)
 	H.clear_alert("nolight")
-
 
 /datum/species/diona/handle_reagents(mob/living/carbon/human/H, datum/reagent/R)
 
@@ -158,3 +157,7 @@
 /datum/species/diona/pod //Same name and everything; we want the same limitations on them; we just want their regeneration to kick in at all times and them to have special factions
 	pod = TRUE
 	inherent_factions = list("plants", "vines")
+
+
+/datum/species/diona/compressor_grind(location)
+	new /obj/item/reagent_containers/food/snacks/vegisalad(location)

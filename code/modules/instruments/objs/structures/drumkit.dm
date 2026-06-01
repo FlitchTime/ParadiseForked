@@ -4,7 +4,6 @@
 
 	icon = 'icons/obj/musician.dmi'
 	icon_state = "drumkit"
-	anchored = FALSE
 	density = TRUE
 	can_buckle = TRUE
 	buckle_lying = 0
@@ -65,7 +64,6 @@
 					buckled_mob.pixel_x = -2
 					buckled_mob.pixel_y = 0
 
-
 //BUCKLE HOOKS
 /obj/structure/musician/drumkit/is_user_buckle_possible(mob/living/target, mob/user, check_loc = TRUE)
 	if(!anchored)
@@ -73,10 +71,8 @@
 		return FALSE
 	return ..()
 
-
 /obj/structure/musician/drumkit/post_buckle_mob(mob/living/target)
 	handle_offsets()
-
 
 /obj/structure/musician/drumkit/post_unbuckle_mob(mob/living/target)
 	song.stop_playing()
@@ -84,16 +80,14 @@
 	target.pixel_x = 0
 	target.pixel_y = 0
 
-
 /obj/structure/musician/drumkit/examine(mob/user)
 	. = ..()
 	if(!anchored)
-		. += span_info("You can <b>Alt-Click</b> [src] to rotate it.")
+		. += span_notice("You can <b>Alt-Click</b> [src] to rotate it.")
 
 /obj/structure/musician/drumkit/click_alt(mob/living/user)
 	rotate(user)
 	return CLICK_ACTION_SUCCESS
-
 
 /obj/structure/musician/drumkit/proc/rotate(mob/living/user)
 	if(user)

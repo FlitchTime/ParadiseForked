@@ -7,8 +7,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/head/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -20,8 +20,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/chest/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -33,8 +33,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/groin/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -46,8 +46,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/arm/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -70,8 +70,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/leg/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -94,8 +94,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/foot/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -118,8 +118,8 @@
 	encased = null
 	status = ORGAN_ROBOT
 	emp_resistant = TRUE
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
 
 /obj/item/organ/external/hand/ipc/Initialize(mapload, special = ORGAN_MANIPULATION_NOEFFECT)
 	. = ..()
@@ -141,48 +141,51 @@
 	species_type = /datum/species/machine
 	name = "microbattery"
 	desc = "Маленькая, но мощная батарея, используемая для питания роботизированных систем. Такие устанавливаются в КПБ."
-	ru_names = list(
+	gender = FEMALE
+	icon = 'icons/obj/engines_and_power/power.dmi'
+	icon_state = "scell"
+	slot = INTERNAL_ORGAN_HEART
+	vital = TRUE
+	status = ORGAN_ROBOT
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
+
+/obj/item/organ/internal/cell/get_ru_names()
+	return list(
 		NOMINATIVE = "микробатарея",
 		GENITIVE = "микробатареи",
 		DATIVE = "микробатарее",
 		ACCUSATIVE = "микробатарею",
 		INSTRUMENTAL = "микробатареей",
-		PREPOSITIONAL = "микробатарее"
+		PREPOSITIONAL = "микробатарее",
 	)
-	gender = FEMALE
-	icon = 'icons/obj/engines_and_power/power.dmi'
-	icon_state = "scell"
-	parent_organ_zone = BODY_ZONE_CHEST
-	slot = INTERNAL_ORGAN_HEART
-	vital = TRUE
-	status = ORGAN_ROBOT
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
 
 /obj/item/organ/internal/eyes/optical_sensor
 	species_type = /datum/species/machine
 	name = "optical sensor"
 	desc = "Сенсор, оснащённый светочувствительной матрицей, выполняет зрительную функцию. Такие устанавливаются в КПБ."
-	ru_names = list(
-		NOMINATIVE = "оптический сенсор",
-		GENITIVE = "оптического сенсора",
-		DATIVE = "оптическому сенсору",
-		ACCUSATIVE = "оптический сенсор",
-		INSTRUMENTAL = "оптическим сенсором",
-		PREPOSITIONAL = "оптическом сенсоре"
-	)
 	gender = MALE
 	icon = 'icons/obj/robot_component.dmi'
 	icon_state = "camera"
 	status = ORGAN_ROBOT
 //	dead_icon = "camera_broken"
 	weld_proof = 1
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
+
+/obj/item/organ/internal/eyes/optical_sensor/get_ru_names()
+	return list(
+		NOMINATIVE = "оптический сенсор",
+		GENITIVE = "оптического сенсора",
+		DATIVE = "оптическому сенсору",
+		ACCUSATIVE = "оптический сенсор",
+		INSTRUMENTAL = "оптическим сенсором",
+		PREPOSITIONAL = "оптическом сенсоре",
+	)
 
 /obj/item/organ/internal/eyes/optical_sensor/remove(mob/living/user, special = ORGAN_MANIPULATION_DEFAULT)
 	if(!special)
-		to_chat(owner, span_userdanger("Ошибка #404: ОПТИЧЕСКИЙ СЕНСОР - не обнаружено."))
+		to_chat(owner, span_userdanger("Ошибка #404: ОПТИЧЕСКИЙ СЕНСОР — не обнаружено."))
 
 	. = ..()
 
@@ -190,23 +193,25 @@
 	species_type = /datum/species/machine
 	name = "positronic brain"
 	desc = "Компьютер, обладающий огромной вычислительной мощностью, содержит внутри себя синтетический разум. Именно здесь и находится сознание КПБ."
-	ru_names = list(
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
+
+/obj/item/organ/internal/brain/mmi_holder/posibrain/get_ru_names()
+	return list(
 		NOMINATIVE = "позитронный мозг",
 		GENITIVE = "позитронного мозга",
 		DATIVE = "позитронному мозгу",
 		ACCUSATIVE = "позитронный мозг",
 		INSTRUMENTAL = "позитронным мозгом",
-		PREPOSITIONAL = "позитронном мозге"
+		PREPOSITIONAL = "позитронном мозге",
 	)
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
 
-/obj/item/organ/internal/brain/mmi_holder/posibrain/New()
-	..()
+/obj/item/organ/internal/brain/mmi_holder/posibrain/Initialize(mapload)
+	. = ..()
 	stored_mmi = new /obj/item/mmi/robotic_brain/positronic(src)
 	if(!owner)
 		stored_mmi.forceMove(get_turf(src))
-		qdel(src)
+		return INITIALIZE_HINT_QDEL
 
 /obj/item/organ/internal/brain/mmi_holder/posibrain/remove(mob/living/user, special = ORGAN_MANIPULATION_DEFAULT)
 	if(stored_mmi && dna)
@@ -225,22 +230,24 @@
 	species_type = /datum/species/machine
 	name = "microphone"
 	desc = "Пара микрофонов. Используются для получения аудиальной информации об окружающей среде. Такие устанавливаются в КПБ."
-	ru_names = list(
+	icon = 'icons/obj/device.dmi'
+	icon_state = "taperecorder_idle"
+	status = ORGAN_ROBOT
+	dead_icon = "taperecorder_empty"
+	pickup_sound = 'sound/items/handling/pickup/component_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/component_drop.ogg'
+
+/obj/item/organ/internal/ears/microphone/get_ru_names()
+	return list(
 		NOMINATIVE = "парные микрофоны",
 		GENITIVE = "парных микрофонов",
 		DATIVE = "парным микрофонам",
 		ACCUSATIVE = "парные микрофоны",
 		INSTRUMENTAL = "парными микрофонами",
-		PREPOSITIONAL = "парных микрофонах"
+		PREPOSITIONAL = "парных микрофонах",
 	)
-	icon = 'icons/obj/device.dmi'
-	icon_state = "taperecorder_idle"
-	status = ORGAN_ROBOT
-	dead_icon = "taperecorder_empty"
-	pickup_sound = 'sound/items/handling/component_pickup.ogg'
-	drop_sound = 'sound/items/handling/component_drop.ogg'
 
 /obj/item/organ/internal/ears/microphone/remove(mob/living/user, special = ORGAN_MANIPULATION_DEFAULT)
 	if(!special)
-		to_chat(owner, span_userdanger("Ошибка #406: МИКРОФОН - не обнаружено."))
+		to_chat(owner, span_userdanger("Ошибка #406: МИКРОФОН — не обнаружено."))
 	. = ..()

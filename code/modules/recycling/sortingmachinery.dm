@@ -1,7 +1,7 @@
 /obj/structure/bigDelivery
 	name = "large parcel"
 	desc = "A big wrapped package."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/boxes.dmi'
 	icon_state = "deliverycloset"
 	density = TRUE
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
@@ -11,11 +11,9 @@
 	var/sortTag = 0
 	var/cc_tag
 
-
 /obj/structure/bigDelivery/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
-
 
 /obj/structure/bigDelivery/Destroy(force)
 	var/turf/our_turf = get_turf(src)
@@ -26,20 +24,17 @@
 	wrapped = null
 	return ..()
 
-
 /obj/structure/bigDelivery/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
 	SIGNAL_HANDLER
 
 	if(!hasmob && sortTag)
 		disposal_holder.destinationTag = sortTag
 
-
-/obj/structure/bigDelivery/ex_act(severity)
+/obj/structure/bigDelivery/ex_act(severity, target)
 	for(var/atom/movable/thing as anything in contents)
 		thing.ex_act()
 		CHECK_TICK
-	..()
-
+	return ..()
 
 /obj/structure/bigDelivery/examine(mob/user)
 	. = ..()
@@ -48,13 +43,12 @@
 	if(cc_tag)
 		. += span_notice("The package will be addressed to the [cc_tag] on Centomm.")
 
-
 /obj/structure/bigDelivery/attack_hand(mob/user)
 	var/turf/our_turf = get_turf(src)
 	playsound(our_turf, 'sound/items/poster_ripped.ogg', 50, TRUE)
 	if(wrapped)
 		wrapped.forceMove(our_turf)
-		if(istype(wrapped, /obj/structure/closet))
+		if(iscloset(wrapped))
 			var/obj/structure/closet/closet = wrapped
 			closet.add_fingerprint(user)
 			closet.welded = init_welded
@@ -64,17 +58,15 @@
 		thing.forceMove(our_turf)
 	qdel(src)
 
-
 /obj/structure/bigDelivery/update_icon_state()
 	if(!wrapped)
 		icon_state = initial(icon_state)
 		return
-	var/holding_crate = istype(wrapped, /obj/structure/closet/crate)
+	var/holding_crate = is_crate(wrapped)
 	if(giftwrapped)
-		icon_state = holding_crate ? "giftcrate" : "giftcloset"
+		icon_state = holding_crate ? "deliverycrate" : "deliverycloset"
 		return
 	icon_state = "delivery[holding_crate ? "crate" : "closet"][(sortTag || cc_tag) ? "_labeled" : ""]"	// label should be an overlay
-
 
 /obj/structure/bigDelivery/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -131,6 +123,8 @@
 		)
 		giftwrapped = TRUE
 		update_icon(UPDATE_ICON_STATE)
+		greyscale_config = text2path("/datum/greyscale_config/gift[icon_state]")
+		set_greyscale_colors(colors = paper.greyscale_colors)
 		if(create_tube)
 			var/obj/item/c_tube/tube = new(user.drop_location())
 			tube.add_fingerprint(user)
@@ -138,27 +132,25 @@
 
 	return ..()
 
-
 /obj/item/smallDelivery
 	name = "small parcel"
 	desc = "A small wrapped package."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "deliverycrateSmall"
-	item_state = "deliverypackage"
+	icon = 'icons/obj/storage/boxes.dmi'
+	righthand_file = 'icons/mob/inhands/storage_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/storage_lefthand.dmi'
+	icon_state = "deliverycrate1"
+	item_state = "delivery_crate5"
 	var/obj/item/wrapped
 	var/giftwrapped = FALSE
 	var/sortTag = 0
-
 
 /obj/item/smallDelivery/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
 
-
 /obj/item/smallDelivery/Destroy()
 	QDEL_NULL(wrapped)
 	return ..()
-
 
 /obj/item/smallDelivery/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
 	SIGNAL_HANDLER
@@ -166,19 +158,16 @@
 	if(!hasmob && sortTag)
 		disposal_holder.destinationTag = sortTag
 
-
-/obj/item/smallDelivery/ex_act(severity)
+/obj/item/smallDelivery/ex_act(severity, target)
 	for(var/atom/movable/thing as anything in contents)
 		thing.ex_act()
 		CHECK_TICK
-	..()
-
+	return ..()
 
 /obj/item/smallDelivery/emp_act(severity)
 	..()
 	for(var/atom/movable/thing as anything in contents)
 		thing.emp_act(severity)
-
 
 /obj/item/smallDelivery/attack_self(mob/user)
 	if(wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
@@ -187,7 +176,6 @@
 		wrapped = null
 	playsound(loc, 'sound/items/poster_ripped.ogg', 50, TRUE)
 	qdel(src)
-
 
 /obj/item/smallDelivery/update_icon_state()
 	if(!wrapped)
@@ -201,10 +189,9 @@
 	else
 		weight_number = wrapped.w_class
 	if(giftwrapped)
-		icon_state = "giftcrate[weight_number]"
+		icon_state = "deliverypackage[weight_number]"
 		return
 	icon_state = "deliverycrate[weight_number][sortTag ? "_labeled" : ""]"	// label should be an overlay
-
 
 /obj/item/smallDelivery/attackby(obj/item/I, mob/user, params)
 	if(is_pen(I))
@@ -254,6 +241,8 @@
 		)
 		giftwrapped = TRUE
 		update_icon(UPDATE_ICON_STATE)
+		greyscale_config = text2path("/datum/greyscale_config/gift[icon_state]")
+		set_greyscale_colors(colors = paper.greyscale_colors)
 		if(create_tube)
 			var/obj/item/c_tube/tube = new(user.drop_location())
 			tube.add_fingerprint(user)
@@ -261,10 +250,8 @@
 
 	return ..()
 
-
 /obj/item/stack/packageWrap
 	name = "package wrapper"
-	icon = 'icons/obj/items.dmi'
 	icon_state = "deliveryPaper"
 	singular_name = "package wrapper"
 	item_flags = NOBLUDGEON
@@ -282,9 +269,8 @@
 		/obj/item/mecha_parts/chassis
 	))
 
-
-/obj/item/stack/packageWrap/afterattack(obj/target, mob/user, proximity, params)
-	if(!proximity)
+/obj/item/stack/packageWrap/afterattack(obj/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!proximity_flag)
 		return
 	if(!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
 		return
@@ -317,7 +303,7 @@
 		item.add_fingerprint(user)
 		package.update_icon(UPDATE_ICON_STATE)
 
-	else if(istype(target, /obj/structure/closet))
+	else if(iscloset(target))
 		var/obj/structure/closet/container = target
 		if(container.opened)
 			to_chat(user, span_warning("The [container.name] should be closed."))
@@ -344,7 +330,7 @@
 		package.add_fingerprint(user)
 		container.add_fingerprint(user)
 		package.update_icon(UPDATE_ICON_STATE)
-		if(!istype(container, /obj/structure/closet/crate))
+		if(!is_crate(container))
 			container.welded = TRUE
 
 	else
@@ -360,7 +346,6 @@
 	if(create_tube) //if we used our last wrapping paper, drop a cardboard tube
 		var/obj/item/c_tube/tube = new(user.drop_location())
 		tube.add_fingerprint(user)
-
 
 /obj/item/destTagger
 	name = "destination tagger"
@@ -427,43 +412,41 @@
 			var/destination_id = clamp(text2num(params["destination"]), 1, length(GLOB.TAGGERLOCATIONS))
 			if(currTag != destination_id)
 				currTag = destination_id
-				playsound(src, "terminal_type", 25, TRUE)
+				playsound(src, SFX_TERMINAL_TYPE, 25, TRUE)
 			currcc_tag = null
 
 		if("select_cc_destination")
 			if(currcc_tag != params["destination"])
 				currcc_tag = params["destination"]
-				playsound(src, "terminal_type", 25, TRUE)
+				playsound(src, SFX_TERMINAL_TYPE, 25, TRUE)
 
 	add_fingerprint(usr)
-
 
 /obj/item/shippingPackage
 	name = "Shipping package"
 	desc = "A pre-labeled package for shipping an item to coworkers."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/boxes.dmi'
+	righthand_file = 'icons/mob/inhands/storage_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/storage_lefthand.dmi'
 	icon_state = "shippack"
+	item_state = "shippack"
 	var/obj/item/wrapped = null
 	var/sortTag = 0
 	var/sealed = FALSE
-
 
 /obj/item/shippingPackage/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
 
-
 /obj/item/shippingPackage/Destroy()
 	QDEL_NULL(wrapped)
 	return ..()
-
 
 /obj/item/shippingPackage/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
 	SIGNAL_HANDLER
 
 	if(!hasmob && sortTag && sealed)
 		disposal_holder.destinationTag = sortTag
-
 
 /obj/item/shippingPackage/attackby(obj/item/I, mob/user, params)
 	add_fingerprint(user)
@@ -500,7 +483,6 @@
 	wrapped = I
 	return ATTACK_CHAIN_BLOCKED_ALL
 
-
 /obj/item/shippingPackage/attack_self(mob/user)
 	if(sealed)
 		wrapped.forceMove(drop_location())
@@ -529,10 +511,8 @@
 		user.temporarily_remove_item_from_inventory(src, force = TRUE)
 		qdel(src)
 
-
 /obj/item/shippingPackage/update_icon_state()
 	icon_state = "shippack[sealed ? "_sealed" : ""]"
-
 
 /obj/item/shippingPackage/update_desc(updates = ALL)
 	. = ..()

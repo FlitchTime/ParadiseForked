@@ -1,5 +1,5 @@
 /datum/ai_behavior/battle_screech/dog
-	screeches = list("barks","howls")
+	screeches = list("лает", "рявкает", "воет")
 
 /// Fetching makes the pawn chase after whatever it's targeting and pick it up when it's in range, with the dog_equip behavior
 /datum/ai_behavior/fetch
@@ -26,7 +26,6 @@
 			controller.blackboard[BB_FETCH_IGNORE_LIST][WEAKREF(target)] = TRUE
 		controller.blackboard[BB_FETCH_TARGET] = null
 		controller.blackboard[BB_FETCH_DELIVER_TO] = null
-
 
 /// This is simply a behaviour to pick up a fetch target
 /datum/ai_behavior/simple_equip/perform(delta_time, datum/ai_controller/controller)
@@ -64,8 +63,6 @@
 	carried_item.forceMove(get_turf(pawn))
 	controller.blackboard -= BB_SIMPLE_CARRY_ITEM
 	return TRUE
-
-
 
 /// This behavior involves dropping off a carried item to a specified person (or place)
 /datum/ai_behavior/deliver_item
@@ -123,10 +120,8 @@
 	if(QDELETED(snack)) // we ate it!
 		finish_action(controller, TRUE)
 
-
 /// This behavior involves either eating a snack we can reach, or begging someone holding a snack
 /datum/ai_behavior/play_dead
-	behavior_flags = NONE
 
 /datum/ai_behavior/play_dead/perform(delta_time, datum/ai_controller/controller)
 	. = ..()

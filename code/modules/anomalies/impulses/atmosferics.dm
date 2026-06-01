@@ -12,8 +12,15 @@
 
 /datum/anomaly_impulse/random_temp/impulse()
 	. = ..()
-	for(var/turf/simulated/turf in view(scale_by_strenght(range_low, range_high), owner))
-		turf?.air?.temperature += max(0, rand(temp_delta_low, temp_delta_high))
+	for(var/turf/simulated/turf in view(scale_by_strength(range_low, range_high), owner))
+		var/datum/milla_safe/anomaly_impulse_random_temp/milla = new()
+		milla.invoke_async(turf, temp_delta_low, temp_delta_high)
+
+/datum/milla_safe/anomaly_impulse_random_temp
+
+/datum/milla_safe/anomaly_impulse_random_temp/on_run(turf/turf, temp_delta_low, temp_delta_high)
+	var/datum/gas_mixture/env = get_turf_air(turf)
+	env.set_temperature(env.temperature() + max(0, rand(temp_delta_low, temp_delta_high)))
 
 /datum/anomaly_impulse/random_temp/tier1
 	period_low = 15 SECONDS
@@ -49,12 +56,13 @@
 
 /datum/anomaly_impulse/random_temp/tier4/impulse()
 	. = ..()
-	for(var/mob/living/mob in view(scale_by_strenght(range_low, range_high), owner))
+	for(var/mob/living/mob in view(scale_by_strength(range_low, range_high), owner))
 		mob.IgniteMob()
 
 /datum/anomaly_impulse/freese
 	name = "Заморозка"
 	desc = "Аномалия выпускает водяной пар понижает температуру окружающей среды, что приводит к образованию льда на полу."
+	stability_high = 50
 	/// Minimum range of effect.
 	var/range_low = 0
 	/// Maximum range of effect.
@@ -62,11 +70,11 @@
 
 /datum/anomaly_impulse/freese/impulse()
 	. = ..()
-	for(var/turf/simulated/turf in view(scale_by_strenght(range_low, range_high) * 2, owner))
-		if(turf.air)
-			turf.air.temperature = rand(0, 50)
+	for(var/turf/simulated/turf in view(scale_by_strength(range_low, range_high) * 2, owner))
+		var/datum/milla_safe/anomaly_set_temp/milla = new()
+		milla.invoke_async(turf)
 
-	for(var/turf/simulated/floor/turf in range(scale_by_strenght(range_low, range_high), owner))
+	for(var/turf/simulated/floor/turf in range(scale_by_strength(range_low, range_high), owner))
 		if(prob(100 - get_dist(turf, owner) * 5))
 			turf.MakeSlippery(TURF_WET_ICE, 120 SECONDS)
 
@@ -118,8 +126,8 @@
 
 /datum/anomaly_impulse/fire/impulse()
 	. = ..()
-	for(var/turf/simulated/turf in view(scale_by_strenght(range_low, range_high), owner))
-		var/gases_amount = scale_by_strenght(gases_low, gases_high)
+	for(var/turf/simulated/turf in view(scale_by_strength(range_low, range_high), owner))
+		var/gases_amount = scale_by_strength(gases_low, gases_high)
 		turf.atmos_spawn_air(LINDA_SPAWN_OXYGEN, gases_amount * 2/7)
 		turf.atmos_spawn_air(LINDA_SPAWN_HEAT | LINDA_SPAWN_TOXINS, gases_amount * 5/7)
 
@@ -128,7 +136,6 @@
 	period_high = 45 SECONDS
 	range_low = 1
 	range_high = 2
-	gases_low = 0
 	gases_high = 5
 
 /datum/anomaly_impulse/fire/tier2
@@ -136,7 +143,6 @@
 	period_high = 35 SECONDS
 	range_low = 1
 	range_high = 2
-	gases_low = 0
 	gases_high = 7
 
 /datum/anomaly_impulse/fire/tier3
@@ -144,7 +150,6 @@
 	period_high = 20 SECONDS
 	range_low = 1
 	range_high = 3
-	gases_low = 0
 	gases_high = 7
 
 /datum/anomaly_impulse/fire/tier4
@@ -177,10 +182,10 @@
 
 /datum/anomaly_impulse/dist_fire/impulse()
 	. = ..()
-	var/radius = scale_by_strenght(range_low, range_high)
+	var/radius = scale_by_strength(range_low, range_high)
 	var/turf/start = get_turf(owner)
-	var/gases_amount = scale_by_strenght(gases_low, gases_high)
-	for(var/i = 0 to scale_by_strenght(count_low, count_high))
+	var/gases_amount = scale_by_strength(gases_low, gases_high)
+	for(var/i = 0 to scale_by_strength(count_low, count_high))
 		var/try_x = start.x + rand(-radius, radius)
 		var/try_y = start.y + rand(-radius, radius)
 		try_x = clamp(try_x, 1, world.maxx)
@@ -188,7 +193,6 @@
 		var/turf/simulated/spawn_pos = get_turf(locate(try_x, try_y, start.z))
 		spawn_pos?.atmos_spawn_air(LINDA_SPAWN_OXYGEN, gases_amount * 2/7)
 		spawn_pos?.atmos_spawn_air(LINDA_SPAWN_HEAT | LINDA_SPAWN_TOXINS, gases_amount * 5/7)
-
 
 /datum/anomaly_impulse/atmosfastmove
 	name = "Рывок"
@@ -208,8 +212,8 @@
 /datum/anomaly_impulse/atmosfastmove/impulse()
 	. = ..()
 	var/dir = pick(GLOB.alldirs)
-	var/gases_amount = scale_by_strenght(gases_low, gases_high)
-	for(var/i = 0 to scale_by_strenght(range_low, range_high))
+	var/gases_amount = scale_by_strength(gases_low, gases_high)
+	for(var/i = 0 to scale_by_strength(range_low, range_high))
 		owner.do_move(dir)
 		var/turf/simulated/spawn_pos = get_turf(owner)
 		spawn_pos?.atmos_spawn_air(LINDA_SPAWN_OXYGEN, gases_amount * 2/7)

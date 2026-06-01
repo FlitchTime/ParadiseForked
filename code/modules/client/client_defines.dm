@@ -1,19 +1,54 @@
+/**
+ * Client datum
+ *
+ * A datum that is created whenever a user joins a BYOND world, one will exist for every active connected
+ * player
+ *
+ * when they first connect, this client object is created and [/client/New] is called
+ *
+ * When they disconnect, this client object is deleted and [/client/Del] is called
+ *
+ * All client topic calls go through [/client/Topic] first, so a lot of our specialised
+ * topic handling starts here
+ */
 /client
-		//////////////////////
-		//BLACK MAGIC THINGS//
-		//////////////////////
+	/**
+	 * This line makes clients parent type be a datum
+	 *
+	 * By default in byond if you define a proc on datums, that proc will exist on nearly every single type
+	 * from icons to images to atoms to mobs to objs to turfs to areas, it won't however, appear on client
+	 *
+	 * instead by default they act like their own independent type so while you can do isdatum(icon)
+	 * and have it return true, you can't do isdatum(client), it will always return false.
+	 *
+	 * This makes writing oo code hard, when you have to consider this extra special case
+	 *
+	 * This line prevents that, and has never appeared to cause any ill effects, while saving us an extra
+	 * pain to think about
+	 *
+	 * This line is widely considered black fucking magic, and the fact it works is a puzzle to everyone
+	 * involved, including the current engine developer, lummox
+	 *
+	 * If you are a future developer and the engine source is now available and you can explain why this
+	 * is the way it is, please do update this comment
+	 */
 	parent_type = /datum
 		////////////////
 		//ADMIN THINGS//
 		////////////////
-	/// hides the byond verb panel as we use our own custom version
+
+	/// Hides the byond verb panel as we use our own custom version.
 	show_verb_panel = FALSE
+	/// Contains admin info. Null if client is not an admin.
 	var/datum/admins/holder = null
 
-	var/last_message	= "" //contains the last message sent by this client - used to protect against copy-paste spamming.
-	var/last_message_count = 0 //contains a number of how many times a message identical to last_message was sent.
-	var/last_message_time = 0 //holds the last time (based on world.time) a message was sent
-	var/datum/pm_tracker/pm_tracker = new()
+	/// Contains the last message sent by this client - used to protect against copy-paste spamming.
+	var/last_message = ""
+	/// Contains a number of how many times a message identical to last_message was sent.
+	var/last_message_count = 0
+	/// Holds the last time (based on world.time) a message was sent.
+	var/last_message_time = 0
+	var/datum/pm_tracker/pm_tracker
 
 		/////////
 		//OTHER//
@@ -75,7 +110,6 @@
 	var/karma_spent = 0
 	var/karma_tab = 0
 
-
 	var/ip_intel = "Disabled"
 
 	var/datum/click_intercept/click_intercept = null
@@ -86,6 +120,7 @@
 	/// Overlay for showing debug info
 	var/atom/movable/screen/debugtextholder/debug_text_overlay
 
+	/// GeoIPdata about a current client
 	var/datum/geoip_data/geoip = null
 
 	//datum that controls the displaying and hiding of tooltips
@@ -93,6 +128,8 @@
 
 	// Donator stuff.
 	var/donator_level = 0
+	/// Hold flag about shown donate offer
+	var/donate_offer_text_shown = FALSE
 
 	// If set to true, this client can interact with atoms such as buttons and doors on top of regular machinery interaction
 	var/advanced_admin_interaction = FALSE
@@ -105,14 +142,20 @@
 	/// Messages currently seen by this client
 	var/list/seen_messages
 
-	/// list of tabs containing spells and abilities
+	/// list of tabs containing spells and abilities //TODO vakons actions: remove if not used
 	var/list/spell_tabs = list()
+
+	/// datum wrapper for client view
+	var/datum/view_data/view_size
 
 	/// our current tab
 	var/stat_tab
 
-	/// list of all tabs
+	/// List of all tabs
 	var/list/panel_tabs = list()
+
+	/// A lazy list of atoms we've examined in the last RECENT_EXAMINE_MAX_WINDOW (default 2) seconds, so that we will call [/atom/proc/examine_more] instead of [/atom/proc/examine] on them when examining
+	var/list/recent_examines
 
 	var/fullscreen = FALSE
 
@@ -190,11 +233,15 @@
 	var/list/atom/selected_target[2]
 	///Used in MouseDrag to preserve the original mouse click parameters
 	var/mouseParams = ""
-	///Used in MouseDrag to preserve the last mouse-entered location.
-	var/mouse_location_UID
-	///Used in MouseDrag to preserve the last mouse-entered object.
-	var/mouse_object_UID
-	///When we started the currently active drag
+	///Used in MouseDrag to preserve the last mouse-entered location. Weakref
+	var/datum/weakref/mouse_location_ref = null
+	///Used in MouseDrag to preserve the last mouse-entered object. Weakref
+	var/datum/weakref/mouse_object_ref
+	//Middle-mouse-button click dragtime control for aimbot exploit detection.
+	var/middragtime = 0
+	//Middle-mouse-button clicked object control for aimbot exploit detection. Weakref
+	var/datum/weakref/middle_drag_atom_ref
+	//When we started the currently active drag
 	var/drag_start = 0
 	//The params we were passed at the start of the drag, in list form
 	var/list/drag_details
@@ -220,9 +267,51 @@
 
 	var/tgui_panel_theme = "dark"
 
+	var/list/parallax_layers
+	var/list/parallax_layers_cached
+	var/atom/movable/screen/parallax_home/parallax_rock
+	var/atom/movable/movingmob
+	var/turf/previous_turf
+	/// world.time of when we can state animate()ing parallax again
+	var/dont_animate_parallax
+	/// Direction our current area wants to move parallax
+	var/parallax_movedir = 0
+	/// How many parallax layers to show our client
+	var/parallax_layers_max = 4
+	/// Timers for the area directional animation, one for each layer
+	var/list/parallax_animate_timers
+	/// Do we want to do parallax animations at all?
+	/// Exists to prevent laptop fires
+	var/do_parallax_animations = TRUE
+
+	var/list/ViewMods = list()
+	var/ViewModsActive = FALSE
+	var/ViewPreferedIconSize = 0
+
+	///these persist between logins/logouts during the same round.
+	var/datum/persistent_client/persistent_client
+
+	// This is needed to hold the selected player ckey for moving to and from pp/vuap
+	/// This is used to hold the ckey of the selected player for moving to and from the player panel and vuap
+	var/selectedPlayerCkey = ""
+	/// This is used to hold the mob of the selected player in case the ckey can't be found (this enables pp'ing soulless mobs)
+	var/VUAP_selected_mob = null
+
+	///Which ambient sound this client is currently being provided.
+	var/current_ambient_sound
+
 /client/vv_edit_var(var_name, var_value)
 	if(var_name == NAMEOF(src, tos_consent))
 		// I know we will never be in a world where admins are editing client vars to let people bypass TOS
 		// But guess what, if I have the ability to overengineer something, I am going to do it
 		return FALSE
+	switch(var_name)
+		if(NAMEOF(src, holder))
+			return FALSE
+		if(NAMEOF(src, ckey))
+			return FALSE
+		if(NAMEOF(src, key))
+			return FALSE
+		if(NAMEOF(src, donator_level))
+			return FALSE
 	return ..()

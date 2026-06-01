@@ -6,14 +6,13 @@
 	var/useGrille = 1
 	var/window_to_spawn_regular = /obj/structure/window/basic
 	var/window_to_spawn_full = /obj/structure/window/full/basic
-	anchored = TRUE // No sliding out while you prime
 
-/obj/effect/spawner/window/Initialize()
+/obj/effect/spawner/window/Initialize(mapload)
 	. = ..()
 	var/turf/T = get_turf(src)
 	for(var/obj/structure/grille/G in get_turf(src))
 		// Complain noisily
-		log_runtime(EXCEPTION("Extra grille on turf: ([T.x],[T.y],[T.z])"), src)
+		stack_trace("Extra grille on turf: ([T.x],[T.y],[T.z])")
 		qdel(G) //just in case mappers don't know what they are doing
 
 	if(!useFull && window_to_spawn_regular)
@@ -33,16 +32,12 @@
 	if(useGrille)
 		new /obj/structure/grille(get_turf(src))
 
-	air_update_turf(1) //atmos can pass otherwise
+	recalculate_atmos_connectivity() //atmos can pass otherwise
 	// Give some time for nearby window spawners to initialize
-	spawn(10)
-		qdel(src)
-	// why is this line a no-op
-	// QDEL_IN(src, 10)
+	QDEL_IN(src, 1 SECONDS)
 
 /obj/effect/spawner/window/proc/sync_id(obj/structure/window/reinforced/polarized/W)
 	return
-
 
 /obj/effect/spawner/window/reinforced
 	name = "reinforced window spawner"
@@ -77,7 +72,6 @@
 	name = "shuttle window spawner"
 	icon = 'icons/obj/smooth_structures/shuttle_window.dmi'
 	icon_state = "shuttle_window"
-	useFull = TRUE
 	window_to_spawn_regular = null
 	window_to_spawn_full = /obj/structure/window/full/shuttle
 

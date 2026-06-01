@@ -23,18 +23,15 @@
 	sheet_amount = 1
 	girder_type = /obj/structure/girder/cult_fake
 
-
 /turf/simulated/wall/cult/Initialize(mapload)
 	. = ..()
 	update_icon(UPDATE_ICON_STATE)
-
 
 /turf/simulated/wall/cult/update_icon_state()
 	if(SSticker?.cultdat && !holy)
 		icon_state = SSticker.cultdat.cult_wall_icon_state
 		return
 	icon_state = initial(icon_state)
-
 
 /turf/simulated/wall/cult_fake/Initialize(mapload)
 	. = ..()
@@ -85,7 +82,6 @@
 	desc = "A huge chunk of reinforced metal used to seperate rooms. It seems to have additional plating to protect against heat."
 	icon = 'icons/turf/walls/coated_reinforced_wall.dmi'
 	max_temperature = INFINITY
-	smooth = SMOOTH_BITMASK
 	icon_state = "coated_reinforced_wall-0"
 	base_icon_state = "coated_reinforced_wall"
 
@@ -98,7 +94,6 @@
 	icon = 'icons/turf/walls/clockwork_wall.dmi'
 	canSmoothWith = SMOOTH_GROUP_CLOCKWORK_WALLS
 	smoothing_groups = SMOOTH_GROUP_CLOCKWORK_WALLS
-	smooth = SMOOTH_BITMASK
 	explosion_block = 2
 	hardness = 10
 	slicing_duration = 80
@@ -110,14 +105,12 @@
 	var/obj/effect/clockwork/overlay/wall/realappearance
 
 /turf/simulated/wall/clockwork/fake
-	name = "clockwork wall"
 	desc = "A huge chunk of warm metal. The clanging of machinery emanates in the corner of your eyes. Maybe just a wind..."
 	sheet_type = /obj/item/stack/sheet/brass_fake
-	sheet_amount = 1
 	girder_type = /obj/structure/clockwork/wall_gear/fake
 	baseturf = /turf/simulated/floor/clockwork/fake
 
-/turf/simulated/wall/clockwork/Initialize()
+/turf/simulated/wall/clockwork/Initialize(mapload)
 	. = ..()
 	new /obj/effect/temp_visual/ratvar/wall(src)
 	new /obj/effect/temp_visual/ratvar/beam(src)
@@ -145,7 +138,7 @@
 	if(devastated)
 		devastate_wall()
 	else
-		playsound(src, 'sound/items/welder.ogg', 100, 1)
+		playsound(src, 'sound/items/welder.ogg', 100, TRUE)
 		var/newgirder = break_wall()
 		if(newgirder) //maybe we want a gear!
 			transfer_fingerprints_to(newgirder)
@@ -156,11 +149,11 @@
 /turf/simulated/wall/clockwork/devastate_wall()
 	new sheet_type(src, sheet_amount)
 
-/turf/simulated/wall/clockwork/mech_melee_attack(obj/mecha/M)
+/turf/simulated/wall/clockwork/mech_melee_attack(obj/mecha/mech, obj/item/mecha_parts/mecha_equipment/selected_module = null)
 	..()
 	if(heated)
-		to_chat(M.occupant, span_userdanger("The wall's intense heat completely reflects your [M.name]'s attack!"))
-		M.take_damage(20, BURN)
+		to_chat(mech.occupant, span_userdanger("The wall's intense heat completely reflects your [mech.name]'s attack!"))
+		mech.take_damage(20, BURN)
 
 /turf/simulated/wall/clockwork/proc/turn_up_the_heat()
 	if(!heated)

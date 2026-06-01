@@ -32,7 +32,7 @@
 	},
 /area/ruin/space/pirate_base/black_market)
 "br" = (
-/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/delivery/hollow,
 /obj/structure/closet/crate/syndicate{
 	name = "crate 60k"
 	},
@@ -43,7 +43,7 @@
 /obj/item/ammo_box/magazine/sfg9mm{
 	pixel_x = 7
 	},
-/obj/item/gun/projectile/automatic/sfg,
+/obj/item/gun/projectile/automatic/smg/sfg,
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -88,7 +88,7 @@
 	},
 /obj/item/gun/projectile/automatic/pistol,
 /obj/item/gun/projectile/automatic/pistol,
-/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/delivery/hollow,
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -125,14 +125,14 @@
 	},
 /area/ruin/space/pirate_base/black_market)
 "ev" = (
-/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/delivery/hollow,
 /obj/structure/closet/crate/syndicate{
 	name = "crate 20k"
 	},
 /obj/item/ammo_box/magazine/toy/smgm45/riot,
 /obj/item/ammo_box/magazine/toy/smgm45/riot,
 /obj/item/ammo_box/magazine/toy/smgm45/riot,
-/obj/item/gun/projectile/automatic/c20r/toy,
+/obj/item/gun/projectile/automatic/smg/c20r/toy,
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -209,7 +209,9 @@
 /turf/simulated/floor/indestructible/plating,
 /area/ruin/space/pirate_base/black_market)
 "iU" = (
-/obj/effect/decal/warning_stripes/northeastcorner,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 4
+	},
 /obj/effect/light_emitter{
 	light_color = "#FFBF00";
 	light_range = 6
@@ -335,7 +337,9 @@
 /turf/simulated/floor/indestructible/plating,
 /area/ruin/space/pirate_base/black_market)
 "oP" = (
-/obj/effect/decal/warning_stripes/southeastcorner,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 2
+	},
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -364,8 +368,8 @@
 	allow_species_pick = 0;
 	mob_gender = "male";
 	name = "Pirate";
-	flavour_text = "Вы и ваша группа имеют долг перед синдикатом. Выберите главу, пишите факсы с запросом задач к синдикату. Выполняйте их, зарабатывайте на новое оборудование и оплату долга в 200 тысяч кредитов. Помните что вы не мажор, и не можете устраивать резню ради резни.";
-	description = "Вы пират, пират который должен синдикату. Выполняйте задачи и зарабатывайте на оплату долга.";
+	flavour_text = "Вы и ваша группа имеют долг перед \"Синдикатом\". Выберите главу, пишите факсы с запросом задач к \"Синдикату\". Выполняйте их, зарабатывайте на новое оборудование и оплату долга в 200 тысяч кредитов. Помните что вы не мажор, и не можете устраивать резню ради резни.";
+	description = "Вы пират, пират который должен \"Синдикату\". Выполняйте задачи и зарабатывайте на оплату долга.";
 	facial_hair_style = "Up Mustache";
 	hair_style = "Manbun"
 	},
@@ -526,8 +530,8 @@
 	allow_species_pick = 0;
 	mob_gender = "male";
 	name = "Pirate";
-	flavour_text = "Вы и ваша группа имеют долг перед синдикатом. Выберите главу, пишите факсы с запросом задач к синдикату. Выполняйте их, зарабатывайте на новое оборудование и оплату долга в 200 тысяч кредитов. Помните что вы не мажор, и не можете устраивать резню ради резни.";
-	description = "Вы пират, пират который должен синдикату. Выполняйте задачи и зарабатывайте на оплату долга.";
+	flavour_text = "Вы и ваша группа имеют долг перед \"Синдикатом\". Выберите главу, пишите факсы с запросом задач к \"Синдикату\". Выполняйте их, зарабатывайте на новое оборудование и оплату долга в 200 тысяч кредитов. Помните что вы не мажор, и не можете устраивать резню ради резни.";
+	description = "Вы пират, пират который должен \"Синдикату\". Выполняйте задачи и зарабатывайте на оплату долга.";
 	facial_hair_style = "Up Mustache";
 	hair_style = "Manbun"
 	},
@@ -555,7 +559,7 @@
 	pixel_x = 3;
 	pixel_y = -2
 	},
-/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/delivery/hollow,
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -602,7 +606,7 @@
 /obj/machinery/door/poddoor/shutters/invincible{
 	id_tag = "Trade_exit";
 	name = "Black market warehouse";
-	armor = list("melee"=100,"bullet"=100,"laser"=100,"energy"=100,"bomb"=100,"bio"=100,"rad"=100,"fire"=100,"acid"=100);
+	armor = list("melee"=100,"bullet"=100,"laser"=100,"energy"=100,"bomb"=100,"bio"=100,"fire"=100,"acid"=100);
 	dir = 2;
 	use_power = 0
 	},
@@ -652,7 +656,7 @@
 	name = "rack 10k"
 	},
 /obj/item/storage/box/syndie_kit/t4P,
-/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/delivery/hollow,
 /obj/item/storage/box/syndie_kit/t4P{
 	pixel_x = 5;
 	pixel_y = -3
@@ -663,7 +667,9 @@
 	},
 /area/ruin/space/pirate_base/black_market)
 "EM" = (
-/obj/effect/decal/warning_stripes/east,
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -675,7 +681,9 @@
 	},
 /area/ruin/space/pirate_base/black_market)
 "Fp" = (
-/obj/effect/decal/warning_stripes/northwestcorner,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -850,7 +858,7 @@
 /obj/item/storage/box/syndie_kit/bioterror,
 /obj/item/storage/box/syndie_kit/bioterror,
 /obj/item/gun/syringe/rapidsyringe,
-/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/delivery/hollow,
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -1069,11 +1077,32 @@
 	},
 /area/ruin/space/pirate_base/black_market)
 "SC" = (
-/obj/effect/decal/warning_stripes/southwestcorner,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
 	},
+/area/ruin/space/pirate_base/black_market)
+"SS" = (
+/obj/structure/rack,
+/obj/item/ammo_box/magazine/m10mm{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/ammo_box/magazine/m10mm{
+	pixel_x = 4;
+	pixel_y = 3
+	},
+/obj/item/gun/projectile/automatic/pistol{
+	pixel_x = 3
+	},
+/obj/item/clothing/accessory/holster,
+/obj/item/melee/energy/sword/pirate{
+	pixel_y = 6
+	},
+/turf/simulated/floor/indestructible/plating,
 /area/ruin/space/pirate_base/black_market)
 "Tt" = (
 /obj/structure/rack,
@@ -1087,7 +1116,9 @@
 	},
 /area/ruin/space/pirate_base/black_market)
 "Tu" = (
-/obj/effect/decal/warning_stripes/west,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -1175,7 +1206,7 @@
 	pixel_y = -5;
 	pixel_x = 2
 	},
-/obj/item/camera_bug,
+/obj/item/camera_bug/syndicate,
 /turf/simulated/floor/indestructible/plating{
 	icon_state = "dark";
 	icon = 'icons/turf/floors.dmi'
@@ -1197,7 +1228,7 @@
 /obj/machinery/door/poddoor/shutters/invincible{
 	id_tag = "Trade_doc";
 	name = "Black market warehouse";
-	armor = list("melee"=100,"bullet"=100,"laser"=100,"energy"=100,"bomb"=100,"bio"=100,"rad"=100,"fire"=100,"acid"=100);
+	armor = list("melee"=100,"bullet"=100,"laser"=100,"energy"=100,"bomb"=100,"bio"=100,"fire"=100,"acid"=100);
 	dir = 2;
 	use_power = 0
 	},
@@ -1269,8 +1300,8 @@ UJ
 Xz
 mV
 qY
-mV
 rC
+PK
 vx
 iA
 hk
@@ -1299,7 +1330,7 @@ UJ
 Xz
 mV
 mV
-mV
+rC
 rC
 rC
 Xz
@@ -1329,8 +1360,8 @@ UJ
 Xz
 mV
 mV
-mV
 rC
+PK
 ps
 iA
 AK
@@ -1359,7 +1390,7 @@ UJ
 Xz
 mV
 us
-mV
+rC
 rC
 rC
 Xz
@@ -1389,8 +1420,8 @@ UJ
 Xz
 mV
 mV
-mV
 rC
+PK
 ps
 iA
 Nt
@@ -1419,7 +1450,7 @@ Xz
 Xz
 mV
 mV
-mV
+rC
 rC
 rC
 Xz
@@ -1449,8 +1480,8 @@ Xz
 rF
 mV
 mV
-mV
 rC
+PK
 ps
 iA
 Sj
@@ -1510,7 +1541,7 @@ Xz
 mV
 mV
 rC
-mV
+SS
 PK
 Xz
 Xz
@@ -1548,7 +1579,7 @@ Xz
 "}
 (12,1,1) = {"
 Qe
-nN
+Pp
 Pw
 Pw
 Pm
@@ -1578,7 +1609,7 @@ Xz
 "}
 (13,1,1) = {"
 Qe
-Ms
+Tt
 Pw
 si
 ER
@@ -1600,7 +1631,7 @@ Xz
 mV
 mV
 rC
-mV
+SS
 PK
 Xz
 Xz
@@ -1608,9 +1639,9 @@ Xz
 "}
 (14,1,1) = {"
 Qe
-gq
+Ms
 Pw
-Tt
+nN
 Qe
 UJ
 UJ
@@ -1638,9 +1669,9 @@ Xz
 "}
 (15,1,1) = {"
 Qe
-pJ
+WN
 ir
-FL
+RA
 Qe
 UJ
 UJ
@@ -1668,9 +1699,9 @@ Xz
 "}
 (16,1,1) = {"
 Qe
-jJ
+QU
 Pw
-Pi
+FL
 Qe
 UJ
 UJ
@@ -1690,7 +1721,7 @@ Xz
 mV
 mV
 rC
-mV
+SS
 PK
 Xz
 Xz
@@ -1698,9 +1729,9 @@ Xz
 "}
 (17,1,1) = {"
 Qe
-WN
+pJ
 Pw
-QU
+Pi
 Qe
 UJ
 UJ
@@ -1728,9 +1759,9 @@ Xz
 "}
 (18,1,1) = {"
 Qe
-Pp
+jJ
 Pw
-RA
+gq
 Qe
 UJ
 UJ
@@ -1757,11 +1788,11 @@ Xz
 Xz
 "}
 (19,1,1) = {"
-HC
-LD
-LD
-LD
-Qi
+Qe
+Pw
+Pw
+Pw
+Qe
 UJ
 UJ
 UJ
@@ -1780,18 +1811,18 @@ Xz
 mV
 mV
 rC
-mV
+SS
 PK
 Xz
 Xz
 Xz
 "}
 (20,1,1) = {"
-UJ
-UJ
-UJ
-UJ
-UJ
+HC
+LD
+LD
+LD
+Qi
 UJ
 UJ
 UJ

@@ -1,7 +1,6 @@
 /area/ruin/space/spacebotany
 	poweralm = FALSE
 	report_alerts = FALSE
-	requires_power = TRUE
 
 /area/ruin/space/spacebotany/Med
 /area/ruin/space/spacebotany/Chem
@@ -27,7 +26,6 @@
 	info = "<p>...как того мы и ждали. Тем не менее прошлая работёнка хоть и казалась простой, принесла кучу хлопот. Нормально заказ не смогли выполнить, так что нам не заплатили до конца. Лоза оказалась не слишком живучей, но хоть другие прихоти заказчика мы смогли реализовать. Отставив лозу на второй план взялись за следующий заказ. С ним все иначе. \
 	устойчивость к огню и лазерам были главными свойствами, также система самоподрыва, как дополнение. Однако, с превыш...</p>"
 
-
 /obj/item/paper/spacebotany/note
 	name = "Вырванная страница дневника"
 	info = "<p> Прошло уже 10 дней с начала 6 смены на этой станции. Не знаю выдержу ли я этих огузков... Конечно черт возьми выдержу, платят в этот раз в три раза больше! Липкий Джонни просто прекрасный коллега, с ним мы управимся за пару недель, он компенсирует своей прекрасной игрой в шахматы по вечерам их всех, мне как отличному главе он дает стимул двигаться дальше. Отлично знает свое дело, почти лучше чем я. Однако я до сих пор не угадал его настоящего имени... Ну и ладно. </p>"
@@ -41,22 +39,20 @@
 	name = "Вырванная страница дневника"
 	info = "<p> Прошло  9 дней с начала 6 смены на этой станции... Пабло действительно отличный биолог, но... Он мне кажется не здоров психически. Его нездоровая тяга ко всяким химерам пугает меня куда боьше, чем всё то дерьмо, что я сдесь когда либо делал.</p>"
 
-
 /obj/item/paper/spacebotany/note3
 	name = "Оборванный лист"
 	info = "<p> ...гда это раздражает. Он относится к некоторым из них как к  собственным детям...  Как же порой тяжело заставить его утилизировать некоторые неудачные образцы... его самого бы утилизировать, но нельзя! А что делать!? Где мне ещё нормального ксенобиолога, согласного работать с эт... </p>"
 
 /mob/living/simple_animal/hostile/killertomato/spacebotany
-    name = "Unsatable Tomato"
-    atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-    maxHealth = 120
-    health = 120
-    melee_damage_lower = 0
-    melee_damage_upper = 40
-    can_hide = TRUE
-    xenobiology_spawned = FALSE
-    aggro_vision_range = 6
-    damage_coeff = list("brute" = 1, "fire" = -0.1, "tox" = 0, "clone" = 0, "stamina" = 0, "oxy" = 0)
+	name = "Unsatable Tomato"
+	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	maxHealth = 120
+	health = 120
+	melee_damage_lower = 0
+	melee_damage_upper = 40
+	can_hide = TRUE
+	aggro_vision_range = 6
+	damage_coeff = list(BRUTE = 1, FIRE = -0.1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 
 /mob/living/simple_animal/hostile/killertomato/spacebotany/ComponentInitialize()
 	AddComponent( \
@@ -75,7 +71,7 @@
 	icon_dead = "palm"
 	icon_gib = "palm"
 	aggro_vision_range = 3
-	damage_coeff = list("brute" = 1, "fire" = 0.5, "tox" = 0, "clone" = 0, "stamina" = 0, "oxy" = 0)
+	damage_coeff = list(BRUTE = 1, FIRE = 0.5, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	obj_damage = 0
 
 /mob/living/simple_animal/hostile/tree/jungle
@@ -86,5 +82,5 @@
 	icon_dead = "tree2"
 	icon_gib = "tree2"
 	aggro_vision_range = 3
-	damage_coeff = list("brute" = 0.3, "fire" = 2, "tox" = 0, "clone" = 0, "stamina" = 0, "oxy" = 0)
+	damage_coeff = list(BRUTE = 0.3, FIRE = 2, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	obj_damage = 0

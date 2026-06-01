@@ -13,12 +13,9 @@
 /obj/effect/particle_effect/fluid/foam
 	name = "foam"
 	icon_state = "foam"
-	opacity = FALSE
-	anchored = TRUE
-	density = FALSE
 	layer = EDGED_TURF_LAYER
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	animate_movement = NO_STEPS
+	cares_about_temperature = TRUE
 	/// The types of turfs that this foam cannot spread to.
 	var/static/list/blacklisted_turfs = typecacheof(list(
 		/turf/space/transit,
@@ -34,19 +31,19 @@
 	/// Whether or not this foam should be slippery.
 	var/slippery_foam = TRUE
 
-
 /obj/effect/particle_effect/fluid/foam/Initialize(mapload)
 	. = ..()
 	if(slippery_foam)
-		AddComponent(/datum/component/slippery, 100)
-
+		AddComponent(/datum/component/slippery, 100, can_slip_callback = CALLBACK(src, PROC_REF(try_slip)))
+	if(HAS_TRAIT(loc, TRAIT_ELEVATED_TURF))
+		layer = WATER_LEVEL_LAYER
 	create_reagents(1000)
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, TRUE, -3)
 	SSfoam.start_processing(src)
 
 /obj/effect/particle_effect/fluid/foam/Destroy()
 	SSfoam.stop_processing(src)
-	if (spread_bucket)
+	if(spread_bucket)
 		SSfoam.cancel_spread(src)
 	return ..()
 
@@ -55,7 +52,7 @@
  */
 /obj/effect/particle_effect/fluid/foam/proc/kill_foam()
 	SSfoam.stop_processing(src)
-	if (spread_bucket)
+	if(spread_bucket)
 		SSfoam.cancel_spread(src)
 	make_result()
 	flick("[icon_state]-disolve", src)
@@ -94,10 +91,14 @@
 		for(var/obj/object in turf_location)
 			if(object == src)
 				continue
+			if(HAS_TRAIT(loc, TRAIT_ELEVATED_TURF) && !HAS_TRAIT(object, TRAIT_ELEVATING_OBJECT))
+				continue // Do expose tables, don't expose items on tables
 			reagents.reaction(object, REAGENT_TOUCH, fraction)
 
 	var/hit = 0
 	for(var/mob/living/foamer in loc)
+		if(HAS_TRAIT(foamer, TRAIT_MOB_ELEVATED))
+			continue
 		hit += foam_mob(foamer, seconds_per_tick)
 	if(hit)
 		lifetime += ds_seconds_per_tick //this is so the decrease from mobs hit and the natural decrease don't cumulate.
@@ -127,6 +128,9 @@
 	lifetime -= seconds_per_tick
 	return TRUE
 
+/obj/effect/particle_effect/fluid/foam/proc/try_slip(mob/living/slipper, mob/living/slippee)
+	return !HAS_TRAIT(slippee, TRAIT_MOB_ELEVATED)
+
 /obj/effect/particle_effect/fluid/foam/spread(seconds_per_tick = 0.2 SECONDS)
 	if(group.total_size > group.target_size)
 		return
@@ -149,6 +153,8 @@
 			continue
 
 		for(var/mob/living/foaming in spread_turf)
+			if(HAS_TRAIT(foaming, TRAIT_MOB_ELEVATED))
+				continue
 			foam_mob(foaming, seconds_per_tick)
 
 		var/obj/effect/particle_effect/fluid/foam/spread_foam = new type(spread_turf, group, src)
@@ -157,8 +163,7 @@
 		spread_foam.result_type = result_type
 		SSfoam.queue_spread(spread_foam)
 
-
-/obj/effect/particle_effect/fluid/foam/temperature_expose(datum/gas_mixture/air, exposed_temperature)
+/obj/effect/particle_effect/fluid/foam/temperature_expose(exposed_temperature, exposed_volume)
 	if(prob(max(0, exposed_temperature - 475)))   //foam dissolves when heated
 		kill_foam()
 
@@ -172,8 +177,7 @@
 	/// What type of thing the foam should leave behind when it dissipates.
 	var/atom/movable/result_type = null
 
-	var/list/banned_reagents = list("smoke_powder", "fluorosurfactant", "stimulants")
-
+	var/static/list/banned_reagents = list("smoke_powder", "fluorosurfactant", "stimulants")
 
 /datum/effect_system/fluid_spread/foam/New()
 	..()
@@ -186,11 +190,16 @@
 
 /datum/effect_system/fluid_spread/foam/set_up(range = 1, amount = DIAMOND_AREA(range), atom/holder, atom/location = null, datum/reagents/carry = null, result_type = null, stop_reactions = FALSE)
 	. = ..()
-	for(var/reagent in banned_reagents)
-		carry.remove_reagent(reagent, carry.total_volume, safety = TRUE)
-	carry?.copy_to(chemholder, carry.total_volume, safety = TRUE)
+
 	if(!isnull(result_type))
 		src.result_type = result_type
+
+	if(!carry)
+		return
+
+	for(var/reagent in banned_reagents)
+		carry.remove_reagent(reagent, carry.total_volume, safety = TRUE)
+	carry.copy_to(chemholder, carry.total_volume, safety = TRUE)
 
 /datum/effect_system/fluid_spread/foam/start(log = FALSE)
 	var/obj/effect/particle_effect/fluid/foam/foam = new effect_type(location, new /datum/fluid_group(amount))
@@ -201,10 +210,9 @@
 	foam.add_atom_colour(foamcolor, FIXED_COLOUR_PRIORITY)
 	if(!isnull(result_type))
 		foam.result_type = result_type
-	if (log)
+	if(log)
 		help_out_the_admins(foam, holder, location)
 	SSfoam.queue_spread(foam)
-
 
 // Short-lived foam
 /// A foam variant which dissipates quickly.
@@ -224,7 +232,6 @@
 	effect_type = /obj/effect/particle_effect/fluid/foam/long_life
 	reagent_scale = FOAM_REAGENT_SCALE * (30 / 8)
 
-
 // Firefighting foam
 /// A variant of foam which absorbs plasma in the air if there is a fire.
 /obj/effect/particle_effect/fluid/foam/firefighting
@@ -232,7 +239,6 @@
 	lifetime = 20 //doesn't last as long as normal foam
 	result_type = /obj/effect/decal/cleanable/glass/plasma
 	allow_duplicate_results = FALSE
-	slippery_foam = TRUE
 	/// The amount of plasma gas this foam has absorbed. To be deposited when the foam dissipates.
 	var/absorbed_plasma = 0
 
@@ -244,21 +250,30 @@
 	if(!istype(location))
 		return
 
-	var/obj/effect/hotspot/hotspot = locate() in location
+	if(!location.blocks_air)
+		return
+
+	var/datum/milla_safe/firefighting_foam_chill/milla = new()
+	milla.invoke_async(src, location)
+
+/datum/milla_safe/firefighting_foam_chill
+
+/datum/milla_safe/firefighting_foam_chill/on_run(obj/effect/particle_effect/fluid/foam/firefighting/foam, turf/turf)
+	var/obj/effect/hotspot/fake/hotspot = locate() in turf
 	if(hotspot)
 		QDEL_NULL(hotspot)
 
-	if(!location.air)
-		return
+	var/datum/gas_mixture/env = get_turf_air(turf)
 
-	var/datum/gas_mixture/air = location.air
-	if (air.toxins)
-		var/scrub_amt = min(30, air.toxins) //Absorb some plasma
-		air.toxins -= scrub_amt
-		absorbed_plasma += scrub_amt
-	if (air.temperature > T20C)
-		air.temperature = max(air.temperature / 2, T20C)
-	location.air_update_turf(FALSE, FALSE)
+	if(env.toxins())
+		var/scrub_amt = min(30, env.toxins()) //Absorb some plasma
+		env.set_toxins(env.toxins() - scrub_amt)
+		foam.absorbed_plasma += scrub_amt
+
+	if(env.temperature() > T20C)
+		env.set_temperature(max(env.temperature() / 2, T20C))
+
+	turf.recalculate_atmos_connectivity()
 
 /obj/effect/particle_effect/fluid/foam/firefighting/make_result()
 	var/atom/movable/deposit = ..()
@@ -306,6 +321,7 @@
 	name = "resin foam"
 	result_type = /obj/structure/foamedmetal/resin
 	make_floor = FALSE
+	cares_about_temperature = FALSE
 
 /// A variant of resin foam that is created from halon combustion. It does not dissolve in heat to allow the gas to spread before foaming.
 /obj/effect/particle_effect/fluid/foam/metal/resin/halon
@@ -313,7 +329,7 @@
 /obj/effect/particle_effect/fluid/foam/metal/resin/halon/Initialize(mapload)
 	. = ..()
 
-/obj/effect/particle_effect/fluid/foam/metal/resin/halon/temperature_expose(datum/gas_mixture/air, exposed_temperature)
+/obj/effect/particle_effect/fluid/foam/metal/resin/halon/temperature_expose(exposed_temperature, exposed_volume)
 	return // Doesn't dissolve in heat.
 
 /// A factory which produces smart aluminium metal foam.
@@ -341,14 +357,6 @@
 /obj/structure/foamedmetal
 	name = "foamed metal"
 	desc = "Легкая стена из вспененного металла"
-	ru_names = list(
-		NOMINATIVE = "пенометалл",
-		GENITIVE = "пенометалла",
-		DATIVE = "пенометаллу",
-		ACCUSATIVE = "пенометалл",
-		INSTRUMENTAL = "пенометаллом",
-		PREPOSITIONAL = "пенометалле",
-	)
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "metalfoam"
 	density = TRUE
@@ -360,21 +368,31 @@
 	max_integrity = 20
 	obj_flags = BLOCK_Z_IN_DOWN | BLOCK_Z_IN_UP
 
+/obj/structure/foamedmetal/get_ru_names()
+	return list(
+		NOMINATIVE = "пенометалл",
+		GENITIVE = "пенометалла",
+		DATIVE = "пенометаллу",
+		ACCUSATIVE = "пенометалл",
+		INSTRUMENTAL = "пенометаллом",
+		PREPOSITIONAL = "пенометалле",
+	)
+
 /obj/structure/foamedmetal/Initialize(mapload)
 	. = ..()
-	air_update_turf(TRUE)
+	recalculate_atmos_connectivity()
 
 /obj/structure/foamedmetal/Destroy()
 	var/turf/T = get_turf(src)
 	. = ..()
-	T.air_update_turf(TRUE)
+	T.recalculate_atmos_connectivity()
 
 /obj/structure/foamedmetal/Move()
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
-/obj/structure/foamedmetal/CanAtmosPass(turf/T, vertical)
+/obj/structure/foamedmetal/CanAtmosPass(direction)
 	return !density
 
 /obj/structure/foamedmetal/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
@@ -396,8 +414,16 @@
 
 /// Atmos Backpack Resin, transparent, prevents atmos and filters the air
 /obj/structure/foamedmetal/resin
-	name = "\improper ATMOS Resin"
-	ru_names = list(
+	name = "ATMOS Resin"
+	desc = "Легкая прозрачная смола, используемая для тушения пожаров, очистки воздуха от токсинов и восстановления безопасной температуры воздуха."
+	opacity = FALSE
+	icon_state = "atmos_resin"
+	alpha = 120
+	max_integrity = 10
+	pass_flags_self = PASSGLASS
+
+/obj/structure/foamedmetal/resin/get_ru_names()
+	return list(
 		NOMINATIVE = "атмосферная смола",
 		GENITIVE = "атмосферной смолы",
 		DATIVE = "атмосферной смоле",
@@ -405,12 +431,6 @@
 		INSTRUMENTAL = "атмосферной смолой",
 		PREPOSITIONAL = "атмосферной смоле",
 	)
-	desc = "Легкая прозрачная смола, используемая для тушения пожаров, очистки воздуха от токсинов и восстановления безопасной температуры воздуха."
-	opacity = FALSE
-	icon_state = "atmos_resin"
-	alpha = 120
-	max_integrity = 10
-	pass_flags_self = PASSGLASS
 
 /obj/structure/foamedmetal/resin/Initialize(mapload)
 	. = ..()
@@ -420,17 +440,9 @@
 
 	location.MakeDry(TURF_WET_ALL, TRUE)
 	location.temperature = T20C
-	if(location.air)
-		var/datum/gas_mixture/air = location.air
-		air.temperature = T20C
-
-		for(var/obj/effect/hotspot/fire in location)
-			qdel(fire)
-
-		air.toxins = 0
-		air.agent_b = 0
-		air.carbon_dioxide = 0
-		air.sleeping_agent = 0
+	if(!location.blocks_air)
+		var/datum/milla_safe/atmos_resin_chill/milla = new()
+		milla.invoke_async(location)
 
 	for(var/obj/machinery/atmospherics/unary/comp in location)
 		if(!comp.welded)
@@ -443,6 +455,19 @@
 	for(var/obj/item/potential_tinder in location)
 		potential_tinder.extinguish()
 
+/datum/milla_safe/atmos_resin_chill
+
+/datum/milla_safe/atmos_resin_chill/on_run(turf/turf)
+	var/datum/gas_mixture/env = get_turf_air(turf)
+	env.set_temperature(T20C)
+
+	for(var/obj/effect/hotspot/fake/fire in turf)
+		qdel(fire)
+
+	env.set_toxins(0)
+	env.set_agent_b(0)
+	env.carbon_dioxide(0)
+	env.sleeping_agent(0)
 
 /obj/effect/spawner/foam_starter
 	var/datum/effect_system/fluid_spread/foam/foam_type = /datum/effect_system/fluid_spread/foam
@@ -457,6 +482,38 @@
 
 /obj/effect/spawner/foam_starter/small
 	foam_size = 2
+
+/// Proc to quickly spawn foam
+/// reagent_type can accept a list of reagents, optionally as a key-value pair with values overriding reagent_volume if not null
+/proc/do_foam(range = 1, atom/holder = null, turf/location = null, datum/reagent/reagent_type = null, reagent_volume = 10, datum/reagents/carry = null, amount = null, log = FALSE, datum/effect_system/fluid_spread/foam/foam_type = /datum/effect_system/fluid_spread/foam, result_type = null, stop_reactions = FALSE, reagent_scale = FOAM_REAGENT_SCALE)
+	if(carry || isnull(reagent_type))
+		var/datum/effect_system/fluid_spread/foam/foam = new foam_type(location, range, amount, holder || location, carry, result_type, stop_reactions, reagent_scale)
+		foam.start(log = log)
+		return
+
+	if(ispath(reagent_type, /datum/reagent))
+		var/datum/reagents/foam_reagents = new /datum/reagents(reagent_volume)
+		foam_reagents.add_reagent(reagent_type, reagent_volume)
+		var/datum/effect_system/fluid_spread/foam/foam = new foam_type(location, range, amount, holder || location, foam_reagents, result_type, stop_reactions, reagent_scale)
+		foam.start(log = log)
+		return
+
+
+	if(!islist(reagent_type))
+		CRASH("do_foam passed a non-reagent path, non-list reagent_type [reagent_type]!")
+
+	var/list/reagent_list = reagent_type
+	var/chem_volume = 0
+	for(var/chem_type in reagent_list)
+		chem_volume += reagent_list[chem_type] || reagent_volume
+
+	var/datum/reagents/foam_reagents = new /datum/reagents(chem_volume)
+	for(var/chem_type in reagent_list)
+		foam_reagents.add_reagent(chem_type, reagent_list[chem_type] || reagent_volume)
+
+	var/datum/effect_system/fluid_spread/foam/foam = new foam_type(location, range, amount, holder || location, foam_reagents, result_type, stop_reactions, reagent_scale)
+	foam.start(log = log)
+
 
 #undef MINIMUM_FOAM_DILUTION_RANGE
 #undef MINIMUM_FOAM_DILUTION

@@ -1,6 +1,7 @@
 /obj/structure/musician
 	name = "Not A Piano"
 	desc = "Something broke!"
+	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_REQUIRES_DEXTERITY
 	var/can_play_unanchored = FALSE
 	var/list/allowed_instrument_ids
 	var/datum/song/song
@@ -37,11 +38,11 @@
 	return TRUE
 
 /**
-  * Whether the instrument should stop playing
-  *
-  * Arguments:
-  * * user - The user
-  */
+ * Whether the instrument should stop playing
+ *
+ * Arguments:
+ * * user - The user
+ */
 /obj/structure/musician/proc/should_stop_playing(mob/user)
 	if(!(anchored || can_play_unanchored))
 		return TRUE

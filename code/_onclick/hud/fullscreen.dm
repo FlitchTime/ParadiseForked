@@ -1,6 +1,3 @@
-/mob
-	var/list/screens = list()
-
 /mob/proc/overlay_fullscreen(category, type, severity)
 	var/atom/movable/screen/fullscreen/screen = screens[category]
 	if(!screen || screen.type != type)
@@ -26,7 +23,6 @@
 		SET_PLANE_EXPLICIT(screen, PLANE_TO_TRUE(screen.plane), src)
 
 	return screen
-
 
 /mob/proc/clear_fullscreen(category, animated = 10)
 	var/atom/movable/screen/fullscreen/screen = screens[category]
@@ -54,7 +50,6 @@
 				observe.client.screen -= screen
 		qdel(screen)
 
-
 /mob/proc/clear_fullscreen_after_animate(atom/movable/screen/fullscreen/screen)
 	if(client)
 		client.screen -= screen
@@ -65,11 +60,9 @@
 			observe.client.screen -= screen
 	qdel(screen)
 
-
 /mob/proc/clear_fullscreens()
 	for(var/category in screens)
 		clear_fullscreen(category)
-
 
 /datum/hud/proc/reload_fullscreen()
 	if(mymob.client)
@@ -121,7 +114,7 @@
 	var/needs_offsetting = TRUE
 
 /atom/movable/screen/fullscreen/proc/update_for_view(client_view)
-	if (screen_loc == "CENTER-7,CENTER-7" && view != client_view)
+	if(screen_loc == "CENTER-7,CENTER-7" && view != client_view)
 		var/list/actualview = getviewsize(client_view)
 		view = client_view
 		transform = matrix(actualview[1]/FULLSCREEN_OVERLAY_RESOLUTION_X, 0, 0, 0, actualview[2]/FULLSCREEN_OVERLAY_RESOLUTION_Y, 0)
@@ -160,8 +153,6 @@
 	icon_state = "flash"
 
 /atom/movable/screen/fullscreen/flash/noise
-	icon = 'icons/mob/screen_gen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "noise"
 
 /atom/movable/screen/fullscreen/high
@@ -169,11 +160,9 @@
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "druggy"
 
-
 /atom/movable/screen/fullscreen/payback
 	icon_state = "payback"
 	show_when_dead = TRUE
-
 
 /atom/movable/screen/fullscreen/cinematic_backdrop
 	icon = 'icons/mob/screen_gen.dmi'
@@ -184,7 +173,6 @@
 	color = "#000000"
 	show_when_dead = TRUE
 
-
 /atom/movable/screen/fullscreen/lighting_backdrop
 	icon = 'icons/mob/screen_gen.dmi'
 	icon_state = "flash"
@@ -194,6 +182,14 @@
 	blend_mode = BLEND_OVERLAY
 	show_when_dead = TRUE
 	needs_offsetting = FALSE
+
+/atom/movable/screen/fullscreen/curse
+	icon_state = "curse"
+	layer = CURSE_LAYER
+
+/atom/movable/screen/fullscreen/bloody_screen
+	icon_state = "bloody_screen"
+	layer = BLOODY_SCREEN_LAYER
 
 //Provides darkness to the back of the lighting plane
 /atom/movable/screen/fullscreen/lighting_backdrop/lit
@@ -216,6 +212,67 @@
 	icon = 'icons/mob/screen_fog.dmi'
 	icon_state = "fog"
 	color = "#FF0000"
+
+/// An effect which tracks the cursor's location on the screen
+/atom/movable/screen/fullscreen/cursor_catcher
+	icon_state = "fullscreen_blocker" // Fullscreen semi transparent icon
+	plane = HUD_PLANE
+	mouse_opacity = MOUSE_OPACITY_ICON
+	default_click = TRUE
+	/// The mob whose cursor we are tracking.
+	var/mob/owner
+	/// Client view size of the scoping mob.
+	var/list/view_list
+	/// Pixel x we send to the scope component.
+	var/given_x
+	/// Pixel y we send to the scope component.
+	var/given_y
+	/// The turf we send to the scope component.
+	var/turf/given_turf
+	/// Mouse parameters, for calculation.
+	var/mouse_params
+
+/// Links this up with a mob
+/atom/movable/screen/fullscreen/cursor_catcher/proc/assign_to_mob(mob/owner)
+	src.owner = owner
+	view_list = getviewsize(owner.client.view)
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	calculate_params()
+
+/// Update when the mob we're assigned to has moved
+/atom/movable/screen/fullscreen/cursor_catcher/proc/on_move(atom/source, atom/oldloc, dir, forced)
+	SIGNAL_HANDLER
+
+	if(!given_turf)
+		return
+	var/x_offset = source.loc.x - oldloc.x
+	var/y_offset = source.loc.y - oldloc.y
+	given_turf = locate(given_turf.x + x_offset, given_turf.y + y_offset, given_turf.z)
+
+/atom/movable/screen/fullscreen/cursor_catcher/MouseEntered(location, control, params)
+	. = ..()
+	MouseMove(location, control, params)
+	if(usr == owner)
+		calculate_params()
+
+/atom/movable/screen/fullscreen/cursor_catcher/MouseMove(location, control, params)
+	if(usr != owner)
+		return
+	mouse_params = params
+
+/atom/movable/screen/fullscreen/fullyblack
+	icon_state = "fullyblack"
+	layer = BLIND_LAYER
+
+/atom/movable/screen/fullscreen/cursor_catcher/proc/calculate_params()
+	var/list/modifiers = params2list(mouse_params)
+	var/icon_x = text2num(modifiers[ICON_X])
+	var/icon_y = text2num(modifiers[ICON_Y])
+	var/our_x = round(icon_x / ICON_SIZE_X)
+	var/our_y = round(icon_y /ICON_SIZE_Y)
+	given_turf = locate(owner.x + our_x - round(view_list[1] / 2), owner.y + our_y - round(view_list[2] / 2), owner.z)
+	given_x = round(icon_x - ICON_SIZE_X * our_x, 1)
+	given_y = round(icon_y - ICON_SIZE_Y * our_y, 1)
 
 #undef FULLSCREEN_LAYER
 #undef BLIND_LAYER

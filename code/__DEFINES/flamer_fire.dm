@@ -22,6 +22,8 @@ Fire Variant = Markers for special fire types that behave outside of chemfire co
 #define BURN_TIME_TIER_4 40
 #define BURN_TIME_TIER_5 50
 
+#define BURN_TIME_DEVIL 5
+
 ///Default fire behavior: No associated values.
 #define FIRE_VARIANT_DEFAULT 0
 ///"Type B" Armor Shredding Greenfire: Burn Time T5, Burn Level T2, Slows on Tile, Increased Tile Damage, Easier Extinguishing.
@@ -46,6 +48,5 @@ Fire Variant = Markers for special fire types that behave outside of chemfire co
 #define IGNITE_IGNITED (1<<1)
 
 #define FLAME_REAGENT_USE_AMOUNT 1
-
 
 #define SLOWDOWN_AMT_GREENFIRE 1.5

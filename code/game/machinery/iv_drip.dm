@@ -2,11 +2,12 @@
 #define IV_INJECTING 1
 
 /obj/machinery/iv_drip
-	name = "\improper IV drip"
+	name = "IV drip"
 	icon = 'icons/goonstation/objects/iv.dmi'
 	icon_state = "stand"
-	anchored = FALSE
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
+	use_power = NO_POWER_USE
+	interaction_flags_mouse_drop = NEED_HANDS
 	var/obj/item/reagent_containers/iv_bag/bag = null
 
 /obj/machinery/iv_drip/process()
@@ -15,28 +16,29 @@
 		return
 	return PROCESS_KILL
 
-
 /obj/machinery/iv_drip/update_overlays()
 	. = ..()
 	if(bag)
 		. += "hangingbag"
 		if(bag.reagents.total_volume)
-			var/image/filling = image('icons/goonstation/objects/iv.dmi', src, "hangingbag-fluid")
-			filling.icon += mix_color_from_reagents(bag.reagents.reagent_list)
+			var/mutable_appearance/filling = mutable_appearance('icons/goonstation/objects/iv.dmi', "hangingbag-fluid")
+			filling.color = get_color_matrix_from_reagents(bag.reagents.reagent_list)
 			. += filling
 
+/obj/machinery/iv_drip/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	if(user.incapacitated())
+		return
 
-/obj/machinery/iv_drip/MouseDrop(atom/over_object, src_location, over_location, src_control, over_control, params)
-	if(usr.incapacitated() || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED) || !ishuman(usr) || !ishuman(over_object) || !Adjacent(over_object) || !usr.Adjacent(over_object))
-		return FALSE
+	if(!ishuman(user) || !ishuman(over_object))
+		to_chat(user, span_warning("You can't do that!"))
+		return
 
-	add_fingerprint(usr)
+	add_fingerprint(user)
 	if(!bag)
-		to_chat(usr, span_warning("There's no IV bag connected to [src]!"))
-		return FALSE
-	bag.attack(over_object, usr)
+		to_chat(user, span_warning("There's no IV bag connected to [src]!"))
+		return
+	bag.attack(over_object, user)
 	START_PROCESSING(SSmachines, src)
-
 
 /obj/machinery/iv_drip/attack_hand(mob/user)
 	if(bag)
@@ -47,8 +49,7 @@
 		bag = null
 		update_icon(UPDATE_OVERLAYS)
 
-
-/obj/machinery/iv_drip/attackby(obj/item/I, mob/user, params)
+/obj/machinery/iv_drip/attackby(obj/item/I, mob/user, list/modifiers)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
@@ -67,11 +68,10 @@
 
 	if(bag && istype(I, /obj/item/reagent_containers))
 		add_fingerprint(user)
-		I.melee_attack_chain(user, bag, params)
+		I.melee_attack_chain(user, bag, modifiers)
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
-
 
 /obj/machinery/iv_drip/deconstruct(disassembled = TRUE)
 	if(!(obj_flags & NODECONSTRUCT))
@@ -87,7 +87,7 @@
 	. = ..()
 	if(!.) // ..() will return 0 if we didn't actually move anywhere.
 		return .
-	playsound(loc, pick('sound/items/cartwheel1.ogg', 'sound/items/cartwheel2.ogg'), 100, 1, ignore_walls = FALSE)
+	playsound(loc, pick('sound/items/cartwheel1.ogg', 'sound/items/cartwheel2.ogg'), 100, TRUE, ignore_walls = FALSE)
 
 #undef IV_TAKING
 #undef IV_INJECTING

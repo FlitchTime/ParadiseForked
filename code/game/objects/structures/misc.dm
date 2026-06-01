@@ -21,10 +21,9 @@
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "signpost2"
 	anchored = TRUE
-	density = FALSE
 
 /obj/structure/respawner
-	name = "\improper Long-Distance Cloning Machine"
+	name = "Long-Distance Cloning Machine"
 	desc = "Top-of-the-line Nanotrasen technology allows for cloning of crew members from off-station upon bluespace request."
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "borgcharger1(old)"
@@ -77,8 +76,7 @@
 	var/alert_title = "Ethereal Beacon Active!"
 	var/atom/attack_atom
 
-
-/obj/structure/ghost_beacon/Initialize()
+/obj/structure/ghost_beacon/Initialize(mapload)
 	. = ..()
 	last_ghost_alert = world.time
 	attack_atom = src
@@ -100,7 +98,7 @@
 /obj/structure/ghost_beacon/attack_hand(mob/user)
 	if(!is_admin(user))
 		return
-	to_chat(user, "<span class='notice'>You [active ? "disable" : "enable"] \the [src].</span>")
+	to_chat(user, span_notice("You [active ? "disable" : "enable"] \the [src]."))
 	if(active)
 		STOP_PROCESSING(SSobj, src)
 	else

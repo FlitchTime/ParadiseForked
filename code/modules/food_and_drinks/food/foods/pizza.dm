@@ -13,6 +13,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/margherita
 	name = "margherita pizza"
 	desc = "The golden standard of pizzas."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "pizzamargherita"
 	slice_path = /obj/item/reagent_containers/food/snacks/margheritaslice
 	list_reagents = list("nutriment" = 30, "tomatojuice" = 6, "vitamin" = 5)
@@ -20,6 +21,7 @@
 /obj/item/reagent_containers/food/snacks/margheritaslice
 	name = "margherita slice"
 	desc = "A slice of the classic pizza."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "pizzamargheritaslice"
 	filling_color = "#BAA14C"
@@ -29,6 +31,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/meatpizza
 	name = "meat pizza"
 	desc = "A pizza with meat topping."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "meatpizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/meatpizzaslice
 	list_reagents = list("protein" = 30, "tomatojuice" = 6, "vitamin" = 8)
@@ -38,6 +41,7 @@
 /obj/item/reagent_containers/food/snacks/meatpizzaslice
 	name = "meat pizza slice"
 	desc = "A slice of a meaty pizza."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "meatpizzaslice"
 	filling_color = "#BAA14C"
@@ -46,16 +50,17 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/mushroompizza
 	name = "mushroom pizza"
 	desc = "Very special pizza."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "mushroompizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/mushroompizzaslice
 	list_reagents = list("plantmatter" = 30, "vitamin" = 5)
 	tastes = list("crust" = 1, "tomato" = 1, "cheese" = 1, "mushroom" = 1)
 	foodtype = GRAIN | DAIRY | VEGETABLES
 
-
 /obj/item/reagent_containers/food/snacks/mushroompizzaslice
 	name = "mushroom pizza slice"
 	desc = "Maybe it is the last slice of pizza in your life."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "mushroompizzaslice"
 	filling_color = "#BAA14C"
@@ -65,16 +70,17 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza
 	name = "vegetable pizza"
 	desc = "No Tomato Sapiens were harmed during the making of this pizza."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "vegetablepizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/vegetablepizzaslice
 	list_reagents = list("plantmatter" = 25, "tomatojuice" = 6, "oculine" = 12, "vitamin" = 5)
 	tastes = list("crust" = 1, "tomato" = 1, "cheese" = 1, "carrot" = 1, "vegetables" = 1)
 	foodtype = GRAIN | DAIRY | VEGETABLES
 
-
 /obj/item/reagent_containers/food/snacks/vegetablepizzaslice
 	name = "vegetable pizza slice"
 	desc = "A slice of the most green pizza of all pizzas not containing green ingredients."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "vegetablepizzaslice"
 	filling_color = "#BAA14C"
@@ -84,6 +90,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/hawaiianpizza
 	name = "hawaiian pizza"
 	desc = "Love it or hate it, this pizza divides opinions. Complete with juicy pineapple."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "hawaiianpizza" //NEEDED
 	slice_path = /obj/item/reagent_containers/food/snacks/hawaiianpizzaslice
 	list_reagents = list("protein" = 15, "tomatojuice" = 6, "plantmatter" = 20, "pineapplejuice" = 6, "vitamin" = 5)
@@ -93,6 +100,7 @@
 /obj/item/reagent_containers/food/snacks/hawaiianpizzaslice
 	name = "hawaiian pizza slice"
 	desc = "A slice of polarising pizza."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "hawaiianpizzaslice"
 	filling_color = "#e5b437"
@@ -102,16 +110,17 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/macpizza
 	name = "mac 'n' cheese pizza"
 	desc = "Gastronomists have yet to classify this dish as 'pizza'."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "macpizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/macpizzaslice
 	list_reagents = list("nutriment" = 40, "vitamin" = 5) //More nutriment because carbs, but it's not any more vitaminicious
 	filling_color = "#ffe45d"
 	tastes = list("crust" = 1, "tomato" = 1, "cheese" = 2, "pasta" = 1)
-	foodtype = GRAIN | DAIRY
 
 /obj/item/reagent_containers/food/snacks/macpizzaslice
 	name = "mac 'n' cheese pizza slice"
 	desc = "A delicious slice of pizza topped with macaroni & cheese... wait, what the hell? Who would do this?!"
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "macpizzaslice"
 	filling_color = "#ffe45d"
@@ -121,6 +130,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/seafood
 	name = "seafood pizza"
 	desc = "Gifts of cosmic lakes, cheese and a little sourness."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "fishpizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/seapizzaslice
 	list_reagents = list("nutriment" = 30, "vitamin" = 15, "protein" = 15)
@@ -131,6 +141,7 @@
 /obj/item/reagent_containers/food/snacks/seapizzaslice
 	name = "seafood pizza slice"
 	desc = "A delicious slice of pizza topped with seafood & cheese..."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "fishpizzaslice"
 	filling_color = "#ffe45d"
@@ -140,6 +151,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/bacon
 	name = "bacon and mushrooms pizza"
 	desc = "A classic pizza, one of the ingredients was replaced with fried bacon"
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "baconpizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/baconpizzaslice
 	list_reagents = list("nutriment" = 40, "vitamin" = 5, "protein" = 15)
@@ -150,6 +162,7 @@
 /obj/item/reagent_containers/food/snacks/baconpizzaslice
 	name = "bacon and mushrooms pizza slice"
 	desc = "A delicious slice of pizza topped with bacon & mushrooms..."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "baconpizzaslice"
 	filling_color = "#ffe45d"
@@ -159,6 +172,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/tajaroni
 	name = "tajaroni pizza"
 	desc = "Spicy tayaroni sausages covered with cheese, and olives.. Which of these is more terrible has yet to be decided."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "tajarpizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/tajpizzaslice
 	list_reagents = list("nutriment" = 30, "vitamin" = 15, "protein" = 15)
@@ -169,6 +183,7 @@
 /obj/item/reagent_containers/food/snacks/tajpizzaslice
 	name = "tajaroni pizza slice"
 	desc = "A delicious slice of pizza topped with tajaroni & olives..."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "tajarpizzaslice"
 	filling_color = "#ffe45d"
@@ -178,6 +193,7 @@
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/diablo
 	name = "diablo pizza"
 	desc = "Incredibly burning pizza with meat pieces, some say it can send you to the redspace."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "diablopizza"
 	slice_path = /obj/item/reagent_containers/food/snacks/diablopizzaslice
 	list_reagents = list("nutriment" = 30, "vitamin" = 15, "protein" = 15, "capsaicin" = 15)
@@ -188,6 +204,7 @@
 /obj/item/reagent_containers/food/snacks/diablopizzaslice
 	name = "diablo pizza slice"
 	desc = "A delicious slice of pizza topped with diablo sauce & meat..."
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/food/pizza.dmi'
 	icon_state = "diablopizzaslice"
 	filling_color = "#ffe45d"
@@ -210,11 +227,14 @@
 	var/list/boxes = list() // If the boxes are stacked, they come here
 	var/box_tag = ""
 
-
 /obj/item/pizzabox/Initialize(mapload)
 	. = ..()
 	update_appearance(UPDATE_DESC|UPDATE_ICON)
 
+/obj/item/pizzabox/Destroy()
+	QDEL_NULL(pizza)
+	LAZYCLEARLIST(boxes)
+	. = ..()
 
 /obj/item/pizzabox/update_desc(updates = ALL)
 	. = ..()
@@ -231,7 +251,6 @@
 		if(box_tag != "")
 			desc = "[desc] The box has a tag, it reads: '[box_tag]'."
 
-
 /obj/item/pizzabox/update_icon_state()
 	if(open)
 		if(is_messy)
@@ -241,11 +260,10 @@
 		return
 	icon_state = "pizzabox[length(boxes) + 1]"
 
-
 /obj/item/pizzabox/update_overlays()
 	. = ..()
 	if(open && pizza)
-		. += image("food/pizza.dmi", icon_state = pizza.icon_state, pixel_y = -3)
+		. += image("food/pizza.dmi", icon_state = pizza.icon_state, pixel_z = -3)
 		return
 	else
 		// Stupid code because byondcode sucks
@@ -258,8 +276,7 @@
 			if(box_tag != "")
 				set_tag = TRUE
 		if(!open && set_tag)
-			. += image("food/pizza.dmi", icon_state = "pizzabox_tag", pixel_y = length(boxes) * 3)
-
+			. += image("food/pizza.dmi", icon_state = "pizzabox_tag", pixel_z = length(boxes) * 3)
 
 /obj/item/pizzabox/attack_hand(mob/user)
 	if(open && pizza)
@@ -270,11 +287,11 @@
 		update_appearance(UPDATE_DESC|UPDATE_ICON)
 		return
 
-	if(boxes.len > 0)
+	if(length(boxes) > 0)
 		if(user.is_in_inactive_hand(src))
 			..()
 			return
-		var/obj/item/pizzabox/box = boxes[boxes.len]
+		var/obj/item/pizzabox/box = boxes[length(boxes)]
 		boxes -= box
 		box.forceMove_turf()
 		user.put_in_hands(box, ignore_anim = FALSE)
@@ -284,7 +301,6 @@
 		return
 	..()
 
-
 /obj/item/pizzabox/attack_self(mob/user)
 	if(length(boxes))
 		return
@@ -292,7 +308,6 @@
 	if(open && pizza)
 		is_messy = TRUE
 	update_appearance(UPDATE_DESC|UPDATE_ICON)
-
 
 /obj/item/pizzabox/attackby(obj/item/I, mob/user, params)
 	if(is_pen(I))
@@ -347,30 +362,25 @@
 
 	return ..()
 
-
 /obj/item/pizzabox/margherita/Initialize(mapload)
 	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/margherita(src)
 	box_tag = "margherita deluxe"
 	. = ..()
-
 
 /obj/item/pizzabox/vegetable/Initialize(mapload)
 	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza(src)
 	box_tag = "gourmet vegetable"
 	. = ..()
 
-
 /obj/item/pizzabox/mushroom/Initialize(mapload)
 	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/mushroompizza(src)
 	box_tag = "mushroom special"
 	. = ..()
 
-
 /obj/item/pizzabox/meat/Initialize(mapload)
 	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/meatpizza(src)
 	box_tag = "meatlover's supreme"
 	. = ..()
-
 
 /obj/item/pizzabox/hawaiian/Initialize(mapload)
 	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/hawaiianpizza(src)

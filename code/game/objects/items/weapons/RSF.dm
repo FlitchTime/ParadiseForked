@@ -4,19 +4,18 @@ RSF
 */
 
 /obj/item/rsf
-	name = "\improper Rapid-Service-Fabricator"
+	name = "Rapid-Service-Fabricator"
 	var/name_short = "RSF"
 	desc = "A device used to rapidly deploy service items."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "rsf"
 	var/matter = 0
 	var/mode = 1
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 0, "acid" = 0)
-	w_class = WEIGHT_CLASS_NORMAL
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	var/list/configured_items = list()
 
-/obj/item/rsf/New(use_rsf_list = TRUE)
-	..()
+/obj/item/rsf/Initialize(mapload, use_rsf_list = TRUE)
+	. = ..()
 	if(use_rsf_list)
 		configured_items = list(
 			list("Dosh", 50, /obj/item/stack/spacecash/c10),
@@ -31,13 +30,13 @@ RSF
 		update_appearance(UPDATE_DESC)
 
 /obj/item/rsf/rff
-	name = "\improper Rapid-Food-Fabricator"
+	name = "Rapid-Food-Fabricator"
 	name_short = "RFF"
 	desc = "A device used to rapidly deploy delucious food!"
 	icon_state = "rff"
 
-/obj/item/rsf/rff/New()
-	..(use_rsf_list = FALSE)
+/obj/item/rsf/rff/Initialize(mapload, use_rsf_list = FALSE)
+	. = ..()
 	configured_items = list(
 		list("Chinese noodles", 3000, /obj/item/reagent_containers/food/snacks/chinese/newdles),
 		list("Donut", 3000, /obj/item/reagent_containers/food/snacks/donut),
@@ -45,10 +44,9 @@ RSF
 		list("Tofu burger", 3000, /obj/item/reagent_containers/food/snacks/tofuburger),
 		list("Admiral Yamomoto's carp", 3000, /obj/item/reagent_containers/food/snacks/chinese/tao),
 		list("Chimichanga", 3000, /obj/item/reagent_containers/food/snacks/chimichanga),
-		list("Ikura sushi", 3000, /obj/item/reagent_containers/food/snacks/sushi_Ikura)
+		list("Ikura sushi", 3000, /obj/item/reagent_containers/food/snacks/sushi_Ikura),
 	)
 	update_appearance(UPDATE_DESC)
-
 
 /obj/item/rsf/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/rcd_ammo))
@@ -66,33 +64,32 @@ RSF
 
 	return ..()
 
-
 /obj/item/rsf/attack_self(mob/user)
-	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
-	if(mode >= configured_items.len)
+	playsound(src.loc, 'sound/effects/pop.ogg', 50, FALSE)
+	if(mode >= length(configured_items))
 		mode = 1
 	else
 		mode++
 	to_chat(user, "Changed dispensing mode to '" + configured_items[mode][1] + "'")
 	update_appearance(UPDATE_DESC)
 
-
 /obj/item/rsf/update_desc(updates = ALL)
 	. = ..()
 	desc = initial(desc) + " Currently set to dispense '[configured_items[mode][1]]'."
-
 
 /obj/item/rsf/examine(mob/user)
 	. = ..()
 	. += span_notice("It currently holds <b>[matter]/30</b> fabrication-units.")
 
-
-/obj/item/rsf/afterattack(atom/A, mob/user, proximity, params)
-	if(!proximity) return
-	if(!(istype(A, /obj/structure/table) || isfloorturf(A)))
+/obj/item/rsf/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!proximity_flag)
 		return
+
+	if(!(istable(target) || isfloorturf(target)))
+		return
+
 	var/spawn_location
-	var/turf/T = get_turf(A)
+	var/turf/T = get_turf(target)
 	if(istype(T) && !T.density)
 		spawn_location = T
 	else
@@ -101,16 +98,16 @@ RSF
 	if(isrobot(user))
 		var/mob/living/silicon/robot/engy = user
 		if(!engy.cell.use(configured_items[mode][2]))
-			to_chat(user, "<span class='warning'>Insufficient energy.</span>")
+			to_chat(user, span_warning("Insufficient energy."))
 			return
 	else
 		if(!matter)
-			to_chat(user, "<span class='warning'>Insufficient matter.</span>")
+			to_chat(user, span_warning("Insufficient matter."))
 			return
 		matter--
 		to_chat(user, "The [name_short] now holds [matter]/30 fabrication-units.")
 
 	to_chat(user, "Dispensing " + configured_items[mode][1] + "...")
-	playsound(loc, 'sound/machines/click.ogg', 10, 1)
+	playsound(loc, 'sound/machines/click.ogg', 10, TRUE)
 	var/type_path = configured_items[mode][3]
 	new type_path(spawn_location)

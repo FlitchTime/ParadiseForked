@@ -1,10 +1,9 @@
 /turf/space/openspace
 	name = "open space"
 	desc = "Watch your step!"
-	icon = 'icons/turf/space.dmi'
 	icon_state = "openspace" //transparent
 	baseturf = /turf/space/openspace
-	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pathing_pass_method = TURF_PATHING_PASS_PROC
 	var/can_cover_up = TRUE
 	var/can_build_on = TRUE
@@ -57,7 +56,7 @@
 	SIGNAL_HANDLER
 	if(ismovable(created_atom))
 		//Drop it only when it's finished initializing, not before.
-		addtimer(CALLBACK(src, PROC_REF(zfall_if_on_turf), created_atom), 0 SECONDS)
+		zfall_if_on_turf(created_atom)
 
 /turf/space/openspace/proc/zfall_if_on_turf(atom/movable/movable)
 	if(QDELETED(movable) || movable.loc != src)
@@ -101,7 +100,6 @@
 /turf/space/openspace/proc/CanBuildHere()
 	return can_build_on
 
-
 /turf/space/openspace/attackby(obj/item/I, mob/user, params)
 	. = ..()
 
@@ -144,8 +142,8 @@
 		ChangeTurf(/turf/simulated/floor/plating)
 		return .|ATTACK_CHAIN_BLOCKED_ALL
 
-	if(istype(I, /obj/item/stack/fireproof_rods))
-		var/obj/item/stack/fireproof_rods/rods = I
+	if(istype(I, /obj/item/stack/rods/fireproof))
+		var/obj/item/stack/rods/fireproof/rods = I
 		if(locate(/obj/structure/lattice/catwalk/fireproof, src))
 			to_chat(user, span_warning("Здесь уже есть мостик!"))
 			return .
@@ -167,7 +165,6 @@
 		new /obj/structure/lattice/catwalk/fireproof(src)
 		return .|ATTACK_CHAIN_SUCCESS
 
-
 /turf/space/openspace/can_have_cabling()
 	if(locate(/obj/structure/lattice/catwalk, src))
 		return TRUE
@@ -185,12 +182,12 @@
 		return RCD_NO_ACT
 	if(our_rcd.useResource(1, user))
 		to_chat(user, "Building Floor...")
-		playsound(get_turf(our_rcd), our_rcd.usesound, 50, 1)
+		playsound(get_turf(our_rcd), our_rcd.usesound, 50, TRUE)
 		add_attack_logs(user, src, "Constructed floor with RCD")
 		ChangeTurf(our_rcd.floor_type)
 		return RCD_ACT_SUCCESSFULL
 	to_chat(user, span_warning("ERROR! Not enough matter in unit to construct this floor!"))
-	playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+	playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 	return RCD_ACT_FAILED
 
 /turf/space/openspace/bullet_act(obj/projectile/P, def_zone)

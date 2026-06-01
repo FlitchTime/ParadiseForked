@@ -18,12 +18,14 @@
 	var/dummy_active = FALSE
 	var/dummy_timer
 
-/obj/item/chameleon_counterfeiter/afterattack(obj/item/target, mob/user, proximity, params)
-	if(!proximity || !check_sprite(target) || target.alpha < 255 || target.invisibility != 0)
+/obj/item/chameleon_counterfeiter/afterattack(obj/item/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!proximity_flag || !check_sprite(target) || target.alpha < 255 || target.invisibility != 0)
 		return
-	if(dummy_active || !isitem(target))
+
+	if(dummy_active || !istype(target))
 		return
-	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, 1, -6)
+
+	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, TRUE, -6)
 	to_chat(user, span_notice("Scanned [target]."))
 	saved_name = target.name
 	saved_desc = target.desc
@@ -39,7 +41,7 @@
 /obj/item/chameleon_counterfeiter/proc/matter_toggle(mob/living/user)
 	if(!can_use || !saved_name)
 		return
-	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
+	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, TRUE, -6)
 	if(dummy_active)
 		matter_deactivate()
 		to_chat(user, span_notice("You deactivate [src]."))
@@ -77,5 +79,5 @@
 
 /obj/item/chameleon_counterfeiter/proc/buzz()
 	visible_message(span_danger(" The [name] is buzzing weirdly!"))
-	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
+	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, TRUE, -6)
 	matter_deactivate()

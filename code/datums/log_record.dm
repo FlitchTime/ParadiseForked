@@ -1,10 +1,10 @@
 /datum/log_record
-	var/log_type		// Type of log
-	var/raw_time		// When did this happen?
-	var/what			// What happened
-	var/who				// Who did it
-	var/target			// Who/what was targeted
-	var/where			// Where did it happen
+	var/log_type // Type of log
+	var/raw_time // When did this happen?
+	var/what // What happened
+	var/who // Who did it
+	var/target // Who/what was targeted
+	var/where // Where did it happen
 
 /datum/log_record/New(_log_type, _who, _what, _target, _where, _raw_time)
 	log_type = _log_type
@@ -37,7 +37,7 @@
 	else
 		. = subject
 
-/datum/log_record/proc/get_health_string(var/mob/living/L)
+/datum/log_record/proc/get_health_string(mob/living/L)
 	var/OX = L.getOxyLoss() > 50 ? "<b>[L.getOxyLoss()]</b>" : L.getOxyLoss()
 	var/TX = L.getToxLoss() > 50 ? "<b>[L.getToxLoss()]</b>" : L.getToxLoss()
 	var/FI = L.getFireLoss() > 50 ? "<b>[L.getFireLoss()]</b>" : L.getFireLoss()

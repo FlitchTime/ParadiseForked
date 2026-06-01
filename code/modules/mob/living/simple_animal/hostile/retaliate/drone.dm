@@ -18,12 +18,10 @@
 	response_harm = "hits the"
 	speak = list("ALERT.", "Hostile-ile-ile entities dee-twhoooo-wected.", "Threat parameterszzzz- szzet.", "Bring sub-sub-sub-systems uuuup to combat alert alpha-a-a.")
 	emote_see = list("beeps menacingly.", "whirrs threateningly.", "scans for targets.")
-	a_intent = INTENT_HARM
-	stop_automated_movement_when_pulled = FALSE
 	health = 200
 	maxHealth = 200
 	speed = 8
-	projectiletype = /obj/projectile/beam/immolator/weak
+	projectiletype = /obj/projectile/beam/immolator/weak/hitscan
 	projectilesound = 'sound/weapons/laser3.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	faction = list("malf_drone")
@@ -31,7 +29,7 @@
 	del_on_death = 1
 	var/passive_mode = TRUE // if true, don't target anything.
 	var/datum/effect_system/trail_follow/ion/ion_trail
-
+	var/static/list/drone_list = valid_subtypesof(/obj/item/circuitboard/drone)
 
 /mob/living/simple_animal/hostile/malf_drone/Initialize(mapload)
 	. = ..()
@@ -48,7 +46,6 @@
 /mob/living/simple_animal/hostile/malf_drone/Destroy()
 	QDEL_NULL(ion_trail)
 	return ..()
-
 
 /mob/living/simple_animal/hostile/malf_drone/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE
@@ -73,7 +70,6 @@
 	else
 		icon_state = "drone0"
 
-
 /mob/living/simple_animal/hostile/malf_drone/adjustHealth(
 	amount = 0,
 	updating_health = TRUE,
@@ -83,10 +79,9 @@
 )
 	. = ..()
 	if(. && amount > 0)
-		do_sparks(3, 1, src)
+		do_sparks(3, TRUE, src)
 		passive_mode = FALSE
 		update_icons()
-
 
 /mob/living/simple_animal/hostile/malf_drone/Life(seconds, times_fired)
 	. = ..()
@@ -96,21 +91,21 @@
 
 /mob/living/simple_animal/hostile/malf_drone/proc/scramble_settings()
 	if(prob(50))
-		do_sparks(3, 1, src)
+		do_sparks(3, TRUE, src)
 		passive_mode = !passive_mode
 		if(passive_mode)
-			visible_message("<span class='notice'>[src] retracts several targetting vanes.</span>")
+			visible_message(span_notice("[src] retracts several targetting vanes."))
 			if(target)
 				lose_target()
 		else
-			visible_message("<span class='warning'>[src] suddenly lights up, and additional targetting vanes slide into place.</span>")
+			visible_message(span_warning("[src] suddenly lights up, and additional targetting vanes slide into place."))
 		update_icons()
 
 /mob/living/simple_animal/hostile/malf_drone/emp_act(severity)
 	adjustHealth(100 / severity) // takes the same damage as a mining drone from emp
 
 /mob/living/simple_animal/hostile/malf_drone/drop_loot()
-	do_sparks(3, 1, src)
+	do_sparks(3, TRUE, src)
 
 	var/turf/T = get_turf(src)
 
@@ -135,67 +130,12 @@
 	K = new /obj/item/stack/sheet/plasteel(T, pick(1, 2, 3, 4))
 	step_to(K, get_turf(pick(view(7, src))))
 
-	//also drop dummy circuit boards deconstructable for research (loot)
-	var/obj/item/circuitboard/C
-
 	//spawn 1-4 boards of a random type
-	var/spawnees = 0
 	var/num_boards = rand(1, 4)
-	var/list/options = list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512)
-	for(var/i=0, i<num_boards, i++)
-		var/chosen = pick(options)
-		options.Remove(options.Find(chosen))
-		spawnees |= chosen
-
-	if(spawnees & 1)
-		C = new(T)
-		C.name = "Drone CPU motherboard"
-		C.origin_tech = "programming=[rand(3, 6)]"
-
-	if(spawnees & 2)
-		C = new(T)
-		C.name = "Drone neural interface"
-		C.origin_tech = "biotech=[rand(3, 6)]"
-
-	if(spawnees & 4)
-		C = new(T)
-		C.name = "Drone suspension processor"
-		C.origin_tech = "magnets=[rand(3, 6)]"
-
-	if(spawnees & 8)
-		C = new(T)
-		C.name = "Drone shielding controller"
-		C.origin_tech = "bluespace=[rand(3, 6)]"
-
-	if(spawnees & 16)
-		C = new(T)
-		C.name = "Drone power capacitor"
-		C.origin_tech = "powerstorage=[rand(3, 6)]"
-
-	if(spawnees & 32)
-		C = new(T)
-		C.name = "Drone hull reinforcer"
-		C.origin_tech = "materials=[rand(3, 6)]"
-
-	if(spawnees & 64)
-		C = new(T)
-		C.name = "Drone auto-repair system"
-		C.origin_tech = "engineering=[rand(3, 6)]"
-
-	if(spawnees & 128)
-		C = new(T)
-		C.name = "Drone plasma overcharge counter"
-		C.origin_tech = "plasmatech=[rand(3, 6)]"
-
-	if(spawnees & 256)
-		C = new(T)
-		C.name = "Drone targetting circuitboard"
-		C.origin_tech = "combat=[rand(3, 6)]"
-
-	if(spawnees & 512)
-		C = new(T)
-		C.name = "Corrupted drone morality core"
-		C.origin_tech = "syndicate=[rand(3, 6)]"
+	var/list/options = drone_list.Copy()
+	for(var/i in 1 to num_boards)
+		var/chosen = pick_n_take(options)
+		new chosen(T)
 
 /mob/living/simple_animal/hostile/malf_drone/syndicate
 	stop_automated_movement_when_pulled = TRUE
@@ -203,11 +143,10 @@
 	speak = list()
 
 /mob/living/simple_animal/bot/ed209/combat_drone
-	name = "\improper Combat Drone"
+	name = "Combat Drone"
 	desc = "An automated combat drone armed with state of the art weaponry and shielding."
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "drone3"
-	density = TRUE
 	health = 200
 	maxHealth = 200
 	speed = 8
@@ -216,12 +155,10 @@
 	bot_purpose = "devastion"
 	bot_core_type = /obj/machinery/bot_core/syndicate
 	window_name = "Standart Robot Control v1.6"
-	path_image_color = "#FF0000"
 	declare_arrests = FALSE
 	idcheck = TRUE
 	arrest_type = TRUE
-	auto_patrol = FALSE
-	projectile = /obj/projectile/beam/immolator/weak
+	projectile = /obj/projectile/beam/immolator/weak/hitscan
 
 /mob/living/simple_animal/bot/ed209/combat_drone/Initialize(mapload)
 	. = ..()
@@ -235,7 +172,7 @@
 	return
 
 /mob/living/simple_animal/bot/ed209/combat_drone/set_weapon()
-	projectile = /obj/projectile/beam/immolator/weak
+	projectile = /obj/projectile/beam/immolator/weak/hitscan
 
 /mob/living/simple_animal/bot/ed209/combat_drone/turn_on()
 	. = ..()
@@ -284,10 +221,10 @@
 		if(length(candidates))
 			var/mob/living/simple_animal/hostile/malf_drone/syndicate/S = new /mob/living/simple_animal/hostile/malf_drone/syndicate(get_turf(src))
 			var/mob/M = pick(candidates)
-			S.key = M.key
+			S.possess_by_player(M.key)
 			S.master_commander = user
 			S.sentience_act()
-			to_chat(S, "Модуль активирован. Основная задача: подчинение [user.name]. Дополнительная задача: уничтожение враждебных единиц не относящихся к Синдикату в подконтрольном секторе.")
+			to_chat(S, "Модуль активирован. Основная задача: подчинение [user.name]. Дополнительная задача: уничтожение враждебных единиц не относящихся к \"Синдикату\" в подконтрольном секторе.")
 			S.mind.store_memory("<b>Подчиняться [user.name].</b>")
 			qdel(src)
 			qdel(I)
@@ -299,20 +236,26 @@
 /obj/item/drone_manual
 	name = "Strange looking Manual"
 	desc = "На обложке этой книги вы можете увидеть изображение боевого дрона. Это руководство по его эксплуатации."
-	ru_names = list(
+	gender = MALE
+	icon = 'icons/obj/library.dmi'
+	lefthand_file = 'icons/mob/inhands/equipment/library_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/library_righthand.dmi'
+	icon_state = "drone_manual"
+	item_state = "book7"
+
+/obj/item/drone_manual/get_ru_names()
+	return list(
 		NOMINATIVE = "странное руководство",
 		GENITIVE = "странного руководства",
 		DATIVE = "странному руководству",
 		ACCUSATIVE = "странное руководство",
 		INSTRUMENTAL = "странным руководством",
-		PREPOSITIONAL = "странном руководстве"
+		PREPOSITIONAL = "странном руководстве",
 	)
-	gender = MALE
-	icon_state = "drone_manual"
 
 /obj/item/drone_manual/attack_self(mob/user)
 	. = ..()
-	to_chat(user, span_alert("После того как вы пробежались глазами по содержанию книги, она рассыпалась пеплом. Но, кажется, вы можете вспомнить пару методов работы, описанных там - самодельные платы и базовую модель самого дрона."))
+	to_chat(user, span_alert("После того как вы пробежались глазами по содержанию книги, она рассыпалась пеплом. Но, кажется, вы можете вспомнить пару методов работы, описанных там — самодельные платы и базовую модель самого дрона."))
 	user.mind.learned_recipes += list(/datum/crafting_recipe/drone,
 		/datum/crafting_recipe/drone_circ,
 		/datum/crafting_recipe/drone_circ_adv,
@@ -322,7 +265,7 @@
 
 /obj/item/drone_modules
 	name = "Drone module"
-	desc = "Если вы это видите - сообщите в баг-репорты."
+	desc = "Если вы это видите — сообщите в баг-репорты."
 	icon_state = "drone_BCM"
 	var/explanation = "Вы не должны были этого видеть."
 
@@ -341,7 +284,7 @@
 	name = "Drone IFFM"
 	desc = "Неплохо сделанная плата."
 	icon_state = "drone_IFF"
-	explanation = "Это плата модуля Свой-Чужой для боевых дронов. Сделанная по схеме из книги, она не допускает изменений - а значит, дроны с подобным модулем всегда будут участвовать в бою на стороне Синдиката."
+	explanation = "Это плата модуля Свой-Чужой для боевых дронов. Сделанная по схеме из книги, она не допускает изменений — а значит, дроны с подобным модулем всегда будут участвовать в бою на стороне \"Синдиката\"."
 
 /obj/item/drone_modules/drone_AI
 	name = "Drone AICM"

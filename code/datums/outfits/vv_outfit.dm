@@ -46,40 +46,38 @@
 		if(ITEM_SLOT_POCKET_RIGHT)
 			r_pocket = item_path
 
-
-/proc/collect_vv(obj/item/I)
+/proc/collect_vv(obj/item/item)
 	//Temporary/Internal stuff, do not copy these.
 	var/static/list/ignored_vars = list(
-		NAMEOF(I, animate_movement) = TRUE,
-		NAMEOF(I, datum_flags) = TRUE,
-		NAMEOF(I, fingerprintslast) = TRUE,
-		NAMEOF(I, layer) = TRUE,
-		NAMEOF(I, plane) = TRUE,
-		NAMEOF(I, screen_loc) = TRUE,
-		NAMEOF(I, tip_timer) = TRUE,
-		NAMEOF(I, vars) = TRUE,
-		NAMEOF(I, x) = TRUE,
-		NAMEOF(I, y) = TRUE,
-		NAMEOF(I, z) = TRUE,
+		NAMEOF(item, animate_movement),
+		NAMEOF(item, datum_flags),
+		NAMEOF(item, fingerprintslast),
+		NAMEOF(item, layer),
+		NAMEOF(item, plane),
+		NAMEOF(item, screen_loc),
+		NAMEOF(item, tip_timer),
+		NAMEOF(item, vars),
+		NAMEOF(item, x),
+		NAMEOF(item, y),
+		NAMEOF(item, z),
 	)
 
-	if(istype(I) && (I.datum_flags & DF_VAR_EDITED))
+	if(istype(item) && (item.datum_flags & DF_VAR_EDITED))
 		var/list/vedits = list()
-		for(var/varname in I.vars)
-			if(!I.can_vv_get(varname))
+		for(var/varname in item.vars)
+			if(!item.can_vv_get(varname))
 				continue
-			if(ignored_vars[varname])
+			if(varname in ignored_vars)
 				continue
-			var/vval = I.vars[varname]
+			var/vval = item.vars[varname]
 			//Does it even work ?
-			if(vval == initial(I.vars[varname]))
+			if(vval == initial(item.vars[varname]))
 				continue
 			//Only text/numbers and icons variables to make it less weirdness prone.
 			if(!istext(vval) && !isnum(vval) && !isicon(vval))
 				continue
-			vedits[varname] = I.vars[varname]
+			vedits[varname] = item.vars[varname]
 		return vedits
-
 
 /mob/living/carbon/human/proc/copy_outfit()
 	var/datum/outfit/varedit/O = new
@@ -128,7 +126,7 @@
 	var/obj/item/id_slot = get_item_by_slot(ITEM_SLOT_ID)
 	if(istype(id_slot, /obj/item/storage/wallet))
 		for(var/obj/item/item in id_slot)
-			if(istype(item, /obj/item/card/id))
+			if(is_id_card(item))
 				continue
 			if(O.backpack_contents[item.type])
 				O.backpack_contents[item.type] += 1
@@ -177,7 +175,7 @@
 			O.accessories |= accessory.type
 
 	//Copy to outfit cache
-	var/outfit_name = stripped_input(usr, "Enter the outfit name")
+	var/outfit_name = tgui_input_text(usr, "Enter the outfit name")
 	O.name = outfit_name
 	GLOB.custom_outfits += O
 	to_chat(usr, "Outfit registered, use select equipment to equip it.")
@@ -210,7 +208,7 @@
 		if(update_id_name)
 			card.registered_name = H.real_name
 			card.update_label()
-		H.sec_hud_set_ID()
+		H.update_hud_set()
 
 /datum/outfit/varedit/get_json_data()
 	. = .. ()
@@ -223,7 +221,7 @@
 		for(var/edit in vedits)
 			if(istext(vedits[edit]) || isnum(vedits[edit]) || isnull(vedits[edit]))
 				stripped_edits[edit] = vedits[edit]
-		if(stripped_edits.len)
+		if(length(stripped_edits))
 			stripped_vv[slot] = stripped_edits
 	.["vv_values"] = stripped_vv
 

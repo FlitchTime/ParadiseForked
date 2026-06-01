@@ -1,15 +1,11 @@
-/client/proc/admin_memo()
-	set name = "Memo"
-	set category = "Admin.Admin"
-	if(!check_rights(R_SERVER))
-		return
+ADMIN_VERB(server_memo, R_SERVER, "Memo", "View and modify server memos.", ADMIN_CATEGORY_SERVER)
 	if(!SSdbcore.IsConnected())
-		to_chat(src, span_danger("Failed to establish database connection."), confidential=TRUE)
+		to_chat(user, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
-	var/memotask = input(usr,"Choose task.","Memo") in list("Show","Write","Edit","Remove")
+	var/memotask = tgui_input_list(user, "Choose task.", "Memo", list("Show", "Write", "Edit", "Remove"))
 	if(!memotask)
 		return
-	admin_memo_output(memotask)
+	user.admin_memo_output(memotask)
 
 /client/proc/admin_memo_output(task, checkrights = 1, silent = 0)
 	if(checkrights && !check_rights(R_SERVER))
@@ -17,7 +13,7 @@
 	if(!task)
 		return
 	if(!SSdbcore.IsConnected())
-		to_chat(src, span_danger("Failed to establish database connection."), confidential=TRUE)
+		to_chat(src, span_danger("Failed to establish database connection."), confidential = TRUE)
 		return
 	switch(task)
 		if("Write")
@@ -31,12 +27,12 @@
 				return
 
 			if(query_memocheck.NextRow())
-				to_chat(src, "You already have set a memo.", confidential=TRUE)
+				to_chat(src, "You already have set a memo.", confidential = TRUE)
 				qdel(query_memocheck)
 				return
 
 			qdel(query_memocheck)
-			var/memotext = input(src, "Write your Memo", "Memo") as message
+			var/memotext = tgui_input_text(src, "Write your Memo", "Memo", multiline = TRUE)
 			if(!memotext)
 				return
 
@@ -70,10 +66,10 @@
 
 			qdel(query_memolist)
 			if(!length(memolist))
-				to_chat(src, "No memos found in database.", confidential=TRUE)
+				to_chat(src, "No memos found in database.", confidential = TRUE)
 				return
 
-			var/target_ckey = input(src, "Select whose memo to edit", "Select memo") as null|anything in memolist
+			var/target_ckey = tgui_input_list(src, "Select whose memo to edit", "Select memo", memolist)
 			if(!target_ckey)
 				return
 
@@ -88,7 +84,7 @@
 
 			if(query_memofind.NextRow())
 				var/old_memo = query_memofind.item[1]
-				var/new_memo = input("Input new memo", "New Memo", "[old_memo]", null) as message
+				var/new_memo = tgui_input_text(usr, "Input new memo", "New Memo", "[old_memo]", null, multiline = TRUE)
 				if(!new_memo)
 					qdel(query_memofind)
 					return
@@ -135,9 +131,9 @@
 					output += span_memoedit("<br>Last edit by [last_editor] <a href='byond://?_src_=holder;memoeditlist=[ckey]'>(Click here to see edit log)</a>")
 				output += span_memo("<br>[memotext]<br>")
 			if(output)
-				to_chat(src, output, confidential=TRUE)
+				to_chat(src, output, confidential = TRUE)
 			else if(!silent)
-				to_chat(src, "No memos found in database.", confidential=TRUE)
+				to_chat(src, "No memos found in database.", confidential = TRUE)
 			qdel(query_memoshow)
 
 		if("Remove")
@@ -152,11 +148,11 @@
 				memolist += "[ckey]"
 
 			qdel(query_memodellist)
-			if(!memolist.len)
-				to_chat(src, "No memos found in database.", confidential=TRUE)
+			if(!length(memolist))
+				to_chat(src, "No memos found in database.", confidential = TRUE)
 				return
 
-			var/target_ckey = input(src, "Select whose memo to delete", "Select memo") as null|anything in memolist
+			var/target_ckey = tgui_input_list(src, "Select whose memo to delete", "Select memo", memolist)
 			if(!target_ckey)
 				return
 

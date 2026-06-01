@@ -7,7 +7,6 @@
 	var/obj/structure/bed/amb_trolley/bed = null
 	var/datum/looping_sound/ambulance_alarm/soundloop
 
-
 	//Lights on ability activation
 	light_on = FALSE
 	light_system = MOVABLE_LIGHT
@@ -19,12 +18,10 @@
 	. = ..()
 	initialize_controller_action_type(/datum/action/vehicle/ridden/ambulance/ambulance_alarm, VEHICLE_CONTROL_DRIVE)
 
-
 /obj/vehicle/ridden/ambulance/Initialize(mapload)
 	. = ..()
-	soundloop = new(list(src), FALSE)
+	soundloop = new(src, FALSE)
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/ambulance)
-
 
 /obj/vehicle/ridden/ambulance/Destroy()
 	QDEL_NULL(soundloop)
@@ -42,26 +39,32 @@
 			for(var/mob/living/buckled_mob as anything in bed.buckled_mobs)
 				buckled_mob.setDir(direct)
 
-
 /obj/structure/bed/amb_trolley
 	name = "ambulance train trolley"
 	icon = 'icons/obj/vehicles/CargoTrain.dmi'
 	icon_state = "ambulance"
 	anchored = FALSE
+	pull_push_slowdown = 0	// used for transporting lying mobs
+	interaction_flags_mouse_drop = NEED_HANDS
 
 /obj/structure/bed/amb_trolley/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>Drag [src]'s sprite over the ambulance to (de)attach it.</span>"
+	. += span_notice("Drag [src]'s sprite over the ambulance to (de)attach it.")
 
-/obj/structure/bed/amb_trolley/MouseDrop(atom/over_object, src_location, over_location, src_control, over_control, params)
-	. = ..()
-	if(!istype(over_object, /obj/vehicle/ridden/ambulance) || usr.incapacitated() || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
-		return FALSE
+/obj/structure/bed/amb_trolley/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	if(!istype(over_object, /obj/vehicle/ridden/ambulance))
+		return
 
-	var/obj/vehicle/ridden/ambulance/amb = over_object
-	if(amb.bed)
-		amb.bed = null
-		balloon_alert(usr, "отцеплено от машины")
-	else
-		amb.bed = src
-		balloon_alert(usr, "прицеплено к машине")
+	var/obj/vehicle/ridden/ambulance/ambulance = over_object
+
+	if(ambulance.bed == src)
+		ambulance.bed = null
+		balloon_alert(user, "отцеплено от машины")
+		return
+
+	if(ambulance.bed)
+		balloon_alert(user, "уже прицеплена другая каталка")
+		return
+
+	ambulance.bed = src
+	balloon_alert(user, "прицеплено к машине")

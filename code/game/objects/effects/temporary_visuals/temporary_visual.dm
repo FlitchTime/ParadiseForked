@@ -1,12 +1,14 @@
-//temporary visual effects
+/// Temporary visual effects.
 /obj/effect/temp_visual
 	icon_state = "nothing"
-	anchored = TRUE
 	layer = ABOVE_MOB_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	var/duration = 10 //in deciseconds
-	var/randomdir = TRUE
+	/// How long before the temp_visual gets deleted.
+	var/duration = 1 SECONDS
+	/// Timer that our duration is stored in.
 	var/timerid
+	/// Gives our effect a random direction on init.
+	var/randomdir = TRUE
 
 /obj/effect/temp_visual/Initialize(mapload)
 	. = ..()
@@ -22,7 +24,7 @@
 /obj/effect/temp_visual/singularity_act()
 	return
 
-/obj/effect/temp_visual/singularity_pull()
+/obj/effect/temp_visual/singularity_pull(atom/singularity, current_size)
 	return
 
 /obj/effect/temp_visual/ex_act()
@@ -45,3 +47,9 @@
 		var/matrix/M = new
 		M.Turn(get_angle(src, target))
 		transform = M
+
+/obj/effect/temp_visual/jet_plume
+	name = "jet plume"
+	icon_state = "jet_plume"
+	layer = BELOW_MOB_LAYER
+	duration = 0.4 SECONDS

@@ -1,11 +1,10 @@
 /obj/structure/blob/special/node
 	name = "blob node"
-	icon = 'icons/mob/blob.dmi'
 	icon_state = "blank_blob"
 	desc = "Большая пульсирующая желтая масса."
 	max_integrity = BLOB_NODE_MAX_HP
 	health_regen = BLOB_NODE_HP_REGEN
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 25, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 65, "acid" = 90)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 25, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 65, ACID = 90)
 	point_return = BLOB_REFUND_NODE_COST
 	claim_range = BLOB_NODE_CLAIM_RANGE
 	pulse_range = BLOB_NODE_PULSE_RANGE
@@ -17,7 +16,6 @@
 	GLOB.blob_nodes |= src
 	START_PROCESSING(SSobj, src)
 	. = ..()
-
 
 /obj/structure/blob/special/node/scannerreport()
 	return "Постепенно расширяется и поддерживает близлежащие споры и блобернаутов."
@@ -38,7 +36,6 @@
 	. += mutable_appearance('icons/mob/blob.dmi', "blob_node_overlay")
 	if(blocks_emissive)
 		add_overlay(get_emissive_block())
-
 
 /obj/structure/blob/special/node/link_to_overmind(mob/camera/blob/owner_overmind)
 	. = ..()

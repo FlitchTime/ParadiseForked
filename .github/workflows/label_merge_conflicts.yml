@@ -1,4 +1,4 @@
-name: 'Merge Conflict Detection'
+name: "Merge Conflict Detection"
 
 on:
   push:
@@ -7,11 +7,15 @@ on:
   pull_request_target:
     types: [ready_for_review, opened, synchronize, reopened]
 
+  workflow_run:
+    workflows: ["Build and verify Rust library"]
+    types: [completed]
+
 jobs:
   triage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: eps1lon/actions-label-merge-conflict@v3.0.2
+      - uses: eps1lon/actions-label-merge-conflict@v3.1.0
         with:
-          dirtyLabel: 'Merge Conflict'
+          dirtyLabel: "Merge Conflict"
           repoToken: ${{ secrets.GITHUB_TOKEN }}

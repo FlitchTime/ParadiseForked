@@ -1,7 +1,7 @@
 // The Marine mortar, the M402 Mortar
 // Works like a contemporary crew weapon mortar
 /obj/structure/mortar
-	name = "\improper M402S mortar"
+	name = "M402S mortar"
 	desc = "A manual, crew-operated mortar system intended to rain down 80mm goodness on anything it's aimed at. Uses an advanced targeting computer. Insert round to fire."
 	icon = 'icons/obj/structures/mortar.dmi'
 	icon_state = "mortar_m402"
@@ -69,15 +69,19 @@
 		return
 
 	if(firing)
-		playsound(src, "acid_hit", 25, 1)
-		playsound(xeno, "alien_help", 25, 1)
+		playsound(src, "acid_hit", 25, TRUE)
+		playsound(xeno, "alien_help", 25, TRUE)
 		xeno.apply_damage(10, BURN)
-		xeno.visible_message(span_danger("[xeno] tried to knock the steaming hot [src] over, but burned itself and pulled away!"),
-		span_alertalien("\The [src] is burning hot! Wait a few seconds."))
+		xeno.visible_message(
+			span_danger("[xeno] tried to knock the steaming hot [src] over, but burned itself and pulled away!"),
+			span_alertalien("\The [src] is burning hot! Wait a few seconds.")
+		)
 		return
 
-	xeno.visible_message(span_danger("[xeno] lashes at \the [src] and knocks it over!"),
-	span_danger("You knock \the [src] over!"))
+	xeno.visible_message(
+		span_danger("[xeno] lashes at \the [src] and knocks it over!"),
+		span_danger("You knock \the [src] over!")
+	)
 	playsound(loc, 'sound/effects/metalhit.ogg', 25)
 	var/obj/item/mortar_kit/MK = new /obj/item/mortar_kit(loc)
 	MK.name = name
@@ -138,11 +142,13 @@
 	if(!can_fire_at(user, test_targ_x = temp_targ_x, test_targ_y = temp_targ_y, test_targ_z = temp_targ_z))
 		return
 
-	user.visible_message(span_notice("[user] starts adjusting [src]'s firing angle and distance."),
-	span_notice("You start adjusting [src]'s firing angle and distance to match the new coordinates."))
+	user.visible_message(
+		span_notice("[user] starts adjusting [src]'s firing angle and distance."),
+		span_notice("You start adjusting [src]'s firing angle and distance to match the new coordinates.")
+	)
 	busy = TRUE
 	var/soundfile = 'sound/machines/scanning.ogg'
-	playsound(loc, soundfile, 25, 1)
+	playsound(loc, soundfile, 25, TRUE)
 
 	var/success = do_after(user, 3 SECONDS)
 	busy = FALSE
@@ -150,8 +156,10 @@
 	if(!success)
 		return
 
-	user.visible_message(span_notice("[user] finishes adjusting [src]'s firing angle and distance."),
-	span_notice("You finish adjusting [src]'s firing angle and distance to match the new coordinates."))
+	user.visible_message(
+		span_notice("[user] finishes adjusting [src]'s firing angle and distance."),
+		span_notice("You finish adjusting [src]'s firing angle and distance to match the new coordinates.")
+	)
 	targ_x = temp_targ_x
 	targ_y = temp_targ_y
 	targ_z = temp_targ_z
@@ -173,28 +181,32 @@
 	if(!can_fire_at(user, test_dial_x = temp_dial_x, test_dial_y = temp_dial_y))
 		return
 
-	user.visible_message(span_notice("[user] starts dialing [src]'s firing angle and distance."),
-	span_notice("You start dialing [src]'s firing angle and distance to match the new coordinates."))
+	user.visible_message(
+		span_notice("[user] starts dialing [src]'s firing angle and distance."),
+		span_notice("You start dialing [src]'s firing angle and distance to match the new coordinates.")
+	)
 	busy = TRUE
 
 	var/soundfile = 'sound/machines/scanning.ogg'
 	if(manual)
 		soundfile = 'sound/items/Ratchet.ogg'
-	playsound(loc, soundfile, 25, 1)
+	playsound(loc, soundfile, 25, TRUE)
 
 	var/success = do_after(user, 1.5 SECONDS)
 	busy = FALSE
 	if(!success)
 		return
-	user.visible_message(span_notice("[user] finishes dialing [src]'s firing angle and distance."),
-	span_notice("You finish dialing [src]'s firing angle and distance to match the new coordinates."))
+	user.visible_message(
+		span_notice("[user] finishes dialing [src]'s firing angle and distance."),
+		span_notice("You finish dialing [src]'s firing angle and distance to match the new coordinates.")
+	)
 	dial_x = temp_dial_x
 	dial_y = temp_dial_y
 
 	SStgui.update_uis(src)
 
 /obj/structure/mortar/attackby(obj/item/item, mob/user)
-	if(!istype(item, /obj/item/mortar_shell))
+	if(!ismortarcasing(item))
 		return ATTACK_CHAIN_PROCEED
 	var/obj/item/mortar_shell/mortar_shell = item
 
@@ -227,9 +239,11 @@
 	if(deviation_turf)
 		target_turf = deviation_turf
 
-	user.visible_message(span_notice("[user] starts loading \a [mortar_shell.name] into [src]."),
-	span_notice("You start loading \a [mortar_shell.name] into [src]."))
-	playsound(loc, 'sound/weapons/gun_mortar_reload.ogg', 50, 1)
+	user.visible_message(
+		span_notice("[user] starts loading \a [mortar_shell.name] into [src]."),
+		span_notice("You start loading \a [mortar_shell.name] into [src].")
+	)
+	playsound(loc, 'sound/weapons/gun_mortar_reload.ogg', 50, TRUE)
 	busy = TRUE
 	var/success = do_after(user, 1.5 SECONDS)
 	busy = FALSE
@@ -237,11 +251,13 @@
 	if(!success)
 		return ATTACK_CHAIN_PROCEED
 
-	user.visible_message(span_notice("[user] loads \a [mortar_shell.name] into [src]."),
-	span_notice("You load \a [mortar_shell.name] into [src]."))
-	visible_message("[icon2html(src, viewers(src))] [span_danger("The [name] fires!")]")
+	user.visible_message(
+		span_notice("[user] loads \a [mortar_shell.name] into [src]."),
+		span_notice("You load \a [mortar_shell.name] into [src].")
+	)
+	visible_message("[get_examine_icon(viewers(src))] [span_danger("The [name] fires!")]")
 	user.drop_transfer_item_to_loc(mortar_shell, src, TRUE, TRUE)
-	playsound(loc, 'sound/weapons/gun_mortar_fire.ogg', 50, 1)
+	playsound(loc, 'sound/weapons/gun_mortar_fire.ogg', 50, TRUE)
 	busy = FALSE
 	firing = TRUE
 	flick(icon_state + "_fire", src)
@@ -267,23 +283,27 @@
 		to_chat(user, span_warning("[src]'s barrel is still steaming hot. Wait a few seconds and stop firing it."))
 		return
 
-	playsound(loc, 'sound/items/Ratchet.ogg', 25, 1)
-	user.visible_message(span_notice("[user] starts undeploying [src]."),
-		span_notice("You start undeploying [src]."))
+	playsound(loc, 'sound/items/Ratchet.ogg', 25, TRUE)
+	user.visible_message(
+		span_notice("[user] starts undeploying [src]."),
+		span_notice("You start undeploying [src].")
+	)
 
 	if(!do_after(user, 4 SECONDS))
 		return
 
-	user.visible_message(span_notice("[user] undeploys [src]."),
-		span_notice("You undeploy [src]."))
-	playsound(loc, 'sound/items/Deconstruct.ogg', 25, 1)
+	user.visible_message(
+		span_notice("[user] undeploys [src]."),
+		span_notice("You undeploy [src].")
+	)
+	playsound(loc, 'sound/items/Deconstruct.ogg', 25, TRUE)
 	var/obj/item/mortar_kit/mortar = new /obj/item/mortar_kit(loc, skin)
 	mortar.name = src.name
 	qdel(src)
 
-/obj/structure/mortar/ex_act(severity)
+/obj/structure/mortar/ex_act(severity, target)
 	switch(severity)
-		if(2 to INFINITY)
+		if(EXPLODE_HEAVY to INFINITY)
 			qdel(src)
 
 /obj/effect/mortar_effect
@@ -308,7 +328,7 @@
 	firing = FALSE
 
 /obj/structure/mortar/proc/handle_messages(turf/target)
-	playsound(target, 'sound/weapons/gun_mortar_travel.ogg', 50, 1)
+	playsound(target, 'sound/weapons/gun_mortar_travel.ogg', 50, TRUE)
 	var/relative_dir
 	for(var/mob/mob in range(15, target))
 		if(get_turf(mob) == target)
@@ -322,7 +342,6 @@
 	sleep(2.5 SECONDS) // Sleep a bit to give a message
 	new /obj/effect/overlay/temp/blinking_laser(target)
 	sleep(2 SECONDS) // Wait out the rest of the landing time
-
 
 /obj/structure/mortar/proc/can_fire_at(mob/user, test_targ_x = targ_x, test_targ_y = targ_y, test_targ_z = targ_z, test_dial_x, test_dial_y)
 	var/dialing = test_dial_x || test_dial_y
@@ -356,7 +375,7 @@
 	var/turf/top_turf = get_highest_turf(loc)
 	var/turf/low_turf = get_lowest_turf(loc)
 
-	if (!cross_sector && (!low_turf && !top_turf || low_turf && (test_targ_z < low_turf.z) || top_turf && (test_targ_z > top_turf.z)))
+	if(!cross_sector && (!low_turf && !top_turf || low_turf && (test_targ_z < low_turf.z) || top_turf && (test_targ_z > top_turf.z)))
 		to_chat(user, span_warning("You cannot [dialing ? "dial to" : "aim at"] this coordinate. It isn't in your sector."))
 		return FALSE
 
@@ -386,12 +405,11 @@
 
 //The portable mortar item
 /obj/item/mortar_kit
-	name = "\improper M402S mortar portable kit"
+	name = "M402S mortar portable kit"
 	desc = "A manual, crew-operated mortar system intended to rain down 80mm goodness on anything it's aimed at. Needs to be set down first"
 	icon = 'icons/obj/structures/mortar.dmi'
 	icon_state = "mortar_m402_carry"
 	item_state = "mortar_m402_carry"
-	ru_names = list()
 	lefthand_file = 'icons/mob/inhands/items_by_map/jungle_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_by_map/jungle_righthand.dmi'
 	resistance_flags = ACID_PROOF
@@ -404,10 +422,11 @@
 	. = ..()
 	select_skin(skin)
 
-/obj/item/mortar_kit/ex_act(severity)
+/obj/item/mortar_kit/ex_act(severity, target)
 	switch(severity)
-		if(2 to INFINITY)
+		if(EXPLODE_HEAVY to INFINITY)
 			deconstruct(FALSE)
+
 /obj/item/mortar_kit/select_skin(new_skin)
 	. = ..()
 	var/new_icon_state
@@ -448,7 +467,7 @@
 				righthand_file = 'icons/mob/inhands/items_by_map/urban_righthand.dmi'
 	if(isliving(loc))
 		var/mob/mob = loc
-		mob.update_inv_hands()
+		mob.update_held_items()
 	return TRUE
 
 /obj/item/mortar_kit/AltShiftClick(mob/user)
@@ -468,30 +487,31 @@
 	if(above_turf && !isopenspaceturf(above_turf))
 		to_chat(user, span_warning("You probably shouldn't deploy [src] indoors."))
 		return
-	user.visible_message(span_notice("[user] starts deploying [src]."),
-	span_notice("You start deploying [src]."))
-	playsound(deploy_turf, 'sound/items/Deconstruct.ogg', 25, 1)
+	user.visible_message(
+		span_notice("[user] starts deploying [src]."),
+		span_notice("You start deploying [src].")
+	)
+	playsound(deploy_turf, 'sound/items/Deconstruct.ogg', 25, TRUE)
 
 	if(!do_after(user, 4 SECONDS))
 		return
 
 	var/obj/structure/mortar/mortar = new /obj/structure/mortar(deploy_turf, skin)
-	user.visible_message(span_notice("[user] deploys [src]."),
-	span_notice("You deploy [src]."))
-	playsound(deploy_turf, 'sound/weapons/gun_mortar_unpack.ogg', 25, 1)
+	user.visible_message(
+		span_notice("[user] deploys [src]."),
+		span_notice("You deploy [src].")
+	)
+	playsound(deploy_turf, 'sound/weapons/gun_mortar_unpack.ogg', 25, TRUE)
 	mortar.name = src.name
 	mortar.setDir(user.dir)
 	qdel(src)
 
-
 //used to show where dropship ordnance will impact.
 /obj/effect/overlay/temp/blinking_laser
 	name = "blinking laser"
-	anchored = TRUE
 	light_range = 2
 	var/effect_duration = 1 SECONDS
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	icon = 'icons/effects/effects.dmi'
 	icon_state = "impact_laser"
 
 /obj/effect/overlay/temp/blinking_laser/Initialize(mapload)

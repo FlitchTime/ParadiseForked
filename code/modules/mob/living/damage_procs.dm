@@ -35,7 +35,6 @@
 	. = STATUS_UPDATE_NONE
 	if(damage <= 0)
 		return .
-
 	SEND_SIGNAL(src, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone, blocked, sharp, used_weapon, spread_damage, forced)
 
 	switch(damagetype)
@@ -74,7 +73,6 @@
 		if(BRAIN)
 			. |= adjustBrainLoss(damage, updating_health, blocked, forced, used_weapon)
 
-
 /// Collects all possible flat damage resistances
 /mob/living/proc/get_blocking_resistance(
 	damage = 0,
@@ -93,7 +91,6 @@
 	for(var/new_resist in resistances)
 		. += new_resist
 
-
 /// Collects all possible modifiers for damagetypes
 /mob/living/proc/get_incoming_damage_modifier(
 	damage = 0,
@@ -111,7 +108,6 @@
 	. = 1 * get_vampire_bonus(damagetype)
 	for(var/new_mod in damage_mods)
 		. *= new_mod
-
 
 /// Applies multiple damages at once via [apply_damage][/mob/living/proc/apply_damage]
 /mob/living/proc/apply_damages(
@@ -176,7 +172,6 @@
 	if(should_update_damage_icon)
 		UpdateDamageIcon()
 
-
 /**
  * Simply a wrapper for calling mob adjustXLoss() procs to heal a certain damage type,
  * when you don't know what damage type you're healing exactly.
@@ -203,7 +198,6 @@
 			return adjustStaminaLoss(heal_amount, updating_health)
 		if(BRAIN)
 			return adjustBrainLoss(heal_amount, updating_health)
-
 
 /// Heal multiple damages at once via [heal_damage_type][/mob/living/proc/heal_damage_type]
 /mob/living/proc/heal_damages(
@@ -235,7 +229,6 @@
 	if(. && updating_health)
 		updatehealth("heal_damages")
 
-
 /// Returns current mob's damage for passed damage type
 /mob/living/proc/get_damage_amount(damagetype = BRUTE)
 	switch(damagetype)
@@ -254,7 +247,6 @@
 		if(BRAIN)
 			return getBrainLoss()
 
-
 /// Applies passed status effect
 /mob/living/proc/apply_effect(effect = 0, effecttype = STUN, blocked = 0, negate_armor = FALSE)
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -269,13 +261,6 @@
 			Weaken(effect * blocked)
 		if(PARALYZE)
 			Paralyse(effect * blocked)
-		if(IRRADIATE)
-			if(HAS_TRAIT(src, TRAIT_RADIMMUNE))
-				return FALSE
-			var/rad_damage = effect
-			if(!negate_armor) // Setting negate_armor overrides radiation armor checks, which are automatic otherwise
-				rad_damage = max(effect * ((100-run_armor_check(null, "rad", "Your clothes feel warm.", "Your clothes feel warm."))/100),0)
-			radiation += rad_damage
 		if(SLUR)
 			Slur(effect * blocked)
 		if(STUTTER)
@@ -288,12 +273,16 @@
 			Jitter(effect * blocked)
 		if(KNOCKDOWN)
 			Knockdown(effect * blocked)
+		if(CONFUSED)
+			AdjustConfused(effect * blocked)
+		if(EFFECT_UNCONSCIOUS)
+			unconscious(effect * blocked)
+
 	updatehealth("apply effect")
 	return TRUE
 
-
 /// Applies multiple status effects at once via [apply_effect][/mob/living/proc/apply_effect]
-/mob/living/proc/apply_effects(blocked = 0, stun = 0, weaken = 0, paralyze = 0, irradiate = 0, slur = 0,stutter = 0, eyeblur = 0, drowsy = 0, stamina = 0, jitter = 0, knockdown = 0)
+/mob/living/proc/apply_effects(blocked = 0, stun = 0, weaken = 0, paralyze = 0, slur = 0, stutter = 0, eyeblur = 0, drowsy = 0, stamina = 0, jitter = 0, knockdown = 0, confused = 0)
 	if(blocked >= 100)
 		return FALSE
 	if(stun)
@@ -302,8 +291,6 @@
 		apply_effect(weaken, WEAKEN, blocked)
 	if(paralyze)
 		apply_effect(paralyze, PARALYZE, blocked)
-	if(irradiate)
-		apply_effect(irradiate, IRRADIATE, blocked)
 	if(slur)
 		apply_effect(slur, SLUR, blocked)
 	if(stutter)
@@ -318,13 +305,13 @@
 		apply_effect(jitter, JITTER, blocked)
 	if(knockdown)
 		apply_effect(knockdown, KNOCKDOWN, blocked)
+	if(confused)
+		apply_effect(confused, CONFUSED, blocked)
 	return TRUE
-
 
 /// Bruteloss var getter
 /mob/living/proc/getBruteLoss()
 	return bruteloss
-
 
 /**
  * Applies brute damage to this mob.
@@ -374,11 +361,9 @@
 	if(updating_health)
 		updatehealth("adjustBruteLoss")
 
-
 /// Fireloss var getter
 /mob/living/proc/getFireLoss()
 	return fireloss
-
 
 /**
  * Applies burn damage to this mob.
@@ -428,11 +413,9 @@
 	if(updating_health)
 		updatehealth("adjustFireLoss")
 
-
 /// Oxyloss var getter
 /mob/living/proc/getOxyLoss()
 	return oxyloss
-
 
 /**
  * Applies oxy damage to this mob.
@@ -474,7 +457,6 @@
 	if(updating_health)
 		updatehealth("adjustOxyLoss")
 
-
 /**
  * Sets oxyloss varaiable to passed value. Will not apply any resistance modifiers.
  *
@@ -501,11 +483,9 @@
 	if(updating_health)
 		updatehealth("setOxyLoss")
 
-
 /// Toxloss var getter
 /mob/living/proc/getToxLoss()
 	return toxloss
-
 
 /**
  * Applies toxic damage to this mob.
@@ -547,7 +527,6 @@
 	if(updating_health)
 		updatehealth("adjustToxLoss")
 
-
 /**
  * Sets toxloss varaiable to passed value. Will not apply any resistance modifiers.
  *
@@ -574,11 +553,9 @@
 	if(updating_health)
 		updatehealth("setToxLoss")
 
-
 /// Cloneloss var getter
 /mob/living/proc/getCloneLoss()
 	return cloneloss
-
 
 /**
  * Applies clone (genetic) damage to this mob.
@@ -620,7 +597,6 @@
 	if(updating_health)
 		updatehealth("adjustCloneLoss")
 
-
 /**
  * Sets cloneloss varaiable to passed value. Will not apply any resistance modifiers.
  *
@@ -647,11 +623,9 @@
 	if(updating_health)
 		updatehealth("setCloneLoss")
 
-
 /// Brainloss var getter
 /mob/living/proc/getBrainLoss()
 	return 0
-
 
 /**
  * Applies damage to internal organ brain (if found).
@@ -674,7 +648,6 @@
 )
 	return STATUS_UPDATE_NONE
 
-
 /**
  * Sets the damage for the internal organ brain to passed value (if found). Will not apply any resistance modifiers.
  *
@@ -687,11 +660,9 @@
 /mob/living/proc/setBrainLoss(amount, updating_health = TRUE)
 	return STATUS_UPDATE_NONE
 
-
 /// Heartloss var getter
 /mob/living/proc/getHeartLoss()
 	return 0
-
 
 /**
  * Applies damage to internal organ heart (if found).
@@ -705,7 +676,6 @@
 /mob/living/proc/adjustHeartLoss(amount, updating_health = TRUE)
 	return STATUS_UPDATE_NONE
 
-
 /**
  * Sets the damage for the internal organ heart to passed value (if found).
  *
@@ -718,11 +688,9 @@
 /mob/living/proc/setHeartLoss(amount, updating_health = TRUE)
 	return STATUS_UPDATE_NONE
 
-
 /// Staminaloss var getter
 /mob/living/proc/getStaminaLoss()
 	return staminaloss
-
 
 /**
  * Applies stamina damage to this mob.
@@ -766,7 +734,6 @@
 	if(updating_health)
 		updatehealth("adjustStaminaLoss")
 
-
 /**
  * Sets staminaloss varaiable to passed value. Will not apply any resistance modifiers.
  *
@@ -795,17 +762,26 @@
 	if(updating_health)
 		updatehealth("setStaminaLoss")
 
+/// Returns the maximum stamina of the mob with bonuses affecting it
+/mob/living/proc/get_max_stamina()
+	return max_stamina
+
+/// Max stamina MUST be lower than MAX_STAMINA_LOSS otherwise everything will explode
+/mob/living/proc/set_max_stamina(amount)
+	if(amount > MAX_STAMINA_LOSS)
+		max_stamina = MAX_STAMINA_LOSS
+		return
+
+	max_stamina = max(0, amount)
 
 /// Maxhealth var getter
 /mob/living/proc/getMaxHealth()
 	return maxHealth
 
-
 /// Maxhealth var setter
 /mob/living/proc/setMaxHealth(newMaxHealth)
 	. = maxHealth
 	maxHealth = newMaxHealth
-
 
 /**
  * Heals ONE external organ, organ gets randomly selected from damagable ones.
@@ -833,7 +809,6 @@
 		. |= adjustFireLoss(-abs(burn), updating_health = FALSE, affect_robotic = affect_robotic)
 	if(. && updating_health)
 		updatehealth("heal organ damage")
-
 
 /**
  * Damages ONE external organ, organ gets randomly selected from damagable ones.
@@ -886,7 +861,6 @@
 	if(. && updating_health)
 		updatehealth("take organ damage")
 
-
 /**
  * Heals ALL external organs, in random order.
  *
@@ -913,7 +887,6 @@
 		. |= adjustFireLoss(-abs(burn), updating_health = FALSE, affect_robotic = affect_robotic)
 	if(. && updating_health)
 		updatehealth("heal overall damage")
-
 
 /**
  * Damages ALL external organs, in random order.
@@ -966,11 +939,9 @@
 	if(. && updating_health)
 		updatehealth("take overall damage")
 
-
 /// TRUE if human has damage on organic bodyparts, FALSE otherwise
 /mob/living/proc/has_organic_damage()
 	return (maxHealth - health)
-
 
 /// Heal up to amount damage, in a given order
 /mob/living/proc/heal_ordered_damage(amount, list/damage_types)
@@ -986,3 +957,21 @@
 		updatehealth()
 	. -= amount //if there's leftover healing, remove it from what we return
 
+/// Emagged slotmachine default lose effect, return TRUE to destroy slotmachine
+/mob/living/proc/adjust_slot_machine_lose_effect()
+	if(prob(EMAGGED_SLOT_MACHINE_GIB_CHANCE))
+		to_chat(src, span_warningbig("Критическая неудача!<br>Неизвестная сила разрывает ваше тело изнутри."))
+		src.gib()
+		return TRUE
+	to_chat(src, span_warning("Неудача! Вы ощущаете слабость, потянув за рычаг, надеюсь оно того стоило."))
+	src.adjustCloneLoss(5)
+	return FALSE
+
+/mob/living/proc/adjust_organ_loss(slot, amount, maximum, required_organ_flag)
+	return
+
+/mob/living/proc/set_organ_loss(slot, amount, maximum, required_organ_flag)
+	return
+
+/mob/living/proc/get_organ_loss(slot, required_organ_flag)
+	return

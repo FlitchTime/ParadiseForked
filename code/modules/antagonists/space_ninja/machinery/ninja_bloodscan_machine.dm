@@ -43,7 +43,7 @@
 	var/antispam_cd = 2 SECONDS
 	var/last_say = null
 
-/obj/machinery/ninja_bloodscan_machine/Initialize()
+/obj/machinery/ninja_bloodscan_machine/Initialize(mapload)
 	. = ..()
 	last_say = world.time
 
@@ -67,10 +67,9 @@
 		ninja = user
 		to_chat(user, span_boldwarning("User: [ninja.real_name] registered. Ready to scan."))
 	if(objective.completed)
-		to_chat(user, span_info("Your mission is over, you don't need to use this machine anymore"))
+		to_chat(user, span_notice("Your mission is over, you don't need to use this machine anymore"))
 		return
 	ui_interact(user)
-
 
 /obj/machinery/ninja_bloodscan_machine/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM || !istype(I, /obj/item/reagent_containers/glass/beaker))
@@ -112,7 +111,6 @@
 	update_state_icon()
 	to_chat(user, span_notice("You place [blood_vial] in the machine."))
 	return  ATTACK_CHAIN_BLOCKED_ALL
-
 
 /obj/machinery/ninja_bloodscan_machine/proc/start_scan()
 	if(!blood_samples || !vials)
@@ -173,9 +171,10 @@
 				return
 		objective.completed = TRUE
 		scan_state = list(
-		NINJA_BLOODSCAN_NOT_DONE,
-		NINJA_BLOODSCAN_NOT_DONE,
-		NINJA_BLOODSCAN_NOT_DONE) // initial() for some reason fully clears the list
+			NINJA_BLOODSCAN_NOT_DONE,
+			NINJA_BLOODSCAN_NOT_DONE,
+			NINJA_BLOODSCAN_NOT_DONE,
+		) // initial() for some reason fully clears the list
 		update_state_icon(BSM_CORRECT_STATE)
 		addtimer(CALLBACK(src, PROC_REF(update_state_icon), BSM_DEACTIVATION_STATE), 3 SECONDS)
 		addtimer(CALLBACK(src, PROC_REF(clear_important_vars), FALSE, TRUE), 8 SECONDS)
@@ -202,11 +201,11 @@
 	var/obj/item/clothing/glasses/ninja/ninja_visor = ninja.glasses
 	var/obj/item/clothing/suit/space/space_ninja/ninja_suit = ninja.wear_suit
 	if(istype(ninja_visor))
-		to_chat(ninja, span_info("<b>На вашем визоре внезапно появляется новая инструкция... \
+		to_chat(ninja, span_notice("<b>На вашем визоре внезапно появляется новая инструкция... \
 		Кажется теперь защита от света так же защитит вас и от взгляда вампира!</b>"))
 		ninja_visor.vamp_protection_active = TRUE
 	if(istype(ninja_suit))
-		to_chat(ninja, span_info("<b>В ваш костюм были загружены новые скрипты... \
+		to_chat(ninja, span_notice("<b>В ваш костюм были загружены новые скрипты... \
 		Судя по их описанию они содержат инструкции благодаря которым костюм сможет \
 		частично защитить вас от некоторых способностей вампиров!</b>"))
 		ninja_suit.vamp_protection_active = TRUE

@@ -7,7 +7,6 @@ LINEN BINS
 /obj/item/bedsheet
 	name = "bedsheet"
 	desc = "A surprisingly soft linen bedsheet."
-	icon = 'icons/obj/items.dmi'
 	icon_state = "sheet"
 	item_state = "sheet"
 	item_flags = NO_PIXEL_RANDOM_DROP
@@ -19,8 +18,8 @@ LINEN BINS
 	item_color = "white"
 	resistance_flags = FLAMMABLE
 	slot_flags = ITEM_SLOT_NECK
-	drop_sound = 'sound/items/handling/cloth_drop.ogg'
-	pickup_sound =  'sound/items/handling/cloth_pickup.ogg'
+	drop_sound = 'sound/items/handling/drop/cloth_drop.ogg'
+	pickup_sound =  'sound/items/handling/pickup/cloth_pickup.ogg'
 	dying_key = DYE_REGISTRY_BEDSHEET
 	dog_fashion = /datum/dog_fashion/head/ghost
 	var/list/dream_messages = list("white")
@@ -32,10 +31,12 @@ LINEN BINS
 		SPECIES_FARWA = 'icons/mob/clothing/species/monkey/neck.dmi',
 		SPECIES_WOLPIN = 'icons/mob/clothing/species/monkey/neck.dmi',
 		SPECIES_NEARA = 'icons/mob/clothing/species/monkey/neck.dmi',
-		SPECIES_STOK = 'icons/mob/clothing/species/monkey/neck.dmi'
-		)
+		SPECIES_STOK = 'icons/mob/clothing/species/monkey/neck.dmi',
+	)
 
-
+/obj/item/bedsheet/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/bed_tuckable, mapload, 0, 0, 0)
 
 /obj/item/bedsheet/attack_self(mob/user)
 	user.drop_from_active_hand()
@@ -46,9 +47,8 @@ LINEN BINS
 	add_fingerprint(user)
 	return
 
-
 /obj/item/bedsheet/attackby(obj/item/I, mob/user, params)
-	if(is_sharp(I))
+	if(I.sharp)
 		if(loc == user && !user.can_unEquip(src))
 			add_fingerprint(user)
 			return ATTACK_CHAIN_PROCEED
@@ -59,7 +59,6 @@ LINEN BINS
 		qdel(src)
 		return ATTACK_CHAIN_BLOCKED_ALL
 	return ..()
-
 
 /obj/item/bedsheet/blue
 	icon_state = "sheetblue"
@@ -86,12 +85,22 @@ LINEN BINS
 	nightmare_messages = list("Grey blood")
 
 /obj/item/bedsheet/patriot
-	name = "patriotic bedsheet"
-	desc = "You've never felt more free than when sleeping on this."
-	icon_state = "sheetUSA"
-	item_color = "sheetUSA"
-	dream_messages = list("America", "freedom", "fireworks", "bald eagles")
-	nightmare_messages = list("communism")
+	name = "Zaza ambassador"
+	desc = "Вы явно владеете Зазой."
+	icon_state = "sheetzaza"
+	item_color = "sheetzaza"
+	dream_messages = list("Зазе", "качалке", "свободе")
+	nightmare_messages = list("тюрьме", "наручниках")
+
+/obj/item/bedsheet/patriot/get_ru_names()
+	return list(
+		NOMINATIVE = "амбассадор Заза",
+		GENITIVE = "амбассадора Заза",
+		DATIVE = "амбассадору Зазе",
+		ACCUSATIVE = "амбассадора Зазу",
+		INSTRUMENTAL = "амбассадором Зазой",
+		PREPOSITIONAL = "амбассадоре Зазе",
+	)
 
 /obj/item/bedsheet/rainbow
 	name = "rainbow bedsheet"
@@ -160,7 +169,7 @@ LINEN BINS
 	name = "medical blanket"
 	desc = "It's a sterilized* blanket commonly used in the Medbay.  *Sterilization is voided if a virologist is present onboard the station."
 	icon_state = "sheetmedical"
-	item_color = "medical"
+	item_state = "sheetmedical"
 	dream_messages = list("healing", "life", "surgery", "a doctor")
 	nightmare_messages = list("death", "no cryox", "cryo is off")
 
@@ -168,7 +177,7 @@ LINEN BINS
 	name = "chief medical officer's bedsheet"
 	desc = "It's a sterilized blanket that has a cross emblem.  There's some cat fur on it, likely from Runtime."
 	icon_state = "sheetcmo"
-	item_color = "cmo"
+	item_state = "sheetcmo"
 	dream_messages = list("authority", "a silvery ID", "healing", "life", "surgery", "a cat", "the chief medical officer")
 	nightmare_messages = list("chemists making meth", "cryo it off", "where is the defib", "no biomass")
 
@@ -179,7 +188,6 @@ LINEN BINS
 	item_color = "hosred"
 	dream_messages = list("authority", "a silvery ID", "handcuffs", "a baton", "a flashbang", "sunglasses", "the head of security")
 	nightmare_messages = list("the clown", "a toolbox", "sHiTcUrItY", "why did you put them in for 50 minutes")
-
 
 /obj/item/bedsheet/hop
 	name = "head of personnel's bedsheet"
@@ -235,7 +243,6 @@ LINEN BINS
 	dream_messages = list("a tome", "a floating red crystal", "a glowing sword", "a bloody symbol", "a massive humanoid figure")
 	nightmare_messages = list("a tome", "a floating red crystal", "a glowing sword", "a bloody symbol", "a massive humanoid figure")
 
-
 /obj/item/bedsheet/wiz
 	name = "wizard's bedsheet"
 	desc = "A special fabric enchanted with magic so you can have an enchanted night.  It even glows!"
@@ -244,13 +251,10 @@ LINEN BINS
 	dream_messages = list("a book", "an explosion", "lightning", "a staff", "a skeleton", "a robe", "magic")
 	nightmare_messages = list("a toolbox", "solars")
 
-
-
 /obj/structure/bedsheetbin
 	name = "linen bin"
 	desc = "A linen bin. It looks rather cosy."
-	icon = 'icons/obj/structures.dmi'
-	icon_state = "linenbin-full"
+	icon_state = "linenbin_full"
 	anchored = TRUE
 	resistance_flags = FLAMMABLE
 	max_integrity = 70
@@ -258,27 +262,25 @@ LINEN BINS
 	var/list/sheets = list()
 	var/obj/item/hidden = null
 
-
 /obj/structure/bedsheetbin/examine(mob/user)
 	. = ..()
 	if(amount < 1)
-		. += "<span class='notice'>There are no bed sheets in the bin.</span>"
+		. += span_notice("There are no bed sheets in the bin.")
 	else if(amount == 1)
-		. += "<span class='notice'>There is one bed sheet in the bin.</span>"
+		. += span_notice("There is one bed sheet in the bin.")
 	else
-		. += "<span class='notice'>There are [amount] bed sheets in the bin.</span>"
+		. += span_notice("There are [amount] bed sheets in the bin.")
 
 /obj/structure/bedsheetbin/update_icon_state()
 	switch(amount)
 		if(0)
-			icon_state = "linenbin-empty"
+			icon_state = "linenbin_empty"
 		if(1 to 10)
-			icon_state = "linenbin-half"
+			icon_state = "linenbin_half"
 		else
-			icon_state = "linenbin-full"
+			icon_state = "linenbin_full"
 
-
-/obj/structure/bedsheetbin/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = TRUE)
+/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
 	if(amount)
 		amount = 0
 		update_icon(UPDATE_ICON_STATE)
@@ -288,7 +290,6 @@ LINEN BINS
 	amount = 0
 	extinguish()
 	update_icon(UPDATE_ICON_STATE)
-
 
 /obj/structure/bedsheetbin/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/bedsheet))
@@ -311,14 +312,13 @@ LINEN BINS
 
 	return ..()
 
-
 /obj/structure/bedsheetbin/attack_hand(mob/user)
 	if(amount >= 1)
 		amount--
 
 		var/obj/item/bedsheet/B
-		if(sheets.len > 0)
-			B = sheets[sheets.len]
+		if(length(sheets) > 0)
+			B = sheets[length(sheets)]
 			sheets.Remove(B)
 
 		else
@@ -326,31 +326,29 @@ LINEN BINS
 
 		B.forceMove_turf()
 		user.put_in_hands(B, ignore_anim = FALSE)
-		to_chat(user, "<span class='notice'>You take [B] out of [src].</span>")
+		to_chat(user, span_notice("You take [B] out of [src]."))
 
 		if(hidden)
 			hidden.forceMove_turf()
-			to_chat(user, "<span class='notice'>[hidden] falls out of [B]!</span>")
+			to_chat(user, span_notice("[hidden] falls out of [B]!"))
 			hidden = null
 
-
 	add_fingerprint(user)
-
 
 /obj/structure/bedsheetbin/attack_tk(mob/user as mob)
 	if(amount >= 1)
 		amount--
 
 		var/obj/item/bedsheet/B
-		if(sheets.len > 0)
-			B = sheets[sheets.len]
+		if(length(sheets) > 0)
+			B = sheets[length(sheets)]
 			sheets.Remove(B)
 
 		else
 			B = new /obj/item/bedsheet(loc)
 
 		B.loc = loc
-		to_chat(user, "<span class='notice'>You telekinetically remove [B] from [src].</span>")
+		to_chat(user, span_notice("You telekinetically remove [B] from [src]."))
 		update_icon(UPDATE_ICON_STATE)
 
 		if(hidden)

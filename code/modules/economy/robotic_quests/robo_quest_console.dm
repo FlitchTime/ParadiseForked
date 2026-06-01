@@ -4,16 +4,17 @@
 #define SOME_CORRECT_MODULES 2
 #define ALL_CORRECT_MODULES 3
 // Choosen mecha defines
-#define WORKING_CLASS	1
-#define MEDICAL_CLASS	2
-#define COMBAT_CLASS	3
-#define RANDOM_CLASS	4
+#define WORKING_CLASS 1
+#define MEDICAL_CLASS 2
+#define COMBAT_CLASS 3
+#define RANDOM_CLASS 4
 /// TGUI helper define for shop items good placing
-#define CATS_BY_STAGE list("number" = list("first", "second", "third"), \
-						   "first" = list("working", "medical", "security"), \
-						   "second" = list("working_medical", "medical_security"), \
-						   "third" = list("working_medical_security"))
-
+#define CATS_BY_STAGE list( \
+	"number" = list("first", "second", "third"), \
+	"first" = list("working", "medical", "security"), \
+	"second" = list("working_medical", "medical_security"), \
+	"third" = list("working_medical_security") \
+)
 
 ///////////////////////
 // roboquest console //
@@ -24,7 +25,7 @@
 	desc = "Консоль, используемая для приема запросов на изготовление экзоскелетов."
 	icon_screen = "robo_ntos_roboquest"
 	icon_keyboard = "rd_key"
-	light_color = LIGHT_COLOR_FADEDPURPLE
+	light_color = LIGHT_COLOR_LAVENDER
 	/// Print order for quests
 	var/print_delayed = FALSE
 	/// Current interface theme
@@ -45,14 +46,13 @@
 	var/static/list/shop_items
 
 /obj/machinery/computer/roboquest/Initialize(mapload)
-	..()
+	. = ..()
 
 	if(!shop_items)
 		generate_roboshop()
 
 	if(mapload)
 		return INITIALIZE_HINT_LATELOAD
-
 
 /obj/machinery/computer/roboquest/LateInitialize()
 	var/mapping_pad = locate(/obj/machinery/roboquest_pad) in get_area(src)
@@ -61,7 +61,6 @@
 
 	pad = mapping_pad
 	pad.console = src
-
 
 /obj/machinery/computer/roboquest/Destroy()
 	for(var/obj/item/I in contents)
@@ -72,12 +71,11 @@
 	currentID = null
 	. = ..()
 
-
 /obj/machinery/computer/roboquest/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
-	if(istype(I, /obj/item/card/id))
+	if(is_id_card(I))
 		add_fingerprint(user)
 		if(!user.drop_transfer_item_to_loc(I, src))
 			return ..()
@@ -90,9 +88,8 @@
 
 	return ..()
 
-
 /obj/machinery/computer/roboquest/multitool_act(mob/living/user, obj/item/I)
-	if(!istype(I, /obj/item/multitool))
+	if(!ismultitool(I))
 		return FALSE
 
 	. = TRUE
@@ -118,13 +115,11 @@
 	to_chat(user, span_notice("You have uploaded the data from [multitool]'s buffer."))
 	multitool.buffer = null
 
-
 /obj/machinery/computer/roboquest/emag_act(mob/user)
 	if(!emagged)
 		emagged = TRUE
 		atom_say("System override detected. Instant mech teleportation is available.")
-		playsound(src, "sparks", 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-
+		playsound(src, SFX_SPARKS, 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/machinery/computer/roboquest/proc/check_pad()
 	var/obj/mecha/M
@@ -173,17 +168,14 @@
 
 	shop_items = newshop
 
-
 /obj/machinery/computer/roboquest/proc/clear_checkMessage()
 	checkMessage = ""
 
 /obj/machinery/computer/roboquest/proc/on_quest_complete()
 	return // Unused for now.
 
-
 /obj/machinery/computer/roboquest/proc/can_instant_teleport()
 	return emagged || pad?.advanced
-
 
 /obj/machinery/computer/roboquest/attack_hand(mob/user)
 	if(..())
@@ -270,7 +262,7 @@
 				var/list/L = list() // List of avaliable telepads
 				var/list/areaindex = list() // Telepad area location
 				var/atom/quantum
-				for(var/obj/machinery/telepad_cargo/R in GLOB.machines)
+				for(var/obj/machinery/telepad_cargo/R in SSmachines.get_by_type(/obj/machinery/telepad_cargo))
 					if(R.stage)
 						continue
 					var/turf/T = get_turf(R)
@@ -339,7 +331,7 @@
 			addtimer(VARSET_CALLBACK(src, print_delayed, FALSE), 10 SECONDS)
 
 /obj/machinery/computer/roboquest/proc/print_task(datum/roboquest/quest)
-	playsound(loc, 'sound/goonstation/machines/printer_thermal.ogg', 50, 1)
+	playsound(loc, 'sound/goonstation/machines/printer_thermal.ogg', 50, TRUE)
 	var/obj/item/paper/paper = new(get_turf(src))
 	paper.header = "<p><img style='display: block; margin-left: auto; margin-right: auto;' src='ntlogo.png' width='220' height='135' /></p><hr noshade size='4'>"
 	paper.info = "<center> <h2> Mecha request form </h2> </center>"
@@ -351,7 +343,7 @@
 		paper.info += "<li> [i["name"]]</li><br>"
 	paper.info += "<br><b> Initial reward:</b> [quest.maximum_cash] credits"
 	paper.info += "<p><b>Mecha request accepted by:</b> [currentID.registered_name] - [currentID.rank] at [station_time_timestamp()].</p></ul>"
-	paper.info += "<hr><center><small><i>The request has been approved and certified by NAS Trurl.</i></small></center>"
+	paper.info += "<hr><center><small><i>The request has been approved and certified by [command_name()].</i></small></center>"
 	var/obj/item/stamp/centcom/stamp = new()
 	paper.stamp(stamp)
 	paper.update_icon()
@@ -363,7 +355,6 @@
 /obj/machinery/computer/roboquest/proc/pick_mecha(mecha_type)
 	currentID.robo_bounty = new /datum/roboquest(mecha_type)
 	currentID.robo_bounty.id = currentID
-
 
 ///////////////////
 // roboquest pad //
@@ -380,14 +371,14 @@
 	/// whether our robopad is advanced
 	var/advanced = FALSE
 
-/obj/machinery/roboquest_pad/New()
-	..()
+/obj/machinery/roboquest_pad/Initialize(mapload)
+	. = ..()
+
 	component_parts = list()
 	component_parts += new /obj/item/stack/ore/bluespace_crystal/artificial(null)
 	component_parts += new /obj/item/stack/cable_coil(null, 1)
 	component_parts += new /obj/item/circuitboard/roboquest_pad(null)
 	RefreshParts()
-
 
 /obj/machinery/roboquest_pad/ComponentInitialize()
 	var/static/list/loc_connections = list(
@@ -395,25 +386,23 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
-
 /obj/machinery/roboquest_pad/advanced
 	name = "Robotics Request Advanced Quantum Pad"
 	desc = "A bluespace quantum-linked telepad linked to a orbital long-range matter transmitter. Capable of instant teleportation of mech without need of send them to the cargo."
 	icon_state = "advqpad"
 	advanced = TRUE
 
+/obj/machinery/roboquest_pad/advanced/Initialize(mapload)
+	. = ..()
 
-/obj/machinery/roboquest_pad/advanced/New()
-	..()
 	component_parts = list()
 	component_parts += new /obj/item/stack/ore/bluespace_crystal/artificial(null)
-	component_parts += new /obj/item/stock_parts/capacitor/purple(null)
-	component_parts += new /obj/item/stock_parts/manipulator/purple(null)
-	component_parts += new /obj/item/stock_parts/scanning_module/purple(src)
+	component_parts += new /obj/item/stock_parts/capacitor(null)
+	component_parts += new /obj/item/stock_parts/manipulator(null)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
 	component_parts += new /obj/item/stack/cable_coil(null, 1)
 	component_parts += new /obj/item/circuitboard/advanced_roboquest_pad(null)
 	RefreshParts()
-
 
 /obj/machinery/roboquest_pad/Destroy()
 	if(console)
@@ -434,18 +423,18 @@
 		return
 	default_deconstruction_screwdriver(user, "pad-o", initial(icon_state), I)
 
-/obj/machinery/roboquest_pad/proc/teleport(atom/destination, datum/roboquest/quest, obj/machinery/computer/roboquest/console, var/penalty)
-	do_sparks(5, 1, get_turf(src))
+/obj/machinery/roboquest_pad/proc/teleport(atom/destination, datum/roboquest/quest, obj/machinery/computer/roboquest/console, penalty)
+	do_sparks(5, TRUE, get_turf(src))
 	var/obj/mecha/M = (locate(/obj/mecha) in get_turf(src))
 	if(istype(M))
-		var/obj/structure/closet/critter/mecha/box = new(get_turf(src), quest, console, penalty)
+		var/obj/structure/closet/crate/critter/mecha/box = new(get_turf(src), quest, console, penalty)
 		M.forceMove(box)
 		if(destination)
 			do_teleport(box, destination)
 		console.canSend = FALSE
 
-/obj/machinery/roboquest_pad/proc/clear(datum/roboquest/quest, obj/machinery/computer/roboquest/console, var/penalty)
-	do_sparks(5, 1, get_turf(src))
+/obj/machinery/roboquest_pad/proc/clear(datum/roboquest/quest, obj/machinery/computer/roboquest/console, penalty)
+	do_sparks(5, TRUE, get_turf(src))
 	var/obj/mecha/M = (locate(/obj/mecha) in get_turf(src))
 	if(istype(M))
 		qdel(M)
@@ -464,7 +453,7 @@
 		quest.id.robo_bounty = null
 		quest = null
 
-/obj/machinery/roboquest_pad/proc/on_exited(datum/source, atom/movable/departed, atom/newLoc)
+/obj/machinery/roboquest_pad/proc/on_exited(datum/source, atom/movable/departed, direction)
 	SIGNAL_HANDLER
 
 	if(ismecha(departed) && console)
@@ -483,8 +472,9 @@
 // mecha box //
 ///////////////
 
-/obj/structure/closet/critter/mecha
+/obj/structure/closet/crate/critter/mecha
 	name = "mecha box"
+	icon = 'icons/obj/closet.dmi'
 	icon_state = "mecha_box"
 	desc = "Special crate for transporting mechas. Compressed by bluespace. Will be discarded by openning."
 	req_access = list(ACCESS_ROBOTICS)
@@ -495,23 +485,23 @@
 	/// Penalty, given by console check
 	var/penalty = 0
 
-/obj/structure/closet/critter/mecha/New(loc, datum/roboquest/quest, obj/machinery/computer/roboquest/console, penalty)
+/obj/structure/closet/crate/critter/mecha/Initialize(mapload, datum/roboquest/quest, obj/machinery/computer/roboquest/console, penalty)
 	. = ..()
 	src.quest = quest
 	src.console = console
 	src.penalty = penalty
 
-/obj/structure/closet/critter/mecha/toggle(mob/user)
+/obj/structure/closet/crate/critter/mecha/toggle(mob/user)
 	if(!allowed(user))
 		to_chat(user, span_notice("You don`t have required access."))
-		playsound(src, pick('sound/machines/button.ogg', 'sound/machines/button_alternate.ogg', 'sound/machines/button_meloboom.ogg'), 20)
+		playsound(src, SFX_BUTTON_DENIED, 20)
 		return FALSE
 	var/response = alert(user, "This crate has been packed with bluespace compression, opening will destroy container. Are you sure you want to open it?","Bluespace Compression Warning", "Yes", "No")
 	if(response == "No" || !Adjacent(user))
 		return FALSE
 	. = ..()
 
-/obj/structure/closet/critter/mecha/after_open(mob/living/user, force)
+/obj/structure/closet/crate/critter/mecha/after_open(mob/living/user, force)
 	qdel(src)
 
 #undef NO_SUCCESS

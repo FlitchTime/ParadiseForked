@@ -1,7 +1,7 @@
 /turf/simulated/floor/indestructible
 	explosion_vertical_block = 50
 
-/turf/simulated/floor/indestructible/ex_act(severity)
+/turf/simulated/floor/indestructible/ex_act(severity, target)
 	return
 
 /turf/simulated/floor/indestructible/blob_act(obj/structure/blob/B)
@@ -10,7 +10,7 @@
 /turf/simulated/floor/indestructible/singularity_act()
 	return
 
-/turf/simulated/floor/indestructible/singularity_pull(S, current_size)
+/turf/simulated/floor/indestructible/singularity_pull(atom/singularity, current_size)
 	return
 
 /turf/simulated/floor/indestructible/narsie_act()
@@ -22,10 +22,8 @@
 /turf/simulated/floor/indestructible/burn_down()
 	return
 
-
 /turf/simulated/floor/indestructible/attackby(obj/item/I, mob/user, params)
 	return ATTACK_CHAIN_BLOCKED_ALL
-
 
 /turf/simulated/floor/indestructible/attack_hand(mob/user)
 	return
@@ -33,7 +31,7 @@
 /turf/simulated/floor/indestructible/attack_animal(mob/living/simple_animal/M)
 	return
 
-/turf/simulated/floor/indestructible/mech_melee_attack(obj/mecha/M)
+/turf/simulated/floor/indestructible/mech_melee_attack(obj/mecha/mech, obj/item/mecha_parts/mecha_equipment/selected_module = null)
 	return
 
 /turf/simulated/floor/indestructible/crowbar_act(mob/user, obj/item/I)
@@ -53,20 +51,14 @@
 	icon_state = "plating"
 	icon = 'icons/turf/floors/plating.dmi'
 	footstep = FOOTSTEP_PLATING
-	barefootstep = FOOTSTEP_HARD_BAREFOOT
-	clawfootstep = FOOTSTEP_HARD_CLAW
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/simulated/floor/indestructible/necropolis
 	name = "necropolis floor"
 	desc = "It's regarding you suspiciously."
-	icon = 'icons/turf/floors.dmi'
 	icon_state = "necro1"
 	baseturf = /turf/simulated/floor/indestructible/necropolis
-	oxygen = 14
-	nitrogen = 23
-	temperature = 300
-	planetary_atmos = TRUE
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_LAVALAND
 	footstep = FOOTSTEP_LAVA
 	barefootstep = FOOTSTEP_LAVA
 	clawfootstep = FOOTSTEP_LAVA
@@ -78,9 +70,7 @@
 		icon_state = "necro[rand(2,3)]"
 
 /turf/simulated/floor/indestructible/necropolis/air
-	oxygen = MOLES_O2STANDARD
-	nitrogen = MOLES_N2STANDARD
-	temperature = T20C
+	atmos_environment = ENVIRONMENT_TEMPERATE
 
 /turf/simulated/floor/indestructible/boss //you put stone tiles on this and use it as a base
 	name = "necropolis floor"
@@ -88,30 +78,21 @@
 	icon_state = "boss"
 	smooth = SMOOTH_FALSE
 	baseturf = /turf/simulated/floor/indestructible/boss
-	oxygen = 14
-	nitrogen = 23
-	temperature = 300
-	planetary_atmos = TRUE
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_LAVALAND
 
 /turf/simulated/floor/indestructible/boss/indoors //used for ashwalkers village
-	oxygen = /turf/simulated/floor/lava::oxygen //lava near tendril
-	nitrogen = /turf/simulated/floor/lava::nitrogen
-	temperature = /turf/simulated/floor/lava::temperature
+	atmos_environment = ENVIRONMENT_TEMPERATE
 
 /turf/simulated/floor/indestructible/boss/air
-	oxygen = MOLES_O2STANDARD
-	nitrogen = MOLES_N2STANDARD
-	temperature = T20C
+	atmos_environment = ENVIRONMENT_TEMPERATE
 
 /turf/simulated/floor/indestructible/hierophant
-	name = "floor"
 	icon = 'icons/turf/floors/hierophant_floor.dmi'
 	icon_state = "floor"
 	base_icon_state = "hierophant_floor"
-	oxygen = 14
-	nitrogen = 23
-	temperature = 300
-	planetary_atmos = TRUE
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_LAVALAND
 	smooth = SMOOTH_BITMASK
 	canSmoothWith = SMOOTH_GROUP_HIERO_FLOOR
 	smoothing_groups = SMOOTH_GROUP_HIERO_FLOOR
@@ -136,7 +117,6 @@
 	footstep = FOOTSTEP_CARPET
 	barefootstep = FOOTSTEP_CARPET_BAREFOOT
 	clawfootstep = FOOTSTEP_CARPET_BAREFOOT
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/simulated/floor/indestructible/grass
 	name = "grass patch"
@@ -144,7 +124,6 @@
 	footstep = FOOTSTEP_GRASS
 	barefootstep = FOOTSTEP_GRASS
 	clawfootstep = FOOTSTEP_GRASS
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/simulated/floor/indestructible/grass/Initialize(mapload)
 	. = ..()
@@ -155,9 +134,6 @@
 	icon = 'icons/turf/floors/plating.dmi'
 	icon_state = "asteroid"
 	footstep = FOOTSTEP_SAND
-	barefootstep = FOOTSTEP_HARD_BAREFOOT
-	clawfootstep = FOOTSTEP_HARD_CLAW
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/simulated/floor/indestructible/asteroid/Initialize(mapload)
 	. = ..()
@@ -180,7 +156,6 @@
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
 /turf/simulated/floor/indestructible/beach
 	name = "Beach"
@@ -205,12 +180,9 @@
 /turf/simulated/floor/indestructible/beach/sand
 	name = "Sand"
 	icon_state = "desert"
-	mouse_opacity = MOUSE_OPACITY_ICON
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
-
 
 /turf/simulated/floor/indestructible/beach/sand/Initialize(mapload)
 	. = ..()			//adds some aesthetic randomness to the beach sand
@@ -243,6 +215,10 @@
 	clawfootstep = FOOTSTEP_WATER
 	heavyfootstep = FOOTSTEP_WATER
 
+/turf/simulated/floor/indestructible/beach/water/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_ATOM_INITIALIZED_ON, PROC_REF(initialized_on))
+
 /turf/simulated/floor/indestructible/beach/water/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
 	if(!linkedcontroller || !ismob(arrived))
@@ -252,17 +228,17 @@
 		creature.ExtinguishMob()
 	linkedcontroller.mobinpool += arrived
 
-/turf/simulated/floor/indestructible/beach/water/Exited(atom/movable/departed, atom/newLoc)
+/turf/simulated/floor/indestructible/beach/water/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(!linkedcontroller || !ismob(departed))
+	if(!linkedcontroller || !ismob(gone))
 		return .
-	linkedcontroller.mobinpool -= departed
+	linkedcontroller.mobinpool -= gone
 
-/turf/simulated/floor/indestructible/beach/water/InitializedOn(atom/A)
+/turf/simulated/floor/indestructible/beach/water/proc/initialized_on(atom/target)
 	if(!linkedcontroller)
 		return
-	if(istype(A, /obj/effect/decal/cleanable)) // Better a typecheck than looping through thousands of turfs everyday
-		linkedcontroller.decalinpool += A
+	if(istype(target, /obj/effect/decal/cleanable)) // Better a typecheck than looping through thousands of turfs everyday
+		linkedcontroller.decalinpool += target
 
 /turf/simulated/floor/indestructible/beach/water/dense			//for boundary "walls"
 	density = TRUE
@@ -310,17 +286,13 @@
 	density = TRUE
 	opacity = TRUE
 	explosion_block = 2
-	mouse_opacity = MOUSE_OPACITY_ICON
-
 
 /obj/effect/beach_water_overlay
 	name = "Water overlay that you shouldn't see"
 	icon = 'icons/misc/beach.dmi'
 	icon_state = null
-	smooth = NONE
 	layer = ABOVE_MOB_LAYER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	anchored = TRUE
 
 /obj/effect/beach_water_overlay/Initialize(mapload, new_icon, new_icon_state, new_smooth, new_base_icon_state)
 	icon = new_icon
@@ -342,3 +314,24 @@
 
 /turf/simulated/floor/indestructible/view_portal/dense
 	density = TRUE
+
+/turf/simulated/floor/indestructible/bingle
+	name = "Bingle pit"
+	desc = "Покрытие ямы Бинглов."
+	gender = FEMALE
+	icon = 'icons/turf/floors/bingle.dmi'
+	icon_state = "carpet_orange-0"
+	footstep = FOOTSTEP_MEAT
+	barefootstep = FOOTSTEP_MEAT
+	clawfootstep = FOOTSTEP_MEAT
+	heavyfootstep = FOOTSTEP_MEAT
+
+/turf/simulated/floor/indestructible/bingle/get_ru_names()
+	return list(
+		NOMINATIVE = "яма Бинглов",
+		GENITIVE = "ямы Бинглов",
+		DATIVE = "яме Бинглов",
+		ACCUSATIVE = "яму Бинглов",
+		INSTRUMENTAL = "ямой Бинглов",
+		PREPOSITIONAL = "яме Бинглов",
+	)

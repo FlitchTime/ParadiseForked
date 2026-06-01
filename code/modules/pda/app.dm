@@ -2,7 +2,6 @@
 /datum/data/pda
 	var/icon = "tasks"		//options comes from http://fontawesome.io/icons/
 	var/notify_icon = "exclamation-circle"
-	var/notify_silent = 0
 	var/hidden = 0				// program not displayed in main menu
 	var/category = "General"	// the category to list it in on the main menu
 	var/obj/item/pda/pda	// if this is null, and the app is running code, something's gone wrong
@@ -31,33 +30,36 @@
 /datum/data/pda/proc/program_hit_check()
 	return
 
-/datum/data/pda/proc/notify(message, blink = 1)
-	if(message)
-		//Search for holder of the PDA.
-		var/mob/living/L = null
-		if(pda.loc && isliving(pda.loc))
-			L = pda.loc
+/datum/data/pda/proc/notify(message, blink = TRUE)
+	if(!message)
+		return
+	//Search for holder of the PDA.
+	var/mob/living/target_living = null
+	if(pda.loc && isliving(pda.loc))
+		target_living = pda.loc
 		//Maybe they are a pAI!
-		else
-			L = get(pda, /mob/living/silicon)
+	else
+		target_living = get(pda, /mob/living/silicon)
 
-		if(L && L.stat != UNCONSCIOUS) // Awake or dead people can see their messages
-			to_chat(L, "[bicon(pda)] [message]")
-			SStgui.update_user_uis(L, pda) // Update the receiving user's PDA UI so that they can see the new message
+	var/list/balloon_recipients = list()
+	if(target_living && target_living.stat != UNCONSCIOUS) // Awake or dead people can see their messages
+		to_chat(target_living, "[icon2html(pda, target_living)] [message]")
+		balloon_recipients += target_living
+		SStgui.update_user_uis(target_living, pda) // Update the receiving user's PDA UI so that they can see the new message
 
-	if(!notify_silent)
-		pda.play_ringtone()
+	balloon_recipients -= target_living
+
+	if(!pda.silent)
+		pda.play_ringtone(balloon_recipients)
 
 	if(blink && !(src in pda.notifying_programs))
 		pda.notifying_programs |= src
 		pda.update_icon(UPDATE_OVERLAYS)
 
-
 /datum/data/pda/proc/unnotify()
 	if(src in pda.notifying_programs)
 		pda.notifying_programs -= src
 		pda.update_icon(UPDATE_OVERLAYS)
-
 
 // An app has a button on the home screen and its own UI
 /datum/data/pda/app
@@ -76,19 +78,18 @@
 	if(pda.current_app)
 		pda.current_app.stop()
 	pda.current_app = src
-	return 1
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
+	return TRUE
 
 /datum/data/pda/app/proc/update_ui(mob/user, list/data)
 	return
-
 
 // Utilities just have a button on the home screen, but custom code when clicked
 /datum/data/pda/utility
 	name = "Utility"
 	icon = "gear"
-	size = 1
 	category = "Utilities"
-
 
 /datum/data/pda/utility/scanmode
 	var/base_name
@@ -96,17 +97,17 @@
 
 /datum/data/pda/utility/scanmode/New(obj/item/cartridge/C)
 	..(C)
-	name = "Enable [base_name]"
+	name = "Вкл [base_name]"
 
 /datum/data/pda/utility/scanmode/start()
 	if(pda.scanmode)
-		pda.scanmode.name = "Enable [pda.scanmode.base_name]"
+		pda.scanmode.name = "Вкл [pda.scanmode.base_name]"
 
 	if(pda.scanmode == src)
 		pda.scanmode = null
 	else
 		pda.scanmode = src
-		name = "Disable [base_name]"
+		name = "Выкл [base_name]"
 
 	pda.update_shortcuts()
 	return TRUE

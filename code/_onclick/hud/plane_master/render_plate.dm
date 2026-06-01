@@ -5,17 +5,32 @@
  * if you want to read more read the _render_readme.md
  */
 
-
 /**
  * Render relay object assigned to a plane master to be able to relay it's render onto other planes that are not it's own
  */
 /atom/movable/render_plane_relay
 	screen_loc = "CENTER"
 	layer = -1
-	plane = 0
+	plane = DEFAULT_PLANE
 	appearance_flags = PASS_MOUSE | NO_CLIENT_COLOR | KEEP_TOGETHER
 	/// If we render into a critical plane master, or not
 	var/critical_target = FALSE
+
+/client/proc/on_render_plane_relay_qdeleted(atom/movable/render_plane_relay/source)
+	SIGNAL_HANDLER
+	if(!istype(source))
+		return
+	screen.RemoveAll(source)
+	UnregisterSignal(source, COMSIG_QDELETING)
+
+/client/proc/register_render_plane_relay(atom/movable/render_plane_relay/relay)
+	if(!istype(relay))
+		return
+	var/exist_check = (relay in screen)
+	screen += relay
+	if(exist_check)
+		return
+	RegisterSignal(relay, COMSIG_QDELETING, PROC_REF(on_render_plane_relay_qdeleted), override = TRUE)
 
 /**
  * ## Rendering plate
@@ -90,7 +105,6 @@
 	documentation = "The master rendering plate from the offset below ours will be mirrored onto this plane. That way we achive a \"stack\" effect.\
 		<br>This plane exists to uplayer the master rendering plate to the correct spot in our z layer's rendering order"
 	plane = RENDER_PLANE_TRANSPARENT
-	appearance_flags = PLANE_MASTER
 
 /atom/movable/screen/plane_master/rendering_plate/transparent/Initialize(mapload, datum/hud/hud_owner, datum/plane_master_group/home, offset)
 	. = ..()
@@ -103,8 +117,6 @@
 	name = "Game world plate"
 	documentation = "Contains most of the objects in the world. Mobs, machines, etc. Note the drop shadow, it gives a very nice depth effect."
 	plane = RENDER_PLANE_GAME_WORLD
-	appearance_flags = PLANE_MASTER //should use client color
-	blend_mode = BLEND_OVERLAY
 
 /atom/movable/screen/plane_master/rendering_plate/game_world/show_to(mob/mymob)
 	. = ..()
@@ -169,7 +181,6 @@
 	offset_change(hud?.current_plane_offset || 0)
 	set_alpha(mymob.lighting_alpha)
 
-
 /atom/movable/screen/plane_master/rendering_plate/lighting/hide_from(mob/oldmob)
 	. = ..()
 	oldmob.clear_fullscreen("lighting_backdrop_lit")
@@ -219,12 +230,7 @@
  * Other vars such as alpha will automatically be applied with the render source
  */
 /atom/movable/screen/plane_master/proc/generate_render_relays()
-#if MIN_COMPILER_VERSION > 516
-	#warn Fully change default relay_loc to "1,1"
-#endif
-	var/relay_loc = home?.relay_loc
-	if(!relay_loc)
-		log_runtime(EXCEPTION("Someone forgot to set relay_loc for plane_master_group."))
+	var/relay_loc = home?.relay_loc || "1,1"
 	// If we're using a submap (say for a popup window) make sure we draw onto it
 	if(home?.map)
 		relay_loc = "[home.map]:[relay_loc]"
@@ -259,7 +265,7 @@
 	if(!length(relays) && !initial(render_target))
 		render_target = OFFSET_RENDER_TARGET(get_plane_master_render_base(name), offset)
 	if(!relay_loc)
-		relay_loc = (show_to?.byond_version > 515) ? "1,1" : "CENTER"
+		relay_loc = "1,1"
 		// If we're using a submap (say for a popup window) make sure we draw onto it
 		if(home?.map)
 			relay_loc = "[home.map]:[relay_loc]"
@@ -285,7 +291,7 @@
 	// Relays are sometimes generated early, before huds have a mob to display stuff to
 	// That's what this is for
 	if(show_to)
-		show_to.screen += relay
+		show_to.register_render_plane_relay(relay)
 	if(offsetting_flags & OFFSET_RELAYS_MATCH_HIGHEST && home.our_hud)
 		offset_relay(relay, home.our_hud.current_plane_offset)
 	return relay

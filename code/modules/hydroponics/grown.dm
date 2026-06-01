@@ -8,14 +8,13 @@
 	icon = 'icons/obj/hydroponics/harvest.dmi'
 	var/obj/item/seeds/seed = null // type path, gets converted to item on Initialize(). It's safe to assume it's always a seed item.
 	var/plantname = ""
-	var/bitesize_mod = 0 	// If set, bitesize = 1 + round(reagents.total_volume / bitesize_mod)
+	var/bitesize_mod = 0	// If set, bitesize = 1 + round(reagents.total_volume / bitesize_mod)
 	var/splat_type = /obj/effect/decal/cleanable/plant_smudge
 	var/can_distill = TRUE //If FALSE, this object cannot be distilled into an alcohol.
 	var/distill_reagent //If NULL and this object can be distilled, it uses a generic fruit_wine reagent and adjusts its variables.
 	var/wine_flavor //If NULL, this is automatically set to the fruit's flavor. Determines the flavor of the wine if distill_reagent is NULL.
 	var/wine_power = 0.1 //Determines the boozepwr of the wine if distill_reagent is NULL. Uses 0.1 - 1.2 not tg's boozepower (divide by 100) else you'll end up with 1000% proof alcohol!
 	dried_type = -1 // Saves us from having to define each stupid grown's dried_type as itself. If you don't want a plant to be driable (watermelons) set this to null in the time definition.
-	resistance_flags = FLAMMABLE
 	origin_tech = "biotech=1"
 
 /obj/item/reagent_containers/food/snacks/grown/Initialize(mapload, obj/item/seeds/new_seed = null)
@@ -40,7 +39,7 @@
 		transform *= TRANSFORM_USING_VARIABLE(seed.potency, 100) + 0.5 //Makes the resulting produce's sprite larger or smaller based on potency!
 		add_juice()
 		if(seed.variant)
-			name += " \[[seed.variant]]"
+			name += " \[[seed.variant]\]"
 
 /obj/item/reagent_containers/food/snacks/grown/Destroy()
 	QDEL_NULL(seed)
@@ -60,14 +59,13 @@
 			if(T.examine_line)
 				. += T.examine_line
 
-
 /obj/item/reagent_containers/food/snacks/grown/attackby(obj/item/I, mob/user, params)
 	. = ..()
 
 	if(ATTACK_CHAIN_CANCEL_CHECK(.))
 		return .
 
-	if(is_sharp(I) && slices_num && slice_path)
+	if(I.sharp && slices_num && slice_path)
 		add_fingerprint(user)
 		if(!isturf(loc))
 			to_chat(user, span_warning("You cannot slice [src] [ismob(loc) ? "in inventory" : "in [loc]"]."))
@@ -116,9 +114,6 @@
 			if(!QDELETED(src) && !QDELETED(I))
 				trait.on_attackby(src, I, user)
 
-
-
-
 // Various gene procs
 /obj/item/reagent_containers/food/snacks/grown/attack_self(mob/user)
 	if(seed && seed.get_gene(/datum/plant_gene/trait/squash))
@@ -150,7 +145,7 @@
 	if(trash)
 		generate_trash(T)
 
-	visible_message("<span class='warning'>[src] has been squashed.</span>","<span class='italics'>You hear a smack.</span>")
+	visible_message(span_warning("[src] has been squashed."),span_italics("You hear a smack."))
 	if(seed)
 		for(var/datum/plant_gene/trait/trait in seed.genes)
 			trait.on_squash(src, target, thrower)
@@ -188,7 +183,7 @@
 	if(trash)
 		var/obj/item/T = generate_trash()
 		user.put_in_hands(T)
-		to_chat(user, "<span class='notice'>You open [src]\'s shell, revealing \a [T].</span>")
+		to_chat(user, span_notice("You open [src]\'s shell, revealing \a [T]."))
 	qdel(src)
 
 // Diona Nymphs can eat these as well as weeds to gain nutrition.
@@ -212,7 +207,6 @@
 
 	add_attack_logs(user, target, "[what_done] ([reagent_str] | [genes_str])")
 
-
 /obj/item/reagent_containers/food/snacks/grown/extinguish_light(force = FALSE)
 	if(!force)
 		return
@@ -221,13 +215,13 @@
 	set_light_on(FALSE)
 
 /obj/item/reagent_containers/food/snacks/grown/proc/send_plant_details(mob/user)
-	var/msg = "<span class='info'>This is \a <span class='name'>[src].</span>\n"
+	var/msg = span_notice("This is \a [span_name(declent_ru(NOMINATIVE))].\n")
 	if(seed)
 		msg += seed.get_analyzer_text()
 		for(var/reagent_id in seed.reagents_add)
 			var/datum/reagent/R  = GLOB.chemical_reagents_list[reagent_id]
 			var/amt = reagents.get_reagent_amount(reagent_id)
-			msg += "\n<span class='info'>- [R.name]: [amt]</span>"
+			msg += span_notice("\n– [R.name]: [amt]")
 	to_chat(user, msg)
 
 /obj/item/reagent_containers/food/snacks/grown/attack_ghost(mob/dead/observer/user)

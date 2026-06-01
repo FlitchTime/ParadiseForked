@@ -1,19 +1,34 @@
 /obj/machinery/computer/sm_monitor
-	name = "supermatter monitoring console"
-	desc = "Используется для мониторинга состояния осколка суперматерии."
+	name = "консоль мониторинга суперматерии"
+	desc = "Crystal Integrity Monitoring System, connects to specially calibrated supermatter sensors to provide information on the status of supermatter-based engines."
 	icon_keyboard = "power_key"
 	icon_screen = "smmon_0"
 	circuit = /obj/item/circuitboard/sm_monitor
-	light_color = LIGHT_COLOR_YELLOW
-	/// Cache-list of all supermatter shards
-	var/list/supermatters
+	light_color = LIGHT_COLOR_DIM_YELLOW
+	/// List of supermatters that we are going to send the data of.
+	var/list/obj/machinery/power/supermatter_crystal/supermatters = list()
 	/// Last status of the active supermatter for caching purposes
-	var/last_status
-	/// Reference to the active shard
-	var/obj/machinery/power/supermatter_shard/active
+	var/last_status = SUPERMATTER_INACTIVE
+	/// The supermatter which will send a notification to us if it's delamming.
+	var/obj/machinery/power/supermatter_crystal/focused_supermatter
+
+/obj/machinery/computer/sm_monitor/get_ru_names()
+	return list(
+		NOMINATIVE = "консоль мониторинга суперматерии",
+		GENITIVE = "консоли мониторинга суперматерии",
+		DATIVE = "консоли мониторинга суперматерии",
+		ACCUSATIVE = "консоль мониторинга суперматерии",
+		INSTRUMENTAL = "консолью мониторинга суперматерии",
+		PREPOSITIONAL = "консоли мониторинга суперматерии"
+	)
+
+/obj/machinery/computer/sm_monitor/Initialize(mapload, obj/structure/computerframe/frame)
+	. = ..()
+	refresh()
 
 /obj/machinery/computer/sm_monitor/Destroy()
-	active = null
+	for(var/supermatter in supermatters)
+		clear_supermatter(supermatter)
 	return ..()
 
 /obj/machinery/computer/sm_monitor/attack_ai(mob/user)
@@ -32,120 +47,97 @@
 /obj/machinery/computer/sm_monitor/ui_interact(mob/user, datum/tgui/ui = null)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "SupermatterMonitor", name)
+		ui = new(user, src, "NtosSupermatter", DECLENT_RU_CAP(src, NOMINATIVE))
 		ui.open()
+
+/// Refreshes list of active supermatter crystals
+/obj/machinery/computer/sm_monitor/proc/refresh()
+	var/list/cached_supermatters = supermatters
+	for(var/supermatter in cached_supermatters)
+		clear_supermatter(supermatter)
+	var/turf/user_turf = get_turf(ui_host())
+	if(!user_turf)
+		return
+	for(var/obj/machinery/power/supermatter_crystal/sm as anything in SSmachines.get_by_type(/obj/machinery/power/supermatter_crystal))
+		//Exclude Syndicate owned, Delaminating, not within coverage, not on a tile.
+		if(!sm.include_in_cims || !isturf(sm.loc) || !(is_station_level(sm.z) || is_mining_level(sm.z) || sm.z == user_turf.z))
+			continue
+		cached_supermatters += sm
+		RegisterSignal(sm, COMSIG_QDELETING, PROC_REF(clear_supermatter))
+
+/obj/machinery/computer/sm_monitor/ui_static_data(mob/user)
+	var/list/data = list()
+	data["gas_metadata"] = sm_gas_data()
+	return data
 
 /obj/machinery/computer/sm_monitor/ui_data(mob/user)
 	var/list/data = list()
-
-	if(istype(active))
-		var/turf/T = get_turf(active)
-		// If we somehow delam during this proc, handle it somewhat
-		if(!T)
-			active = null
-			refresh()
-			return
-		var/datum/gas_mixture/air = T.return_air()
-		if(!air)
-			active = null
-			return
-
-		data["active"] = TRUE
-		data["SM_integrity"] = active.get_integrity()
-		data["SM_power"] = active.power
-		data["SM_ambienttemp"] = air.temperature
-		data["SM_ambientpressure"] = air.return_pressure()
-		//data["SM_EPR"] = round((air.total_moles / air.group_multiplier) / 23.1, 0.01)
-		var/other_moles = air.total_trace_moles()
-		var/TM = air.total_moles()
-		if(TM)
-			data["SM_gas_O2"] = round(100*air.oxygen/TM, 0.01)
-			data["SM_gas_CO2"] = round(100*air.carbon_dioxide/TM, 0.01)
-			data["SM_gas_N2"] = round(100*air.nitrogen/TM, 0.01)
-			data["SM_gas_PL"] = round(100*air.toxins/TM, 0.01)
-			if(other_moles)
-				data["SM_gas_OTHER"] = round(100 * other_moles / TM, 0.01)
-			else
-				data["SM_gas_OTHER"] = 0
-		else
-			data["SM_gas_O2"] = 0
-			data["SM_gas_CO2"] = 0
-			data["SM_gas_N2"] = 0
-			data["SM_gas_PH"] = 0
-			data["SM_gas_OTHER"] = 0
-	else
-		var/list/SMS = list()
-		for(var/I in supermatters)
-			var/obj/machinery/power/supermatter_shard/S = I
-			var/area/A = get_area(S)
-			if(!A)
-				continue
-
-			SMS.Add(list(list(
-				"area_name" = A.name,
-				"integrity" = S.get_integrity(),
-				"uid" = S.UID()
-			)))
-
-		data["active"] = FALSE
-		data["supermatters"] = SMS
-
+	data["sm_data"] = list()
+	for(var/obj/machinery/power/supermatter_crystal/sm as anything in supermatters)
+		data["sm_data"] += list(sm.sm_ui_data())
+	data["focus_uid"] = focused_supermatter?.UID()
 	return data
 
-/**
-  * Supermatter List Refresher
-  *
-  * This proc loops through the list of supermatters in the atmos SS and adds them to this console's cache list
-  */
-/obj/machinery/computer/sm_monitor/proc/refresh()
-	supermatters = list()
-	var/turf/T = get_turf(ui_host()) // Get the UI host incase this ever turned into a supermatter monitoring module for AIs to use or something
-	if(!T)
-		return
-	for(var/obj/machinery/power/supermatter_shard/S in SSair.atmos_machinery)
-		// Delaminating, not within coverage, not on a tile.
-		if(!are_zs_connected(S, T) || !issimulatedturf(S.loc))
-			continue
-		supermatters.Add(S)
+/obj/machinery/computer/sm_monitor/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	switch(action)
+		if("PRG_refresh")
+			refresh()
+			return TRUE
+		if("PRG_focus")
+			var/focus_uid = params["focus_uid"]
+			var/obj/machinery/power/supermatter_crystal/sm = locateUID(focus_uid)
+			if(focused_supermatter == sm)
+				unfocus_supermatter(sm)
+			else
+				focus_supermatter(sm)
+			return TRUE
 
-	if(!(active in supermatters))
-		active = null
+/*
+/// Sends an SM delam alert to the computer if our focused supermatter is delaminating.
+/// [var/obj/machinery/power/supermatter_crystal/focused_supermatter].
+/obj/machinery/computer/sm_monitor/proc/send_alert()
+	SIGNAL_HANDLER
+	if(!computer.get_ntnet_status())
+		return
+	computer.alert_call(src, "Crystal delamination in progress!")
+	alert_pending = TRUE
+*/
+
+/obj/machinery/computer/sm_monitor/proc/clear_supermatter(obj/machinery/power/supermatter_crystal/sm)
+	SIGNAL_HANDLER
+	supermatters -= sm
+	if(focused_supermatter == sm)
+		unfocus_supermatter()
+	UnregisterSignal(sm, COMSIG_QDELETING)
+
+/obj/machinery/computer/sm_monitor/proc/focus_supermatter(obj/machinery/power/supermatter_crystal/sm)
+	if(sm == focused_supermatter)
+		return
+	if(focused_supermatter)
+		unfocus_supermatter()
+	//RegisterSignal(sm, COMSIG_SUPERMATTER_DELAM_ALARM, PROC_REF(send_alert))
+	focused_supermatter = sm
+
+/obj/machinery/computer/sm_monitor/proc/unfocus_supermatter()
+	if(!focused_supermatter)
+		return
+	UnregisterSignal(focused_supermatter, COMSIG_SUPERMATTER_DELAM_ALARM)
+	focused_supermatter = null
+
+/obj/machinery/computer/sm_monitor/proc/get_status()
+	. = SUPERMATTER_INACTIVE
+	for(var/obj/machinery/power/supermatter_crystal/supermatter as anything in supermatters)
+		. = max(., supermatter.get_status())
 
 /obj/machinery/computer/sm_monitor/process()
 	if(stat & (NOPOWER|BROKEN))
 		return FALSE
 
-	if(active)
-		var/new_status = active.get_status()
-		if(last_status != new_status)
-			last_status = new_status
-			if(last_status == SUPERMATTER_ERROR)
-				last_status = SUPERMATTER_INACTIVE
-			icon_screen = "smmon_[last_status]"
-			update_icon()
+	var/new_status = get_status()
+	if(last_status != new_status)
+		last_status = new_status
+		icon_screen = "smmon_[last_status]"
+		update_appearance()
 
 	return TRUE
-
-/obj/machinery/computer/sm_monitor/ui_act(action, params)
-	if(..())
-		return
-
-	if(stat & (BROKEN|NOPOWER))
-		return
-
-	. = TRUE
-
-	switch(action)
-		if("refresh")
-			refresh()
-
-		if("view")
-			var/newuid = params["view"]
-			for(var/obj/machinery/power/supermatter_shard/S in supermatters)
-				if(S.UID() == newuid)
-					active = S
-					break
-
-		if("back")
-			active = null
-

@@ -24,7 +24,7 @@ GLOBAL_LIST_EMPTY(spawntypes)
 
 /datum/spawnpoint/arrivals
 	display_name = "Arrivals Shuttle"
-	msg = "прибыл на станцию"
+	msg = "прибывает на объект"
 
 /datum/spawnpoint/arrivals/New()
 	..()
@@ -55,3 +55,13 @@ GLOBAL_LIST_EMPTY(spawntypes)
 /datum/spawnpoint/cyborg/New()
 	..()
 	turfs = GLOB.latejoin_cyborg
+
+/datum/spawnpoint/prisoner
+	display_name = "Permabrig"
+	msg = "пробуждается от криогенного сна в пермабриге"
+	restrict_job = list(JOB_TITLE_PRISONER)
+
+/datum/spawnpoint/prisoner/New()
+	..()
+	turfs = GLOB.latejoin_prisoner
+

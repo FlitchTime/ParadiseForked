@@ -11,31 +11,27 @@
 	var/heavy_range_high = 0
 
 /datum/anomaly_impulse/emp/impulse()
-	empulse(owner, scale_by_strenght(heavy_range_low, heavy_range_high), scale_by_strenght(light_range_low, light_range_high))
+	empulse(owner, scale_by_strength(heavy_range_low, heavy_range_high), scale_by_strength(light_range_low, light_range_high))
 
 /datum/anomaly_impulse/emp/tier1
 	period_low = 10 SECONDS
 	period_high = 20 SECONDS
-	light_range_low = 0
-	light_range_high = 2
-	heavy_range_low = 0
-	heavy_range_high = 0
+	light_range_high = 3
 
 /datum/anomaly_impulse/emp/tier2
 	period_low = 10 SECONDS
 	period_high = 15 SECONDS
 	light_range_low = 2
 	light_range_high = 4
-	heavy_range_low = 0
-	heavy_range_high = 1
+	heavy_range_high = 2
 
 /datum/anomaly_impulse/emp/tier3
 	period_low = 5 SECONDS
 	period_high = 10 SECONDS
 	light_range_low = 3
-	light_range_high = 5
+	light_range_high = 7
 	heavy_range_low = 1
-	heavy_range_high = 3
+	heavy_range_high = 5
 
 /datum/anomaly_impulse/emp/tier4
 	period_low = 3 SECONDS
@@ -44,7 +40,6 @@
 	light_range_high = 20
 	heavy_range_low = 5
 	heavy_range_high = 10
-
 
 /datum/anomaly_impulse/superpull
 	name = "Всплеск притяжения"
@@ -56,14 +51,13 @@
 
 /datum/anomaly_impulse/superpull/impulse()
 	var/obj/effect/anomaly/vortex/anomaly = owner
-	for(var/i = 1 to scale_by_strenght(pulls_low, pulls_high))
+	for(var/i = 1 to scale_by_strength(pulls_low, pulls_high))
 		anomaly.do_pulls()
 		sleep(2)
 
 /datum/anomaly_impulse/superpull/tier1
 	period_low = 10 SECONDS
 	period_high = 20 SECONDS
-	pulls_low = 0
 	pulls_high = 3
 
 /datum/anomaly_impulse/superpull/tier2
@@ -98,6 +92,6 @@
 
 /datum/anomaly_impulse/vortex_fastmove/impulse()
 	var/dir = pick(GLOB.alldirs)
-	for(var/i = 1 to scale_by_strenght(range_low, range_high))
+	for(var/i = 1 to scale_by_strength(range_low, range_high))
 		owner.do_move(dir)
 		sleep(2)

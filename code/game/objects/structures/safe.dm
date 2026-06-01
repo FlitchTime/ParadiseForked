@@ -13,23 +13,14 @@ SAFE CODES
 GLOBAL_LIST_EMPTY(safes)
 
 /**
-  * # Safe
-  *
-  * A locked container that can only be opened by entering a combination through a dial.
-  */
+ * # Safe
+ *
+ * A locked container that can only be opened by entering a combination through a dial.
+ */
 /obj/structure/safe
 	name = "safe"
-	desc = "Огромный кусок металла со встроенным в него циферблатом. Мелким шрифтом на циферблате написано: \"Сейф от \"Скарборо Армс\" надёжно защитит ваши ценные вещи от любых посягательств, включая любопытных ассистентов\"."
-	ru_names = list(
-		NOMINATIVE = "сейф",
-		GENITIVE = "сейфа",
-		DATIVE = "сейфу",
-		ACCUSATIVE = "сейф",
-		INSTRUMENTAL = "сейфом",
-		PREPOSITIONAL = "сейфе"
-	)
+	desc = "Огромный кусок металла со встроенным в него циферблатом. Мелким шрифтом на циферблате написано: \"Сейф от концерна \"Скарборо\" надёжно защитит ваши ценные вещи от любых посягательств, включая любопытных ассистентов\"."
 	gender = MALE
-	icon = 'icons/obj/structures.dmi'
 	icon_state = "safe"
 	anchored = TRUE
 	density = TRUE
@@ -74,19 +65,42 @@ GLOBAL_LIST_EMPTY(safes)
 	/// UID of that who placed the drill on the safe. Used to trigger the status effect.
 	var/driller_UID
 
+/obj/structure/safe/get_ru_names()
+	return list(
+		NOMINATIVE = "сейф",
+		GENITIVE = "сейфа",
+		DATIVE = "сейфу",
+		ACCUSATIVE = "сейф",
+		INSTRUMENTAL = "сейфом",
+		PREPOSITIONAL = "сейфе",
+	)
+
+/obj/structure/safe/ComponentInitialize()
+	. = ..()
+	if(!density)
+		return
+	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = 26)
+
 /obj/structure/safe/Initialize(mapload)
 	. = ..()
 	GLOB.safes += src
 	// Combination generation
 	for(var/i in 1 to number_of_tumblers)
 		tumblers.Add(rand(0, 99))
+	if(mapload)
+		END_OF_TICK(CALLBACK(src, PROC_REF(take_contents)))
+
+/obj/structure/safe/proc/take_contents()
 	// Put as many items on our turf inside as possible
-	for(var/obj/item/I in loc)
+	for(var/obj/item/item in loc)
+		if(item.density || item.anchored)
+			continue
 		if(space >= maxspace)
-			return
-		if(I.w_class + space <= maxspace)
-			space += I.w_class
-			I.forceMove(src)
+			break
+		if(item.w_class + space <= maxspace)
+			space += item.w_class
+			item.forceMove(src)
 
 /obj/structure/safe/Destroy()
 	GLOB.safes -= src
@@ -120,12 +134,11 @@ GLOBAL_LIST_EMPTY(safes)
 /obj/structure/safe/blob_act(obj/structure/blob/B)
 	return
 
-/obj/structure/safe/ex_act(severity)
+/obj/structure/safe/ex_act(severity, target)
 	return
 
 /obj/structure/safe/examine_status(mob/user)
 	return
-
 
 /obj/structure/safe/update_icon_state()
 	if(open)
@@ -139,15 +152,15 @@ GLOBAL_LIST_EMPTY(safes)
 		else
 			icon_state = initial(icon_state)
 
-
 /obj/structure/safe/update_overlays()
 	. = ..()
 	if(istype(drill, /obj/item/thermal_drill))
 		var/drill_icon = istype(drill, /obj/item/thermal_drill/diamond_drill) ? "d" : "h"
 		var/state = "[initial(icon_state)]_[drill_icon]-drill-[drill_timer ? "on" : "off"]"
-		drill_overlay = image(icon = 'icons/effects/drill.dmi', icon_state = state, pixel_x = drill_x_offset, pixel_y = drill_y_offset)
+		drill_overlay = image(icon = 'icons/effects/drill.dmi', icon_state = state)
+		drill_overlay.pixel_w = drill_x_offset
+		drill_overlay.pixel_z = drill_y_offset
 		. += drill_overlay
-
 
 /obj/structure/safe/attack_ghost(mob/user)
 	if(..() || drill)
@@ -190,7 +203,6 @@ GLOBAL_LIST_EMPTY(safes)
 		remove_drill(user)
 	else
 		ui_interact(user)
-
 
 /obj/structure/safe/attackby(obj/item/item, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -244,7 +256,6 @@ GLOBAL_LIST_EMPTY(safes)
 	user.balloon_alert(user,"сейф закрыт!")
 	return ATTACK_CHAIN_PROCEED
 
-
 /obj/structure/safe/ui_state(mob/user)
 	return GLOB.physical_state
 
@@ -286,7 +297,7 @@ GLOBAL_LIST_EMPTY(safes)
 	var/canhear = FALSE
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		if(H.can_hear() && H.is_type_in_hands(/obj/item/clothing/accessory/stethoscope))
+		if(!HAS_TRAIT(H, TRAIT_DEAF) && H.is_type_in_hands(/obj/item/clothing/accessory/stethoscope))
 			canhear = TRUE
 
 	. = TRUE
@@ -378,7 +389,7 @@ GLOBAL_LIST_EMPTY(safes)
 	driller_human.apply_status_effect(STATUS_EFFECT_DRILL_PAYBACK, src)
 	drill.song.start_playing(driller_human)
 	drill.atom_say("Security spotted. Nanites deployed. Give them <b>hell.</b>")
-	notify_ghosts("Security assault in progress in [get_area(src)]!", enter_link = "<a href=?src=[UID()];follow=1>(Click to jump to!)</a>", source = src, action = NOTIFY_FOLLOW)
+	notify_ghosts("Security assault in progress in [get_area(src)]!", enter_link = "<a href=byond://?src=[UID()];follow=1>(Click to jump to!)</a>", source = src, action = NOTIFY_FOLLOW)
 	for(var/mob/dead/observer/O in GLOB.player_list)
 		O.overlay_fullscreen("payback", /atom/movable/screen/fullscreen/payback, 0)
 	addtimer(CALLBACK(src, PROC_REF(ghost_payback_phase_2)), 2.7 SECONDS)
@@ -394,8 +405,8 @@ GLOBAL_LIST_EMPTY(safes)
 		O.clear_fullscreen("payback")
 
 /**
-  * Called every dial turn to determine whether the safe should unlock or not.
-  */
+ * Called every dial turn to determine whether the safe should unlock or not.
+ */
 /obj/structure/safe/proc/check_unlocked()
 	if(current_tumbler_index > number_of_tumblers)
 		locked = FALSE
@@ -405,8 +416,8 @@ GLOBAL_LIST_EMPTY(safes)
 	return FALSE
 
 /**
-  * Called every dial turn to provide feedback if possible.
-  */
+ * Called every dial turn to provide feedback if possible.
+ */
 /obj/structure/safe/proc/notify_user(user, canhear, sounds, total_ticks, current_tick)
 	if(!canhear)
 		return
@@ -417,14 +428,14 @@ GLOBAL_LIST_EMPTY(safes)
 		to_chat(user, span_italics("Вы слышите [pick(sounds)] от [declent_ru(GENITIVE)]."))
 
 /**
-  * Returns the combination to unlock the safe as text.
-  */
+ * Returns the combination to unlock the safe as text.
+ */
 /obj/structure/safe/proc/get_combination()
 	return jointext(tumblers, ", ")
 
 /**
-  * Called when the current thermal drill has finished drilling.
-  */
+ * Called when the current thermal drill has finished drilling.
+ */
 /obj/structure/safe/proc/drill_open()
 	broken = TRUE
 	drill_timer = null
@@ -444,21 +455,13 @@ GLOBAL_LIST_EMPTY(safes)
 	STOP_PROCESSING(SSobj, src)
 
 /**
-  * # Floor Safe
-  *
-  * Like a safe, but without density. Can be hidden with flooring.
-  */
+ * # Floor Safe
+ *
+ * Like a safe, but without density. Can be hidden with flooring.
+ */
 /obj/structure/safe/floor
 	name = "floor safe"
-	desc = "Огромный металлический люк со встроенным в него цифербалтом. Мелким шрифтом на циферблате написано: \"Напольный сейф от \"Скарборо Армс\" надёжно защитит ваши ценные вещи от любых посягательств, включая любопытных ассистентов\"."
-	ru_names = list(
-		NOMINATIVE = "напольный сейф",
-		GENITIVE = "напольного сейфа",
-		DATIVE = "напольному сейфу",
-		ACCUSATIVE = "напольный сейф",
-		INSTRUMENTAL = "напольным сейфом",
-		PREPOSITIONAL = "напольном сейфе"
-	)
+	desc = "Огромный металлический люк со встроенным в него цифербалтом. Мелким шрифтом на циферблате написано: \"Напольный сейф от концерна \"Скарборо\" надёжно защитит ваши ценные вещи от любых посягательств, включая любопытных ассистентов\"."
 	icon_state = "floorsafe"
 	density = FALSE
 	level = 1 //Under the floor
@@ -467,54 +470,63 @@ GLOBAL_LIST_EMPTY(safes)
 	drill_x_offset = -1
 	drill_y_offset = 20
 
-/obj/structure/safe/floor/Initialize()
-	. = ..()
-	var/turf/T = loc
-	if(!T.transparent_floor)
-		hide(T.intact)
+/obj/structure/safe/floor/get_ru_names()
+	return list(
+		NOMINATIVE = "напольный сейф",
+		GENITIVE = "напольного сейфа",
+		DATIVE = "напольному сейфу",
+		ACCUSATIVE = "напольный сейф",
+		INSTRUMENTAL = "напольным сейфом",
+		PREPOSITIONAL = "напольном сейфе",
+	)
 
-/obj/structure/safe/floor/hide(intact)
-	invisibility = intact ? INVISIBILITY_MAXIMUM : 0
+/obj/structure/safe/floor/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/undertile)
 
 /**
-  * # Safe Internals
-  *
-  * Can be used to replace a safe's broken mechanism.
-  */
+ * # Safe Internals
+ *
+ * Can be used to replace a safe's broken mechanism.
+ */
 /obj/item/safe_internals
 	name = "safe internals"
-	desc = "Механизм и запирающие ригели для тумблерного сейфа \"Скарборо Армс - 2\"."
-	ru_names = list(
+	desc = "Механизм и запирающие ригели для тумблерного сейфа \"Скарборо Армс – \"."
+	icon_state = "safe_internals"
+
+/obj/item/safe_internals/get_ru_names()
+	return list(
 		NOMINATIVE = "внутренности сейфа",
 		GENITIVE = "внтренностей сейфа",
 		DATIVE = "внутренностям сейфа",
 		ACCUSATIVE = "внутренности сейфа",
 		INSTRUMENTAL = "внутренностями сейфа",
-		PREPOSITIONAL = "внутренностях сейфа"
+		PREPOSITIONAL = "внутренностях сейфа",
 	)
-	icon_state = "safe_internals"
 
 /**
-  * # Safe Codes
-  *
-  * Contains the (generated on map load) codes for all publicly known safes.
-  */
+ * # Safe Codes
+ *
+ * Contains the (generated on map load) codes for all publicly known safes.
+ */
 /obj/item/paper/safe_code
 	name = "safe codes"
 	desc = "Надежный способ сохранить секретность важных цифр."
-	ru_names = list(
+	var/owner
+	info = "<div style='text-align:center;'><img src = ntlogo.png><center><h3>Коды от сейфа</h3></center>"
+
+/obj/item/paper/safe_code/get_ru_names()
+	return list(
 		NOMINATIVE = "коды от сейфа",
 		GENITIVE = "кодов от сейфа",
 		DATIVE = "кодам от сейфа",
 		ACCUSATIVE = "коды от сейфа",
 		INSTRUMENTAL = "кодами от сейфа",
-		PREPOSITIONAL = "кодах от сейфа"
+		PREPOSITIONAL = "кодах от сейфа",
 	)
-	var/owner
-	info = "<div style='text-align:center;'><img src = ntlogo.png><center><h3>Коды от сейфа</h3></center>"
 
 /obj/item/paper/safe_code/Initialize(mapload)
-	..()
+	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/paper/safe_code/LateInitialize(mapload)

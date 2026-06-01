@@ -31,6 +31,8 @@ type Cyborg = {
   is_hacked: boolean;
   synchronization: boolean;
   module: string;
+  is_shell: boolean;
+  occupier: string;
 };
 
 export const RoboticsControlConsole = (_props: unknown) => {
@@ -49,7 +51,7 @@ export const RoboticsControlConsole = (_props: unknown) => {
               {safety ? 'Disable Safety' : 'Enable Safety'}
             </Button>
             <Button
-              icon="bomb"
+              icon="bolt"
               disabled={safety}
               color="bad"
               onClick={() => act('nuke', {})}
@@ -109,7 +111,7 @@ const Cyborgs = (props: CyborgsProps) => {
               {cyborg.locked_down ? 'Release' : 'Lockdown'}
             </Button.Confirm>
             <Button.Confirm
-              icon="bomb"
+              icon="bolt"
               disabled={!data.auth}
               color="bad"
               onClick={() =>
@@ -118,7 +120,7 @@ const Cyborgs = (props: CyborgsProps) => {
                 })
               }
             >
-              Detonate
+              Self-destruct
             </Button.Confirm>
           </>
         }
@@ -176,6 +178,11 @@ const Cyborgs = (props: CyborgsProps) => {
               {cyborg.synchronization || 'None'}
             </Box>
           </LabeledList.Item>
+          {!!cyborg.is_shell && (
+            <LabeledList.Item label="Occupier">
+              {cyborg.occupier}
+            </LabeledList.Item>
+          )}
         </LabeledList>
       </Section>
     );

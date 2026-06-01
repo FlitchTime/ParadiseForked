@@ -10,7 +10,6 @@
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	var/environment_type = "asteroid"
 	var/turf_type = /turf/simulated/floor/plating/asteroid //Because caves do whacky shit to revert to normal
 	var/floor_variance = 20 //probability floor has a different icon state
@@ -18,6 +17,16 @@
 	var/dug
 	///Chance to dig up a worm
 	var/worm_chance = 30
+
+/turf/simulated/floor/plating/asteroid/get_ru_names()
+	return list(
+		NOMINATIVE = "астероидный песок",
+		GENITIVE = "астероидного песка",
+		DATIVE = "астероидному песку",
+		ACCUSATIVE = "астероидный песок",
+		INSTRUMENTAL = "астероидным песком",
+		PREPOSITIONAL = "астероидном песке",
+	)
 
 /turf/simulated/floor/plating/asteroid/Initialize(mapload)
 	var/proper_name = name
@@ -35,7 +44,7 @@
 	if(!dug)
 		return TRUE
 	if(user)
-		to_chat(user, span_notice("Looks like someone has dug here already."))
+		to_chat(user, span_notice("Похоже, здесь уже копали."))
 
 ///Refills the previously dug tile
 /turf/simulated/floor/plating/asteroid/proc/refill_dug()
@@ -53,7 +62,6 @@
 		else
 			icon_state =  initial(icon_state)
 
-
 /turf/simulated/floor/plating/asteroid/burn_tile()
 	return
 
@@ -66,22 +74,21 @@
 /turf/simulated/floor/plating/asteroid/remove_plating()
 	return
 
-/turf/simulated/floor/plating/asteroid/ex_act(severity)
+/turf/simulated/floor/plating/asteroid/ex_act(severity, target)
 	if(!can_dig())
 		return
+
 	switch(severity)
-		if(3)
+		if(EXPLODE_LIGHT)
 			return
-		if(2)
+		if(EXPLODE_HEAVY)
 			if(prob(20))
 				getDug()
-		if(1)
+		if(EXPLODE_DEVASTATE)
 			getDug()
-
 
 /turf/simulated/floor/plating/asteroid/can_have_cabling()
 	return FALSE
-
 
 /turf/simulated/floor/plating/asteroid/try_replace_tile(obj/item/stack/tile/tile, mob/user, params)
 	if(!tile.use(1))
@@ -91,7 +98,6 @@
 	else
 		ChangeTurf(tile.turf_type, keep_icon = FALSE)
 	playsound(src, 'sound/weapons/Genhit.ogg', 50, TRUE)
-
 
 /turf/simulated/floor/plating/asteroid/attackby(obj/item/I, mob/user, params)
 	. = ..()
@@ -103,11 +109,11 @@
 		if(!can_dig(user))
 			return .
 		I.play_tool_sound()
-		to_chat(user, span_notice("You start digging..."))
+		to_chat(user, span_notice("Вы начинаете копать..."))
 		if(!do_after(user, 4 SECONDS * I.toolspeed, src, category = DA_CAT_TOOL) || !istype(src, /turf/simulated/floor/plating/asteroid) || !can_dig(user))
 			return .
 		I.play_tool_sound()
-		to_chat(user, span_notice("You have dug a hole."))
+		to_chat(user, span_notice("Вы выкопали яму."))
 		if(user.a_intent == INTENT_DISARM)
 			new /obj/structure/pit(src)
 			dug = TRUE
@@ -123,21 +129,33 @@
 			ore.attackby(bag, user, params)
 		return .|ATTACK_CHAIN_SUCCESS
 
-
 /turf/simulated/floor/plating/asteroid/welder_act(mob/user, obj/item/I)
 	return
+
+/turf/simulated/floor/plating/asteroid/cold
+	atmos_environment = ENVIRONMENT_COLD
 
 /// Used by ashstorms to replenish basalt tiles that have been dug up without going through all of them.
 GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 /turf/simulated/floor/plating/asteroid/basalt
 	name = "volcanic floor"
+	desc = "Выглядит горячим."
 	baseturf = /turf/simulated/floor/plating/asteroid/basalt
 	icon_state = "basalt"
 	icon_plating = "basalt"
 	environment_type = "basalt"
 	floor_variance = 15
-	digResult = /obj/item/stack/ore/glass/basalt
+
+/turf/simulated/floor/plating/asteroid/basalt/get_ru_names()
+	return list(
+		NOMINATIVE = "вулканический пол",
+		GENITIVE = "вулканического пола",
+		DATIVE = "вулканическому полу",
+		ACCUSATIVE = "вулканический пол",
+		INSTRUMENTAL = "вулканическим полом",
+		PREPOSITIONAL = "вулканическом поле",
+	)
 
 /turf/simulated/floor/plating/asteroid/basalt/refill_dug()
 	. = ..()
@@ -152,15 +170,6 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	baseturf = /turf/simulated/floor/lava
 
 /turf/simulated/floor/plating/asteroid/basalt/airless
-	temperature = TCMB
-	oxygen = 0
-	nitrogen = 0
-
-/turf/simulated/floor/plating/asteroid/ancient
-	digResult = /obj/item/stack/ore/glass/basalt/ancient
-	baseturf = /turf/simulated/floor/plating/asteroid/ancient/airless
-
-/turf/simulated/floor/plating/asteroid/ancient/airless
 	temperature = TCMB
 	oxygen = 0
 	nitrogen = 0
@@ -197,11 +206,14 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 ///////Surface. The surface is warm, but survivable without a suit. Internals are required. The floors break to chasms, which drop you into the underground.
 
 /turf/simulated/floor/plating/asteroid/basalt/lava_land_surface
-	oxygen = 14
-	nitrogen = 23
-	temperature = 300
-	planetary_atmos = TRUE
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_LAVALAND
 	baseturf = /turf/simulated/floor/lava/mapping_lava
+
+/turf/simulated/floor/plating/asteroid/basalt/lava_land_surface_hard
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_LAVALAND
+	baseturf = /turf/simulated/floor/lava/lava_land_surface
 
 /turf/simulated/floor/plating/asteroid/airless
 	temperature = TCMB
@@ -210,25 +222,34 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	turf_type = /turf/simulated/floor/plating/asteroid/airless
 
 /turf/simulated/floor/plating/asteroid/snow
-	gender = PLURAL
 	name = "snow"
-	desc = "Looks cold."
+	desc = "Выглядит холодным."
 	icon = 'icons/turf/snow.dmi'
 	baseturf = /turf/simulated/floor/plating/asteroid/snow
 	icon_state = "snow"
 	icon_plating = "snow"
-	temperature = 180
 	slowdown = 2
 	environment_type = "snow"
-	planetary_atmos = TRUE
+	atmos_mode = ATMOS_MODE_EXPOSED_TO_ENVIRONMENT
+	atmos_environment = ENVIRONMENT_COLD
 	digResult = /obj/item/stack/sheet/mineral/snow
+
+/turf/simulated/floor/plating/asteroid/snow/get_ru_names()
+	return list(
+		NOMINATIVE = "снег",
+		GENITIVE = "снега",
+		DATIVE = "снегу",
+		ACCUSATIVE = "снег",
+		INSTRUMENTAL = "снегом",
+		PREPOSITIONAL = "снеге",
+	)
 
 /turf/simulated/floor/plating/asteroid/snow/broken_states()
 	return list("snow_dug")
 
 /turf/simulated/floor/plating/asteroid/snow/burn_tile()
 	if(!burnt)
-		visible_message(span_danger("[src] melts away!."))
+		visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] расплавляется!"))
 		slowdown = 0
 		burnt = TRUE
 		icon_state = "snow_dug"
@@ -239,16 +260,13 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	temperature = TCMB
 	oxygen = 0
 	nitrogen = 0
+	atmos_mode = ATMOS_MODE_SEALED
+
+/turf/simulated/floor/plating/asteroid/snow/atmosphere
+	atmos_mode = ATMOS_MODE_SEALED
+
+/turf/simulated/floor/plating/asteroid/snow/atmosphere/temperature
+	atmos_environment = ENVIRONMENT_TEMPERATE
 
 /turf/simulated/floor/plating/asteroid/snow/temperature
 	temperature = 255.37
-
-/turf/simulated/floor/plating/asteroid/snow/atmosphere
-	oxygen = 22
-	nitrogen = 82
-	temperature = 180
-	planetary_atmos = FALSE
-
-/turf/simulated/floor/plating/asteroid/snow/planet
-	oxygen = 22
-	nitrogen = 82

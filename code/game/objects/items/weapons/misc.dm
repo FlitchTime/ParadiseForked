@@ -29,7 +29,6 @@
 	flags = CONDUCT
 	force = 5.0
 	throwforce = 7.0
-	w_class = WEIGHT_CLASS_NORMAL
 	materials = list(MAT_METAL=50)
 	attack_verb = list("огрел", "проучил")
 
@@ -39,63 +38,20 @@
 /obj/item/c_tube
 	name = "cardboard tube"
 	desc = "A tube... of cardboard."
-	icon = 'icons/obj/items.dmi'
 	icon_state = "c_tube"
+	hitsound = 'sound/items/cardboard_tube.ogg'
 	throwforce = 1
+	force = 1
+	attack_verb = list("ударил", "стукнул")
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 4
 	throw_range = 5
-
-
 
 /obj/item/fan
 	name = "desk fan"
 	icon = 'icons/obj/decorations.dmi'
 	icon_state = "fan"
 	desc = "A small desktop fan. The button seems to be stuck in the 'on' position."
-
-/*
-/obj/item/game_kit
-	name = "Gaming Kit"
-	icon = 'icons/obj/items.dmi'
-	icon_state = "game_kit"
-	var/selected = null
-	var/board_stat = null
-	var/data = ""
-	var/base_url = "http://svn.slurm.us/public/spacestation13/misc/game_kit"
-	item_state = "sheet-metal"
-	w_class = WEIGHT_CLASS_HUGE
-*/
-
-/obj/item/gift
-	name = "gift"
-	desc = "A wrapped item."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "gift3"
-	var/size = 3.0
-	var/obj/item/gift = null
-	item_state = "gift"
-	w_class = WEIGHT_CLASS_BULKY
-
-
-/obj/item/gift/Destroy()
-	QDEL_NULL(gift)
-	return ..()
-
-
-/obj/item/gift/attack_self(mob/user)
-	if(gift)
-		gift.forceMove(drop_location())
-		user.put_in_active_hand(gift)
-		gift.add_fingerprint(user)
-	else
-		to_chat(user, span_notice("The gift was empty!"))
-	qdel(src)
-
-
-/obj/item/gift/emp_act(severity)
-	..()
-	gift.emp_act(severity)
 
 /obj/item/kidanglobe
 	name = "Kidan homeworld globe"
@@ -110,18 +66,15 @@
 	desc = "test lightning"
 	var/angle
 
-
 /obj/item/lightning/Initialize(mapload)
 	. = ..()
 	icon_state = "1"
 
-
 /obj/item/lightning/update_icon_state()
 	icon_state = "[angle]"
 
-
-/obj/item/lightning/afterattack(atom/A, mob/living/user, flag, params)
-	var/angle = get_angle(A, user)
+/obj/item/lightning/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	var/angle = get_angle(target, user)
 	//to_chat(world, angle)
 	angle = round(angle) + 45
 	if(angle > 180)
@@ -132,7 +85,7 @@
 	if(!angle)
 		angle = 1
 	update_icon(UPDATE_ICON_STATE)
-	user.Beam(A, "lightning", 'icons/obj/zap.dmi', 50, 15)
+	user.Beam(target, "lightning", 'icons/obj/zap.dmi', 50, 15)
 
 /obj/item/newton
 	name = "newton cradle"
@@ -143,7 +96,6 @@
 /obj/item/phone
 	name = "red phone"
 	desc = "Should anything ever go wrong..."
-	icon = 'icons/obj/items.dmi'
 	icon_state = "red_phone"
 	flags = CONDUCT
 	force = 3
@@ -157,7 +109,7 @@
 
 /obj/item/phone/attack_self(mob/user)
 	if(cooldown < world.time - 20)
-		playsound(user.loc, 'sound/weapons/ring.ogg', 50, 1)
+		playsound(user.loc, 'sound/weapons/ring.ogg', 50, TRUE)
 		cooldown = world.time
 
 /obj/item/nunchuck
@@ -191,7 +143,6 @@
 		if(do_after(user, 1 SECONDS, user))
 			active = TRUE
 			update_icon(UPDATE_ICON_STATE)
-
 
 /obj/item/nunchuck/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	if(!active)

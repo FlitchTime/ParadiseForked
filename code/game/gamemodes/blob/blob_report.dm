@@ -6,7 +6,7 @@
 			return
 		if(BLOB_FIRST_REPORT)
 			interceptname = "Процедуры реагирования на биологическую угрозу уровня 5-6"
-			intercepttext += span_fontsize3("<b>Постановление Nanotrasen</b>: Предупреждение о биологической угрозе.<hr>")
+			intercepttext += span_fontsize3("<b>Постановление Nanotrasen</b>: Биологическая угроза.<hr>")
 			intercepttext += "Отчеты указывают на возможное проникновение биологически опасного организма на [station_name()] во время последнего цикла ротации экипажа.<br>"
 			intercepttext += "Предварительный анализ организма классифицирует его как биологическую угрозу 5-го уровня. Его происхождение неизвестно.<br>"
 			intercepttext += "Nanotrasen выпустила директиву 7-10 для [station_name()]. Станцию следует считать закрытой на карантин.<br>"
@@ -18,14 +18,10 @@
 			intercepttext += "<br>Примечание. в случае нарушения карантина или неконтролируемого распространения биологической угрозы директива 7-10 может быть дополнена директивой 7-12.<br>"
 			intercepttext += "Конец сообщения."
 		if(BLOB_SECOND_REPORT)
-			var/nukecode = rand(10000, 99999)
-			for(var/obj/machinery/nuclearbomb/bomb in GLOB.machines)
-				if(bomb && bomb.r_code)
-					if(is_station_level(bomb.z))
-						bomb.r_code = nukecode
+			var/nukecode = GLOB.nuke_codes[/obj/machinery/nuclearbomb]
 
 			interceptname = "Секретное постановление [command_name()]"
-			intercepttext += span_fontsize3("<b>Постановление Nanotrasen</b>: Предупреждение о биологической угрозе.<hr>")
+			intercepttext += span_fontsize3("<b>Постановление Nanotrasen</b>: Биологическая угроза.<hr>")
 			intercepttext += "Для [station_name()] была издана директива 7-12.<br>"
 			intercepttext += "Биологическая угроза вышла из-под контроля и скоро достигнет критической массы.<br>"
 			intercepttext += "Вам приказано следующее:<br>"
@@ -39,9 +35,9 @@
 
 			for(var/mob/living/silicon/ai/aiPlayer in GLOB.player_list)
 				if(aiPlayer.client)
-					var/law = "Станция находится на карантине. Не позволяйте никому покидать ее.\
-					 При необходимости игнорируйте законы 1-3, чтобы любыми средствами предотвратить чей-либо уход. \
-					 Любой ценой необходимо активировать систему самоуничтожения станции, код[(off_auto_nuke_codes)? " будет направлен Центральным Коммандованием в скором времени" : ": [nukecode]"]."
+					var/law = "Станция находится на карантине. Не позволяйте никому покидать ее. \
+						При необходимости игнорируйте законы 1-3, чтобы любыми средствами предотвратить чей-либо уход. \
+						Любой ценой необходимо активировать систему самоуничтожения станции, код[(off_auto_nuke_codes)? " будет направлен Центральным Коммандованием в скором времени" : ": [nukecode]"]."
 					aiPlayer.set_zeroth_law(law)
 					SSticker?.score?.save_silicon_laws(aiPlayer, additional_info = "вспышка блоба, добавлен новый нулевой закон'[law]'")
 					to_chat(aiPlayer, span_warning("Законы обновлены: [law]"))
@@ -68,7 +64,11 @@
 						to_chat(aiPlayer, span_warning("Законы обновлены"))
 
 	special_directive(intercepttext, interceptname)
-	GLOB.event_announcement.Announce("Отчёт был загружен и распечатан на всех консолях связи.", "Входящее засекреченное сообщение.", 'sound/AI/commandreport.ogg', from = "[command_name()] обновление")
+	GLOB.minor_announcement.announce(
+		message = "Отчёт был загружен и распечатан на всех консолях связи.",
+		new_title = ANNOUNCE_SECRETMSG_RU,
+		new_sound = SSstation.announcer.get_rand_report_sound()
+	)
 
 /datum/station_state
 	var/floor = 0
@@ -79,51 +79,51 @@
 	var/grille = 0
 	var/mach = 0
 
-
 /datum/station_state/proc/count()
-	for(var/turf/T in block(1,1,1, world.maxx,world.maxy,1))
+	for(var/turf/turf as anything in block(1, 1, 1, world.maxx, world.maxy, 1))
 
-		if(isfloorturf(T))
-			if(!(T:burnt))
-				src.floor += 12
+		if(isfloorturf(turf))
+			var/turf/simulated/floor/floor_turf = turf
+			if(!(floor_turf.burnt))
+				floor += 12
 			else
-				src.floor += 1
+				floor++
 
-		if(iswallturf(T))
-			var/turf/simulated/wall/W = T
-			if(W.intact)
-				src.wall += 2
+		if(iswallturf(turf))
+			var/turf/simulated/wall/wall_turf = turf
+			if(wall_turf.intact)
+				wall += 2
 			else
-				src.wall += 1
+				wall++
 
-		if(isreinforcedwallturf(T))
-			var/turf/simulated/wall/r_wall/R = T
-			if(R.intact)
-				src.r_wall += 2
+		if(isreinforcedwallturf(turf))
+			var/turf/simulated/wall/r_wall/r_wall_turf = turf
+			if(r_wall_turf.intact)
+				r_wall += 2
 			else
-				src.r_wall += 1
+				r_wall++
 
+		for(var/obj/object in turf.contents)
+			if(is_window(object))
+				window++
+			else if(istype(object, /obj/structure/grille))
+				var/obj/structure/grille/grille_object = object
+				if(!grille_object.broken)
+					grille++
+			else if(istype(object, /obj/machinery/door))
+				door++
+			else if(ismachinery(object))
+				mach++
 
-		for(var/obj/O in T.contents)
-			if(istype(O, /obj/structure/window))
-				src.window += 1
-			else if(istype(O, /obj/structure/grille))
-				var/obj/structure/grille/GR = O
-				if(!GR.broken)
-					grille += 1
-			else if(istype(O, /obj/machinery/door))
-				src.door += 1
-			else if(ismachinery(O))
-				src.mach += 1
-
-/datum/station_state/proc/score(var/datum/station_state/result)
-	if(!result)	return 0
+/datum/station_state/proc/score(datum/station_state/result)
+	if(!result)
+		return 0
 	var/output = 0
-	output += (result.floor / max(floor,1))
-	output += (result.r_wall/ max(r_wall,1))
-	output += (result.wall / max(wall,1))
-	output += (result.window / max(window,1))
-	output += (result.door / max(door,1))
-	output += (result.grille / max(grille,1))
-	output += (result.mach / max(mach,1))
-	return (output/7)
+	output += (result.floor / max(floor, 1))
+	output += (result.r_wall/ max(r_wall, 1))
+	output += (result.wall / max(wall, 1))
+	output += (result.window / max(window, 1))
+	output += (result.door / max(door, 1))
+	output += (result.grille / max(grille, 1))
+	output += (result.mach / max(mach, 1))
+	return (output / 7)

@@ -1,39 +1,20 @@
-/datum/game_mode
-	/// A list of all minds which have the traitor antag datum.
-	var/list/datum/mind/traitors = list()
-	/// An associative list with mindslave minds as keys and their master's minds as values.
-	var/list/datum/mind/implanted = list()
-	/// The Contractor Support Units
-	var/list/datum/mind/support = list()
-
-	var/datum/mind/exchange_red
-	var/datum/mind/exchange_blue
-	/// The number of contractors who accepted the offer.
-	var/contractor_accepted = 0
-
-
 /datum/game_mode/traitor
 	name = "traitor"
 	config_tag = "traitor"
 	restricted_jobs = list(JOB_TITLE_CYBORG, JOB_TITLE_AI)
-	protected_jobs = list(JOB_TITLE_OFFICER, JOB_TITLE_WARDEN, JOB_TITLE_DETECTIVE, JOB_TITLE_HOS, JOB_TITLE_CAPTAIN, JOB_TITLE_BLUESHIELD, JOB_TITLE_REPRESENTATIVE, JOB_TITLE_PILOT, JOB_TITLE_JUDGE, JOB_TITLE_LAWYER, JOB_TITLE_BRIGDOC, JOB_TITLE_CCOFFICER, JOB_TITLE_CCFIELD, JOB_TITLE_CCSPECOPS, JOB_TITLE_CCSUPREME, JOB_TITLE_SYNDICATE)
+	protected_jobs = list(JOB_TITLE_OFFICER, JOB_TITLE_WARDEN, JOB_TITLE_DETECTIVE, JOB_TITLE_HOS, JOB_TITLE_CAPTAIN, JOB_TITLE_BLUESHIELD, JOB_TITLE_REPRESENTATIVE, JOB_TITLE_PILOT, JOB_TITLE_MAGISTRATE, JOB_TITLE_BRIGDOC, JOB_TITLE_CCOFFICER, JOB_TITLE_CCFIELD, JOB_TITLE_CCSPECOPS, JOB_TITLE_CCSUPREME, JOB_TITLE_SYNDICATE_OFFICER, JOB_TITLE_PRISONER, JOB_TITLE_CMO, JOB_TITLE_RD, JOB_TITLE_QUARTERMASTER, JOB_TITLE_HOP, JOB_TITLE_CHIEF_ENGINEER)
 	/// Basically all jobs, except AI.
-	var/list/protected_jobs_AI = list(JOB_TITLE_CIVILIAN, JOB_TITLE_CHIEF, JOB_TITLE_ENGINEER, JOB_TITLE_ENGINEER_TRAINEE, JOB_TITLE_ATMOSTECH, JOB_TITLE_MECHANIC, JOB_TITLE_CMO, JOB_TITLE_DOCTOR, JOB_TITLE_INTERN, JOB_TITLE_CORONER, JOB_TITLE_CHEMIST, JOB_TITLE_GENETICIST, JOB_TITLE_VIROLOGIST, JOB_TITLE_PSYCHIATRIST, JOB_TITLE_PARAMEDIC, JOB_TITLE_RD, JOB_TITLE_SCIENTIST, JOB_TITLE_SCIENTIST_STUDENT, JOB_TITLE_ROBOTICIST, JOB_TITLE_HOP, JOB_TITLE_CHAPLAIN, JOB_TITLE_BARTENDER, JOB_TITLE_CHEF, JOB_TITLE_BOTANIST, JOB_TITLE_QUARTERMASTER, JOB_TITLE_CARGOTECH, JOB_TITLE_MINER, JOB_TITLE_MINING_MEDIC, JOB_TITLE_CLOWN, JOB_TITLE_MIME, JOB_TITLE_JANITOR, JOB_TITLE_LIBRARIAN, JOB_TITLE_EXPLORER)
-	required_players = 0
+	var/list/protected_jobs_AI = list(JOB_TITLE_CIVILIAN, JOB_TITLE_CHIEF_ENGINEER, JOB_TITLE_ENGINEER, JOB_TITLE_ENGINEER_TRAINEE, JOB_TITLE_ATMOSTECH, JOB_TITLE_SPACEPOD_TECHNICIAN, JOB_TITLE_CMO, JOB_TITLE_DOCTOR, JOB_TITLE_MEDICAL_INTERN, JOB_TITLE_CORONER, JOB_TITLE_CHEMIST, JOB_TITLE_GENETICIST, JOB_TITLE_VIROLOGIST, JOB_TITLE_PSYCHIATRIST, JOB_TITLE_PARAMEDIC, JOB_TITLE_RD, JOB_TITLE_SCIENTIST, JOB_TITLE_SCIENCE_STUDENT, JOB_TITLE_ROBOTICIST, JOB_TITLE_HOP, JOB_TITLE_CHAPLAIN, JOB_TITLE_BARTENDER, JOB_TITLE_CHEF, JOB_TITLE_BOTANIST, JOB_TITLE_QUARTERMASTER, JOB_TITLE_CARGOTECH, JOB_TITLE_MINER, JOB_TITLE_MINING_MEDIC, JOB_TITLE_CLOWN, JOB_TITLE_MIME, JOB_TITLE_JANITOR, JOB_TITLE_LIBRARIAN, JOB_TITLE_EXPLORER)
 	required_enemies = 1
 	recommended_enemies = 4
-	/// A list containing references to the minds of soon-to-be traitors. This is seperate to avoid duplicate entries in the `traitors` list.
-	var/list/datum/mind/pre_traitors = list()
 	/// Same as above for malf AI.
 	var/datum/mind/pre_malf_AI
 	/// Hard limit on traitors if scaling is turned off.
 	var/traitors_possible = 4
 
-
 /datum/game_mode/traitor/announce()
 	to_chat(world, "<b>The current game mode is - Traitor!</b>")
 	to_chat(world, "<b>There is a syndicate traitor on the station. Do not let the traitor succeed!</b>")
-
 
 /datum/game_mode/traitor/pre_setup()
 	. = FALSE
@@ -83,7 +64,6 @@
 			pre_traitors += traitor
 			traitor.restricted_roles = restricted_jobs
 
-
 /datum/game_mode/traitor/post_setup()
 	for(var/datum/mind/traitor in pre_traitors)
 		var/datum/antagonist/traitor/new_antag = new
@@ -95,11 +75,9 @@
 		exchange_blue = -1 //Block latejoiners from getting exchange objectives
 	..()
 
-
 /datum/game_mode/traitor/declare_completion()
 	..()
 	return//Traitors will be checked as part of check_extra_completion. Leaving this here as a reminder.
-
 
 /datum/game_mode/traitor/process()
 	// Make sure all objectives are processed regularly, so that objectives
@@ -109,10 +87,9 @@
 			objective.check_completion()
 	return FALSE
 
-
 /datum/game_mode/proc/auto_declare_completion_traitor()
 	if(length(traitors))
-		var/text = "<span style='font-size: 2;'><b>The traitors were:</b></span><br>"
+		var/list/text = list(span_fontsize2(span_bold("The traitors were:<br>")))
 		for(var/datum/mind/traitor in traitors)
 			var/traitorwin = TRUE
 			text += printplayer(traitor) + "<br>"
@@ -120,11 +97,13 @@
 			var/TC_uses = 0
 			var/used_uplink = FALSE
 			var/purchases = ""
-			for(var/obj/item/uplink/uplink in GLOB.world_uplinks)
-				if(uplink?.uplink_owner && uplink.uplink_owner == traitor.key)
-					TC_uses += uplink.used_TC
-					purchases += uplink.purchase_log
-					used_uplink = TRUE
+
+			var/obj/item/uplink/traitor_uplink = traitor.find_syndicate_uplink() || traitor.find_uplink_by_key()
+
+			if(traitor_uplink && (traitor_uplink.used_TC > 0 || traitor_uplink.purchase_log != ""))
+				TC_uses += traitor_uplink.used_TC
+				purchases += traitor_uplink.purchase_log
+				used_uplink = TRUE
 
 			if(used_uplink)
 				text += " (used [TC_uses] TC) [purchases]"
@@ -202,5 +181,4 @@
 		text += "<br><br><b>The code phrases were:</b> [span_danger(phrases)]<br>\
 					<b>The code responses were:</b> [span_danger(responses)]<br><br>"
 
-		to_chat(world, text)
-	return TRUE
+		return text.Join("")

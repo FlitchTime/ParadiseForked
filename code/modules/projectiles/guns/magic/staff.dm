@@ -2,8 +2,7 @@
 	slot_flags = ITEM_SLOT_BACK
 	ammo_type = /obj/item/ammo_casing/magic
 	item_flags = NO_MAT_REDEMPTION
-	lefthand_file = 'icons/mob/inhands/staff_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/staff_righthand.dmi'
+	accuracy = GUN_ACCURACY_SNIPER
 
 /obj/item/gun/magic/staff/change
 	name = "staff of change"
@@ -30,7 +29,7 @@
 	item_state = "staffofhealing"
 	fire_sound = 'sound/magic/staff_healing.ogg'
 
-/obj/item/gun/magic/staff/healing/handle_suicide() //Stops people trying to commit suicide to heal themselves
+/obj/item/gun/magic/staff/healing/handle_suicide(mob/living/carbon/human/user, mob/living/carbon/human/target, list/modifiers) //Stops people trying to commit suicide to heal themselves
 	return
 
 /obj/item/gun/magic/staff/chaos

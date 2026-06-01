@@ -2,16 +2,14 @@
 	category = KB_CATEGORY_EMOTE_GENERIC
 	var/datum/emote/linked_emote
 
-
 /datum/keybinding/emote/down(client/user)
 	. = ..()
 	if(.)
 		return .
 	return user.mob.emote(initial(linked_emote.key), intentional = TRUE)
 
-
 /**
- * Generic
+ * MARK: Generic
  */
 /datum/keybinding/emote/flip
 	linked_emote = /datum/emote/flip
@@ -181,8 +179,20 @@
 	linked_emote = /datum/emote/living/snore
 	name = "Храпеть"
 
+/datum/keybinding/emote/nightmare
+	linked_emote = /datum/emote/living/nightmare
+	name = "Ночной кошмар"
+
+/datum/keybinding/emote/sit
+	linked_emote = /datum/emote/living/sit
+	name = "Сесть"
+
+/datum/keybinding/emote/surrender
+	linked_emote = /datum/emote/living/surrender
+	name = "Сдаться"
+
 /**
- * Carbon
+ * MARK: Carbon
  */
 /datum/keybinding/emote/carbon
 	category = KB_CATEGORY_EMOTE_CARBON
@@ -270,9 +280,16 @@
 	linked_emote = /datum/emote/living/carbon/twirl
 	name = "Вертеть в руках"
 
+/datum/keybinding/emote/carbon/smoking
+	linked_emote = /datum/emote/living/carbon/smoking
+	name = "Затянуться"
+
+/datum/keybinding/emote/carbon/finish_smoking
+	linked_emote = /datum/emote/living/carbon/finish_smoking
+	name = "Докурить"
 
 /**
- * Alien
+ * MARK: Alien
  */
 /datum/keybinding/emote/carbon/alien
 	category = KB_CATEGORY_EMOTE_ALIEN
@@ -288,9 +305,8 @@
 	linked_emote = /datum/emote/living/carbon/alien/humanoid/gnarl
 	name = "Рычать"
 
-
 /**
- * MMI-brain
+ * MARK: MMI-brain
  */
 /datum/keybinding/emote/carbon/brain
 	category = KB_CATEGORY_EMOTE_BRAIN
@@ -326,9 +342,8 @@
 	linked_emote = /datum/emote/living/carbon/brain/boop
 	name = "Бупать"
 
-
 /**
- * Human
+ * MARK: Human
  */
 /datum/keybinding/emote/carbon/human
 	category = KB_CATEGORY_EMOTE_HUMAN
@@ -456,11 +471,26 @@
 	linked_emote = /datum/emote/living/carbon/sign/signal
 	name = "Показать число пальцами"
 
+/datum/keybinding/emote/carbon/human/crack
+	linked_emote = /datum/emote/living/carbon/human/crack
+	name = "Хрустнуть костяшками"
+
+/datum/keybinding/emote/carbon/human/palm
+	linked_emote = /datum/emote/living/carbon/human/palm
+	name = "Протянуть руку"
+
+/datum/keybinding/emote/carbon/human/scream
+	linked_emote = /datum/emote/living/carbon/human/scream
+	name = "Кричать"
+
+/datum/keybinding/emote/carbon/human/fart
+	linked_emote = /datum/emote/living/carbon/human/fart
+	name = "Пёрнуть"
 
 /**
- * Species specific
+ * MARK: Species specific
  */
-/datum/keybinding/emote/carbon/human/wag_start
+/datum/keybinding/emote/carbon/human/rattle
 	linked_emote = /datum/emote/living/carbon/human/rattle
 	name = "Греметь костями (плазмамен/скелет)"
 
@@ -472,9 +502,8 @@
 	linked_emote = /datum/emote/living/carbon/human/wag/stop
 	name = "Перестать махать хвостом"
 
-
 /**
- * Monke
+ * MARK: Monke
  */
 /datum/keybinding/emote/carbon/human/monkey/screech
 	linked_emote = /datum/emote/living/carbon/human/scream/screech
@@ -488,9 +517,16 @@
 	linked_emote = /datum/emote/living/carbon/human/monkey/roll
 	name = "Крутиться (мартышки)"
 
+/datum/keybinding/emote/carbon/human/monkey/gnarl
+	linked_emote = /datum/emote/living/carbon/human/monkey/gnarl
+	name = "Скалиться (мартышки)"
+
+/datum/keybinding/emote/carbon/human/monkey/tail
+	linked_emote = /datum/emote/living/carbon/human/monkey/tail
+	name = "Махать хвостом (мартышки)"
 
 /**
- * Moth
+ * MARK: Moth
  */
 /datum/keybinding/emote/carbon/human/moth/flap
 	linked_emote = /datum/emote/living/carbon/human/moth/flap
@@ -504,17 +540,15 @@
 	linked_emote = /datum/emote/living/carbon/human/moth/flutter
 	name = "Расправить крылья (нианы)"
 
-
 /**
- * Vox
+ * MARK: Vox
  */
 /datum/keybinding/emote/carbon/human/vox/quill
 	linked_emote = /datum/emote/living/carbon/human/vox/quill
 	name = "Шуршать перьями (воксы)"
 
-
 /**
- * Skrell
+ * MARK: Skrell
  */
 /datum/keybinding/emote/carbon/human/skrell/warble
 	linked_emote = /datum/emote/living/carbon/human/skrell/warble
@@ -556,9 +590,8 @@
 	linked_emote = /datum/emote/living/carbon/human/skrell/smile
 	name = "Улыбка (скреллы)"
 
-
 /**
- * Kidan
+ * MARK: Kidan
  */
 /datum/keybinding/emote/carbon/human/kidan/clack
 	linked_emote = /datum/emote/living/carbon/human/kidan/clack
@@ -576,7 +609,6 @@
 	linked_emote = /datum/emote/living/carbon/human/kidan/waves_k
 	name = "Взмахнуть усиками (киданы)"
 
-
 /**
  * Drask
  */
@@ -592,9 +624,8 @@
 	linked_emote = /datum/emote/living/carbon/human/drask/drask_talk/rumble
 	name = "Урчать (драски)"
 
-
 /**
- * Unathi
+ * MARK: Unathi
  */
 /datum/keybinding/emote/carbon/human/unathi/hiss
 	linked_emote = /datum/emote/living/carbon/human/unathi/hiss
@@ -616,17 +647,23 @@
 	linked_emote = /datum/emote/living/carbon/human/unathi/whip/whip_l
 	name = "Хлестать хвостом (унати)"
 
+/datum/keybinding/emote/carbon/human/unathi/rumble
+	linked_emote = /datum/emote/living/carbon/human/unathi/rumble
+	name = "Урчать (унати)"
 
 /**
- * Diona
+ * MARK: Diona
  */
 /datum/keybinding/emote/carbon/human/diona/creak
 	linked_emote = /datum/emote/living/carbon/human/diona/creak
 	name = "Скрипеть (дионы)"
 
+/datum/keybinding/emote/carbon/human/diona/crack
+	linked_emote = /datum/emote/living/carbon/human/crack/diona
+	name = "Хрустнуть ветками"
 
 /**
- * Slimepeople
+ * MARK: Slimepeople
  */
 /datum/keybinding/emote/carbon/human/slime/squish
 	linked_emote = /datum/emote/living/carbon/human/slime/squish
@@ -640,9 +677,12 @@
 	linked_emote = /datum/emote/living/carbon/human/slime/pop
 	name = "Издавать хлопки (слаймолюди)"
 
+/datum/keybinding/emote/carbon/human/slime/crack
+	linked_emote = /datum/emote/living/carbon/human/crack/slime
+	name = "Хлюпнуть кистями рук (слаймолюди)"
 
 /**
- * Vulpkanin
+ * MARK: Vulpkanin
  */
 /datum/keybinding/emote/carbon/human/vulpkanin/howl
 	linked_emote = /datum/emote/living/carbon/human/vulpkanin/howl
@@ -652,9 +692,8 @@
 	linked_emote = /datum/emote/living/carbon/human/vulpkanin/growl
 	name = "Рычать (вульпы)"
 
-
 /**
- * Tajaran
+ * MARK: Tajaran
  */
 /datum/keybinding/emote/carbon/human/tajaran/hiss
 	linked_emote = /datum/emote/living/carbon/human/tajaran/hiss
@@ -668,9 +707,16 @@
 	linked_emote = /datum/emote/living/carbon/human/tajaran/purr/purrl
 	name = "Мурчать дольше (таяры)"
 
+/**
+ * MARK: Plasmaman
+ */
+
+/datum/keybinding/emote/carbon/human/skelly
+	linked_emote = /datum/emote/living/carbon/human/crack/skelly
+	name = "Хрустнуть костяшками"
 
 /**
- * Silicon
+ * MARK: Silicon
  */
 /datum/keybinding/emote/silicon
 	category = KB_CATEGORY_EMOTE_SILICON
@@ -718,9 +764,16 @@
 	linked_emote = /datum/emote/living/silicon/halt
 	name = "Приказать немедленно остановиться"
 
+/datum/keybinding/emote/silicon/ipc_crunch
+	linked_emote = /datum/emote/living/carbon/human/crack/machine
+	name = "Хрустнуть приводами"
+
+/datum/keybinding/emote/silicon/ipc_fart
+	linked_emote = /datum/emote/living/carbon/human/fart/machine
+	name = "Издать звук пердежа"
 
 /**
- * Simple Mobs
+ * MARK: Simple Mobs
  */
 /datum/keybinding/emote/simple_animal
 	category = KB_CATEGORY_EMOTE_ANIMAL
@@ -743,7 +796,6 @@
 	linked_emote = /datum/emote/living/simple_animal/pet/dog/growl
 	name = "Рычать (пёс)"
 
-
 /datum/keybinding/emote/simple_animal/mouse/can_use(client/user)
 	return ismouse(user.mob)
 
@@ -751,6 +803,25 @@
 	linked_emote = /datum/emote/living/simple_animal/mouse/squeak
 	name = "Писк (мышь)"
 
+/datum/keybinding/emote/simple_animal/mouse/idle
+	linked_emote = /datum/emote/living/simple_animal/mouse/idle
+	name = "Нюхать (мышь)"
+
+/datum/keybinding/emote/simple_animal/mouse/idle/shake
+	linked_emote = /datum/emote/living/simple_animal/mouse/idle/shake
+	name = "Дрожать (мышь)"
+
+/datum/keybinding/emote/simple_animal/mouse/idle/scratch
+	linked_emote = /datum/emote/living/simple_animal/mouse/idle/scratch
+	name = "Чесаться (мышь)"
+
+/datum/keybinding/emote/simple_animal/mouse/idle/washup
+	linked_emote = /datum/emote/living/simple_animal/mouse/idle/washup
+	name = "Умыться (мышь)"
+
+/datum/keybinding/emote/simple_animal/mouse/scream
+	linked_emote = /datum/emote/living/simple_animal/mouse/scream
+	name = "Кричать (мышь)"
 
 /datum/keybinding/emote/simple_animal/pet/cat/can_use(client/user)
 	return iscat(user.mob)
@@ -771,15 +842,29 @@
 	linked_emote = /datum/emote/living/sit/cat
 	name = "Сесть/Встать (кот)"
 
+/datum/keybinding/emote/simple_animal/gorilla_ooga
+	linked_emote = /datum/emote/living/simple_animal/gorilla/ooga
+	name = "Уга-уга (горилла)"
+
+/datum/keybinding/emote/simple_animal/snake_hiss
+	linked_emote = /datum/emote/living/simple_animal/snake_hiss
+	name = "Шипеть (змея)"
+
+/datum/keybinding/emote/simple_animal/frog_warcry
+	linked_emote = /datum/emote/living/simple_animal/frog_warcry
+	name = "Боевой клич (лягушка)"
+
+/datum/keybinding/emote/simple_animal/diona_chirp
+	linked_emote = /datum/emote/living/simple_animal/diona_chirp
+	name = "Чирикать (диона)"
 
 /**
- * Custom
+ * MARK: Custom
  */
 /datum/keybinding/custom
 	category = KB_CATEGORY_EMOTE_CUSTOM
 	var/default_emote_text = "Введите текст вашей эмоции"
 	var/donor_exclusive = FALSE
-
 
 /datum/keybinding/custom/down(client/user)
 	. = ..()
@@ -796,47 +881,44 @@
 	user.mob.me_verb(html_decode(desired_emote)) //do the thing!
 	return TRUE
 
-
 /datum/keybinding/custom/can_use(client/user)
 	if(donor_exclusive && !((user.donator_level >= 2) || user.holder || user.prefs?.unlock_content)) //is this keybind restricted to donors/byond members/admins, and are you one or not?
 		return FALSE
 	return isliving(user.mob)
 
-
 /datum/keybinding/custom/one
-	name = "Custom Emote 1"
+	name = "Пользовательская эмоция №1"
 
 /datum/keybinding/custom/two
-	name = "Custom Emote 2"
+	name = "Пользовательская эмоция №2"
 
 /datum/keybinding/custom/three
-	name = "Custom Emote 3"
+	name = "Пользовательская эмоция №3"
 
 /datum/keybinding/custom/four
-	name = "Custom Emote 4"
+	name = "Пользовательская эмоция №4"
 	donor_exclusive = TRUE
 
 /datum/keybinding/custom/five
-	name = "Custom Emote 5"
+	name = "Пользовательская эмоция №5"
 	donor_exclusive = TRUE
 
 /datum/keybinding/custom/six
-	name = "Custom Emote 6"
+	name = "Пользовательская эмоция №6"
 	donor_exclusive = TRUE
 
 /datum/keybinding/custom/seven
-	name = "Custom Emote 7"
+	name = "Пользовательская эмоция №7"
 	donor_exclusive = TRUE
 
 /datum/keybinding/custom/eight
-	name = "Custom Emote 8"
+	name = "Пользовательская эмоция №8"
 	donor_exclusive = TRUE
 
 /datum/keybinding/custom/nine
-	name = "Custom Emote 9"
+	name = "Пользовательская эмоция №9"
 	donor_exclusive = TRUE
 
 /datum/keybinding/custom/ten
-	name = "Custom Emote 10"
+	name = "Пользовательская эмоция №10"
 	donor_exclusive = TRUE
-

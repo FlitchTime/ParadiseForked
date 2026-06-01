@@ -1,7 +1,7 @@
-#define EMPHASIS_LETTERS_REGEX "\[^\\+\\|_%]"
+#define EMPHASIS_LETTERS_REGEX "\[^\\+\\|_%\]"
 // At minimum every mob has a hear_say proc.
 
-/mob/proc/combine_message(list/message_pieces, mob/speaker, always_stars = FALSE)
+/mob/proc/combine_message(list/message_pieces, atom/movable/speaker, always_stars = FALSE)
 	var/iteration_count = 0
 	var/msg = ""
 	for(var/datum/multilingual_say_piece/SP in message_pieces)
@@ -35,26 +35,20 @@
 		if(SP.speaking)
 			piece = SP.speaking.format_message(piece, speaker)
 		else
-			piece = "<span class='message'><span class='body'>[piece]</span></span>"
+			piece = span_message(span_body("[piece]"))
 		msg += (piece + " ")
 
 	if(msg == "")
 		. = ""
 		return
 
-	if(isliving(src))
-		for(var/datum/component/codeword_hearing/hearing_datum in GetComponents(/datum/component/codeword_hearing))
-			var/tmp_msg = hearing_datum.handle_hearing(msg)
-			if(!tmp_msg)
-				continue
-			msg = tmp_msg
-			//log_debug(msg)
+	SEND_SIGNAL(src, COMSIG_COMBINE_MESSAGE_FOR_HEARER, &msg)
 
 	return trim(msg)
 
 #undef EMPHASIS_LETTERS_REGEX
 
-/mob/proc/combine_message_tts(list/message_pieces, mob/speaker, always_stars = FALSE)
+/mob/proc/combine_message_tts(list/message_pieces, atom/movable/speaker, always_stars = FALSE)
 	var/iteration_count = 0
 	var/msg = ""
 	for(var/datum/multilingual_say_piece/SP in message_pieces)
@@ -85,7 +79,7 @@
 		msg += (piece + " ")
 	return trim(msg)
 
-/mob/proc/verb_message(list/message_pieces, message, verb)
+/mob/proc/verb_message(list/message_pieces, message, atom/movable/speaker, verb)
 	if(!verb)
 		return message
 	if(message == "")
@@ -96,10 +90,10 @@
 	return "[verb]: \"[message]\""
 
 /mob/proc/hear_say(list/message_pieces, verb = "говор%(ит,ят)%", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol, sound_frequency, use_voice = TRUE, is_whisper = FALSE)
+	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, speaker, message_pieces)
+
 	if(!client)
 		return 0
-
-
 
 	if(isobserver(src) && client.prefs.toggles & PREFTOGGLE_CHAT_GHOSTEARS)
 		if(speaker && !speaker.client && !(speaker in view(src)))
@@ -110,7 +104,7 @@
 	//make sure the air can transmit speech - hearer's side
 	var/turf/T = get_turf(src)
 	if(T && !isobserver(src))
-		var/datum/gas_mixture/environment = T.return_air()
+		var/datum/gas_mixture/environment = T.get_readonly_air()
 		var/pressure = environment ? environment.return_pressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE && get_dist(speaker, src) > 1)
 			return FALSE
@@ -128,7 +122,7 @@
 		var/mob/living/carbon/human/H = speaker
 		speaker_name = H.GetVoice()
 
-	var/message_clean = say_emphasis(combine_message(message_pieces, speaker))
+	var/message_clean = apply_message_emphasis(combine_message(message_pieces, speaker))
 	message_clean = replace_characters(message_clean, list("+"))
 	if(message_clean == "")
 		return
@@ -143,11 +137,12 @@
 	if(isobserver(src))
 		if(speaker_name != speaker.real_name && speaker.real_name)
 			speaker_name = "[speaker.real_name] ([speaker_name])"
-		track = "([ghost_follow_link(speaker, ghost=src)]) "
+		track = "([ghost_follow_link(speaker, ghost = src)]) "
 		if(client.prefs.toggles & PREFTOGGLE_CHAT_GHOSTEARS && (speaker in view(src)))
 			message = "<b>[message]</b>"
 
 	speaker_name = colorize_name(speaker, speaker_name)
+
 	// Ensure only the speaker is forced to emote, and that the spoken language is inname
 	for(var/datum/multilingual_say_piece/SP in message_pieces)
 		if(SP.speaking == GLOB.all_languages[LANGUAGE_NOISE])
@@ -155,58 +150,30 @@
 				custom_emote(EMOTE_AUDIBLE, message_clean, TRUE)
 			return
 
-	if(!can_hear())
+	if(HAS_TRAIT(src, TRAIT_DEAF))
 		// INNATE is the flag for audible-emote-language, so we don't want to show an "x talks but you cannot hear them" message if it's set
 		// if(!language || !(language.flags & INNATE))
 		if(speaker == src)
 			to_chat(src, span_warning("Вы не слышите собственной речи!"))
 		else
-			to_chat(src, "[span_name(speaker.name)] что-то говор[pluralize_ru(speaker.gender, "ит", "ят")], но вы ничего не слышите!")
+			to_chat(src, "[span_name(speaker.name)] что-то говор[PLUR_IT_YAT(speaker)], но вы ничего не слышите!")
 	else
-		to_chat(src, span_gamesay("[span_name(speaker_name)][speaker.GetAltName()] [track][verb_message(message_pieces, message, genderize_decode(speaker, verb))]"))
+		to_chat(src, span_gamesay("[track][span_name(speaker_name)][speaker.GetAltName()] [verb_message(message_pieces, message, speaker, genderize_decode(speaker, verb))]"))
 
 		// Create map text message
 		if(client?.prefs.toggles2 & PREFTOGGLE_2_RUNECHAT) // can_hear is checked up there on L99
 			create_chat_message(speaker, message_clean, italics ? list("italics") : null, get_runechat_language(message_pieces))
 
-		var/effect = SOUND_EFFECT_NONE
-		if(isrobot(speaker))
-			effect = SOUND_EFFECT_ROBOT
 		var/traits = TTS_TRAIT_RATE_FASTER
 		if(is_whisper)
 			traits |= TTS_TRAIT_PITCH_WHISPER
-		INVOKE_ASYNC(GLOBAL_PROC, /proc/tts_cast, speaker, src, message_tts, speaker.tts_seed, TRUE, effect, traits)
+		INVOKE_ASYNC(GLOBAL_PROC, /proc/tts_cast, speaker, src, message_tts, speaker.tts_seed, TRUE, SOUND_EFFECT_NONE, traits)
 
 		if(speech_sound && (get_dist(speaker, src) <= world.view && src.z == speaker.z))
 			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
 			playsound_local(source, speech_sound, sound_vol, 1, sound_frequency)
 
-/mob/proc/colorize_name(mob/speaker = null, speaker_name)
-	if(!speaker.ckey)
-		return speaker_name
-
-	if (!speaker.chat_color || speaker.chat_color_name != speaker.name)
-
-		var/step = round(length_char(speaker_name)/3)
-		var/rgb[3]
-		for(var/i = 1 to 3)
-			rgb[i] = text2ascii_char(speaker_name, step*i)
-			if(rgb[i] > 1071) rgb[i] -= 1072
-			if(rgb[i] > 1039) rgb[i] -= 1040
-			if(rgb[i] > 96) rgb[i] -= 97
-			if(rgb[i] > 64) rgb[i] -= 65
-			if(rgb[i] > 31) rgb[i] -= 32
-			rgb[i] = rgb[i]*4 + 63 // base brightness
-
-		speaker.chat_color = rgb(rgb[1],rgb[2],rgb[3])
-		speaker.chat_color_darkened = rgb(rgb[1]-23,rgb[2]-23,rgb[3]-23)
-		speaker.chat_color_name = speaker_name
-
-		return "<font color=[rgb(rgb[1],rgb[2],rgb[3])]>[speaker_name]</font>"
-	else
-		return "<font color=[speaker.chat_color]>[speaker_name]</font>"
-
-/mob/proc/hear_radio(list/message_pieces, verb = "говор%(ит,ят)%", part_a, part_b, mob/speaker = null, hard_to_hear = 0, vname = "", atom/follow_target)
+/mob/proc/hear_radio(list/message_pieces, verb = "говор%(ит,ят)%", part_a, part_b, atom/movable/speaker = null, hard_to_hear = 0, vname = "", atom/follow_target, check_name_against)
 	if(!client)
 		return
 
@@ -220,32 +187,34 @@
 	if(message_clean == "")
 		return
 
-	var/message = verb_message(message_pieces, message_clean, genderize_decode(speaker, genderize_decode(speaker, verb)))
+	var/message = verb_message(message_pieces, message_clean, speaker, genderize_decode(speaker, verb))
 	var/message_tts = combine_message_tts(message_pieces, speaker, always_stars = hard_to_hear)
 
 	var/track = null
 	if(!follow_target)
 		follow_target = speaker
 
-	var/speaker_name = handle_speaker_name(speaker, vname, hard_to_hear)
+	var/speaker_name = handle_speaker_name(speaker, vname, hard_to_hear, check_name_against)
 	speaker_name = colorize_name(speaker, speaker_name)
 	track = handle_track(message, genderize_decode(speaker, verb), speaker, speaker_name, follow_target, hard_to_hear)
 
-	if(!can_hear())
+	if(HAS_TRAIT(src, TRAIT_DEAF))
 		if(prob(20))
 			to_chat(src, span_warning("Ваша гарнитура вибрирует, но вы не слышите ни звука!"))
 	else
-		to_chat(src, "[part_a][track || speaker_name][part_b][message]</span></span>")
+		if(track)
+			to_chat(src, "[track] [part_a][speaker_name][part_b][message]</span></span>")
+		else
+			to_chat(src, "[part_a][speaker_name][part_b][message]</span></span>")
+
 		if(client?.prefs.toggles2 & PREFTOGGLE_2_RUNECHAT)
 			create_chat_message(speaker, message_clean, list("radio"))
-		if(src != speaker || isrobot(src) || isAI(src))
-			var/effect = SOUND_EFFECT_RADIO
-			if(isrobot(speaker))
-				effect = SOUND_EFFECT_RADIO_ROBOT
-			INVOKE_ASYNC(GLOBAL_PROC, /proc/tts_cast, src, src, message_tts, speaker.tts_seed, FALSE, effect, null, null, 'sound/effects/radio_chatter.ogg')
 
-/mob/proc/handle_speaker_name(mob/speaker = null, vname, hard_to_hear)
-	var/speaker_name = "неизвестный"
+		if(src != speaker || isrobot(src) || isAI(src))
+			INVOKE_ASYNC(GLOBAL_PROC, /proc/tts_cast, src, src, message_tts, speaker.tts_seed, FALSE, SOUND_EFFECT_RADIO, null, null, 'sound/effects/radio_chatter.ogg', speaker)
+
+/mob/proc/handle_speaker_name(atom/movable/speaker = null, vname, hard_to_hear)
+	var/speaker_name = UNKNOWN_NAME_RUS
 	if(speaker)
 		speaker_name = speaker.name
 
@@ -253,11 +222,11 @@
 		speaker_name = vname
 
 	if(hard_to_hear)
-		speaker_name = "неизвестный"
+		speaker_name = UNKNOWN_NAME_RUS
 
 	return speaker_name
 
-/mob/proc/handle_track(message, verb = "говор%(ит,ят)%", mob/speaker = null, speaker_name, atom/follow_target, hard_to_hear)
+/mob/proc/handle_track(message, verb = "говор%(ит,ят)%", atom/movable/speaker = null, speaker_name, atom/follow_target, hard_to_hear)
 	return
 
 /mob/proc/hear_sleep(message)
@@ -266,14 +235,14 @@
 		message = strip_html_properly(message)
 		var/list/punctuation = list(",", "!", ".", ";", "?")
 		var/list/messages = splittext(message, " ")
-		if(messages.len > 0)
-			var/R = rand(1, messages.len)
+		if(length(messages) > 0)
+			var/R = rand(1, length(messages))
 			var/heardword = messages[R]
 			if(copytext(heardword,1, 1) in punctuation)
 				heardword = copytext(heardword,2)
 			if(copytext(heardword,-1) in punctuation)
 				heardword = copytext(heardword,1,length(heardword))
-			heard = span_gamesay("...<i>Вы слышите что-то про<i>... \"[heardword]\"...")
+			heard = span_gamesay("...<i>Вы слышите что-то про</i>... \"[heardword]\"...")
 		else
 			heard = span_gamesay("...<i>Вы почти что смогли расслышать что-то</i>...")
 	else
@@ -281,12 +250,12 @@
 
 	to_chat(src, heard)
 
-/mob/proc/hear_holopad_talk(list/message_pieces, verb = "говор%(ит,ят)%", mob/speaker = null, obj/effect/overlay/holo_pad_hologram/H)
+/mob/proc/hear_holopad_talk(list/message_pieces, verb = "говор%(ит,ят)%", atom/movable/speaker = null, obj/effect/overlay/holo_pad_hologram/H)
 	if(stat == UNCONSCIOUS)
 		hear_sleep(multilingual_to_message(message_pieces))
 		return
 
-	if(!can_hear())
+	if(HAS_TRAIT(src, TRAIT_DEAF))
 		return
 
 	var/message_clean = combine_message(message_pieces, speaker)
@@ -295,24 +264,21 @@
 	if(message_clean == "")
 		return
 
-	var/message = verb_message(message_pieces, message_clean, genderize_decode(speaker, verb))
+	var/message = verb_message(message_pieces, message_clean, speaker, genderize_decode(speaker, verb))
 	var/message_tts = combine_message_tts(message_pieces, speaker)
 
 	var/name = speaker.name
-	if(!say_understands(speaker))
-		name = speaker.voice_name
+	if(!say_understands(speaker) && ismob(speaker))
+		var/mob/speaker_mob = speaker
+		name = speaker_mob.voice_name
 
-	if((client?.prefs.toggles2 & PREFTOGGLE_2_RUNECHAT) && can_hear())
+	if((client?.prefs.toggles2 & PREFTOGGLE_2_RUNECHAT) && !HAS_TRAIT(src, TRAIT_DEAF))
 		create_chat_message(H, message_clean, list("radio"))
 
-	var/effect = SOUND_EFFECT_RADIO
-	if(isrobot(speaker))
-		effect = SOUND_EFFECT_RADIO_ROBOT
-	INVOKE_ASYNC(GLOBAL_PROC, /proc/tts_cast, H, src, message_tts, speaker.tts_seed, TRUE, effect)
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/tts_cast, H, src, message_tts, speaker.tts_seed, TRUE, SOUND_EFFECT_RADIO)
 
-	var/rendered = span_gamesay("[span_name(name)] + [message]")
+	var/rendered = span_gamesay("[span_name(name)] [message]")
 	to_chat(src, rendered)
-
 
 /// Gets language for runechat message.
 /// Will return first found language if more than one is present, cause I have no time to remake this for now.
@@ -322,3 +288,52 @@
 			continue
 		if(piece.speaking?.runechat_span)
 			return piece.speaking
+
+/**
+ * Returns speaker's name colored based on a hash of the name.
+ *
+ * Arguments:
+ * * speaker - atom whose name to color
+ * * speaker_name - display name
+ */
+/mob/proc/colorize_name(atom/movable/speaker = null, speaker_name)
+	if(!speaker)
+		return speaker_name
+
+	if(!speaker.chat_color || speaker.chat_color_name != speaker.name)
+		var/list/components = generate_color_components(speaker_name)
+		speaker.chat_color = rgb(components[1], components[2], components[3])
+		speaker.chat_color_darkened = rgb(
+			max(components[1] - 23, 0),
+			max(components[2] - 23, 0),
+			max(components[3] - 23, 0)
+		)
+		speaker.chat_color_name = speaker.name
+
+	return "<span style='color:[speaker.chat_color];'>[speaker_name]</span>"
+
+/// Generates RGB components from a name by sampling three characters.
+/atom/movable/proc/generate_color_components(name)
+	var/step = round(length_char(name) / 3)
+	var/list/components = list(0, 0, 0)
+
+	for(var/i in 1 to 3)
+		var/char_code = text2ascii_char(name, step * i)
+		components[i] = normalize_char_code(char_code)
+
+	return components
+
+/// Normalizes character code to a color component (0–255).
+/proc/normalize_char_code(char_code)
+	if(char_code > 1071)
+		char_code -= 1072
+	else if(char_code > 1039)
+		char_code -= 1040
+	else if(char_code > 96)
+		char_code -= 97
+	else if(char_code > 64)
+		char_code -= 65
+	else if(char_code > 31)
+		char_code -= 32
+
+	return char_code * 4 + 63 // base brightness

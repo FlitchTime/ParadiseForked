@@ -2,7 +2,7 @@
 #define SHORTEN_UPLOAD_DELAY 5 SECONDS
 
 /obj/machinery/computer/aiupload
-	name = "\improper AI upload console"
+	name = "AI upload console"
 	desc = "Используется для манипуляций с законами ИИ."
 	icon_screen = "command"
 	icon_keyboard = "med_key"
@@ -19,25 +19,22 @@
 	var/timer_id = null
 	var/reg_name = null
 
-	light_color = LIGHT_COLOR_WHITE
-	light_range_on = 2
-
-
-/obj/machinery/computer/aiupload/attackby(obj/item/I, mob/user, params)
+/obj/machinery/computer/aiupload/attackby(obj/item/item, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
-	if(istype(I, /obj/item/ai_module))
+	if(istype(item, /obj/item/ai_module))
 		add_fingerprint(user)
-		insert_module(user, I)
+		insert_module(user, item)
 		ui_interact(user)
 		return ATTACK_CHAIN_PROCEED_SUCCESS
 
-	if(istype(I, /obj/item/card/id))
+	if(is_id_card(item))
 		add_fingerprint(user)
-		check_id(user, I)
+		check_id(user, item)
 		ui_interact(user)
-		return
+		return ATTACK_CHAIN_BLOCKED_ALL
+
 	return ..()
 
 /obj/machinery/computer/aiupload/attack_hand(mob/user)
@@ -138,6 +135,10 @@
 	installed_module.transmit_instructions(current, user, reg_name)
 	to_chat(current, "These are your laws now:")
 	current.show_laws()
+	if(isAI(current))
+		var/mob/living/silicon/ai/AI = current
+		if(AI.deployed_shell)
+			AI.deployed_shell.show_laws()
 	for(var/mob/living/silicon/robot/R in GLOB.mob_list)
 		if(R.lawupdate && (R.connected_ai == current))
 			to_chat(R, "These are your laws now:")
@@ -204,8 +205,6 @@
 /obj/machinery/computer/aiupload/cyborg
 	name = "cyborg upload console"
 	desc = "Используется для манипуляций с законами киборгов."
-	icon_screen = "command"
-	icon_keyboard = "med_key"
 	req_access = list(ACCESS_ROBOTICS)
 	circuit = /obj/item/circuitboard/borgupload
 
@@ -258,7 +257,7 @@
 
 	var/delay = (installed_module in shorten_delay) ? SHORTEN_UPLOAD_DELAY : NORMAL_UPLOAD_DELAY
 	to_chat(user, span_notice("Upload process has started. ETA: [delay/10] seconds."))
-	reg_name = istype(installed_module, /obj/item/ai_module/syndicate) ? "UNKNOWN" : id.registered_name
+	reg_name = istype(installed_module, /obj/item/ai_module/syndicate) ? uppertext(UNKNOWN_STATUS_RUS) : id.registered_name
 	timer_id = addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/machinery/computer/aiupload, finish_upload), user), delay, TIMER_STOPPABLE)
 
 /obj/machinery/computer/aiupload/cyborg/finish_upload(mob/user)

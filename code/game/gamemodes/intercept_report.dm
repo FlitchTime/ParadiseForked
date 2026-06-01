@@ -54,8 +54,7 @@
 		"Small Prick"
 	)
 
-
-/datum/intercept_text/proc/build(var/mode_type, datum/mind/correct_person)
+/datum/intercept_text/proc/build(mode_type, datum/mind/correct_person)
 	switch(mode_type)
 		if("revolution")
 			src.text = ""
@@ -97,7 +96,6 @@
 		return null
 	return pick(dudes)
 
-
 /datum/intercept_text/proc/pick_fingerprints()
 	var/mob/living/carbon/human/dude = src.pick_mob()
 	//if(!dude) return pick_fingerprints() //who coded that is totally crasy or just a traitor. -- rastaf0
@@ -110,7 +108,7 @@
 /datum/intercept_text/proc/get_suspect()
 	var/list/dudes = list()
 	for(var/mob/living/carbon/human/man in GLOB.player_list)
-		if(man.client && man.client.prefs.nanotrasen_relation == "Opposed")
+		if(man.client && man.client.prefs.nanotrasen_relation == PREF_NTRELATION_OPPOSED)
 			//don't include suspects who can't possibly be the antag based on their job (no suspecting the captain of being a damned dirty tator)
 			if(man.mind && man.mind.assigned_role)
 				if((man.mind.assigned_role in SSticker.mode.protected_jobs) || (man.mind.assigned_role in SSticker.mode.restricted_jobs))
@@ -119,7 +117,7 @@
 			if(man.dna.species.name in SSticker.mode.protected_species)
 				return
 			dudes += man
-	for(var/i = 0, i < max(GLOB.player_list.len/10,2), i++)
+	for(var/i = 0, i < max(length(GLOB.player_list)/10,2), i++)
 		dudes += pick(GLOB.player_list)
 	return pick(dudes)
 
@@ -145,8 +143,6 @@
 		src.text += "discovered the following set of fingerprints ([fingerprints]) on sensitive materials, and their owner should be closely observed."
 		src.text += "However, these could also belong to a current Cent. Com employee, so do not act on this without reason."
 
-
-
 /datum/intercept_text/proc/build_cult(datum/mind/correct_person)
 	var/name_1 = pick(src.org_names_1)
 	var/name_2 = pick(src.org_names_2)
@@ -163,8 +159,6 @@
 	src.text += "and instilled with the idea of the flimsiness of the real world, seeking to destroy it. "
 
 	src.text += "<br>However, if this information is acted on without substantial evidence, those responsible will face severe repercussions."
-
-
 
 /datum/intercept_text/proc/build_rev(datum/mind/correct_person)
 	var/name_1 = pick(src.org_names_1)
@@ -183,8 +177,6 @@
 
 	src.text += "<br>However, if this information is acted on without substantial evidence, those responsible will face severe repercussions."
 
-
-
 /datum/intercept_text/proc/build_wizard(datum/mind/correct_person)
 	var/SWF_desc = pick(SWF_names)
 
@@ -194,7 +186,7 @@
 	src.text += "Known attributes include: Brown sandals, a large blue hat, a voluptous white beard, and an inclination to cast spells."
 
 /datum/intercept_text/proc/build_nuke(datum/mind/correct_person)
-	src.text += "<br><br>Cent. Com recently recieved a report of a plot to destroy one of our stations in your area. We believe the Nuclear Authentication Disc "
+	src.text += "<br><br>Cent. Com recently received a report of a plot to destroy one of our stations in your area. We believe the Nuclear Authentication Disc "
 	src.text += "that is standard issue aboard your vessel may be a target. We recommend removal of this object, and it's storage in a safe "
 	src.text += "environment. As this may cause panic among the crew, all efforts should be made to keep this information a secret from all but "
 	src.text += "the most trusted crew-members."

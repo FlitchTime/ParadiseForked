@@ -1,16 +1,7 @@
 /obj/item/stack/telecrystal
 	name = "telecrystal"
 	desc = "Кажется, что он переполнен загадочной и притягательной энергией."
-	ru_names = list(
-		NOMINATIVE = "телекристалл",
-		GENITIVE = "телекристалла",
-		DATIVE = "телекристаллу",
-		ACCUSATIVE = "телекристалл",
-		INSTRUMENTAL = "телекристаллом",
-		PREPOSITIONAL = "телекристалле"
-	)
 	gender = MALE
-	description_antag = "Телекристалл можно активировать, используя на устройствах с активным аплинком."
 	singular_name = "telecrystal"
 	icon = 'icons/obj/telescience.dmi'
 	icon_state = "telecrystal"
@@ -19,6 +10,15 @@
 	item_flags = NOBLUDGEON
 	origin_tech = "materials=6"
 
+/obj/item/stack/telecrystal/get_ru_names()
+	return list(
+		NOMINATIVE = "телекристалл",
+		GENITIVE = "телекристалла",
+		DATIVE = "телекристаллу",
+		ACCUSATIVE = "телекристалл",
+		INSTRUMENTAL = "телекристаллом",
+		PREPOSITIONAL = "телекристалле",
+	)
 
 /obj/item/stack/telecrystal/attack(mob/living/target, mob/living/user, params, def_zone, skip_attack_anim = FALSE)
 	. = ATTACK_CHAIN_PROCEED
@@ -28,26 +28,25 @@
 		if(uplink_imp.imp_in != user)
 			continue
 		uplink_imp.hidden_uplink.uses += amount
-		balloon_alert(user, "ТК активирован!")
+		balloon_alert(user, UNLINT("ТК активирован!"))
 		qdel(src)
 		return ATTACK_CHAIN_BLOCKED_ALL
 
-
-/obj/item/stack/telecrystal/afterattack(obj/item/I, mob/user, proximity, params)
-	if(!proximity)
+/obj/item/stack/telecrystal/afterattack(obj/item/target, mob/user, proximity_flag, list/modifiers, status)
+	if(!proximity_flag)
 		return
-	if(istype(I) && I.hidden_uplink && I.hidden_uplink.active) //No metagaming by using this on every PDA around just to see if it gets used up.
-		I.hidden_uplink.uses += amount
+	if(istype(target) && target.hidden_uplink && target.hidden_uplink.active) //No metagaming by using this on every PDA around just to see if it gets used up.
+		target.hidden_uplink.uses += amount
 		use(amount)
-		balloon_alert(user, "ТК активирован!")
-	else if(istype(I, /obj/item/cartridge/frame))
-		var/obj/item/cartridge/frame/cart = I
+		balloon_alert(user, UNLINT("ТК активирован!"))
+	else if(istype(target, /obj/item/cartridge/frame))
+		var/obj/item/cartridge/frame/cart = target
 		if(!cart.charges)
 			balloon_alert(user, "заряды кончился!")
 			return
 		cart.telecrystals += amount
 		use(amount)
-		balloon_alert(user, "ТК активирован!")
+		balloon_alert(user, UNLINT("ТК активирован!"))
 
 /obj/item/stack/telecrystal/five
 	amount = 5

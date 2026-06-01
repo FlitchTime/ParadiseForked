@@ -28,7 +28,7 @@
 	var/invulnerable = FALSE
 	COOLDOWN_DECLARE(shock_cooldown)
 
-/obj/structure/fence/Initialize()
+/obj/structure/fence/Initialize(mapload)
 	. = ..()
 	update_cut_status()
 
@@ -36,9 +36,9 @@
 	. = ..()
 	switch(hole_size)
 		if(MEDIUM_HOLE)
-			. += "<span class='notice'>There is a large hole in \the [src].</span>"
+			. += span_notice("There is a large hole in \the [src].")
 		if(LARGE_HOLE)
-			. += "<span class='warning'>\The [src] has been completely cut through.</span>"
+			. += span_warning("\The [src] has been completely cut through.")
 
 /obj/structure/fence/end
 	icon_state = "end"
@@ -55,18 +55,15 @@
 /obj/structure/fence/cut/medium
 	icon_state = "straight_cut2"
 	hole_size = MEDIUM_HOLE
-	climbable = TRUE
 
 /obj/structure/fence/cut/large
 	icon_state = "straight_cut3"
 	hole_size = LARGE_HOLE
 
-
 /obj/structure/fence/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(isprojectile(mover))
 		return TRUE
-
 
 /*
 	Shock user with probability prb (if all connections & power are working)
@@ -82,7 +79,7 @@
 	var/obj/structure/cable/C = T.get_cable_node()
 	if(C)
 		if(electrocute_mob(user, C, src, 1, TRUE))
-			do_sparks(3, 1, src)
+			do_sparks(3, TRUE, src)
 			return TRUE
 	return FALSE
 
@@ -91,37 +88,36 @@
 	if(shock(user, 100))
 		return
 	if(invulnerable)
-		to_chat(user, "<span class='warning'>This fence is too strong to cut through!</span>")
+		to_chat(user, span_warning("This fence is too strong to cut through!"))
 		return
 	if(!cuttable)
-		user.visible_message("<span class='warning'>[user] starts dismantling [src] with [W].</span>",\
-		"<span class='warning'>You start dismantling [src] with [W].</span>")
+		user.visible_message(span_warning("[user] starts dismantling [src] with [W]."),\
+		span_warning("You start dismantling [src] with [W]."))
 		if(W.use_tool(src, user, FULL_CUT_TIME, volume = W.tool_volume))
-			user.visible_message("<span class='notice'>[user] completely dismantles [src].</span>",\
-			"<span class='info'>You completely dismantle [src].</span>")
+			user.visible_message(span_notice("[user] completely dismantles [src]."),\
+			span_notice("You completely dismantle [src]."))
 			qdel(src)
 		return
 	var/current_stage = hole_size
-	user.visible_message("<span class='warning'>[user] starts cutting through [src] with [W].</span>",\
-	"<span class='warning'>You start cutting through [src] with [W].</span>")
+	user.visible_message(span_warning("[user] starts cutting through [src] with [W]."),\
+	span_warning("You start cutting through [src] with [W]."))
 	if(W.use_tool(src, user, CUT_TIME, volume = W.tool_volume))
 		if(current_stage == hole_size)
 			switch(hole_size)
 				if(NO_HOLE)
-					user.visible_message("<span class='notice'>[user] cuts into [src] some more.</span>",\
-					"<span class='info'>You could probably fit yourself through that hole now. Although climbing through would be much faster if you made it even bigger.</span>")
+					user.visible_message(span_notice("[user] cuts into [src] some more."),\
+					span_notice("You could probably fit yourself through that hole now. Although climbing through would be much faster if you made it even bigger."))
 					hole_size = MEDIUM_HOLE
 				if(MEDIUM_HOLE)
-					user.visible_message("<span class='notice'>[user] completely cuts through [src].</span>",\
-					"<span class='info'>The hole in [src] is now big enough to walk through.</span>")
+					user.visible_message(span_notice("[user] completely cuts through [src]."),\
+					span_notice("The hole in [src] is now big enough to walk through."))
 					hole_size = LARGE_HOLE
 				if(LARGE_HOLE)
-					user.visible_message("<span class='notice'>[user] completely dismantles [src].</span>",\
-					"<span class='info'>You completely take apart [src].</span>")
+					user.visible_message(span_notice("[user] completely dismantles [src]."),\
+					span_notice("You completely take apart [src]."))
 					qdel(src)
 					return
 			update_cut_status()
-
 
 /obj/structure/fence/attackby(obj/item/I, mob/user, params)
 	if(shock(user, 90))
@@ -146,12 +142,11 @@
 			return ATTACK_CHAIN_PROCEED
 		to_chat(user, span_notice("You repair the fence."))
 		hole_size = NO_HOLE
-		obj_integrity = max_integrity
+		update_integrity(max_integrity)
 		update_cut_status()
 		return ATTACK_CHAIN_PROCEED
 
 	return  ..()
-
 
 /obj/structure/fence/Bumped(atom/movable/moving_atom)
 	. = ..()
@@ -160,11 +155,10 @@
 	shock(moving_atom, 70)
 	COOLDOWN_START(src, shock_cooldown, 1 SECONDS) // We do not want bump shock spam!
 
-
 /obj/structure/fence/attack_animal(mob/user)
 	. = ..()
 	if(. && !QDELETED(src) && !shock(user, 70))
-		take_damage(rand(5,10), BRUTE, "melee", 1)
+		take_damage(rand(5,10), BRUTE, MELEE, 1)
 
 /obj/structure/fence/proc/update_cut_status()
 	if(!cuttable)
@@ -173,14 +167,14 @@
 	switch(hole_size)
 		if(NO_HOLE)
 			icon_state = initial(icon_state)
-			climbable = FALSE
+			RemoveElement(/datum/element/climbable)
 		if(MEDIUM_HOLE)
 			icon_state = "straight_cut2"
-			climbable = TRUE
+			AddElement(/datum/element/climbable)
 		if(LARGE_HOLE)
 			icon_state = "straight_cut3"
 			new_density = FALSE
-			climbable = FALSE
+			RemoveElement(/datum/element/climbable)
 	set_density(new_density)
 
 //FENCE DOORS
@@ -192,14 +186,13 @@
 	cuttable = FALSE
 	var/open = FALSE
 
-/obj/structure/fence/door/Initialize()
+/obj/structure/fence/door/Initialize(mapload)
 	. = ..()
 	update_door_status()
 
 /obj/structure/fence/door/opened
 	icon_state = "door_opened"
 	open = TRUE
-	density = TRUE
 
 /obj/structure/fence/door/attack_hand(mob/user, list/modifiers)
 	add_fingerprint(user)
@@ -210,7 +203,7 @@
 
 /obj/structure/fence/door/proc/toggle(mob/user)
 	open = !open
-	visible_message("<span class='notice'>\The [user] [open ? "opens" : "closes"] \the [src].</span>")
+	visible_message(span_notice("\The [user] [open ? "opens" : "closes"] \the [src]."))
 	update_door_status()
 	playsound(src, 'sound/machines/door_open.ogg', 100, TRUE)
 

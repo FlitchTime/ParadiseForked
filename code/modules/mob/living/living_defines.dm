@@ -1,6 +1,9 @@
 /mob/living
+	abstract_type = /mob/living
 	see_invisible = SEE_INVISIBLE_LIVING
 	pressure_resistance = 10
+	interaction_flags_click = ALLOW_RESTING
+	interaction_flags_mouse_drop = ALLOW_RESTING
 
 	// Will be determined based on mob size if left null. Done in living/proc/determine_move_and_pull_forces()
 	move_resist = null
@@ -9,20 +12,28 @@
 
 	//Health and life related vars
 	var/maxHealth = 100 //Maximum health that should be possible.
+	/// Maximum stamina, currently could be changed only with nutrition bonuses, MUST be lower than MAX_STAMINA_LOSS
+	var/max_stamina = BASE_MAX_STAMINA
 	var/health = 100 	//A mob's health
 
 	var/datum/middleClickOverride/middleClickOverride
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
-	var/bruteloss = 0	//Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
-	var/oxyloss = 0	//Oxygen depravation damage (no air in lungs)
-	var/toxloss = 0	//Toxic damage caused by being poisoned or radiated
-	var/fireloss = 0	//Burn damage caused by being way too hot, too cold or burnt.
-	var/cloneloss = 0	//Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
-	var/staminaloss = 0 //Stamina damage, or exhaustion. You recover it slowly naturally, and are stunned if it gets too high. Holodeck and hallucinations deal this.
+	///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
+	var/bruteloss = 0
+	///Oxygen depravation damage (no air in lungs)
+	var/oxyloss = 0
+	///Toxic damage caused by being poisoned or radiated
+	var/toxloss = 0
+	///Burn damage caused by being way too hot, too cold or burnt.
+	var/fireloss = 0
+	///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
+	var/cloneloss = 0
+	///Stamina damage, or exhaustion. You recover it slowly naturally, and are stunned if it gets too high. Holodeck and hallucinations deal this.
+	var/staminaloss = 0
 
-
-	var/last_special = 0 //Used by the resist verb, likely used to prevent players from bypassing next_move by logging in/out.
+	///Used by the resist verb, likely used to prevent players from bypassing next_move by logging in/out.
+	var/last_special = 0
 
 	//Allows mobs to move through dense areas without restriction. For instance, in space or out of holder objects.
 	var/incorporeal_move = INCORPOREAL_NONE
@@ -35,15 +46,19 @@
 
 	var/atom/movable/cameraFollow = null
 
-	var/on_fire = 0 //The "Are we on fire?" var
-	var/fire_stacks = 0 //Tracks how many stacks of fire we have on, max is usually 20
-
+	/// The "Are we on fire?" var
+	var/on_fire = 0
+	/// Tracks how many stacks of fire we have on, max is usually 20
+	var/fire_stacks = 0
 
 	var/mob_size = MOB_SIZE_HUMAN
-	var/metabolism_efficiency = 1 //more or less efficiency to metabolize helpful/harmful reagents and regulate body temperature..
-	var/digestion_ratio = 1 //controls how quickly reagents metabolize; largely governered by species attributes.
+	/// More or less efficiency to metabolize helpful/harmful reagents and regulate body temperature.
+	var/metabolism_efficiency = 1
+	/// Controls how quickly reagents metabolize; largely governered by species attributes.
+	var/digestion_ratio = 1
 
-	var/holder = null //The holder for blood crawling
+	/// The holder for blood crawling
+	var/holder = null
 
 	/// Allows living mobs to have innate ventcrawl trait defined here.
 	/// Values are: TRAIT_VENTCRAWLER_ALWAYS / TRAIT_VENTCRAWLER_NUDE / TRAIT_VENTCRAWLER_ALIEN
@@ -53,7 +68,11 @@
 	/// The last direction we moved in a vent. Used to make holding two directions feel nice
 	var/last_vent_dir = NONE
 
-	var/smoke_delay = 0 //used to prevent spam with smoke reagent reaction on mob.
+	/// Should only exist if you're in a pipe
+	var/datum/cell_tracker/pipetracker
+
+	/// Used to prevent spam with smoke reagent reaction on mob.
+	var/smoke_delay = 0
 
 	var/step_count = 0
 
@@ -62,7 +81,11 @@
 	/// List of weather immunity traits that are then added on Initialize(), see traits.dm.
 	var/list/weather_immunities
 
-	var/list/surgeries = list()	//a list of surgery datums. generally empty, they're added when the player wants them.
+	/// A list of surgery datums. Generally empty, they're added when the player wants them.
+	var/list/surgeries = list()
+
+	/// Lazylist of surgery speed modifiers - id to number - 2 = 2x faster, 0.5x = 0.5x slower
+	var/list/mob_surgery_speed_mods
 
 	var/gene_stability = DEFAULT_GENE_STABILITY
 	var/ignore_gene_stability = 0
@@ -73,17 +96,22 @@
 	/// A log of what we've said, plain text, no spans or junk, essentially just each individual "message"
 	var/list/say_log
 
-	var/last_hallucinator_log // Used to log, what was last infliction to hallucination
+	/// Used to log, what was last infliction to hallucination.
+	var/last_hallucinator_log
 
-	var/blood_volume = 0 //how much blood the mob has
+	/// How much blood the mob has
+	var/blood_volume = 0
 	hud_possible = list(HEALTH_HUD,STATUS_HUD,SPECIALROLE_HUD,THOUGHT_HUD)
 
-	var/list/status_effects //a list of all status effects the mob has
+	/// A list of all status effects the mob has
+	var/list/status_effects
 
 	var/deathgasp_on_death = FALSE
 
-	var/stam_regen_start_time = 0 //used to halt stamina regen temporarily
-	var/stam_regen_start_modifier = 1 //Modifier of time until regeneration starts
+	/// Used to halt stamina regen temporarily
+	var/stam_regen_start_time = 0
+	/// Modifier of time until regeneration starts
+	var/stam_regen_start_modifier = 1
 
 	///if this exists AND the normal sprite is bigger than 32x32, this is the replacement icon state (because health doll size limitations). the icon will always be screen_gen.dmi
 	var/health_doll_icon
@@ -116,12 +144,10 @@
 	/// Is this mob allowed to be buckled/unbuckled to/from things?
 	var/can_buckle_to = TRUE
 
-	/// The x amount a mob's sprite should be offset due to the current position they're in
-	var/body_position_pixel_x_offset = 0
-	/// The y amount a mob's sprite should be offset due to the current position they're in or size (e.g. lying down moves your sprite down)
-	var/body_position_pixel_y_offset = 0
 	/// The height offset of a mob's maptext due to their current size.
 	var/body_maptext_height_offset = 0
+
+	var/pixel_y_lying_offset = PIXEL_Y_OFFSET_LYING
 
 	/// Tracks the current size of the mob in relation to its original size. Use update_transform(resize) to change it.
 	var/current_size = RESIZE_DEFAULT_SIZE
@@ -132,8 +158,11 @@
 	/// Hand currently used for pulling/grabing
 	var/pull_hand = PULL_WITHOUT_HANDS
 
-	//Did the blob infected mob burst.
-	var/was_bursted = FALSE
+	/// The body part where the bleeding was suppressed by the right hand
+	var/left_hand_bleed_suppress_lib = null
+	/// The body part where the bleeding was suppressed by the left hand
+	var/right_hand_bleed_suppress_lib = null
+
 	//Was death by turning to dust.
 	var/dusted = FALSE
 
@@ -157,3 +186,31 @@
 
 	/// Was this mob spawned by xenobiology magic? Used for mobcapping.
 	var/xenobiology_spawned = FALSE
+
+	var/datum/language/default_language
+
+	var/last_taste_time
+	var/last_taste_text
+
+	/// Used for preventing attacks on admin-frozen mobs.
+	var/frozen = null
+	/// Used for keeping track of previous sleeping value with admin freeze.
+	var/admin_prev_sleeping = 0
+
+	var/holder_type = null
+
+	var/image/halimage
+	var/image/halbody
+	var/obj/halitem
+	var/hal_screwyhud = SCREWYHUD_NONE
+
+	/// Cooldown for projectile miss sound (5 deciseconds)
+	COOLDOWN_DECLARE(bullet_miss_cooldown)
+
+	/// How many tiles can this mob reach with their hands? 1 tile is adjacent.
+	var/reach_length = 1
+
+	/// Lazylists of pixel offsets this mob is currently using
+	/// Modify this via add_offsets and remove_offsets,
+	/// NOT directly (and definitely avoid modifying offsets directly)
+	VAR_PRIVATE/list/offsets

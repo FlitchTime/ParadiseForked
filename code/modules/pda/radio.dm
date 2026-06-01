@@ -1,13 +1,13 @@
 //TODO convert this crap over to proper radios or find a way to utilize regualr radios for this object, this thing needs to go.
 
 /obj/item/integrated_radio
-	name = "\improper PDA radio module"
+	name = "PDA radio module"
 	desc = "An electronic radio system of Nanotrasen origin."
 	icon = 'icons/obj/module.dmi'
 	icon_state = "power_mod"
 	var/obj/item/pda/hostpda = null
 	var/list/botlist = null		// list of bots
-	var/mob/living/simple_animal/bot/active 	// the active bot; if null, show bot list
+	var/mob/living/simple_animal/bot/active	// the active bot; if null, show bot list
 	var/list/botstatus			// the status signal sent by the bot
 	var/bot_type				//The type of bot it is.
 	var/bot_filter				//Determines which radio filter to use.
@@ -30,7 +30,7 @@
 	hostpda = null
 	return ..()
 
-/obj/item/integrated_radio/proc/post_signal(var/freq, var/key, var/value, var/key2, var/value2, var/key3, var/value3,var/key4, var/value4, s_filter)
+/obj/item/integrated_radio/proc/post_signal(freq, key, value, key2, value2, key3, value3, key4, value4, s_filter)
 
 //	to_chat(world, "Post: [freq]: [key]=[value], [key2]=[value2]")
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(freq)
@@ -126,7 +126,7 @@
 
 		if("setdest")
 			if(GLOB.deliverybeacons)
-				var/dest = input("Select Bot Destination", "Mulebot [active.suffix] Interlink", active.destination) as null|anything in GLOB.deliverybeacontags
+				var/dest = tgui_input_list(usr, "Select Bot Destination", "Mulebot [active.suffix] Interlink", GLOB.deliverybeacontags, active.destination)
 				if(dest)
 					post_signal(control_freq, "command", "target", "active", active, "destination", dest, s_filter = RADIO_MULEBOT)
 
@@ -144,16 +144,13 @@
 
 	post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_MULEBOT)
 
-
-
 /*
  *	Radio Cartridge, essentially a signaler.
  */
 
-
 /obj/item/integrated_radio/signal
 	var/frequency = RSD_FREQ
-	var/code = 30.0
+	var/code = DEFAULT_SIGNALER_CODE
 	var/last_transmission
 	var/datum/radio_frequency/radio_connection
 

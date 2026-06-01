@@ -15,15 +15,12 @@
 	var/list/loopings
 	var/static/list/deathsquad_teles
 
-
 /obj/machinery/computer/pod/Initialize(mapload)
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(driver_sync)), 0.5 SECONDS)
 
-
 /obj/machinery/computer/pod/proc/driver_sync()
 	initial_set = TRUE
-	id_tags = list()
 	door_only_tags = list()
 	synced = list()
 	timings = list()
@@ -32,7 +29,7 @@
 	powers = list()
 	loopings = list()
 	deathsquad_teles = list()
-	for(var/obj/machinery/mass_driver/driver in GLOB.machines)
+	for(var/obj/machinery/mass_driver/driver in SSmachines.get_by_type(/obj/machinery/mass_driver))
 		if(driver.z != src.z)
 			continue
 
@@ -59,9 +56,8 @@
 				door_only_tags += ident_tag
 				break
 
-
 /obj/machinery/computer/pod/proc/solo_sync(ident_tag)
-	for(var/obj/machinery/mass_driver/driver in GLOB.machines)
+	for(var/obj/machinery/mass_driver/driver in SSmachines.get_by_type(/obj/machinery/mass_driver))
 		if(driver.z != src.z)
 			continue
 		if((driver.id_tag == ident_tag) && !(ident_tag in synced))
@@ -86,13 +82,12 @@
 				door_only_tags += ident_tag
 				break
 
-
 /obj/machinery/computer/pod/proc/launch_sequence(ident_tag)
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	var/anydriver = FALSE
-	for(var/obj/machinery/mass_driver/M in GLOB.machines)
+	for(var/obj/machinery/mass_driver/M in SSmachines.get_by_type(/obj/machinery/mass_driver))
 		if(M.z != src.z)
 			continue
 		if(M.id_tag == ident_tag)
@@ -109,7 +104,7 @@
 			INVOKE_ASYNC(poddoor, TYPE_PROC_REF(/obj/machinery/door, open))
 
 	sleep(2 SECONDS)
-	for(var/obj/machinery/mass_driver/driver in GLOB.machines)
+	for(var/obj/machinery/mass_driver/driver in SSmachines.get_by_type(/obj/machinery/mass_driver))
 		if(driver.z != src.z)
 			continue
 		if(driver.id_tag == ident_tag)
@@ -122,23 +117,21 @@
 		if(poddoor.id_tag == ident_tag)
 			INVOKE_ASYNC(poddoor, TYPE_PROC_REF(/obj/machinery/door, close))
 
-
-/obj/machinery/computer/pod/attack_ai(var/mob/user as mob)
+/obj/machinery/computer/pod/attack_ai(mob/user as mob)
 	src.add_hiddenprint(user)
 	return attack_hand(user)
 
-
-/obj/machinery/computer/pod/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/pod/attack_hand(mob/user as mob)
 	if(..())
 		return
 
 	var/dat = {"<tt><b>[name]</b>(<a href='byond://?src=[UID()];rename=1'>rename</a>)"}
 	user.set_machine(src)
-	dat += "<br><a href = '?src=[UID()];sync=1'>Reset Connections</a><br>"
-	if(synced.len)
-		dat += "<br><a href = '?src=[UID()];massfire=1'><b>Fire All Connected Drivers</b></a><br>"
+	dat += "<br><a href = 'byond://?src=[UID()];sync=1'>Reset Connections</a><br>"
+	if(length(synced))
+		dat += "<br><a href = 'byond://?src=[UID()];massfire=1'><b>Fire All Connected Drivers</b></a><br>"
 	if(istype(src,/obj/machinery/computer/pod/deathsquad))
-		dat += "<br><a href = '?src=[UID()];dstele=1'><b>Set Teleporter Destination Z-Level</b></a><br>"
+		dat += "<br><a href = 'byond://?src=[UID()];dstele=1'><b>Set Teleporter Destination Z-Level</b></a><br>"
 	for(var/ident_tag in id_tags)
 		if(!(ident_tag in door_only_tags))
 			dat += "<br><br><b>[ident_tag]</b> <a href='byond://?src=[UID()];remove=1;driver=[ident_tag]'>remove</a>"
@@ -153,19 +146,19 @@
 			var/maxsecond = maxtimes[ident_tag] % 60
 			var/maxminute = (maxtimes[ident_tag] - maxsecond) / 60
 			dat += "<hr>\nTimer System: [d2]\nTime Left: [minute ? "[minute]:" : null][second]/[maxminute ? "[maxminute]:" : null][maxsecond] <a href='byond://?src=[UID()];tp=-30;driver=[ident_tag]'>-</a> <a href='byond://?src=[UID()];tp=-1;driver=[ident_tag]'>-</a> <a href='byond://?src=[UID()];tp=1;driver=[ident_tag]'>+</a> <a href='byond://?src=[UID()];tp=30;driver=[ident_tag]'>+</a>"
-			dat += "<br>Set timer to loop: [loopings[ident_tag] ? "<a href = '?src=[UID()];loop=0;driver=[ident_tag]'>Yes</a>" : "<a href = '?src=[UID()];loop=1;driver=[ident_tag]'>No</a>"]"
+			dat += "<br>Set timer to loop: [loopings[ident_tag] ? "<a href = 'byond://?src=[UID()];loop=0;driver=[ident_tag]'>Yes</a>" : "<a href = 'byond://?src=[UID()];loop=1;driver=[ident_tag]'>No</a>"]"
 			var/temp = ""
-			var/list/L = list( 0.25, 0.5, 1, 2, 4, 8, 16 )
+			var/list/L = list(0.25, 0.5, 1, 2, 4, 8, 16)
 			for(var/t in L)
-				if( powers[ident_tag] == t)
-					temp += "<b><a href = '?src=[UID()];power=[t];driver=[ident_tag]'>[t]</a></b> "
+				if(powers[ident_tag] == t)
+					temp += "<b><a href = 'byond://?src=[UID()];power=[t];driver=[ident_tag]'>[t]</a></b> "
 				else
-					temp += "<a href = '?src=[UID()];power=[t];driver=[ident_tag]'>[t]</a> "
-			dat += "<hr>\nPower Level: [temp]<br>\n<a href = '?src=[UID()];launch=1;driver=[ident_tag]'><b>Fire Drive!</b></a><br>\n<a href = '?src=[UID()];door=1;driver=[ident_tag]'>Toggle Pod Doors</a><br>"
+					temp += "<a href = 'byond://?src=[UID()];power=[t];driver=[ident_tag]'>[t]</a> "
+			dat += "<hr>\nPower Level: [temp]<br>\n<a href = 'byond://?src=[UID()];launch=1;driver=[ident_tag]'><b>Fire Drive!</b></a><br>\n<a href = 'byond://?src=[UID()];door=1;driver=[ident_tag]'>Toggle Pod Doors</a><br>"
 
 	for(var/ident_tag in door_only_tags)
 		dat += "<br><br><b>[ident_tag]</b> <a href='byond://?src=[UID()];remove=1;driver=[ident_tag]'>remove</a>"
-		dat += "<br>\n<a href = '?src=[UID()];door=1;driver=[ident_tag]'>Toggle Pod Doors</a><br>"
+		dat += "<br>\n<a href = 'byond://?src=[UID()];door=1;driver=[ident_tag]'>Toggle Pod Doors</a><br>"
 
 	dat += "<br><a href='byond://?src=[UID()];add=1'>add another id_tag</a>"
 
@@ -195,14 +188,13 @@
 			times[ident_tag] = maxtimes[ident_tag]
 		updateDialog()
 
-
 /obj/machinery/computer/pod/Topic(href, href_list)
 	if(..())
 		return 1
 	else
 		usr.set_machine(src)
 		if(href_list["add"])
-			var/new_id_tag = input("Enter a new id_tag", "Mass Driver Controls", "id_tag")
+			var/new_id_tag = tgui_input_text(usr, "Enter a new id_tag", "Mass Driver Controls", "id_tag")
 			if(!(new_id_tag in id_tags))
 				id_tags += new_id_tag
 				solo_sync(new_id_tag)
@@ -223,7 +215,7 @@
 			for(var/z in reachable_levels)
 				choices += z
 			var/obj/machinery/computer/pod/deathsquad/D = src
-			var/input = input("Enter the destination Z-Level. The mechs will arrive from the East. Leave 0 if you don't want to set a specific ZLevel", "Mass Driver Controls", 0) in choices
+			var/input = tgui_input_list(usr, "Enter the destination Z-Level. The mechs will arrive from the East. Leave 0 if you don't want to set a specific ZLevel", "Mass Driver Controls", choices, 0)
 			D.teleporter_dest = input
 
 		if(href_list["massfire"])
@@ -233,7 +225,7 @@
 			var/ident_tag = href_list["driver"]
 			var/t = text2num(href_list["power"])
 			t = min(max(0.25, t), 16)
-			for(var/obj/machinery/mass_driver/M in GLOB.machines)
+			for(var/obj/machinery/mass_driver/M in SSmachines.get_by_type(/obj/machinery/mass_driver))
 				if(M.id_tag == ident_tag)
 					M.power = t
 			powers[ident_tag] = t
@@ -263,13 +255,11 @@
 					else
 						INVOKE_ASYNC(poddoor, TYPE_PROC_REF(/obj/machinery/door, close))
 		if(href_list["rename"])
-			var/new_title = input("Enter a new title", "[name]", "[name]")
+			var/new_title = tgui_input_text(usr, "Enter a new title", "[name]", "[name]")
 			if(new_title)
 				name = new_title
 		updateUsrDialog()
 	return
-
-
 
 /obj/machinery/computer/pod/old
 	icon_state = "oldcomp"
@@ -278,7 +268,6 @@
 	name = "DoorMex Control Computer"
 	circuit = /obj/item/circuitboard/olddoor
 
-
 /obj/machinery/computer/pod/old/syndicate
 	name = "external airlock controls"
 	desc = "Синдикат работает в условиях ограниченного бюджета. Управляет внешними шлюзами."
@@ -286,32 +275,30 @@
 	circuit = /obj/item/circuitboard/syndicatedoor
 	light_color = "#00FFFF"
 
-/obj/machinery/computer/pod/old/syndicate/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/pod/old/syndicate/attack_hand(mob/user as mob)
 	if(!allowed(user))
 		to_chat(user, span_warning("Access Denied"))
-		playsound(src, pick('sound/machines/button.ogg', 'sound/machines/button_alternate.ogg', 'sound/machines/button_meloboom.ogg'), 20)
+		playsound(src, SFX_BUTTON_DENIED, 20)
 		return
 	else
 		..()
 
 /obj/machinery/computer/pod/old/swf
-	name = "\improper Magix System IV"
+	name = "Magix System IV"
 	desc = "Таинственный артефакт, в котором сконцентрировано огромное количество магической энергии."
 	circuit = /obj/item/circuitboard/swfdoor
-
 
 /obj/machinery/computer/pod/deathsquad
 	id_tags = list("ASSAULT0","ASSAULT1","ASSAULT2","ASSAULT3")
 	var/teleporter_dest = 0
 	circuit = /obj/item/circuitboard/pod/deathsquad
 
-
 /obj/machinery/computer/pod/deathsquad/launch_sequence(ident_tag)
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	var/anydriver = FALSE
-	for(var/obj/machinery/mass_driver/M in GLOB.machines)
+	for(var/obj/machinery/mass_driver/M in SSmachines.get_by_type(/obj/machinery/mass_driver))
 		if(M.z != src.z)
 			continue
 		if(M.id_tag == ident_tag)
@@ -331,8 +318,9 @@
 			var/obj/effect/landmark/target_landmark = pick_n_take(spawn_marauder)
 			var/obj/effect/portal/portal = new(landmark.loc, target_landmark.loc)
 			portal.invisibility = INVISIBILITY_ABSTRACT	//So it is not seen by anyone.
-			portal.failchance = 0	//So it has no fail chance when teleporting.
+			portal.failchance = 0 //So it has no fail chance when teleporting.
 			portal.can_mecha_pass = TRUE
+			spawn_marauder.Remove(portal.target)
 
 	for(var/obj/machinery/door/poddoor/poddoor in GLOB.airlocks)
 		if(poddoor.z != src.z)
@@ -341,7 +329,7 @@
 			INVOKE_ASYNC(poddoor, TYPE_PROC_REF(/obj/machinery/door, open))
 
 	sleep(2 SECONDS)
-	for(var/obj/machinery/mass_driver/driver in GLOB.machines)
+	for(var/obj/machinery/mass_driver/driver in SSmachines.get_by_type(/obj/machinery/mass_driver))
 		if(driver.z != src.z)
 			continue
 		if(driver.id_tag == ident_tag)
@@ -361,7 +349,6 @@
 			tele.working = TRUE
 			tele.update_icon(UPDATE_ICON_STATE)
 
-
 GLOBAL_LIST_EMPTY(deathsquad_teles)
 
 /obj/structure/deathsquad_tele
@@ -374,27 +361,22 @@ GLOBAL_LIST_EMPTY(deathsquad_teles)
 	var/id_tag = ""
 	var/working = FALSE
 
-
 /obj/structure/deathsquad_tele/Initialize(mapload)
 	. = ..()
 	GLOB.deathsquad_teles += src
-
 
 /obj/structure/deathsquad_tele/Destroy()
 	GLOB.deathsquad_teles -= src
 	return ..()
 
-
 /obj/structure/deathsquad_tele/update_icon_state()
 	icon_state = "tele[working]"
-
 
 /obj/structure/deathsquad_tele/Bumped(atom/movable/moving_atom)
 	. = ..()
 	if(!ztarget || !working)
 		return .
 	INVOKE_ASYNC(src, PROC_REF(async_bump_effect), moving_atom)
-
 
 /obj/structure/deathsquad_tele/proc/async_bump_effect(atom/movable/moving_atom)
 	if(QDELETED(moving_atom))

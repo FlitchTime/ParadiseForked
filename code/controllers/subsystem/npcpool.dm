@@ -8,19 +8,15 @@ GLOBAL_VAR_INIT(npcpool_suspension, TRUE)
 
 SUBSYSTEM_DEF(npcpool)
 	name = "NPC Pool"
-	flags = SS_POST_FIRE_TIMING|SS_NO_INIT|SS_BACKGROUND
+	ss_flags = SS_POST_FIRE_TIMING|SS_NO_INIT|SS_BACKGROUND
 	priority = FIRE_PRIORITY_NPC
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 	wait = 2 SECONDS
-	offline_implications = "Simple animals will no longer process. Shuttle call recommended."
-	ss_id = "npc_pool"
 
 	var/list/currentrun = list()
 
-
 /datum/controller/subsystem/npcpool/get_stat_details()
 	return "SimpleAnimals: [length(GLOB.simple_animals[AI_ON])]"
-
 
 /datum/controller/subsystem/npcpool/fire(resumed = FALSE)
 	if(!resumed)
@@ -31,8 +27,8 @@ SUBSYSTEM_DEF(npcpool)
 	var/list/currentrun = src.currentrun
 	//var/suspension = GLOB.npcpool_suspension
 
-	while(currentrun.len)
-		var/mob/living/simple_animal/SA = currentrun[currentrun.len]
+	while(length(currentrun))
+		var/mob/living/simple_animal/SA = currentrun[length(currentrun)]
 		--currentrun.len
 
 		if(QDELETED(SA)) // Some issue causes nulls to get into this list some times. This keeps it running, but the bug is still there.
@@ -56,7 +52,6 @@ SUBSYSTEM_DEF(npcpool)
 
 		if(MC_TICK_CHECK)
 			return
-
 
 #undef DEFAULT_ACTIONS_DELAY
 

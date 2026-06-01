@@ -2,14 +2,6 @@
 /obj/item/grenade/plastic/miningcharge
 	name = "industrial mining charge"
 	desc = "Применяется для создания больших отверстий в породе. Эффективно только при работе с камнем!"
-	ru_names = list(
-		NOMINATIVE = "промышленный шахтёрский заряд",
-		GENITIVE = "промышленного шахтёрского заряда",
-		DATIVE = "промышленному шахтёрскому заряду",
-		ACCUSATIVE = "промышленный шахтёрский заряд",
-		INSTRUMENTAL = "промышленным шахтёрским зарядом",
-		PREPOSITIONAL = "промышленном шахтёрском заряде"
-	)
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "mining-charge-2"
 	item_state = "charge_indust"
@@ -24,14 +16,24 @@
 	var/installed = FALSE
 	var/smoke_amount = 3
 
+/obj/item/grenade/plastic/miningcharge/get_ru_names()
+	return list(
+		NOMINATIVE = "промышленный шахтёрский заряд",
+		GENITIVE = "промышленного шахтёрского заряда",
+		DATIVE = "промышленному шахтёрскому заряду",
+		ACCUSATIVE = "промышленный шахтёрский заряд",
+		INSTRUMENTAL = "промышленным шахтёрским зарядом",
+		PREPOSITIONAL = "промышленном шахтёрском заряде",
+	)
+
 /obj/item/grenade/plastic/miningcharge/examine(mob/user)
 	. = ..()
 	if(hacked)
-		. += span_warning("Its wiring is haphazardly changed.")
+		. += span_warning("Его проводка была небрежно изменена.")
 	if(timer_off)
-		. += span_notice("The mining charge is connected to a detonator.")
+		. += span_notice("Шахтёрский заряд подключён к детонатору.")
 
-/obj/item/grenade/plastic/miningcharge/Initialize()
+/obj/item/grenade/plastic/miningcharge/Initialize(mapload)
 	. = ..()
 	image_overlay = mutable_appearance(icon, "[icon_state]_active", ON_EDGED_TURF_LAYER)
 
@@ -39,21 +41,18 @@
 	if(nadeassembly)
 		nadeassembly.attack_self(user)
 
-/obj/item/grenade/plastic/miningcharge/afterattack(atom/movable/AM, mob/user, flag, params)
-	if(ismineralturf(AM) || hacked)
-		if(isancientturf(AM) && !hacked)
-			visible_message("<span class='notice'>This rock appears to be resistant to all mining tools except pickaxes!</span>")
-			return
+/obj/item/grenade/plastic/miningcharge/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	if(ismineralturf(target) || hacked)
 		if(timer_off) //override original proc for plastic explosions
-			if(!flag)
+			if(!proximity_flag)
 				return
-			if(iscarbon(AM))
+			if(iscarbon(target))
 				return
 			balloon_alert(user, "установка взрывчатки...")
-			if(do_after(user, 2.5 SECONDS * toolspeed, AM, category = DA_CAT_TOOL))
+			if(do_after(user, 2.5 SECONDS * toolspeed, target, category = DA_CAT_TOOL))
 				if(!user.drop_item_ground(src))
 					return
-				src.target = AM
+				src.target = target
 				loc = null
 				if(hacked)
 					message_admins("[ADMIN_LOOKUPFLW(user)] planted [src] on [target.name] at [ADMIN_COORDJMP(target)]")
@@ -62,7 +61,6 @@
 				target.add_overlay(image_overlay)
 			return
 		..()
-
 
 /obj/item/grenade/plastic/miningcharge/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/detonator))
@@ -80,7 +78,6 @@
 
 	return ..()
 
-
 /obj/item/grenade/plastic/miningcharge/proc/detonate()
 	addtimer(CALLBACK(src, PROC_REF(prime)), 3 SECONDS)
 
@@ -93,16 +90,16 @@
 	smoke.set_up(amount = smoke_amount, location = location)
 	smoke.start()
 	//location.attempt_drill(null,TRUE,3) //orange says it doesnt include the actual middle
-	for(var/turf/simulated/mineral/rock in circlerangeturfs(location, boom_sizes[3]))
+	for(var/turf/simulated/mineral/rock in circle_range_turfs(location, boom_sizes[3]))
 		var/distance = get_dist_euclidean(location, rock)
 		if(distance <= boom_sizes[1])
 			rock.attempt_drill(null,TRUE,3)
-		else if (distance <= boom_sizes[2])
+		else if(distance <= boom_sizes[2])
 			rock.attempt_drill(null,TRUE,2)
-		else if (distance <= boom_sizes[3])
+		else if(distance <= boom_sizes[3])
 			rock.attempt_drill(null,TRUE,1)
 
-	for(var/mob/living/carbon/C in circlerange(location,boom_sizes[3]))
+	for(var/mob/living/carbon/C in circle_range(location, boom_sizes[3]))
 		if(ishuman(C)) //working on everyone
 			var/distance = get_dist_euclidean(location, C)
 			C.flash_eyes()
@@ -111,14 +108,14 @@
 			var/obj/item/organ/internal/ears/ears = C.get_int_organ(/obj/item/organ/internal/ears)
 			if(istype(ears))
 				ears.internal_receive_damage((boom_sizes[3] - distance) * 2) //something like that i guess. Mega charge makes 12 damage to ears if nearby
-			to_chat(C, span_warning("<font size='2'><b>You are knocked down by the power of the mining charge!</font></b>"))
+			to_chat(C, span_userdanger("Вас сбивает с ног мощь горнодобывающего заряда!"))
 	qdel(src)
 
 /obj/item/grenade/plastic/miningcharge/proc/explode() //c4 code
 	var/turf/location
 	if(target)
 		if(!QDELETED(target))
-			if(istype(target, /turf/))
+			if(isturf(target))
 				location = get_turf(target)
 			else
 				location = get_atom_on_turf(target)
@@ -126,13 +123,15 @@
 	else
 		location = get_atom_on_turf(src)
 	if(location)
-		explosion(location, boom_sizes[1], boom_sizes[2], boom_sizes[3], cause = src)
-		location.ex_act(2, target)
-	if(istype(target, /mob))
+		explosion(location, devastation_range = boom_sizes[1], heavy_impact_range = boom_sizes[2], light_impact_range = boom_sizes[3], cause = src)
+		location.ex_act(EXPLODE_HEAVY, target)
+	if(ismob(target))
 		var/mob/M = target
 		M.gib()
 	qdel(src)
 
+/obj/item/grenade/plastic/update_icon_state()
+	return //Remove plastic icon_state change logic override
 
 /obj/item/grenade/plastic/miningcharge/proc/override_safety()
 	hacked = TRUE
@@ -147,34 +146,61 @@
 
 /obj/item/grenade/plastic/miningcharge/lesser
 	name = "mining charge"
-	desc = "A mining charge. This one seems less powerful than industrial. Only works on rocks!"
+	desc = "Заряд для шахтёрских работ. Этот кажется менее мощным, чем промышленный. Работает только на породе!"
 	icon_state = "mining-charge-1"
 	item_state = "charge_lesser"
 	smoke_amount = 1
 	boom_sizes = list(1,2,3)
 
+/obj/item/grenade/plastic/miningcharge/lesser/get_ru_names()
+	return list(
+		NOMINATIVE = "шахтёрский заряд",
+		GENITIVE = "шахтёрского заряда",
+		DATIVE = "шахтёрскому заряду",
+		ACCUSATIVE = "шахтёрский заряд",
+		INSTRUMENTAL = "шахтёрским зарядом",
+		PREPOSITIONAL = "шахтёрском заряде",
+	)
+
 /obj/item/grenade/plastic/miningcharge/mega
 	name = "experimental mining charge"
-	desc = "A mining charge. This one seems much more powerful than normal!"
+	desc = "Заряд для шахтёрских работ. Этот кажется значительно мощнее обычного!"
 	icon_state = "mining-charge-3"
 	item_state = "charge_mega"
 	smoke_amount = 5
 	boom_sizes = list(4,6,8) //did you see the price? It has to be better..
 
-/obj/item/storage/backpack/duffel/miningcharges/populate_contents()
-	for(var/i in 1 to 4)
-		new /obj/item/grenade/plastic/miningcharge/lesser(src)
-	for(var/i in 1 to 2)
-		new /obj/item/grenade/plastic/miningcharge(src)
-	new /obj/item/detonator(src)
+/obj/item/grenade/plastic/miningcharge/mega/get_ru_names()
+	return list(
+		NOMINATIVE = "экспериментальный шахтёрский заряд",
+		GENITIVE = "экспериментального шахтёрского заряда",
+		DATIVE = "экспериментальному шахтёрскому заряду",
+		ACCUSATIVE = "экспериментальный шахтёрский заряд",
+		INSTRUMENTAL = "экспериментальным шахтёрским зарядом",
+		PREPOSITIONAL = "экспериментальном шахтёрском заряде",
+	)
 
+/obj/item/storage/backpack/duffel/miningcharges/populate_contents()
+	for(var/i in 1 to 2)
+		new /obj/item/grenade/plastic/miningcharge/mega(src)
+	for(var/i in 1 to 4)
+		new /obj/item/grenade/plastic/miningcharge(src)
+	for(var/i in 1 to 5)
+		new /obj/item/grenade/plastic/miningcharge/lesser(src)
+	new /obj/item/detonator(src)
+	new /obj/item/t_scanner/adv_mining_scanner/lesser(src)
+	new /obj/item/storage/bag/ore/bigger(src)
+	new /obj/item/mining_satchel_upgrade(src)
 
 //MINING CHARGE HACKER
 /obj/item/t_scanner/adv_mining_scanner/syndicate
 	var/charges = 6
-	description_antag = "Это устройство имеет дополнительный порт, который позволяет обойти меры безопасности шахтёрских зарядов."
 
-/obj/item/t_scanner/adv_mining_scanner/syndicate/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+/obj/item/t_scanner/adv_mining_scanner/syndicate/examine_more(mob/user)
+	. = ..()
+	. += span_warning("Имеет дополнительный порт, который позволяет обойти меры безопасности шахтёрских зарядов.")
+
+/obj/item/t_scanner/adv_mining_scanner/syndicate/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
 	if(istype(target,/obj/item/grenade/plastic/miningcharge))
 		var/obj/item/grenade/plastic/miningcharge/charge = target
 		if(charge.hacked)
@@ -185,7 +211,7 @@
 			return
 		charge.override_safety()
 		visible_message(span_warning("Из [declent_ru(GENITIVE)] летят искры!"), span_notice("Вы перегружаете [declent_ru(ACCUSATIVE)], отключая его защиту."))
-		playsound(src, "sparks", 50, 1)
+		playsound(src, SFX_SPARKS, 50, TRUE)
 		charges--
 		if(charges <= 0)
 			to_chat(user , span_warning("Внутренняя батарея [declent_ru(GENITIVE)], предназначенная для перегрузки шахтёрских зарядов, разрядилась!"))
@@ -194,20 +220,29 @@
 
 /obj/item/detonator
 	name = "mining charge detonator"
-	desc = "A specialized mining device designed for controlled demolition operations using mining explosives."
+	desc = "Специализированное устройство для контролируемых подрывных работ с использованием шахтёрских зарядов."
 	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "Detonator-0"
 	/// list of all bombs connected to a detonator for a moment
 	var/list/bombs = list()
 
+/obj/item/detonator/get_ru_names()
+	return list(
+		NOMINATIVE = "детонатор шахтёрских зарядов",
+		GENITIVE = "детонатора шахтёрских зарядов",
+		DATIVE = "детонатору шахтёрских зарядов",
+		ACCUSATIVE = "детонатор шахтёрских зарядов",
+		INSTRUMENTAL = "детонатором шахтёрских зарядов",
+		PREPOSITIONAL = "детонаторе шахтёрских зарядов",
+	)
+
 /obj/item/detonator/examine(mob/user)
 	. = ..()
-	if(bombs.len)
-		. += "<span class='notice'>List of synched bombs:</span>"
+	if(length(bombs))
+		. += span_notice("Список синхронизированных зарядов:")
 		for(var/obj/item/grenade/plastic/miningcharge/charge in bombs)
-			. += "<span class='notice'>[bicon(charge)] [charge]. Current status: [charge.installed ? "ready to detonate" : "ready to deploy"]."
-
+			. += span_notice("[icon2html(charge, user)] [DECLENT_RU_CAP(charge, NOMINATIVE)]. Текущий статус: [charge.installed ? "готов к подрыву" : "готов к установке"].")
 
 /obj/item/detonator/update_icon_state()
 	if(length(bombs))
@@ -215,14 +250,13 @@
 	else
 		icon_state = initial(icon_state)
 
-
 /obj/item/detonator/attack_self(mob/user)
 	playsound(src, 'sound/items/detonator.ogg', 40)
-	if(bombs.len)
+	if(length(bombs))
 		balloon_alert(user, "активация взрывчатки...")
 		for(var/obj/item/grenade/plastic/miningcharge/charge in bombs)
 			if(QDELETED(charge))
-				to_chat(user, span_notice("Can't reach [charge]. Deleting from the list..."))
+				to_chat(user, span_notice("Не удаётся найти [charge.declent_ru(ACCUSATIVE)]. Удаление из списка..."))
 				bombs -= charge
 				return
 			if(charge.installed)

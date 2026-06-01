@@ -1,3 +1,16 @@
+// MARK: Supply Groups
+#define SUPPLY_EMERGENCY 1
+#define SUPPLY_SECURITY 2
+#define SUPPLY_ENGINEER 3
+#define SUPPLY_MEDICAL 4
+#define SUPPLY_SCIENCE 5
+#define SUPPLY_ORGANIC 6
+#define SUPPLY_MATERIALS 7
+#define SUPPLY_MISC 8
+#define SUPPLY_VEND 9
+// Shit from a moron, delete and redo the Cut()
+#define SUPPLY_CONTRABAND 10
+
 #define STYLE_STANDARD 1
 #define STYLE_BLUESPACE 2
 #define STYLE_CENTCOM 3
@@ -29,9 +42,13 @@
 #define POD_OPENING "3"
 #define POD_LEAVING "4"
 
-#define MOB_OPTION 			"Mobs"
-#define UNANCHORED_OPTION 	"Unanchored"
-#define ANCHORED_OPTION 	"Anchored"
-#define MECHA_OPTION 		"Mecha"
+#define MOB_OPTION "Mobs"
+#define UNANCHORED_OPTION "Unanchored"
+#define ANCHORED_OPTION "Anchored"
+#define MECHA_OPTION "Mecha"
 
 #define SUPPLYPOD_X_OFFSET -16
+
+#define MANIFEST_ERROR_NAME 1
+#define MANIFEST_ERROR_COUNT 2
+#define MANIFEST_ERROR_ITEM 4

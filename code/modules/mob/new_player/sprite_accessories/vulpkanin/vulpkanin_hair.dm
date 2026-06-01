@@ -1,6 +1,6 @@
 /datum/sprite_accessory/hair/vulpkanin
-    icon = 'icons/mob/sprite_accessories/vulpkanin/vulpkanin_hair.dmi'
-    species_allowed = list(SPECIES_VULPKANIN)
+	icon = 'icons/mob/sprite_accessories/vulpkanin/vulpkanin_hair.dmi'
+	species_allowed = list(SPECIES_VULPKANIN)
 
 /datum/sprite_accessory/hair/vulpkanin/vulp_hair_kajam
 	name = "Kajam"
@@ -85,3 +85,23 @@
 	name = "Raine"
 	icon_state = "raine"
 	unsuitable_gender = MALE
+
+/datum/sprite_accessory/hair/vulpkanin/vulp_hair_mess
+	name = "Mess"
+	icon_state = "mess"
+
+/datum/sprite_accessory/hair/vulpkanin/vulp_hair_side_eyes
+	name = "Side eye"
+	icon_state = "side_eye"
+
+/datum/sprite_accessory/hair/vulpkanin/vulp_hair_smooth
+	name = "Smooth"
+	icon_state = "smooth"
+
+/datum/sprite_accessory/hair/vulpkanin/vulp_hair_smooth_side_eye
+	name = "Smooth side eye"
+	icon_state = "smooth_side_eye"
+
+/datum/sprite_accessory/hair/vulpkanin/vulp_hair_ponytail_side_eye
+	name = "Ponytail side eye"
+	icon_state = "ponytail_side_eye"

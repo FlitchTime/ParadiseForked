@@ -19,7 +19,7 @@
 /mob/living/carbon/AIize()
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
-	for(var/obj/item/check as anything in get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+	for(var/obj/item/check as anything in get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		drop_item_ground(check, force = TRUE)
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
 	icon = null
@@ -33,13 +33,13 @@
 
 	var/mob/living/silicon/ai/O = new (loc,,,1)//No MMI but safety is in effect.
 	O.invisibility = 0
-	O.aiRestorePowerRoutine = 0
+	O.aiRestorePowerRoutine = POWER_RESTORATION_OFF
 
 	if(mind)
 		mind.transfer_to(O)
 		O.mind.set_original_mob(O)
 	else
-		O.key = key
+		O.possess_by_player(key)
 
 	O.on_mob_init()
 
@@ -52,8 +52,6 @@
 	INVOKE_ASYNC(GLOBAL_PROC, /proc/qdel, src) // To prevent the proc from returning null.
 	return O
 
-
-
 /**
 	For transforming humans into robots (cyborgs).
 
@@ -65,7 +63,7 @@
 /mob/living/carbon/human/proc/Robotize(cell_type = null, connect_to_default_AI = TRUE, mob/living/silicon/ai/AI = null)
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
-	for(var/obj/item/check as anything in get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+	for(var/obj/item/check as anything in get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		drop_item_ground(check, force = TRUE)
 
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -73,7 +71,7 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 	// Creating a new borg here will connect them to a default AI and notify that AI, if `connect_to_default_AI` is TRUE.
-	var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(loc, connect_to_AI = connect_to_default_AI)
+	var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(loc, FALSE, FALSE, FALSE, connect_to_default_AI)
 
 	// If `AI` is passed in, we want to connect to that AI specifically.
 	if(AI)
@@ -92,10 +90,10 @@
 		mind.transfer_to(O)
 		if(O.mind.assigned_role == JOB_TITLE_CYBORG)
 			O.mind.set_original_mob(O)
-		else if(mind && mind.special_role)
+		else if(mind?.special_role)
 			O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 	else
-		O.key = key
+		O.possess_by_player(key)
 
 	O.forceMove(loc)
 	O.job = JOB_TITLE_CYBORG
@@ -103,11 +101,11 @@
 	if(O.mind && O.mind.assigned_role == JOB_TITLE_CYBORG)
 		var/obj/item/mmi/new_mmi
 		switch(O.mind.role_alt_title)
-			if("Robot")
+			if(JOB_TITLE_CYBORG)
 				new_mmi = new /obj/item/mmi/robotic_brain(O)
 				if(new_mmi.brainmob)
 					new_mmi.brainmob.name = O.name
-			if("Cyborg")
+			if(ALT_JOB_TITLE_RU_CYBORG)
 				new_mmi = new /obj/item/mmi(O)
 			else
 				// This should never happen, but oh well
@@ -127,7 +125,7 @@
 /mob/living/carbon/human/proc/corgize()
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
-	for(var/obj/item/check as anything in get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+	for(var/obj/item/check as anything in get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		drop_item_ground(check, force = TRUE)
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
 	icon = null
@@ -136,7 +134,7 @@
 		qdel(t)
 
 	var/mob/living/simple_animal/pet/dog/corgi/new_corgi = new /mob/living/simple_animal/pet/dog/corgi (loc)
-	new_corgi.key = key
+	new_corgi.possess_by_player(key)
 
 	to_chat(new_corgi, "<b>You are now a Corgi. Yap Yap!</b>")
 	qdel(src)
@@ -144,11 +142,11 @@
 /mob/living/carbon/human/Animalize()
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
-	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
+	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", mobtypes)
 
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
-	for(var/obj/item/check as anything in get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+	for(var/obj/item/check as anything in get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		drop_item_ground(check, force = TRUE)
 
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -160,9 +158,8 @@
 
 	var/mob/new_mob = new mobpath(src.loc)
 
-	new_mob.key = key
+	new_mob.possess_by_player(key)
 	new_mob.a_intent = INTENT_HARM
-
 
 	to_chat(new_mob, "You suddenly feel more... animalistic.")
 	qdel(src)
@@ -170,11 +167,11 @@
 /mob/proc/Animalize()
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
-	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
+	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", mobtypes)
 
 	var/mob/new_mob = new mobpath(src.loc)
 
-	new_mob.key = key
+	new_mob.possess_by_player(key)
 	new_mob.a_intent = INTENT_HARM
 	to_chat(new_mob, "You feel more... animalistic")
 
@@ -183,7 +180,7 @@
 /mob/living/carbon/human/proc/paize(name, bespai)
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
-	for(var/obj/item/check as anything in get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+	for(var/obj/item/check as anything in get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		drop_item_ground(check, force = TRUE)
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
 	icon = null
@@ -197,7 +194,7 @@
 		card = new /obj/item/paicard(loc)
 
 	var/mob/living/silicon/pai/pai = new(card)
-	pai.key = key
+	pai.possess_by_player(key)
 	card.setPersonality(pai)
 	pai.name = name
 	pai.real_name = name
@@ -213,7 +210,7 @@
 	if(stat == DEAD)
 		return
 
-	for(var/obj/item/check as anything in get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+	for(var/obj/item/check as anything in get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 		drop_item_ground(check, force = TRUE)
 
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, PERMANENT_TRANSFORMATION_TRAIT)
@@ -243,7 +240,7 @@
 	if(mind)
 		mind.transfer_to(new_gorilla)
 	else
-		new_gorilla.key = key
+		new_gorilla.possess_by_player(key)
 
 	qdel(src)
 
@@ -264,14 +261,14 @@
 	if(check_station_level && !is_admin(src) && !is_station_level(passed_mob.z))
 		return FALSE
 
-	if(istype(passed_mob, /mob/living/simple_animal/borer) && !jobban_isbanned(src, ROLE_BORER) && !jobban_isbanned(src, ROLE_SYNDICATE))
+	if(isborer(passed_mob) && !jobban_isbanned(src, ROLE_BORER) && !jobban_isbanned(src, ROLE_SYNDICATE))
 		return TRUE
 
 	if(isnymph(passed_mob) && !jobban_isbanned(src, ROLE_NYMPH))
 		return TRUE
 
-	// Whitelist typecache. Alphabetical order please!
 	var/static/list/safe_respawn_typecache_whitelist = typecacheof(list(
+		/mob/living/carbon/human/lesser/monkey/punpun,
 		/mob/living/simple_animal/butterfly,
 		/mob/living/simple_animal/chick,
 		/mob/living/simple_animal/chicken,
@@ -282,8 +279,8 @@
 		/mob/living/simple_animal/goose,
 		/mob/living/simple_animal/hostile/gorilla/cargo_domestic,
 		/mob/living/simple_animal/hostile/retaliate/poison/snake/rouge,
-		/mob/living/simple_animal/mouse/wooly,
 		/mob/living/simple_animal/mouse/rat,
+		/mob/living/simple_animal/mouse/wooly,
 		/mob/living/simple_animal/parrot,
 		/mob/living/simple_animal/pet/cat,
 		/mob/living/simple_animal/pet/dog/corgi,
@@ -296,7 +293,6 @@
 		/mob/living/simple_animal/pig,
 		/mob/living/simple_animal/possum,
 		/mob/living/simple_animal/turkey,
-		/mob/living/carbon/human/lesser/monkey/punpun,
 	))
 
 	// Blacklist typecache.

@@ -12,14 +12,11 @@
 	/// Whether our thief should get a special equipment box
 	var/give_kit = TRUE
 
-
 /datum/antagonist/thief/add_owner_to_gamemode()
 	SSticker.mode.thieves |= owner
 
-
 /datum/antagonist/thief/remove_owner_from_gamemode()
 	SSticker.mode.thieves -= owner
-
 
 /datum/antagonist/thief/give_objectives()
 	//Hard objective
@@ -48,10 +45,9 @@
 	if(!(locate(/datum/objective/escape) in all_objectives) && !(locate(/datum/objective/survive) in all_objectives))
 		add_objective(/datum/objective/escape)
 
-
 /datum/antagonist/thief/greet()
 	var/list/messages = list()
-	SEND_SOUND(owner.current, 'sound/ambience/antag/thiefalert.ogg')
+	SEND_SOUND(owner.current, sound('sound/ambience/antag/thiefalert.ogg'))
 	messages.Add(span_userdanger("Вы член гильдии воров!"))
 	messages.Add(span_danger("Гильдия воров прислала новые заказы для кражи. Пора заняться старым добрым ремеслом, пока цели не украли конкуренты!"))
 	return messages
@@ -63,11 +59,9 @@
 	else
 		to_chat(owner.current, span_fontsize3("<span style='color: red;'><b>Вы встали на праведный путь и Гильдия Воров изгнала вас! Вы больше не вор!</b></span>"))
 
-
 /datum/antagonist/thief/finalize_antag()
 	if(give_kit)
 		equip_thief_kit()
-
 
 /datum/antagonist/thief/proc/equip_thief_kit()
 	if(!ishuman(owner.current))

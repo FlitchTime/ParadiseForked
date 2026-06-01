@@ -1,7 +1,6 @@
-
 /obj/structure/fusionreactor
 	name = "syndicate fusion reactor"
-	desc = ""
+	desc = "Significantly less cool than a supermatter crystal, but just as likely to fuck up."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "powersink1"
 	anchored = TRUE
@@ -14,7 +13,7 @@
 	depotarea = get_area(src)
 	if(istype(depotarea))
 		depotarea.reactor = src
-		for(var/obj/machinery/porta_turret/syndicate/T in GLOB.machines)
+		for(var/obj/machinery/porta_turret/syndicate/T in SSmachines.get_by_type(/obj/machinery/porta_turret/syndicate))
 			if(z == T.z && get_dist(T, loc) <= 50)
 				if(!istype(T.depotarea))
 					T.depotarea = depotarea
@@ -28,9 +27,9 @@
 		depotarea.reactor = null
 	return ..()
 
-/obj/structure/fusionreactor/ex_act(severity)
-	if(severity < 3)
-		obj_integrity = 0
+/obj/structure/fusionreactor/ex_act(severity, target)
+	if(severity >= EXPLODE_HEAVY)
+		update_integrity(0)
 		healthcheck()
 
 /obj/structure/fusionreactor/proc/healthcheck()
@@ -45,8 +44,12 @@
 	if(prob(50))
 		empulse(src, 4, 10, TRUE, "[user] screwed with [name]")
 	else
-		for(var/mob/living/M in range(10, loc))
-			M.apply_effect(rand(5, 25), IRRADIATE)
+		radiation_pulse(
+			source = src,
+			max_range = 10,
+			threshold = 0.3,
+			chance = 40
+		)
 
 /obj/structure/fusionreactor/wrench_act(mob/user, obj/item/I)
 	. = TRUE
@@ -62,19 +65,17 @@
 		depotarea.activate_self_destruct("Fusion reactor cracked open. Core loose!", TRUE)
 	var/obj/effect/overload/O = new /obj/effect/overload(get_turf(src))
 	if(containment_failure)
-		playsound(loc, 'sound/machines/alarm.ogg', 100, 0, 0)
+		playsound(loc, 'sound/machines/alarm.ogg', 100, FALSE, 0)
 		O.deliberate = TRUE
 		O.max_cycles = 6
 	if(!skip_qdel)
 		qdel(src)
-
 
 /obj/effect/overload
 	icon = 'icons/obj/engines_and_power/tesla/energy_ball.dmi'
 	icon_state = "energy_ball"
 	pixel_x = -32
 	pixel_y = -32
-	anchored = TRUE
 	var/cycles = 0
 	var/beepsound = 'sound/items/timer.ogg'
 	var/deliberate = FALSE
@@ -97,7 +98,7 @@
 	var/turf/T = get_turf(src)
 	if(cycles < max_cycles)
 		if(!deliberate)
-			playsound(loc, beepsound, 50, 0)
+			playsound(loc, beepsound, 50, FALSE)
 		cycles++
 		return
 
@@ -115,9 +116,9 @@
 		M.gib()
 	for(var/obj/mecha/E in range(30, T))
 		E.take_damage(E.max_integrity)
-	explosion(get_turf(src), 25, 35, 45, 55, 1, 1, 60, 0, 0)
+	explosion(get_turf(src), devastation_range = 25, heavy_impact_range = 35, light_impact_range = 45, flash_range = 55, adminlog = TRUE, ignorecap = TRUE, flame_range = 50, silent = TRUE)
 	STOP_PROCESSING(SSobj, src)
 	qdel(src)
 
-/obj/effect/overload/ex_act(severity)
+/obj/effect/overload/ex_act(severity, target)
 	return

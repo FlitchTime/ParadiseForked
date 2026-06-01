@@ -7,18 +7,16 @@
 	lefthand_file = 'icons/mob/inhands/tools_lefthand.dmi'
 	flags = CONDUCT
 	item_flags = NOBLUDGEON|NO_MAT_REDEMPTION
-	force = 0
 	throwforce = 10
 	throw_speed = 3
 	throw_range = 5
-	w_class = WEIGHT_CLASS_NORMAL
 	materials = list(MAT_METAL = 30000)
 	origin_tech = "engineering=4;materials=2"
-	toolspeed = 1
 	usesound = 'sound/items/deconstruct.ogg'
 	req_access = list(ACCESS_ENGINE)
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 100, "acid" = 50)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
+	toolbox_radial_menu_compatibility = TRUE
 
 	//RCD for the borgs or not?
 	// If this is a borg RCD we use power instead of matter
@@ -49,7 +47,7 @@
 	/// A list of access numbers which have been checked off by the user in the UI.
 	var/list/selected_accesses = list()
 	/// List of areas where we can't deconstruct stuff
-	var/static/list/areas_blacklist = list(/area/lavaland/surface/outdoors/necropolis, /area/mine/necropolis)
+	var/static/list/areas_blacklist = list(/area/lavaland/surface/outdoors/necropolis)
 	/// An associative list of airlock type paths as keys, and their names as values.
 	var/static/list/rcd_door_types = list()
 
@@ -74,7 +72,7 @@
 	var/matter_type = /obj/item/rcd_ammo
 	var/matter_type_large = /obj/item/rcd_ammo/large
 
-/obj/item/rcd/Initialize()
+/obj/item/rcd/Initialize(mapload)
 	. = ..()
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(5, 0, src)
@@ -109,7 +107,7 @@
 			/obj/machinery/door/airlock/external/glass = "External (Glass)",
 			/obj/machinery/door/airlock/hatch = "Airtight Hatch",
 			/obj/machinery/door/airlock/maintenance_hatch = "Maintenance Hatch",
-			/obj/machinery/door/airlock/freezer = "Freezer"
+			/obj/machinery/door/airlock/freezer = "Freezer",
 		)
 	if(!length(door_types_ui_list))
 		for(var/type in rcd_door_types)
@@ -169,14 +167,12 @@
 		return FALSE
 	return TRUE
 
-
 /obj/item/rcd/attackby(obj/item/I, mob/user, params)
 	if(!istype(I, /obj/item/rcd_ammo))
 		return ..()
 	add_fingerprint(user)
 	rcd_reload(I, user)
 	return ATTACK_CHAIN_BLOCKED_ALL
-
 
 /obj/item/rcd/proc/rcd_reload(obj/item/rcd_ammo/rcd_ammo, mob/user)
 	if(matter >= max_matter)
@@ -191,7 +187,7 @@
 	if(rcd_ammo.type == matter_type || rcd_ammo.type == matter_type_large)
 		matter = min(matter + rcd_ammo.ammoamt, max_matter)
 		qdel(rcd_ammo)
-		playsound(loc, 'sound/machines/click.ogg', 50, 1)
+		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 		to_chat(user, span_notice("The RCD now holds [matter]/[max_matter] matter-units."))
 	else
 		to_chat(user, span_warning("This matter cartridge is incompatible with your RCD"))
@@ -239,9 +235,8 @@
 			return
 		else
 			return
-	playsound(src, 'sound/effects/pop.ogg', 50, 0)
+	playsound(src, 'sound/effects/pop.ogg', 50, FALSE)
 	to_chat(user, span_notice("You change [src]'s mode to '[choice]'."))
-
 
 /obj/item/rcd/attack_self(mob/user)
 	//Change the mode // Oh I thought the UI was just for fucking staring at
@@ -350,12 +345,12 @@
 			selected_accesses = get_all_accesses()
 
 /**
-  * Called in ui_act() to process modal actions
-  *
-  * Arguments:
-  * * action - The action passed by tgui
-  * * params - The params passed by tgui
-  */
+ * Called in ui_act() to process modal actions
+ *
+ * Arguments:
+ * * action - The action passed by tgui
+ * * params - The params passed by tgui
+ */
 /obj/item/rcd/proc/ui_act_modal(action, list/params)
 	. = TRUE
 	switch(ui_modal_act(src, action, params))
@@ -369,18 +364,28 @@
 		else
 			return FALSE
 
+/obj/item/rcd/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
+	rcd_interact(interacting_with, user, mode)
 
-/obj/item/rcd/afterattack(atom/target, mob/user, proximity, params)
-	if(!proximity)
-		return
+/obj/item/rcd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	rcd_interact(interacting_with, user, RCD_MODE_DECON)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/construction/rcd/handle_openspace_click(turf/target, mob/user, list/modifiers)
+	interact_with_atom(target, user, modifiers)
+
+/obj/item/rcd/proc/rcd_interact(atom/target, mob/user, rcd_mode)
 	if(istype(target, /obj/item/rcd_ammo))
 		rcd_reload(target, user)
 		return
 	var/area/check_area = get_area(target)
 	if(check_area?.type in areas_blacklist)
 		to_chat(user, span_warning("Something prevents you from using [src] in here..."))
-		return
-	target.rcd_act(user, src, mode)
+		return FALSE
+	target.rcd_act(user, src, rcd_mode)
 	SStgui.update_uis(src)
 
 /**
@@ -447,7 +452,7 @@
  * Called in `/obj/item/rcd/proc/detonate_pulse()` via callback.
  */
 /obj/item/rcd/proc/detonate_pulse_explode()
-	explosion(src, 0, 0, 3, 1, flame_range = 1, cause = "AI detonate RCD")
+	explosion(src, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 3, flame_range = 1, adminlog = TRUE, cause = "AI detonate RCD")
 	qdel(src)
 
 /obj/item/rcd/preloaded
@@ -461,7 +466,7 @@
 	matter = RCD_MATTER_500
 	canRwall = TRUE
 
-/obj/item/rcd/combat/Initialize()
+/obj/item/rcd/combat/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/high_value_item)
 
@@ -485,6 +490,16 @@
 	desc = "You should not be able to see it..."
 	power_use_multiplier = 250
 	var/obj/mecha/chassis = null
+	/// Weakref to the mecha equipment module that owns this internal RCD.
+	var/datum/weakref/holder_ref
+
+/obj/item/rcd/mecha_ref/Destroy()
+	var/obj/item/mecha_parts/mecha_equipment/rcd/holder = holder_ref?.resolve()
+	if(holder)
+		holder.rcd_holder = null
+	holder_ref = null
+	chassis = null
+	return ..()
 
 /obj/item/rcd/mecha_ref/useResource(amount, mob/user)
 	if(!chassis)
@@ -493,6 +508,6 @@
 	return chassis.use_power(power_use_multiplier)
 
 /obj/item/rcd/mecha_ref/checkResource(amount, mob/user)
-	if(!chassis)
-		return
+	if(!chassis || !chassis.cell)
+		return 0
 	return chassis.cell.charge >= power_use_multiplier

@@ -79,7 +79,7 @@
 	var/static/cache = list()
 
 /datum/number/proc/thousand(rest, sex)
-//	"""Converts numbers from 19 to 999"""
+// """Converts numbers from 19 to 999"""
 	var/prev = 0
 	var/plural = 3
 	var/list/name = list()
@@ -87,9 +87,9 @@
 	var/list/data = list()
 
 	if(!use_teens)
-		data = list( list(units, 10), list(tens, 100), list(hundreds, 1000) )
+		data = list(list(units, 10), list(tens, 100), list(hundreds, 1000))
 	else
-		data = list( list(teens, 10), list(hundreds, 1000) )
+		data = list(list(teens, 10), list(hundreds, 1000))
 	for(var/list in data)
 
 		var/names = list[1]
@@ -120,7 +120,7 @@
 	return list(plural, name)
 
 /datum/number/proc/int2words(textnum, list/main_units = list(list("", "", ""), "m"))
-//	http://ru.wikipedia.org/wiki/Gettext#.D0.9C.D0.BD.D0.BE.D0.B6.D0.B5.D1.81.D1.82.D0.B2.D0.B5.D0.BD.D0.BD.D1.8B.D0.B5_.D1.87.D0.B8.D1.81.D0.BB.D0.B0_2
+// http://ru.wikipedia.org/wiki/Gettext#.D0.9C.D0.BD.D0.BE.D0.B6.D0.B5.D1.81.D1.82.D0.B2.D0.B5.D0.BD.D0.BD.D1.8B.D0.B5_.D1.87.D0.B8.D1.81.D0.BB.D0.B0_2
 
 	var/list/_orders = list(main_units) + orders
 

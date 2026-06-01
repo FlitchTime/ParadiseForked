@@ -8,12 +8,12 @@
 	icon_dead = "shade_dead"
 	maxHealth = 50
 	health = 50
-	speak_emote = list("hisses")
-	emote_hear = list("wails","screeches")
+	speak_emote = list("шипит")
+	emote_hear = list("воет", "визжит")
 	tts_seed = "Kelthuzad"
-	response_help  = "puts their hand through"
-	response_disarm = "flails at"
-	response_harm   = "punches the"
+	response_help  = "протягивает руку сквозь"
+	response_disarm = "размахивает перед"
+	response_harm   = "бьёт кулаком по"
 	melee_damage_lower = 5
 	melee_damage_upper = 15
 	attacktext = "опустошает"
@@ -25,10 +25,9 @@
 	see_invisible = SEE_INVISIBLE_HIDDEN_RUNES
 	universal_speak = TRUE
 	faction = list("cult")
-	status_flags = CANPUSH
 	loot = list(/obj/item/reagent_containers/food/snacks/ectoplasm)
 	del_on_death = TRUE
-	deathmessage = "lets out a contented sigh as their form unwinds."
+	deathmessage = "издаёт довольный вздох, пока его форма распадается."
 	var/holy = FALSE
 
 /mob/living/simple_animal/shade/ComponentInitialize()
@@ -42,7 +41,6 @@
 	. = ..()
 	SSticker.mode.remove_cultist(mind, FALSE)
 
-
 /mob/living/simple_animal/shade/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
@@ -54,14 +52,11 @@
 
 	return ..()
 
-
 /mob/living/simple_animal/shade/update_icon_state()
 	icon_state = holy ? "shade_angelic" : "shade"
 
-
 /mob/living/simple_animal/shade/Process_Spacemove(movement_dir = NONE, continuous_move = FALSE)
 	return TRUE
-
 
 /mob/living/simple_animal/shade/cult/Initialize(mapload)
 	. = ..()
@@ -90,7 +85,7 @@
 	.=..()
 	ADD_TRAIT(src, TRAIT_GODMODE, INNATE_TRAIT)
 
-/mob/living/simple_animal/shade/talisman/New()
-	..()
+/mob/living/simple_animal/shade/talisman/Initialize(mapload)
+	. = ..()
 	var/datum/atom_hud/medsensor = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	medsensor.add_hud_to(src)
+	medsensor.show_to(src)

@@ -1,31 +1,34 @@
 SUBSYSTEM_DEF(jobs)
 	name = "Jobs"
-	init_order = INIT_ORDER_JOBS // 9
+	dependencies = list(
+		/datum/controller/subsystem/processing/station,
+	)
 	wait = 5 MINUTES // Dont ever make this a super low value since EXP updates are calculated from this value
 	runlevels = RUNLEVEL_GAME
-	offline_implications = "Время игры на профессиях больше не будет сохраняться. Немедленных действий не требуется."
-	cpu_display = SS_CPUDISPLAY_LOW
-	ss_id = "jobs"
 
-	//List of all jobs
+	/// List of all jobs
 	var/list/occupations = list()
-	var/list/name_occupations = list()	//Dict of all jobs, keys are titles
-	var/list/type_occupations = list()	//Dict of all jobs, keys are types
-	var/list/prioritized_jobs = list() // List of jobs set to priority by HoP/Captain
-	var/list/id_change_records = list() // List of all job transfer records
+	/// Dict of all jobs, keys are titles
+	var/list/name_occupations = list()
+	/// Dict of all jobs, keys are types
+	var/list/type_occupations = list()
+	/// List of jobs set to priority by HoP/Captain
+	var/list/prioritized_jobs = list()
+	/// List of all job transfer records
+	var/alist/id_change_records = alist()
 	var/id_change_counter = 1
 	//Players who need jobs
 	var/list/unassigned = list()
 	/// Used to grant AI job if antag was rolled.
 	var/mob/new_player/new_malf
+	/// Used to grant prisoner job if antag was rolled.
+	var/list/mob/new_player/new_prisoners = list()
 	//Debug info
 	var/list/job_debug = list()
-
 
 /datum/controller/subsystem/jobs/Initialize()
 	SetupOccupations()
 	return SS_INIT_SUCCESS
-
 
 // Only fires every 5 minutes
 /datum/controller/subsystem/jobs/fire()
@@ -33,25 +36,69 @@ SUBSYSTEM_DEF(jobs)
 		return
 	batch_update_player_exp(announce = FALSE) // Set this to true if you ever want to inform players about their EXP gains
 
-
 /datum/controller/subsystem/jobs/proc/SetupOccupations()
 	occupations = list()
 	var/list/all_jobs = subtypesof(/datum/job)
-	if(!all_jobs.len)
+	if(!length(all_jobs))
 		to_chat(world, span_warning("Ошибка выдачи профессий, датумы профессий не найдены."))
 		return
 
+	/// Order of departments, used to sort jobs in "occupations" list
+	var/list/department_order = list(
+		STATION_DEPARTMENT_COMMAND,
+		STATION_DEPARTMENT_ENGINEERING,
+		STATION_DEPARTMENT_SCIENCE,
+		STATION_DEPARTMENT_MEDICAL,
+		STATION_DEPARTMENT_SECURITY,
+		STATION_DEPARTMENT_SUPPLY,
+		STATION_DEPARTMENT_SERVICE,
+		STATION_DEPARTMENT_LEGAL,
+		STATION_DEPARTMENT_CIVILIAN,
+		STATION_DEPARTMENT_SILICON,
+		STATION_DEPARTMENT_OTHER,
+	)
+
+	var/list/department_groups = list()
+	for(var/department in department_order)
+		department_groups[department] = list()
+
 	for(var/J in all_jobs)
 		var/datum/job/job = new J()
-		if(!job)
+
+		if(!job || !job.title) // to avoid adding special cod-only datums without title
 			continue
-		occupations += job
+
 		name_occupations[job.title] = job
 		type_occupations[J] = job
 
+		// Splitting by departments
+		var/department = job.department
+		if(department in department_groups)
+			department_groups[department] += job
+
+	// Order: head_of_department -> department jobs
+	for(var/department in department_groups)
+		var/list/department_jobs = department_groups[department]
+		var/datum/job/head_of_department = null
+
+		for(var/datum/job/job in department_jobs)
+			if(job.head_position)
+				head_of_department = job
+				break
+
+		// Head goes first
+		if(!head_of_department)
+			continue
+
+		department_jobs -= head_of_department
+		department_jobs.Insert(1, head_of_department)
+
+	// Collecting a list in the right order
+	for(var/department in department_order)
+		occupations += department_groups[department]
+
 	LoadJobsFile("config/jobs.txt", FALSE)
 	LoadJobsFile("config/jobs_highpop.txt", TRUE)
-
 
 /datum/controller/subsystem/jobs/proc/ApplyHighpopConfig()
 	for(var/datum/job/J in occupations)
@@ -61,11 +108,9 @@ SUBSYSTEM_DEF(jobs)
 				positions_lowpop = initial(J.total_positions)
 			J.total_positions += (J.positions_highpop - positions_lowpop)
 
-
 /datum/controller/subsystem/jobs/proc/Debug(text)
-	if(GLOB.debug2)
+	if(GLOB.debugging_enabled)
 		job_debug.Add(text)
-
 
 /datum/controller/subsystem/jobs/proc/GetJob(rank)
 	return name_occupations[rank]
@@ -78,24 +123,26 @@ SUBSYSTEM_DEF(jobs)
 
 /datum/controller/subsystem/jobs/proc/AssignRole(mob/new_player/player, rank, latejoin = FALSE)
 	Debug("Running AR, Player: [player], Rank: [rank], LJ: [latejoin]")
-	if(player && player.mind && rank)
+	if(player?.mind && rank)
 		var/datum/job/job = GetJob(rank)
 		if(!job)
-			return 0
+			return FALSE
 		if(jobban_isbanned(player, rank))
-			return 0
+			return FALSE
 		if(!job.player_old_enough(player.client))
-			return 0
+			return FALSE
 		if(job.available_in_playtime(player.client))
-			return 0
+			return FALSE
 		if(!job.can_novice_play(player.client))
-			return 0
+			return FALSE
 		if(job.barred_by_disability(player.client))
-			return 0
+			return FALSE
 		if(!job.character_old_enough(player.client))
-			return 0
+			return FALSE
 		if(job.species_in_blacklist(player.client))
-			return 0
+			return FALSE
+		if(!job.check_custom_requirements(player.client))
+			return FALSE
 
 		var/position_limit = job.total_positions
 		if(!latejoin)
@@ -176,6 +223,9 @@ SUBSYSTEM_DEF(jobs)
 		if(istype(job, GetJob(JOB_TITLE_CIVILIAN))) // We don't want to give him assistant, that's boring!
 			continue
 
+		if(istype(job, GetJob(JOB_TITLE_PRISONER))) //If you want a prisoner position, select it!
+			continue
+
 		if(job.title in GLOB.command_positions) //If you want a command position, select it!
 			continue
 
@@ -240,7 +290,7 @@ SUBSYSTEM_DEF(jobs)
 			if(!job)
 				continue
 			var/list/candidates = FindOccupationCandidates(job, level)
-			if(!candidates.len)
+			if(!length(candidates))
 				continue
 
 			var/list/filteredCandidates = list()
@@ -251,7 +301,7 @@ SUBSYSTEM_DEF(jobs)
 					continue
 				filteredCandidates += V
 
-			if(!filteredCandidates.len)
+			if(!length(filteredCandidates))
 				continue
 
 			var/mob/new_player/candidate = pick(filteredCandidates)
@@ -260,7 +310,6 @@ SUBSYSTEM_DEF(jobs)
 
 	return 0
 
-
 ///This proc is called at the start of the level loop of DivideOccupations() and will cause head jobs to be checked before any other jobs of the same level
 /datum/controller/subsystem/jobs/proc/CheckHeadPositions(level)
 	for(var/command_position in GLOB.command_positions)
@@ -268,11 +317,10 @@ SUBSYSTEM_DEF(jobs)
 		if(!job)
 			continue
 		var/list/candidates = FindOccupationCandidates(job, level)
-		if(!candidates.len)
+		if(!length(candidates))
 			continue
 		var/mob/new_player/candidate = pick(candidates)
 		AssignRole(candidate, command_position)
-
 
 /datum/controller/subsystem/jobs/proc/FillMalfAIPosition()
 	if(!CONFIG_GET(flag/allow_ai))
@@ -284,6 +332,16 @@ SUBSYSTEM_DEF(jobs)
 
 	if(new_malf && AssignRole(new_malf, JOB_TITLE_AI))
 		return TRUE
+
+/datum/controller/subsystem/jobs/proc/fill_prisoners_position()
+	var/datum/job/job = GetJob(JOB_TITLE_PRISONER)
+	if(!job)
+		return FALSE
+	for(var/mob/new_player/new_prisoner in new_prisoners)
+		if(!new_prisoner)
+			continue
+		AssignRole(new_prisoner, JOB_TITLE_PRISONER)
+	return TRUE
 
 /** Proc DivideOccupations
 *  fills var "assigned_role" for all ready players.
@@ -298,7 +356,7 @@ SUBSYSTEM_DEF(jobs)
 	if(!CONFIG_GET(flag/allow_ai))
 		for(var/datum/job/ai/A in occupations)
 			A.spawn_positions = 0
-	else if(SSticker && SSticker.triai) //Holder for Triumvirate is stored in the ticker, this just processes it
+	else if(SSticker?.triai) //Holder for Triumvirate is stored in the ticker, this just processes it
 		for(var/datum/job/ai/A in occupations)
 			A.spawn_positions = 3
 
@@ -308,8 +366,8 @@ SUBSYSTEM_DEF(jobs)
 		if(player.ready && player.mind && !player.mind.assigned_role)
 			unassigned += player
 
-	Debug("DO, Len: [unassigned.len]")
-	if(unassigned.len == 0)
+	Debug("DO, Len: [length(unassigned)]")
+	if(length(unassigned) == 0)
 		return 0
 
 	//Shuffle players and jobs
@@ -323,11 +381,16 @@ SUBSYSTEM_DEF(jobs)
 		Debug("DO, AI Check end")
 		new_malf = null
 
+	if(length(new_prisoners)) // code to assign traitor prisoner before civs.
+		Debug("DO, Running Traitor Prisoners Check")
+		fill_prisoners_position()
+		Debug("DO, Traitor Prisoners Check end")
+
 	//People who wants to be assistants, sure, go on.
 	Debug("DO, Running Civilian Check 1")
 	var/datum/job/civ = new /datum/job/civilian()
 	var/list/civilian_candidates = FindOccupationCandidates(civ, 3)
-	Debug("AC1, Candidates: [civilian_candidates.len]")
+	Debug("AC1, Candidates: [length(civilian_candidates)]")
 	for(var/mob/new_player/player in civilian_candidates)
 		Debug("AC1 pass, Player: [player]")
 		AssignRole(player, JOB_TITLE_CIVILIAN)
@@ -341,7 +404,6 @@ SUBSYSTEM_DEF(jobs)
 
 	//Other jobs are now checked
 	Debug("DO, Running Standard Check")
-
 
 	// New job giving system by Donkie
 	// This will cause lots of more loops, but since it's only done once it shouldn't really matter much at all.
@@ -436,23 +498,25 @@ SUBSYSTEM_DEF(jobs)
 	log_debug("Dividing Occupations took [stop_watch(watch)]s")
 	return 1
 
-/datum/controller/subsystem/jobs/proc/AssignRank(mob/living/carbon/human/H, rank, joined_late = FALSE)
-	if(!H)
+/datum/controller/subsystem/jobs/proc/AssignRank(mob/living/carbon/human/human, rank, joined_late = FALSE)
+	if(!human)
 		return null
 	var/datum/job/job = GetJob(rank)
 
-	H.job = rank
+	human.job = rank
 
 	var/alt_title = null
 
-	if(H.mind)
-		H.mind.assigned_role = rank
-		alt_title = H.mind.role_alt_title
+	if(human.mind)
+		human.mind.assigned_role = rank
+		alt_title = human.mind.role_alt_title
 
-		CreateMoneyAccount(H, rank, job)
+		CreateMoneyAccount(human, rank, job)
+	if(!job.announce_job)
+		return human
 	var/list/L = list()
 	L.Add("<b>Вы [span_red(alt_title ? alt_title : rank)].</b>")
-	L.Add("<b>На этой должности вы отвечаете непосредственно перед [span_red(replacetext(job.supervisors,"the ",""))]. Особые обстоятельства могут это изменить.</b>")
+	L.Add("<b>На этой должности вы отвечаете непосредственно перед [span_notice(job.supervisors)]. </b>")
 	L.Add("<b>Для получения дополнительной информации о работе на станции, см. <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Standard_Operating_Procedure\">Стандартные Рабочие Процедуры (СРП)</a></b>")
 	if(job.is_service)
 		L.Add("<b>Будучи работником отдела Обслуживания, убедитесь что прочли <a href=\"[CONFIG_GET(string/wikiurl)]/index.php/Standard_Operating_Procedure_&#40;Service&#41\">СРП своего отдела</a></b>")
@@ -475,90 +539,166 @@ SUBSYSTEM_DEF(jobs)
 	if(job.is_novice)
 		L.Add("<b>Ваша должность ограничена во всех взаимодействиях с рабочим имуществом отдела и экипажем станции, при отсутствии приставленного к нему квалифицированного сотрудника или полученного разрешения от вышестоящего начальства. Не забудьте ознакомиться с СРП вашей должности. По истечению срока прохождения стажировки, данная должность более не будет вам доступна. Используйте её для обучения, не стесняйтесь задавать вопросы вашим старшим коллегам!</b>")
 
-	to_chat(H, chat_box_green(L.Join("<br>")))
+	to_chat(human, chat_box_green(L.Join("<br>")))
 
-	return H
+	return human
 
-/datum/controller/subsystem/jobs/proc/EquipRank(mob/living/carbon/human/H, rank, joined_late = FALSE) // Equip and put them in an area
-	if(!H)
+/datum/controller/subsystem/jobs/proc/get_default_spawn_landmark(rank)
+	for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
+		if(sloc.name != rank)
+			continue
+
+		if(locate(/mob/living) in sloc.loc)
+			continue
+
+		return sloc
+
+/// Moves character in it's job's spawn. Returns outfit override.
+/datum/controller/subsystem/jobs/proc/equip_spawn(mob/living/carbon/human/human, rank)
+	var/turf/turf_spawn = null
+	var/obj/mark_spawn = null
+	if(length(GLOB.start_override))
+		mark_spawn = pick(GLOB.start_override)
+		. = new GLOB.start_override_outfit
+	else
+		mark_spawn = get_default_spawn_landmark(rank)
+
+	if(HAS_TRAIT(SSstation, STATION_TRAIT_RANDOM_ARRIVALS))
+		if(rank == JOB_TITLE_PRISONER)
+			mark_spawn = get_safe_random_station_turf(typesof(/area/security))  || pick(GLOB.latejoin_prisoner)
+		else
+			mark_spawn = get_safe_random_station_turf()  || pick(GLOB.latejoin)
+
+	if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
+		if(rank == JOB_TITLE_PRISONER)
+			mark_spawn = pick(GLOB.latejoin_prisoner)
+		else
+			var/obj/effect/landmark/start/hangover_spawn_point
+			for(var/obj/effect/landmark/start/hangover/hangover_landmark in GLOB.start_landmarks_list)
+				hangover_spawn_point = hangover_landmark
+				if(hangover_landmark.used) //so we can revert to spawning them on top of eachother if something goes wrong
+					continue
+				hangover_landmark.used = TRUE
+				break
+			mark_spawn = hangover_spawn_point || pick(GLOB.latejoin)
+
+	if(!mark_spawn)
+		mark_spawn = locate("start*[rank]") // use old stype
+
+	if(!mark_spawn) // No spawn, then spawn on latejoin mark
+		stack_trace("No landmark start for [rank].")
+		if(rank == JOB_TITLE_PRISONER)
+			mark_spawn = pick(GLOB.latejoin_prisoner)
+		else
+			mark_spawn = pick(GLOB.latejoin)
+
+
+	if(!mark_spawn || HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS)) // still no spawn, fall back to the arrivals shuttle
+		if(rank == JOB_TITLE_PRISONER)
+			mark_spawn = get_random_area_turf_for_spawn(/area/security/permabrig)
+		else
+			mark_spawn = get_random_area_turf_for_spawn(/area/shuttle/arrival/station)
+
+	if(isturf(mark_spawn))
+		turf_spawn = mark_spawn
+
+	else if(istype(mark_spawn, /obj/effect/landmark/start) && isturf(mark_spawn.loc))
+		turf_spawn = mark_spawn.loc
+
+	else
+		message_admins("Couldn't find spawnpoint for [human] [ADMIN_COORDJMP(human)]. Notify mapper about it.")
+
+	if(!turf_spawn)
+		return
+
+	turf_spawn.JoinPlayerHere(human)
+	// Moving wheelchair if they have one
+	if(!human.buckled || !istype(human.buckled, /obj/vehicle/ridden/wheelchair))
+		return
+
+	human.buckled.forceMove(human.loc)
+	human.buckled.dir = human.dir
+
+/datum/controller/subsystem/jobs/proc/check_nearsight(mob/living/carbon/human/human)
+	if(!HAS_TRAIT(human, TRAIT_NEARSIGHTED))
+		return
+
+	var/equipped = human.equip_to_slot_or_del(new /obj/item/clothing/glasses/regular(human), ITEM_SLOT_EYES)
+	if(!equipped)
+		return
+
+	var/obj/item/clothing/glasses/glasses = human.glasses
+	if(!istype(glasses) || glasses.prescription)
+		return
+
+	glasses.upgrade_prescription()
+	human.update_nearsighted_effects()
+
+/datum/controller/subsystem/jobs/proc/EquipRank(mob/living/carbon/human/human, rank, joined_late = FALSE) // Equip and put them in an area
+	if(!human)
 		return null
 
 	var/datum/job/job = GetJob(rank)
 
-	H.job = rank
+	human.job = rank
 
+	var/datum/outfit/outfit_override
 	if(!joined_late)
-		var/turf/turf_spawn = null
-		var/obj/mark_spawn = null
-		for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
-			if(sloc.name != rank)
-				continue
-			if(locate(/mob/living) in sloc.loc)
-				continue
-			mark_spawn = sloc
-			break
-		if(!mark_spawn)
-			mark_spawn = locate("start*[rank]") // use old stype
-		if(!mark_spawn) // No spawn, then spawn on latejoin mark
-			log_runtime(EXCEPTION("No landmark start for [rank]."))
-			mark_spawn = pick(GLOB.latejoin)
-		if(!mark_spawn) // still no spawn, fall back to the arrivals shuttle
-			var/list/turf/possible_turfs = list()
-			for(var/turf/TS in get_area_turfs(/area/shuttle/arrival/station))
-				if(TS.density)
-					continue
-				for(var/obj/O in TS)
-					if(O.density)
-						continue
-				possible_turfs += TS
-			mark_spawn = pick(possible_turfs)
+		outfit_override = equip_spawn(human, rank)
 
-		if(isturf(mark_spawn))
-			turf_spawn = mark_spawn
-		else if(istype(mark_spawn, /obj/effect/landmark/start) && isturf(mark_spawn.loc))
-			turf_spawn = mark_spawn.loc
-		else
-			message_admins("Couldn't find spawnpoint for [H] [ADMIN_COORDJMP(H)]. Notify mapper about it.")
+	if(outfit_override)
+		outfit_override.equip(human)
 
-		if(turf_spawn)
-			H.forceMove(turf_spawn)
-			// Moving wheelchair if they have one
-			if(H.buckled && istype(H.buckled, /obj/vehicle/ridden/wheelchair))
-				H.buckled.forceMove(H.loc)
-				H.buckled.dir = H.dir
-
-	if(job)
-		var/new_mob = job.equip(H)
+	else if(job)
+		var/new_mob = job.equip(human)
 		if(ismob(new_mob))
-			H = new_mob
+			human = new_mob
 
-	if(job && H)
-		job.after_spawn(H)
+	if(!job || !human)
+		return human
 
-		//Gives glasses to the vision impaired
-		if(HAS_TRAIT(H, TRAIT_NEARSIGHTED))
-			var/equipped = H.equip_to_slot_or_del(new /obj/item/clothing/glasses/regular(H), ITEM_SLOT_EYES)
-			if(equipped != 1)
-				var/obj/item/clothing/glasses/G = H.glasses
-				if(istype(G) && !G.prescription)
-					G.upgrade_prescription()
-					H.update_nearsighted_effects()
+	if(!outfit_override)
+		job.after_spawn(human)
 
-		if(!issilicon(H))
-			// Wheelchair necessary?
-			var/obj/item/organ/external/l_foot = H.get_organ(BODY_ZONE_PRECISE_L_FOOT)
-			var/obj/item/organ/external/r_foot = H.get_organ(BODY_ZONE_PRECISE_R_FOOT)
-			if(!l_foot && !r_foot || (H.client.prefs.disabilities & DISABILITY_FLAG_PARAPLEGIA) && !(H.dna.species.blacklisted_disabilities & DISABILITY_FLAG_PARAPLEGIA))
-				var/obj/vehicle/ridden/wheelchair/W = new /obj/vehicle/ridden/wheelchair(H.loc)
-				W.buckle_mob(H, TRUE)
-	return H
+	//Gives glasses to the vision impaired
+	check_nearsight(human)
+	if(issilicon(human))
+		return human
 
+	// Wheelchair necessary?
+	var/obj/item/organ/external/l_foot = human.get_organ(BODY_ZONE_PRECISE_L_FOOT)
+	var/obj/item/organ/external/r_foot = human.get_organ(BODY_ZONE_PRECISE_R_FOOT)
+	var/has_paraplegia = HASBIT(human.client.prefs.disabilities, DISABILITY_FLAG_PARAPLEGIA) && !HASBIT(human.dna.species.blacklisted_disabilities, DISABILITY_FLAG_PARAPLEGIA)
+	if((l_foot || r_foot) && !has_paraplegia) // Minimum one usable leg.
+		return human
+
+	var/obj/vehicle/ridden/wheelchair/wheelchair = new /obj/vehicle/ridden/wheelchair(human.loc)
+	wheelchair.buckle_mob(human, TRUE)
+	return human
+
+/datum/controller/subsystem/jobs/proc/get_random_area_turf_for_spawn(area_type)
+	var/list/turf/possible_turfs = list()
+	var/list/turf/possible_but_bad_turfs = list() // Used if too many people for shattle.
+	for(var/turf/TS in get_area_turfs(area_type))
+		if(TS.density)
+			continue
+		var/bad_turf = FALSE
+		for(var/obj/O in TS)
+			if(!O.density)
+				continue
+			bad_turf = TRUE
+			possible_but_bad_turfs += TS
+			break
+		if(bad_turf)
+			continue
+		possible_turfs += TS
+	return length(possible_turfs) ? pick(possible_turfs) : pick(possible_but_bad_turfs)
 
 /datum/controller/subsystem/jobs/proc/LoadJobsFile(jobsfile, highpop) //ran during round setup, reads info from jobs.txt -- Urist
 	if(!CONFIG_GET(flag/load_jobs_from_txt))
 		return
 
-	var/list/jobEntries = file2list(jobsfile)
+	var/list/jobEntries = world.file2list(jobsfile)
 
 	for(var/job in jobEntries)
 		if(!job)
@@ -634,12 +774,15 @@ SUBSYSTEM_DEF(jobs)
 		SSblackbox.record_feedback("nested tally", "job_preferences", disabled, list("[job.title]", "disabled"))
 		SSblackbox.record_feedback("nested tally", "job_preferences", charyoung, list("[job.title]", "charyoung"))
 
-
-/datum/controller/subsystem/jobs/proc/CreateMoneyAccount(mob/living/H, rank, datum/job/job)
+/datum/controller/subsystem/jobs/proc/CreateMoneyAccount(mob/living/human, rank, datum/job/job)
+	if(!job)
+		return
 	var/money_amount = rand(job.min_start_money, job.max_start_money)
-	var/datum/money_account/M = create_account(H.real_name, money_amount, null, job, TRUE)
-	if(H.dna)
-		GLOB.dna2account[H.dna] = M
+	if(human.client.donator_level > 0)
+		money_amount += human.client.donator_level * START_CREDITS_BY_DONATION_TIER
+	var/datum/money_account/M = create_account(human.real_name, money_amount, null, job, TRUE)
+	if(human.dna)
+		GLOB.dna2account[human.dna] = M
 
 	var/remembered_info = ""
 
@@ -647,13 +790,13 @@ SUBSYSTEM_DEF(jobs)
 	remembered_info += "<b>ПИН вашего аккаунта:</b> [M.remote_access_pin]<br>"
 	remembered_info += "<b>Баланс вашего аккаунта:</b> $[M.money]<br>"
 
-	if(M.transaction_log.len)
+	if(length(M.transaction_log))
 		var/datum/transaction/T = M.transaction_log[1]
 		remembered_info += "<b>Ваш аккаунт был создан:</b> [T.time], [T.date] на [T.source_terminal]<br>"
-	H.mind.store_memory(remembered_info)
+	human.mind.store_memory(remembered_info)
 
 	// If they're head, give them the account info for their department
-	if(job && job.head_position)
+	if(job.head_position)
 		remembered_info = ""
 		var/datum/money_account/department_account = GLOB.department_accounts[job.department]
 
@@ -662,27 +805,27 @@ SUBSYSTEM_DEF(jobs)
 			remembered_info += "<b>ПИН аккаунта вашего отдела:</b> [department_account.remote_access_pin]<br>"
 			remembered_info += "<b>Баланс аккаунта вашего отдела:</b> $[department_account.money]<br>"
 
-		H.mind.store_memory(remembered_info)
+		human.mind.store_memory(remembered_info)
 
-	H.mind.initial_account = M
+	human.mind.initial_account = M
 
-	H.mind.initial_account.insurance_type = job.insurance_type
-	switch (job.insurance_type)
+	human.mind.initial_account.insurance_type = job.insurance_type
+	switch(job.insurance_type)
 		if(INSURANCE_TYPE_NONE)
-			H.mind.initial_account.insurance = INSURANCE_NONE
+			human.mind.initial_account.insurance = INSURANCE_NONE
 		if(INSURANCE_TYPE_BUDGETARY)
-			H.mind.initial_account.insurance = INSURANCE_BUDGETARY
+			human.mind.initial_account.insurance = INSURANCE_BUDGETARY
 		if(INSURANCE_TYPE_STANDART)
-			H.mind.initial_account.insurance = INSURANCE_STANDART
+			human.mind.initial_account.insurance = INSURANCE_STANDART
 		if(INSURANCE_TYPE_EXTENDED)
-			H.mind.initial_account.insurance = INSURANCE_EXTENDED
+			human.mind.initial_account.insurance = INSURANCE_EXTENDED
 		if(INSURANCE_TYPE_DELUXE)
-			H.mind.initial_account.insurance = INSURANCE_DELUXE
+			human.mind.initial_account.insurance = INSURANCE_DELUXE
 		if(INSURANCE_TYPE_NT_SPECIAL)
-			H.mind.initial_account.insurance = INSURANCE_NT_SPECIAL
+			human.mind.initial_account.insurance = INSURANCE_NT_SPECIAL
 
 	spawn(0)
-		to_chat(H, span_boldnotice("Номер вашего аккаунта: [M.account_number], ПИН вашего аккаунта: [M.remote_access_pin]"))
+		to_chat(human, span_boldnotice("Номер вашего аккаунта: [M.account_number], ПИН вашего аккаунта: [M.remote_access_pin]"))
 
 /datum/controller/subsystem/jobs/proc/format_jobs_for_id_computer(obj/item/card/id/tgtcard)
 	var/list/jobs_to_formats = list()
@@ -691,24 +834,20 @@ SUBSYSTEM_DEF(jobs)
 		for(var/datum/job/job in occupations)
 			if(tgtcard.rank && tgtcard.rank == job.title)
 				jobs_to_formats[job.title] = "green" // the job they already have is pre-selected
-			else if(tgtcard.assignment == "Demoted" || tgtcard.assignment == "Terminated")
+			else if(tgtcard.assignment == JOB_TITLE_RU_DEMOTED || tgtcard.assignment == JOB_TITLE_RU_TERMINATED)
 				jobs_to_formats[job.title] = "grey"
-			else if(!job.would_accept_job_transfer_from_player(M))
-				jobs_to_formats[job.title] = "grey" // jobs which are karma-locked and not unlocked for this player are discouraged
 			else if((job.title in GLOB.command_positions) && istype(M) && M.client && job.available_in_playtime(M.client))
 				jobs_to_formats[job.title] = "grey" // command jobs which are playtime-locked and not unlocked for this player are discouraged
 			else if(job.total_positions && !job.current_positions && job.title != JOB_TITLE_CIVILIAN)
 				jobs_to_formats[job.title] = "teal" // jobs with nobody doing them at all are encouraged
 			else if(job.total_positions >= 0 && job.current_positions >= job.total_positions)
 				jobs_to_formats[job.title] = "grey" // jobs that are full (no free positions) are discouraged
-		if(tgtcard.assignment == "Demoted" || tgtcard.assignment == "Terminated")
+		if(tgtcard.assignment == JOB_TITLE_RU_DEMOTED || tgtcard.assignment == JOB_TITLE_RU_TERMINATED)
 			jobs_to_formats["Custom"] = "grey"
 	return jobs_to_formats
 
-
-
 /datum/controller/subsystem/jobs/proc/log_job_transfer(transferee, oldvalue, newvalue, whodidit, reason)
-	id_change_records["[id_change_counter]"] = list(
+	id_change_records[id_change_counter] = list(
 		"transferee" = transferee,
 		"oldvalue" = oldvalue,
 		"newvalue" = newvalue,
@@ -753,7 +892,7 @@ SUBSYSTEM_DEF(jobs)
 		return
 	var/datum/data/pda/app/messenger/PM = target_pda.find_program(/datum/data/pda/app/messenger)
 	if(PM && PM.can_receive())
-		PM.notify("<b>Автоматическое Оповещение: </b>\"[antext]\" (Невозможно Ответить)", 0) // the 0 means don't make the PDA flash
+		PM.notify("<b>Автоматическое оповещение: </b>\"[antext]\" (Невозможно Ответить)", 0) // the 0 means don't make the PDA flash
 
 /datum/controller/subsystem/jobs/proc/notify_by_name(target_name, antext)
 	// Used to notify a specific crew member based on their real_name
@@ -768,7 +907,7 @@ SUBSYSTEM_DEF(jobs)
 		return
 	var/datum/data/pda/app/messenger/PM = target_pda.find_program(/datum/data/pda/app/messenger)
 	if(PM && PM.can_receive())
-		PM.notify("<b>Автоматическое Оповещение: </b>\"[antext]\" (Невозможно Ответить)", 0) // the 0 means don't make the PDA flash
+		PM.notify("<b>Автоматическое оповещение: </b>\"[antext]\" (Невозможно Ответить)", 0) // the 0 means don't make the PDA flash
 
 /datum/controller/subsystem/jobs/proc/format_job_change_records(centcom)
 	var/list/formatted = list()
@@ -782,19 +921,18 @@ SUBSYSTEM_DEF(jobs)
 		formatted.Add(list(newlist))
 	return formatted
 
-
 /datum/controller/subsystem/jobs/proc/delete_log_records(sourceuser, delete_all)
 	. = 0
 	if(!sourceuser)
 		return
-	var/list/new_id_change_records = list()
+	var/alist/new_id_change_records = alist()
 	for(var/thisid in id_change_records)
 		var/thisrecord = id_change_records[thisid]
 		if(!thisrecord["deletedby"])
 			if(delete_all || thisrecord["whodidit"] == sourceuser)
 				thisrecord["deletedby"] = sourceuser
 				.++
-		new_id_change_records["[id_change_counter]"] = thisrecord
+		new_id_change_records[id_change_counter] = thisrecord
 		id_change_counter++
 	id_change_records = new_id_change_records
 
@@ -804,7 +942,7 @@ SUBSYSTEM_DEF(jobs)
 	var/start_time = start_watch()
 	// First calculate minutes
 	var/divider = 10 // By default, 10 deciseconds in 1 second
-	if(flags & SS_TICKER)
+	if(ss_flags & SS_TICKER)
 		divider = 20 // If this SS ever gets made into a ticker SS, account for that
 
 	var/minutes = (wait / divider) / 60 // Calculate minutes based on the SS wait time (How often this proc fires)
@@ -862,7 +1000,6 @@ SUBSYSTEM_DEF(jobs)
 				play_records[C.ckey][rtype] = text2num(read_records[C.ckey][rtype])
 			else
 				play_records[C.ckey][rtype] = 0
-
 
 		var/myrole
 		if(C.mob.mind)
@@ -927,9 +1064,52 @@ SUBSYSTEM_DEF(jobs)
 
 		playtime_history_update_queries += update_query_history
 
-
 	// warn=TRUE, qdel=TRUE, assoc=FALSE, log=FALSE
 	SSdbcore.MassExecute(player_update_queries, TRUE, TRUE, FALSE, FALSE) // Batch execute so we can take advantage of async magic
 	SSdbcore.MassExecute(playtime_history_update_queries, TRUE, TRUE, FALSE, FALSE)
 
 	Debug("Successfully updated all EXP data in [stop_watch(start_time)]s")
+
+/atom/proc/JoinPlayerHere(mob/joining_mob)
+	// By default, just place the mob on the same turf as the marker or whatever.
+	joining_mob.forceMove(get_turf(src))
+	if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
+		make_hungover(joining_mob)
+
+/atom/proc/make_hungover(mob/hangover_mob)
+	if(!iscarbon(hangover_mob))
+		return
+	var/mob/living/carbon/spawned_carbon = hangover_mob
+	spawned_carbon.set_resting(TRUE, silent = TRUE, instant = TRUE)
+	var/obj/item/organ/internal/liver/our_liver
+	var/liver_multiplier = 1
+	our_liver = spawned_carbon.get_int_organ(/obj/item/organ/internal/liver)
+	if(our_liver)
+		liver_multiplier = our_liver.alcohol_intensity
+	spawned_carbon.AdjustDrunk((2 / liver_multiplier) MINUTES)
+	spawned_carbon.AdjustDisgust(2 MINUTES)
+
+/// Returns a list of jobs that we are allowed to fuck with during random events
+/datum/controller/subsystem/jobs/proc/get_valid_overflow_jobs()
+	var/static/list/overflow_jobs
+	if(!isnull(overflow_jobs))
+		return overflow_jobs
+
+	overflow_jobs = list()
+	for(var/datum/job/check_job in occupations)
+		if(check_job.admin_only)
+			continue
+		if(!check_job.allow_bureaucratic_error)
+			continue
+		overflow_jobs += check_job
+	return overflow_jobs
+
+/datum/controller/subsystem/jobs/proc/set_overflow_role(new_overflow_role)
+	var/datum/job/new_overflow = ispath(new_overflow_role) ? GetJobType(new_overflow_role) : GetJob(new_overflow_role)
+	if(!new_overflow)
+		CRASH("set_overflow_role failed | new_overflow_role: [isnull(new_overflow_role) ? "null" : new_overflow_role]")
+	var/cap = CONFIG_GET(number/overflow_cap)
+
+	new_overflow.allow_bureaucratic_error = FALSE
+	new_overflow.spawn_positions = cap
+	new_overflow.total_positions = cap

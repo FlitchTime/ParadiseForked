@@ -4,7 +4,6 @@
 	desc = "Mirror mirror on the wall, who's the most robust of them all?"
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "mirror"
-	density = FALSE
 	anchored = TRUE
 	max_integrity = 200
 	integrity_failure = 100
@@ -50,7 +49,7 @@
 	if(!broken && !(obj_flags & NODECONSTRUCT))
 		icon_state = "mirror_broke"
 		if(!mapload)
-			playsound(src, "shatter", 70, TRUE)
+			playsound(src, SFX_SHATTER, 70, TRUE)
 		if(desc == initial(desc))
 			desc = "Oh no, seven years of bad luck!"
 		broken = TRUE
@@ -60,14 +59,14 @@
 	. = TRUE
 	if(!I.tool_use_check(user, 0))
 		return
-	user.visible_message("<span class='notice'>[user] begins to unfasten [src].</span>", "<span class='notice'>You begin to unfasten [src].</span>")
+	user.visible_message(span_notice("[user] begins to unfasten [src]."), span_notice("You begin to unfasten [src]."))
 	if(!I.use_tool(src, user, 30, volume = I.tool_volume))
 		return
 	if(broken)
-		user.visible_message("<span class='notice'>[user] drops the broken shards to the floor.</span>", "<span class='notice'>You drop the broken shards on the floor.</span>")
+		user.visible_message(span_notice("[user] drops the broken shards to the floor."), span_notice("You drop the broken shards on the floor."))
 		new /obj/item/shard(get_turf(user))
 	else
-		user.visible_message("<span class='notice'>[user] carefully places [src] on the floor.</span>", "<span class='notice'>You carefully place [src] on the floor.</span>")
+		user.visible_message(span_notice("[user] carefully places [src] on the floor."), span_notice("You carefully place [src] on the floor."))
 		new /obj/item/mounted/mirror(get_turf(user))
 	qdel(src)
 
@@ -96,7 +95,6 @@
 
 	return ..()
 
-
 /obj/item/mounted/mirror
 	name = "mirror"
 	desc = "Some reflective glass ready to be hung on a wall. Don't break it!"
@@ -123,7 +121,7 @@
 
 	switch(choice)
 		if("Name")
-			var/newname = copytext(sanitize(input(H, "Who are we again?", "Name change", H.name) as null|text),1,MAX_NAME_LEN)
+			var/newname = tgui_input_text(H, "Who are we again?", "Name change", H.name, max_length = MAX_NAME_LEN)
 
 			if(!newname)
 				return
@@ -147,6 +145,7 @@
 				AC.name = "Magic Mirror"
 				AC.flags = APPEARANCE_ALL
 				AC.whitelist = race_list
+				AC.wizard_mirror = TRUE
 				ui_users[user] = AC
 			AC.ui_interact(user)
 
@@ -176,10 +175,8 @@
 /obj/structure/mirror/magic/ui_close(mob/user)
 	curse(user)
 
-
 /obj/structure/mirror/magic/attackby(obj/item/I, mob/living/user, params)
 	return ATTACK_CHAIN_BLOCKED_ALL
-
 
 /obj/structure/mirror/magic/proc/curse(mob/living/user)
 	return

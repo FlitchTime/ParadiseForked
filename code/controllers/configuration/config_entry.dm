@@ -13,8 +13,6 @@
 	var/deprecated_by
 	/// The /datum/config_entry type that supercedes this one
 	var/protection = NONE
-	/// Do not instantiate if type matches this
-	var/abstract_type = /datum/config_entry
 	/// Force validate and set on VV. VAS proccall guard will run regardless.
 	var/vv_VAS = TRUE
 	/// Controls if error is thrown when duplicate configuration values for this entry type are encountered
@@ -37,10 +35,10 @@
  * Returns the value of the configuration datum to its default, used for resetting a config value. Note this also sets the protection back to default.
  */
 /datum/config_entry/proc/set_default()
-	if ((protection & CONFIG_ENTRY_LOCKED) && IsAdminAdvancedProcCall())
+	if((protection & CONFIG_ENTRY_LOCKED) && IsAdminAdvancedProcCall())
 		log_admin_private("[key_name(usr)] attempted to reset locked config entry [type] to its default")
 		return
-	if (islist(default))
+	if(islist(default))
 		var/list/L = default
 		config_entry_value = L.Copy()
 	else
@@ -144,10 +142,10 @@
 	var/lowercase = FALSE
 
 /datum/config_entry/str_list/ValidateAndSet(str_val)
-	if (!VASProcCallGuard(str_val))
+	if(!VASProcCallGuard(str_val))
 		return FALSE
 	str_val = trim(str_val)
-	if (str_val != "")
+	if(str_val != "")
 		config_entry_value += lowercase ? lowertext(str_val) : str_val
 	return TRUE
 
@@ -166,7 +164,7 @@
 		if(isnull(temp))
 			return FALSE
 		new_list += temp
-	if(!new_list.len)
+	if(!length(new_list))
 		return FALSE
 	config_entry_value = new_list
 	return TRUE
@@ -274,7 +272,6 @@
 				return
 
 			return key_path
-
 
 /// Takes a given config value and validates it. If successful, returns the formatted key. If unsuccessful, returns null.
 /datum/config_entry/keyed_list/proc/validate_config_value(value)

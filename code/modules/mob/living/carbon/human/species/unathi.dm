@@ -11,10 +11,9 @@
 	unarmed_type = /datum/unarmed_attack/claws
 	primitive_form = /datum/species/monkey/unathi
 
-	brute_mod = 0.9
 	heatmod = 0.8
 	coldmod = 1.2
-	hunger_drain_mod = 1.6
+	hunger_drain_mod = 1.3
 
 	blurb = "A heavily reptillian species, Unathi (or 'Sinta as they call themselves) hail from the \
 	Uuosa-Eso system, which roughly translates to 'burning mother'.<br/><br/>Coming from a harsh, radioactive \
@@ -40,14 +39,18 @@
 
 	blood_species = "Unathi"
 	flesh_color = "#34AF10"
-	reagent_tag = PROCESS_ORG
+	reagent_tag = ORGANIC
 	base_color = "#066000"
+	blood_color = BLOOD_COLOR_LIZARD
+
+	speciesbox = /obj/item/storage/box/survival/species/unathi
+
 	//Default styles for created mobs.
 	default_headacc = "Simple"
 	default_headacc_colour = "#404040"
 	butt_sprite = "unathi"
-	male_scream_sound = list("u_mscream")
-	female_scream_sound = list("u_fscream")
+	male_scream_sound = list(SFX_U_MSCREAM)
+	female_scream_sound = list(SFX_U_FSCREAM)
 	male_sneeze_sound = list('sound/voice/unathi/m_u_sneeze.ogg')
 	female_sneeze_sound = list('sound/voice/unathi/f_u_sneeze.ogg')
 
@@ -79,8 +82,10 @@
 		BODY_ZONE_TAIL = list("path" = /obj/item/organ/external/tail/unathi),
 	)
 
-	allowed_consumed_mobs = list(/mob/living/simple_animal/mouse, /mob/living/simple_animal/lizard, /mob/living/simple_animal/chick, /mob/living/simple_animal/chicken,
-								 /mob/living/simple_animal/crab, /mob/living/simple_animal/butterfly, /mob/living/simple_animal/parrot, /mob/living/simple_animal/tribble)
+	allowed_consumed_mobs = list(
+		/mob/living/simple_animal/mouse, /mob/living/simple_animal/lizard, /mob/living/simple_animal/chick, /mob/living/simple_animal/chicken, \
+		/mob/living/simple_animal/crab, /mob/living/simple_animal/butterfly, /mob/living/simple_animal/parrot, /mob/living/simple_animal/tribble
+	)
 
 	suicide_messages = list(
 		"пытается откусить себе язык!",
@@ -99,10 +104,19 @@
 		JOB_MIN_AGE_COMMAND = 22,
 	)
 
+	autohiss_basic_map = list(
+		"s" = list("ss", "sss", "ssss"),
+		"с" = list("сс", "ссс", "сссс"),
+	)
+	autohiss_extra_map = list(
+		"x" = list("ks", "kss", "ksss"),
+		"ш" = list("шш", "шшш", "шшшш"),
+		"ч" = list("щ", "щщ", "щщщ"),
+	)
+	autohiss_exempt = list("Синт'Унати")
 
 /datum/species/unathi/handle_death(gibbed, mob/living/carbon/human/H)
 	H.stop_tail_wagging()
-
 
 /datum/species/unathi/on_species_gain(mob/living/carbon/human/H)
 	. = ..()
@@ -119,6 +133,8 @@
 		lash = new
 		lash.Grant(H)
 
+/datum/species/unathi/gain_muscles(mob/living/target, datum/strength_level/default, max_level, can_become_stronger)
+	..(target, target.gender == FEMALE ? default.next_level : default, max_level, can_become_stronger)
 
 /datum/species/unathi/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
@@ -132,7 +148,6 @@
 		/mob/living/carbon/human/proc/emote_whip_l))
 	var/datum/action/innate/tail_cut/lash = locate() in H.actions
 	lash?.Remove(H)
-
 
 /datum/species/unathi/handle_life(mob/living/carbon/human/H)
 	..()
@@ -151,18 +166,16 @@
 				H.AdjustSleeping(4 SECONDS)
 				to_chat(H, span_danger("Слишком холодно, я засыпаю..."))
 
-
 /datum/species/unathi/ashwalker
 	name = SPECIES_ASHWALKER_BASIC
 	name_plural = "Ash Walkers"
 	inherent_factions = list("ashwalker")
 
-	blurb = "Пеплоходцы — рептильные гуманоиды, по-видимому, родственные унати. Но кажутся значительно менее развитыми. \
-	Они бродят по пустошам Лаваленда, поклоняются мёртвому городу и ловят ничего не подозревающих шахтёров."
+	blurb = "Пеплоходцы — рептильные гуманоиды, по-видимому, родственные унати. Но кажутся значительно менее развитыми. \
+	Они бродят по пустошам Лазиса, поклоняются мёртвому городу и ловят ничего не подозревающих шахтёров."
 
-	language = LANGUAGE_UNATHI
 	default_language = LANGUAGE_UNATHI
-
+	brute_mod = 0.9
 	speed_mod = -0.50
 
 	inherent_traits = list(
@@ -192,13 +205,11 @@
 	RegisterSignal(H, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(speedylegs), override = TRUE)
 	speedylegs(H)
 
-
 /datum/species/unathi/ashwalker/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	var/datum/action/innate/ignite_unathi/fire = locate() in H.actions
 	fire?.Remove(H)
 	UnregisterSignal(H, COMSIG_MOVABLE_Z_CHANGED)
-
 
 /datum/species/unathi/ashwalker/proc/speedylegs(mob/living/carbon/human/H)
 	SIGNAL_HANDLER
@@ -207,7 +218,6 @@
 		H.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species_speedmod, multiplicative_slowdown = speed_mod)
 	else
 		H.remove_movespeed_modifier(/datum/movespeed_modifier/species_speedmod)
-
 
 //Ash walker shaman, worse defensive stats, but better at surgery and have a healing touch ability
 /datum/species/unathi/ashwalker/shaman
@@ -253,7 +263,6 @@
 		fire = new
 		fire.Grant(owner)
 
-
 /datum/species/unathi/ashwalker/shaman/on_species_loss(mob/living/carbon/human/owner)
 	. = ..()
 	owner.RemoveSpell(/obj/effect/proc_holder/spell/touch/healtouch)
@@ -263,7 +272,6 @@
 	var/datum/action/innate/shaman_gps/fire = locate() in owner.actions
 	if(fire)
 		fire.Remove(owner)
-
 
 /*
 draconids
@@ -300,34 +308,31 @@ They're basically just lizards with all-around marginally better stats and fire 
 		INTERNAL_ORGAN_EARS = /obj/item/organ/internal/ears,
 	) //no need to b-r-e-a-t-h
 
-
 /datum/species/unathi/draconid/on_species_gain(mob/living/carbon/human/owner)
 	. = ..()
 	var/obj/item/organ/external/head/head_organ = owner.get_organ(BODY_ZONE_HEAD)
 	head_organ?.ha_style = "Drake"
 	owner.change_eye_color("#A02720")
 	owner.update_dna()
-	owner.update_inv_head()
-	owner.update_inv_wear_suit() //update sprites for digi legs
+	owner.update_worn_head()
+	owner.update_worn_oversuit() //update sprites for digi legs
 	var/datum/action/innate/ignite_unathi/fire = locate() in owner.actions
 	if(!fire)
 		fire = new
 		fire.Grant(owner)
 
-
 /datum/species/unathi/draconid/on_species_loss(mob/living/carbon/owner)
 	. = ..()
-	owner.update_inv_head()
-	owner.update_inv_wear_suit()
+	owner.update_worn_head()
+	owner.update_worn_oversuit()
 	var/datum/action/innate/ignite_unathi/fire = locate() in owner.actions
 	fire?.Remove(owner)
 
-
 //igniter. only for ashwalkers and drakonids because of """lore"""
 /datum/action/innate/ignite_unathi
-	name = "поджог"
+	name = "Поджог"
 	desc = "Вы формируете небольшой сгусток пламени в вашей пасти, достаточный для... розжига костра."
-	icon_icon = 'icons/obj/cigarettes.dmi'
+	button_icon = 'icons/obj/cigarettes.dmi'
 	button_icon_state = "match_unathi"
 	var/cooldown = 0
 	var/cooldown_duration = 40 SECONDS
@@ -336,7 +341,7 @@ They're basically just lizards with all-around marginally better stats and fire 
 /datum/action/innate/ignite_unathi/Activate()
 	var/mob/living/carbon/human/user = owner
 	if(world.time <= cooldown)
-		to_chat(user, span_warning("Ваша пасть болит из-за прошлой попытки. Подождите [round((cooldown - world.time) / 10)] секунд[declension_ru(round((cooldown - world.time) / 10), "у", "ы", "")] и попробуйте ещё раз"))
+		to_chat(user, span_warning("Ваша пасть болит из-за прошлой попытки. Подождите [round((cooldown - world.time) / 10)] секунд[DECL_SEC_MIN(round((cooldown - world.time) / 10))] и попробуйте ещё раз"))
 		return
 	if((user.head?.flags_cover & HEADCOVERSMOUTH) || (user.wear_mask?.flags_cover & MASKCOVERSMOUTH) && !user.wear_mask?.up)
 		user.balloon_alert(user, "ваша пасть закрыта!")
@@ -352,10 +357,16 @@ They're basically just lizards with all-around marginally better stats and fire 
 /datum/action/innate/shaman_gps
 	name = "Помощь некрополя"
 	desc = "Вы используете силу Некрополя, чтобы узнать примерное местоположение точек интереса."
-	icon_icon = 'icons/mob/actions/actions_clockwork.dmi'
+	button_icon = 'icons/mob/actions/actions_clockwork.dmi'
 	button_icon_state = "stun"
 
 /datum/action/innate/shaman_gps/Activate()
+	var/list/list_of_points = GLOB.lavaland_points_of_interest
+	if(list_of_points)
+		var/selected_poi = tgui_input_list(owner, "Выберите точку интереса", "Точки интереса", list_of_points)
+		addtimer(CALLBACK(GLOBAL_PROC, /proc/to_chat, owner, \
+							span_warning("Я чувствую, что [selected_poi] [get_direction(selected_poi)]")), 2 SECONDS)
+
 	if(!LAZYLEN(GLOB.lavaland_points_of_interest))
 		to_chat(owner, "Все церемониальные тотемы уничтожены.")
 		return
@@ -373,10 +384,13 @@ They're basically just lizards with all-around marginally better stats and fire 
 		return "уничтожен."
 
 	var/turf/turf = get_turf(selected_poi)
-	
+
 	if(owner.z != turf.z)
 		return "находится где-то далеко отсюда."
-	
+
 	. = "находится где-то на "
 	. += dir2rustext(get_dir(owner.loc, selected_poi.loc))
 	. += "e."
+
+/datum/species/unathi/compressor_grind(location)
+	new /obj/item/stack/sheet/animalhide/lizard(location)

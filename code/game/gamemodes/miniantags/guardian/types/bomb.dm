@@ -1,6 +1,4 @@
 /mob/living/simple_animal/hostile/guardian/bomb
-	melee_damage_lower = 15
-	melee_damage_upper = 15
 	damage_transfer = 0.6
 	range = 13
 	playstyle_string = "Будучи <b>Подрывником</b> у вас весьма посредственные боевые способности, но вы можете конвертировать любой предмет вокруг себя в скрытую бомбу на Alt+Click. Даже будучи в хозяине. Помните: бомбы живут минуту!"
@@ -14,7 +12,7 @@
 	var/list/status_tab_data = ..()
 	. = status_tab_data
 	if(bomb_cooldown >= world.time)
-		status_tab_data[++status_tab_data.len] = list("Перезарядка до следующей бомбы:", "[max(round((bomb_cooldown - world.time) * 0.1, 0.1), 0)] секунд[declension_ru(max(round((bomb_cooldown - world.time) * 0.1, 0.1), 0), "а", "ы", "")]")
+		status_tab_data[++status_tab_data.len] = list("Перезарядка до следующей бомбы:", "[max(round((bomb_cooldown - world.time) * 0.1, 0.1), 0)]  секунд")
 
 /mob/living/simple_animal/hostile/guardian/bomb/AltClickOn(atom/movable/A)
 	if(!istype(A))
@@ -31,7 +29,7 @@
 			bomb_cooldown = world.time + default_bomb_cooldown
 			A.AddComponent(/datum/component/guardian_mine, src)
 		else
-			to_chat(src, span_danger("Ваши силы на перезарядке! Вы должны ждать ещё [max(round((bomb_cooldown - world.time) * 0.1, 0.1), 0)] секунд[declension_ru(max(round((bomb_cooldown - world.time) * 0.1, 0.1), 0), "у", "ы", "")] до установки следующей бомбы."))
+			to_chat(src, span_danger("Ваши силы на перезарядке! Вы должны ждать ещё [max(round((bomb_cooldown - world.time)*0.1, 0.1), 0)] секунд до установки следующей бомбы."))
 
 /mob/living/simple_animal/hostile/guardian/bomb/proc/can_plant(atom/movable/A)
 	if(ismecha(A))
@@ -44,7 +42,7 @@
 		if(target.pilot)
 			to_chat(src, span_warning("Челноки не пригодны для минирования!"))
 			return FALSE
-	if(istype(A, /obj/machinery/disposal)) // Have no idea why they just destroy themselves
+	if(isdisposalunit(A)) // Have no idea why they just destroy themselves
 		to_chat(src, span_warning("Бомбы не мусор! Нельзя минировать мусорки!"))
 		return FALSE
 	return TRUE

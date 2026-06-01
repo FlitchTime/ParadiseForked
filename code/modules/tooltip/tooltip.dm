@@ -30,7 +30,6 @@ Notes:
 	- After testing and discussion (Wire, Remie, MrPerson, AnturK) ToolTips are ok and work for /tg/station13
 */
 
-
 /datum/tooltip
 	var/client/owner
 	var/control = "mainwindow.tooltip"
@@ -38,23 +37,35 @@ Notes:
 	var/showing = 0
 	var/queueHide = 0
 	var/init = 0
+	var/atom/last_target
 
-
-/datum/tooltip/New(client/C)
-	if(C)
-		owner = C
-		owner << browse(wrap_file2text(file), "window=[control]")
-
+/datum/tooltip/New(client/client)
+	if(client)
+		owner = client
+		var/datum/asset/stuff = get_asset_datum(/datum/asset/simple/jquery)
+		stuff.send(owner)
+		owner << browse(WRAP_FILE2TEXT(file), "window=[control]")
 	..()
 
+/datum/tooltip/Destroy(force)
+	last_target = null
+	return ..()
 
 /datum/tooltip/proc/show(atom/movable/thing, params = null, title = null, content = null, theme = "default", special = "none")
-	if(!thing || !params || (!title && !content) || !owner || !isnum(world.icon_size))
-		return 0
+	if(!thing || !params || (!title && !content) || !owner || !isnum(ICON_SIZE_ALL))
+		return FALSE
+
+	if(!isnull(last_target))
+		UnregisterSignal(last_target, COMSIG_QDELETING)
+
+	RegisterSignal(thing, COMSIG_QDELETING, PROC_REF(on_target_qdel))
+
+	last_target = thing
+
 	if(!init)
 		//Initialize some vars
 		init = 1
-		owner << output(list2params(list(world.icon_size, control)), "[control]:tooltip.init")
+		owner << output(list2params(list(ICON_SIZE_ALL, control)), "[control]:tooltip.init")
 
 	showing = 1
 
@@ -65,6 +76,10 @@ Notes:
 		title = "<p>[title]</p>"
 	else if(!title && content)
 		content = "<p>[content]</p>"
+
+	// Strip macros from item names
+	title = replacetext(title, "\proper", "")
+	title = replacetext(title, "\improper", "")
 
 	//Make our dumb param object
 	params = {"{ "cursor": "[params]", "screenLoc": "[thing.screen_loc]" }"}
@@ -78,40 +93,43 @@ Notes:
 	if(queueHide)
 		hide()
 
-	return 1
-
+	return TRUE
 
 /datum/tooltip/proc/hide()
+	queueHide = showing ? TRUE : FALSE
+
 	if(queueHide)
-		spawn(1)
-			winshow(owner, control, 0)
+		addtimer(CALLBACK(src, PROC_REF(do_hide)), 0.1 SECONDS)
 	else
-		winshow(owner, control, 0)
+		do_hide()
 
-	queueHide = showing ? 1 : 0
+	return TRUE
 
-	return 1
+/datum/tooltip/proc/do_hide()
+	winshow(owner, control, FALSE)
 
+/datum/tooltip/proc/on_target_qdel()
+	SIGNAL_HANDLER
 
-/* TG SPECIFIC CODE */
-
+	INVOKE_ASYNC(src, PROC_REF(hide))
+	last_target = null
 
 //Open a tooltip for user, at a location based on params
 //Theme is a CSS class in tooltip.html, by default this wrapper chooses a CSS class based on the user's UI_style (Midnight, Plasmafire, Retro, etc)
 //Includes sanity.checks
 /proc/openToolTip(mob/user = null, atom/movable/tip_src = null, params = null, title = "", content = "", theme = "")
-	if(istype(user))
-		if(user.client && user.client.tooltips)
-			if(!theme && user.client.prefs && user.client.prefs.UI_style)
-				theme = lowertext(user.client.prefs.UI_style)
-			if(!theme)
-				theme = "default"
-			user.client.tooltips.show(tip_src, params, title, content, theme)
-
+	if(!istype(user) || !user.client?.tooltips)
+		return
+	var/ui_style = user.client?.prefs?.UI_style
+	if(!theme && ui_style)
+		theme = lowertext(ui_style)
+	if(!theme)
+		theme = "default"
+	user.client.tooltips.show(tip_src, params, title, content, theme)
 
 //Arbitrarily close a user's tooltip
 //Includes sanity checks.
 /proc/closeToolTip(mob/user)
-	if(istype(user))
-		if(user.client && user.client.tooltips)
-			user.client.tooltips.hide()
+	if(!istype(user) || !user.client?.tooltips)
+		return
+	user.client.tooltips.hide()

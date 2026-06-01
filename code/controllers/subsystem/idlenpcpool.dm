@@ -8,29 +8,26 @@ GLOBAL_VAR_INIT(idlenpc_suspension, TRUE)
 
 SUBSYSTEM_DEF(idlenpcpool)
 	name = "Idling NPC Pool"
-	flags = SS_POST_FIRE_TIMING|SS_BACKGROUND|SS_NO_INIT
+	ss_flags = SS_POST_FIRE_TIMING|SS_BACKGROUND|SS_NO_INIT
 	priority = FIRE_PRIORITY_IDLE_NPC
 	wait = 6 SECONDS
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
-	init_order = INIT_ORDER_IDLENPCS // MUST be after SSmapping since it tracks max Zs
-	offline_implications = "Idle simple animals will no longer process. Shuttle call recommended."
-	ss_id = "idle_npc_pool"
+	dependencies = list(
+		/datum/controller/subsystem/mapping, // tracks max Zs
+	)
 
 	var/list/currentrun = list()
 	var/static/list/idle_mobs_by_zlevel[][]
 
-
 /datum/controller/subsystem/idlenpcpool/get_stat_details()
 	return "IdleNPCS:[length(GLOB.simple_animals[AI_IDLE])]|Z:[length(GLOB.simple_animals[AI_Z_OFF])]"
-
 
 /datum/controller/subsystem/idlenpcpool/proc/MaxZChanged()
 	if(!islist(idle_mobs_by_zlevel))
 		idle_mobs_by_zlevel = new /list(world.maxz,0)
-	while(SSidlenpcpool.idle_mobs_by_zlevel.len < world.maxz)
+	while(length(SSidlenpcpool.idle_mobs_by_zlevel) < world.maxz)
 		SSidlenpcpool.idle_mobs_by_zlevel.len++
-		SSidlenpcpool.idle_mobs_by_zlevel[idle_mobs_by_zlevel.len] = list()
-
+		SSidlenpcpool.idle_mobs_by_zlevel[length(idle_mobs_by_zlevel)] = list()
 
 /datum/controller/subsystem/idlenpcpool/fire(resumed = FALSE)
 	var/list/idlelist = GLOB.simple_animals[AI_IDLE]
@@ -40,8 +37,8 @@ SUBSYSTEM_DEF(idlenpcpool)
 	var/list/currentrun = src.currentrun
 	//var/suspension = GLOB.idlenpc_suspension
 
-	while(currentrun.len)
-		var/mob/living/simple_animal/SA = currentrun[currentrun.len]
+	while(length(currentrun))
+		var/mob/living/simple_animal/SA = currentrun[length(currentrun)]
 		--currentrun.len
 		if(QDELETED(SA))
 			GLOB.simple_animals[AI_IDLE] -= SA
@@ -62,7 +59,6 @@ SUBSYSTEM_DEF(idlenpcpool)
 
 		if(MC_TICK_CHECK)
 			return
-
 
 #undef DEFAULT_CHECKS_DELAY
 

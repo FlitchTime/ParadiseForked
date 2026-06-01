@@ -1,5 +1,5 @@
 /obj/item/mortar_shell
-	name = "\improper 80mm mortar shell"
+	name = "80mm mortar shell"
 	desc = "An unlabeled 80mm mortar shell, probably a casing."
 	icon = 'icons/obj/structures/mortar.dmi'
 	icon_state = "mortar_ammo_cas"
@@ -16,14 +16,13 @@
 	var/silent = FALSE
 	var/locked = TRUE
 
-
-/obj/item/mortar_shell/proc/detonate(turf/detonate_turf)
+/obj/item/mortar_shell/proc/detonate(turf/detonate_turf, explosion_detonate = FALSE)
 	var/old_loc = loc
 	forceMove(detonate_turf)
-	var/angle = 90 - get_angle(loc, old_loc)
-	pixel_x = cos(angle) * 32 * 6
-	pixel_z = sin(angle) * 32 * 6
-	var/rotation = get_pixel_angle(pixel_z, pixel_x) //CUSTOM HOMEBREWED proc that is just arctan with extra steps
+	var/angle = get_angle(loc, old_loc)
+	pixel_x = cos(angle) * ICON_SIZE_X * 6
+	pixel_z = sin(angle) * ICON_SIZE_Y * 6
+	var/rotation = delta_to_angle(pixel_x, pixel_z) //CUSTOM HOMEBREWED proc that is just arctan with extra steps
 	transform = matrix().Turn(rotation + 180)
 	layer = FLY_LAYER
 	SET_PLANE_EXPLICIT(src, ABOVE_GAME_PLANE, src)
@@ -43,7 +42,7 @@
 	handle_fire()
 	return ..()
 
-/obj/item/mortar_shell/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay)
+/obj/item/mortar_shell/fire_act(exposed_temperature, exposed_volume)
 	if(sended)
 		return
 	handle_fire()
@@ -55,31 +54,29 @@
 	handle_fire()
 	return ..()
 
-
 /obj/item/mortar_shell/he
-	name = "\improper 80mm high explosive mortar shell"
+	name = "80mm high explosive mortar shell"
 	desc = "An 80mm mortar shell, loaded with a high explosive charge."
 	icon_state = "mortar_ammo_he"
 	item_state = "mortar_ammo_he"
 
-/obj/item/mortar_shell/he/detonate(turf/detonate_turf)
+/obj/item/mortar_shell/he/detonate(turf/detonate_turf, explosion_detonate = FALSE)
 	. = ..()
-	explosion(detonate_turf, 0, 4, 7, 7)
+	explosion(detonate_turf, devastation_range = 0, heavy_impact_range = 4, light_impact_range = 7, flash_range = 7)
 
 /obj/item/mortar_shell/frag
-	name = "\improper 80mm fragmentation mortar shell"
+	name = "80mm fragmentation mortar shell"
 	desc = "An 80mm mortar shell, loaded with a fragmentation charge."
 	icon_state = "mortar_ammo_frag"
 	item_state = "mortar_ammo_frag"
 
-/obj/item/mortar_shell/frag/detonate(turf/detonate_turf)
-	AddComponent(/datum/component/pellet_cloud, magnitude = 4)
+/obj/item/mortar_shell/frag/detonate(turf/detonate_turf, explosion_detonate = FALSE)
+	AddComponent(/datum/component/pellet_cloud, projectile_type = /obj/projectile/shrapnel/m80mm, magnitude = 4)
 	. = ..()
-	sleep(2)
-	explosion(detonate_turf, 0, 0, 5)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(explosion), 0, 0, 5), 0.2 SECONDS)
 
 /obj/item/mortar_shell/incendiary
-	name = "\improper 80mm incendiary mortar shell"
+	name = "80mm incendiary mortar shell"
 	desc = "An 80mm mortar shell, loaded with a Type B napalm charge. Perfect for long-range area denial."
 	icon_state = "mortar_ammo_inc"
 	item_state = "mortar_ammo_inc"
@@ -89,36 +86,39 @@
 	var/flameshape = FLAMESHAPE_DEFAULT
 	var/fire_type = FIRE_VARIANT_TYPE_B //Armor Shredding Greenfire
 
-/obj/item/mortar_shell/incendiary/detonate(turf/detonate_turf)
+/obj/item/mortar_shell/incendiary/detonate(turf/detonate_turf, explosion_detonate = FALSE)
 	. = ..()
 	flame_radius( radius, detonate_turf, flame_level, burn_level, flameshape, null, fire_type)
-	playsound(detonate_turf, 'sound/weapons/gun_flamethrower2.ogg', 35, 1, 4)
+	playsound(detonate_turf, 'sound/weapons/gun_flamethrower2.ogg', 35, TRUE, 4)
 
 /obj/item/mortar_shell/flare
-	name = "\improper 80mm flare/camera mortar shell"
+	name = "80mm flare/camera mortar shell"
 	desc = "An 80mm mortar shell, loaded with an illumination flare / camera combo, attached to a parachute."
 	icon_state = "mortar_ammo_flr"
 	item_state = "mortar_ammo_flr"
 	silent = TRUE
 
-/obj/item/mortar_shell/flare/detonate(turf/detonate_turf)
+/obj/item/mortar_shell/flare/detonate(turf/detonate_turf, explosion_detonate = FALSE)
 	. = ..()
 	new /obj/item/flashlight/flare/on/illumination(detonate_turf)
-	playsound(detonate_turf, 'sound/weapons/gun_flare.ogg', 50, 1, 4)
+	playsound(detonate_turf, 'sound/weapons/gun_flare.ogg', 50, TRUE, 4)
+	if(explosion_detonate)
+		return
 	deploy_camera(detonate_turf)
 
 /obj/item/mortar_shell/custom
-	name = "\improper 80mm custom mortar shell"
+	name = "80mm custom mortar shell"
 	desc = "An 80mm mortar shell."
 	icon_state = "mortar_ammo_custom"
 	item_state = "mortar_ammo_custom_locked"
 
 	materials = list(METAL = 18750) //5 sheets
+	locked = FALSE
+
 	var/obj/item/warhead/mortar/warhead
 	var/obj/item/reagent_containers/glass/beaker/fuel
 	var/fuel_requirement = 60
 	var/fuel_type = "hydrogen"
-	locked = FALSE
 
 /obj/item/mortar_shell/custom/examine(mob/user)
 	. = ..()
@@ -127,12 +127,12 @@
 	if(warhead)
 		. += span_notice("Contains a warhead[warhead.has_camera ? " with integrated camera drone." : ""].")
 
-/obj/item/mortar_shell/custom/detonate(turf/detonate_turf)
+/obj/item/mortar_shell/custom/detonate(turf/detonate_turf, explosion_detonate = FALSE)
 	if(fuel)
 		var/fuel_amount = fuel.reagents.get_reagent_amount(fuel_type)
 		if(fuel_amount >= fuel_requirement)
 			. = ..()
-			if(warhead?.has_camera)
+			if(warhead?.has_camera && !explosion_detonate)
 				deploy_camera(detonate_turf)
 	if(warhead && locked)
 		warhead.prime()
@@ -181,13 +181,12 @@
 	else
 		to_chat(user, span_notice("You lock [name]."))
 	locked = !locked
-	playsound(loc, 'sound/items/Screwdriver.ogg', 25, 0, 6)
+	playsound(loc, 'sound/items/Screwdriver.ogg', 25, FALSE, 6)
 	update_icon(UPDATE_ICON_STATE)
 	. = ..()
 
-
 /obj/item/mortar_shell/custom/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/reagent_containers/glass) && !locked)
+	if(isglassreagentcontainer(I) && !locked)
 		if(!warhead)
 			to_chat(user, span_notice("[name] must contain a warhead to do that!"))
 			return ATTACK_CHAIN_PROCEED
@@ -199,7 +198,7 @@
 		fuel = I
 		to_chat(user, span_danger("You add [I] to [name]."))
 		update_icon(UPDATE_ICON_STATE)
-		playsound(loc, 'sound/items/Screwdriver2.ogg', 25, 0, 6)
+		playsound(loc, 'sound/items/Screwdriver2.ogg', 25, FALSE, 6)
 		return ATTACK_CHAIN_PROCEED_SUCCESS
 
 	if(!(istype(I,/obj/item/warhead/mortar) && !locked))
@@ -219,12 +218,15 @@
 	warhead = I
 	to_chat(user, span_danger("You add [I] to [name]."))
 	update_icon(UPDATE_ICON_STATE)
-	playsound(loc, 'sound/items/Screwdriver2.ogg', 25, 0, 6)
+	playsound(loc, 'sound/items/Screwdriver2.ogg', 25, FALSE, 6)
 	return ATTACK_CHAIN_PROCEED_SUCCESS
 
 /obj/item/mortar_shell/ex_act(severity, explosion_direction)
 	if(!burning)
 		return ..()
+
+/obj/item/mortar_shell/obj_destruction(damage_flag)
+	handle_fire()
 
 /obj/item/mortar_shell/attack_hand(mob/user)
 	if(burning)
@@ -242,9 +244,10 @@
 	return FALSE
 
 /obj/item/mortar_shell/proc/handle_fire()
-	if(!can_explode())
+	if(!can_explode() || burning || QDELETED(src))
 		return
 	visible_message(span_warning("[src] catches on fire and starts cooking off! It's gonna blow!"))
+	burning = TRUE
 	anchored = TRUE // don't want other explosions launching it elsewhere
 	var/datum/effect_system/spark_spread/sparks = new()
 	sparks.set_up(number = 10, location = loc)
@@ -252,25 +255,23 @@
 	new /obj/effect/warning/explosive(loc, 5 SECONDS)
 
 	addtimer(CALLBACK(src, PROC_REF(explode)), 5 SECONDS)
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), (src)), 5.5 SECONDS)
-
+	QDEL_IN(src, 5.5 SECONDS)
 
 /obj/item/mortar_shell/proc/explode()
-	explosion(get_turf(src), 0, 3, 5)
-
+	if(!prob(50))
+		detonate(get_turf(src), explosion_detonate = FALSE)
+	explosion(get_turf(src), devastation_range = 0, heavy_impact_range = 3, light_impact_range = 5)
 
 /obj/effect/warning
 	name = "warning"
 	icon = 'icons/effects/alert.dmi'
-	icon_state = "alert_greyscale"
-	anchored = TRUE
-
+	icon_state = "red" // "alert_greyscale"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = ABOVE_OBJ_LAYER
 
 /obj/effect/warning/Initialize(mapload, time)
 	. = ..()
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), src), time)
+	QDEL_IN(src, time)
 
 /obj/effect/warning/explosive
 	name = "explosive warning"
@@ -286,11 +287,6 @@
 /obj/structure/closet/crate/secure/mortar/update_icon_state()
 	var/state = (locked)? "locked" : ((opened)? "open" : "unlocked")
 	icon_state = "secure_[state]_mortar"
-
-/obj/structure/closet/crate/secure/mortar/togglelock(mob/living/user)
-	if(!locked)
-		return FALSE
-	return ..()
 
 /obj/structure/closet/crate/secure/mortar/mortar_kit
 	name = "mortar kit crate"
@@ -311,7 +307,7 @@
 	var/shell_type = /obj/item/mortar_shell
 
 /obj/structure/closet/crate/secure/mortar/mortar_shells/populate_contents()
-	for (var/i = 1; i <= count; i++)
+	for(var/i = 1; i <= count; i++)
 		new shell_type(src)
 
 /obj/structure/closet/crate/secure/mortar/mortar_shells/he
@@ -329,18 +325,17 @@
 
 /obj/structure/closet/crate/secure/mortar/mortar_shells/incendiary
 	name = "mortar shells incendiary crate"
-	count = 5
 	shell_type = /obj/item/mortar_shell/incendiary
 
 /obj/structure/closet/crate/secure/mortar/custom_kit
 	name = "mortar shells custom kit"
 
 /obj/structure/closet/crate/secure/mortar/custom_kit/populate_contents()
-	for (var/i = 1; i <= 6; i++)
+	for(var/i in 1 to 6)
 		new /obj/item/mortar_shell/custom(src)
-	for (var/i = 1; i <= 3; i++)
+	for(var/i in 1 to 3)
 		new /obj/item/warhead/mortar(src)
-	for (var/i = 1; i <= 3; i++)
+	for(var/i in 1 to 3)
 		new/obj/item/warhead/mortar/camera(src)
 
 	var/obj/item/paper/paper = new(src)

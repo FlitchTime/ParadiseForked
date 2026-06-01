@@ -10,14 +10,6 @@
 /mob/living/simple_animal/hostile/poison/terror_spider/defiler
 	name = "Defiler of Terror"
 	desc = "Зловещий на вид белый паук, с призрачными глазами и злобными кошмарными клыками."
-	ru_names = list(
-		NOMINATIVE = "Осквернитель Ужаса",
-		GENITIVE = "Осквернителя Ужаса",
-		DATIVE = "Осквернителю Ужаса",
-		ACCUSATIVE = "Осквернителя Ужаса",
-		INSTRUMENTAL = "Осквернителем Ужаса",
-		PREPOSITIONAL = "Осквернителе Ужаса",
-	)
 	gender = MALE
 	ai_target_method = TS_DAMAGE_POISON
 	icon_state = "terror_white"
@@ -33,12 +25,23 @@
 	spider_tier = TS_TIER_3
 	web_type = /obj/structure/spider/terrorweb/white
 	delay_web = 10
-	special_abillity = list(/obj/effect/proc_holder/spell/terror_smoke,
-							/obj/effect/proc_holder/spell/terror_parasmoke,
-							/obj/effect/proc_holder/spell/aoe/terror_shriek)
-	spider_intro_text = "Будучи Осквернителем Ужаса, ваша цель - атаковать ничего не подозревающих гуманоидов, чтобы заразить их яйцами. Вы наносите мало урона, но можете парализовать цель за три укуса, а ваш яд заставит её замолчать. Вы также можете генерировать различные дымы вредящие противникам. И помните, не нужно убивать заражённых, они послужат носителями для новых пауков!"
+	special_abillity = list(
+		/obj/effect/proc_holder/spell/terror_smoke,
+		/obj/effect/proc_holder/spell/terror_parasmoke,
+		/obj/effect/proc_holder/spell/aoe/terror_shriek,
+	)
+	spider_intro_text = "Будучи Осквернителем Ужаса, ваша цель — атаковать ничего не подозревающих гуманоидов, чтобы заразить их яйцами. Вы наносите мало урона, но можете парализовать цель за три укуса, а ваш яд заставит её замолчать. Вы также можете генерировать различные дымы вредящие противникам. И помните, не нужно убивать заражённых, они послужат носителями для новых пауков!"
 	datum_type = /datum/antagonist/terror_spider/main_spider/defiler
 
+/mob/living/simple_animal/hostile/poison/terror_spider/defiler/get_ru_names()
+	return list(
+		NOMINATIVE = "Осквернитель Ужаса",
+		GENITIVE = "Осквернителя Ужаса",
+		DATIVE = "Осквернителю Ужаса",
+		ACCUSATIVE = "Осквернителя Ужаса",
+		INSTRUMENTAL = "Осквернителем Ужаса",
+		PREPOSITIONAL = "Осквернителе Ужаса",
+	)
 
 /mob/living/simple_animal/hostile/poison/terror_spider/defiler/lose_target()
 	stop_automated_movement = 0
@@ -64,17 +67,17 @@
 	var/inject_target = pick(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
 	if(HAS_TRAIT(L, TRAIT_INCAPACITATED) || L.can_inject(null, FALSE, inject_target, FALSE) && prob(50))
 		new /obj/item/organ/internal/body_egg/terror_eggs(L)
-		visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] вонзает свои длинные клыки глубоко в [inject_target] [target.declent_ru(ACCUSATIVE)]!"))
+		visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] вонзает свои длинные клыки глубоко в [inject_target] [target.declent_ru(ACCUSATIVE)]!"))
 	else
 		if(prob(20))
 			new /obj/item/organ/internal/body_egg/terror_eggs(L)
-			visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] пробивает броню и вонзает свои длинные клыки глубоко в [inject_target] [target.declent_ru(ACCUSATIVE)]!"))
+			visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] пробивает броню и вонзает свои длинные клыки глубоко в [inject_target] [target.declent_ru(ACCUSATIVE)]!"))
 	if(!ckey && !IsTSInfected(L))
 		step_away(src, L)
 		step_away(src, L)
 		lose_target()
 		step_away(src, L)
-		visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] отскакивает от [L.declent_ru(ACCUSATIVE)]!"))
+		visible_message(span_notice("[DECLENT_RU_CAP(src, NOMINATIVE)] отскакивает от [L.declent_ru(ACCUSATIVE)]!"))
 
 /proc/IsTSInfected(mob/living/carbon/C) // Terror AI requires this
 	if(C.get_int_organ(/obj/item/organ/internal/body_egg))
@@ -84,7 +87,9 @@
 /obj/structure/spider/terrorweb/white
 	name = "infested web"
 	desc = "Эта паутина покрыта сотнями крошечных кусающих пауков и их яицами."
-	ru_names = list(
+
+/obj/structure/spider/terrorweb/white/get_ru_names()
+	return list(
 		NOMINATIVE = "зараженная паутина",
 		GENITIVE = "зараженной паутины",
 		DATIVE = "зараженной паутине",
@@ -93,11 +98,10 @@
 		PREPOSITIONAL = "зараженной паутине",
 	)
 
-
 /obj/structure/spider/terrorweb/white/web_special_ability(mob/living/carbon/C)
 	if(istype(C))
 		if(!IsTSInfected(C) && ishuman(C))
 			var/inject_target = pick(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
 			if(C.can_inject(null, FALSE, inject_target, FALSE))
-				to_chat(C, "[capitalize(declent_ru(NOMINATIVE))] врезается в вас!")
+				to_chat(C, "[DECLENT_RU_CAP(src, NOMINATIVE)] врезается в вас!")
 				new /obj/item/organ/internal/body_egg/terror_eggs(C)

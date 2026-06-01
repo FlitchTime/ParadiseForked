@@ -1,11 +1,10 @@
 /obj/machinery/gameboard
 	name = "Virtual Gameboard"
-	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "gboard_on"
 	desc = "A holographic table allowing the crew to have fun(TM) on boring shifts! One player per board."
 	density = TRUE
 	anchored = TRUE
-	light_color = LIGHT_COLOR_LIGHTBLUE
+	light_color = LIGHT_COLOR_BLUE
 
 	var/cooling_down = 0
 
@@ -25,7 +24,7 @@
 	if(stat & NOPOWER)
 		set_light(0)
 	else
-		set_light(3, 3)
+		set_light(3, 1)
 
 /obj/machinery/gameboard/update_icon_state()
 	if(stat & NOPOWER)
@@ -82,7 +81,7 @@
 		if(cooling_down)
 			message_admins("Too many checkmates on chessboard, possible HREF exploits: [ADMIN_LOOKUPFLW(usr)]")
 			return
-		visible_message(span_info("[span_name("[src.name]")] beeps, \"WINNER!\""))
+		visible_message(span_notice("[span_name("[src.name]")] beeps, \"WINNER!\""))
 		new prize(get_turf(src), 80)
 		close_game()
 		cooling_down = 1

@@ -77,11 +77,7 @@
 	},
 /area/shuttle/escape)
 "ax" = (
-/obj/item/radio/intercom{
-	dir = 4;
-	name = "Station Intercom (General)";
-	pixel_y = 27
-	},
+/obj/item/radio/intercom/directional/north,
 /obj/structure/chair/comfy/shuttle,
 /turf/simulated/floor/shuttle{
 	icon_state = "floor3"
@@ -132,15 +128,13 @@
 /area/shuttle/escape)
 "aA" = (
 /obj/structure/shuttle/engine/propulsion{
-	dir = 8;
-	tag = "icon-propulsion (EAST)"
+	dir = 8
 	},
 /turf/simulated/floor/shuttle/plating,
 /area/shuttle/escape)
 "aB" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 8;
-	tag = "icon-heater (WEST)"
+	dir = 8
 	},
 /obj/structure/window/reinforced{
 	dir = 4
@@ -180,15 +174,13 @@
 "aH" = (
 /obj/structure/shuttle/engine/propulsion{
 	dir = 8;
-	icon_state = "propulsion_r";
-	tag = "icon-propulsion_r (EAST)"
+	icon_state = "propulsion_r"
 	},
 /turf/simulated/floor/shuttle/plating,
 /area/shuttle/escape)
 "aI" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 8;
-	tag = "icon-heater (WEST)"
+	dir = 8
 	},
 /obj/structure/window/reinforced{
 	dir = 4
@@ -347,10 +339,7 @@
 /area/shuttle/escape)
 "bb" = (
 /obj/structure/table,
-/obj/item/radio/intercom{
-	name = "Station Intercom (General)";
-	pixel_y = -28
-	},
+/obj/item/radio/intercom/directional/south,
 /obj/item/paper_bin{
 	pixel_x = -3;
 	pixel_y = 7
@@ -360,16 +349,11 @@
 "bc" = (
 /obj/structure/table,
 /obj/item/folder/blue,
-/obj/structure/extinguisher_cabinet{
-	pixel_y = -30
-	},
+/obj/structure/extinguisher_cabinet/directional/south,
 /turf/simulated/floor/shuttle,
 /area/shuttle/escape)
 "bd" = (
-/obj/item/radio/intercom{
-	name = "Station Intercom (General)";
-	pixel_y = -28
-	},
+/obj/item/radio/intercom/directional/south,
 /obj/machinery/light,
 /obj/structure/chair/comfy/shuttle{
 	dir = 1
@@ -393,10 +377,6 @@
 /turf/simulated/floor/shuttle{
 	icon_state = "floor3"
 	},
-/area/shuttle/escape)
-"bg" = (
-/obj/structure/extinguisher_cabinet,
-/turf/simulated/wall/shuttle,
 /area/shuttle/escape)
 "bh" = (
 /obj/machinery/door/airlock/command{
@@ -660,10 +640,7 @@
 	pixel_x = -4;
 	pixel_y = 4
 	},
-/obj/item/radio/intercom{
-	name = "Station Intercom (General)";
-	pixel_y = -28
-	},
+/obj/item/radio/intercom/directional/south,
 /turf/simulated/floor/shuttle/objective_check,
 /area/shuttle/escape)
 "bR" = (
@@ -705,11 +682,7 @@
 	},
 /obj/item/clothing/gloves/color/latex,
 /obj/item/clothing/mask/surgical,
-/obj/item/radio/intercom{
-	dir = 4;
-	name = "Station Intercom (General)";
-	pixel_y = -27
-	},
+/obj/item/radio/intercom/directional/south,
 /turf/simulated/floor/shuttle,
 /area/shuttle/escape)
 "bV" = (
@@ -735,7 +708,7 @@
 /turf/simulated/floor/shuttle,
 /area/shuttle/escape)
 "bY" = (
-/obj/structure/sign/redcross,
+/obj/structure/sign/medbay/redcross,
 /turf/simulated/wall/shuttle,
 /area/shuttle/escape)
 "bZ" = (
@@ -752,9 +725,7 @@
 	},
 /area/shuttle/escape)
 "ca" = (
-/obj/structure/extinguisher_cabinet{
-	pixel_y = -30
-	},
+/obj/structure/extinguisher_cabinet/directional/south,
 /obj/machinery/space_heater,
 /turf/simulated/floor/shuttle/plating{
 	icon_state = "bot"
@@ -798,7 +769,7 @@
 	},
 /obj/item/lazarus_injector,
 /mob/living/simple_animal/bot/medbot{
-	name = "\improper emergency medibot";
+	name = "emergency medibot";
 	pixel_x = -3;
 	pixel_y = 2
 	},
@@ -807,10 +778,7 @@
 	},
 /area/shuttle/escape)
 "cd" = (
-/obj/item/radio/intercom{
-	name = "Station Intercom (General)";
-	pixel_y = -28
-	},
+/obj/item/radio/intercom/directional/south,
 /obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/machinery/light,
 /turf/simulated/floor/shuttle/plating{
@@ -845,6 +813,31 @@
 	name = "Emergency Shuttle Airlock"
 	},
 /turf/simulated/floor/shuttle,
+/area/shuttle/escape)
+"BV" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/structure/extinguisher_cabinet/directional/south,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor3"
+	},
+/area/shuttle/escape)
+"Me" = (
+/obj/structure/chair/comfy/shuttle,
+/obj/structure/extinguisher_cabinet/directional/north,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor3"
+	},
+/area/shuttle/escape)
+"Mk" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/obj/structure/extinguisher_cabinet/directional/north,
+/turf/simulated/floor/shuttle/plating{
+	icon_state = "floorgrime"
+	},
 /area/shuttle/escape)
 "SL" = (
 /obj/structure/window/full/shuttle,
@@ -909,8 +902,8 @@ aP
 aU
 aY
 ba
-bg
-bo
+ch
+Mk
 bo
 bI
 bP
@@ -1065,8 +1058,8 @@ ai
 au
 au
 aL
-bg
-av
+ch
+Me
 au
 aL
 ch
@@ -1128,8 +1121,8 @@ ch
 SL
 av
 au
-aL
-bg
+BV
+ch
 av
 au
 aL
@@ -1180,8 +1173,8 @@ aL
 SL
 av
 au
-aL
-bg
+BV
+ch
 bz
 bp
 bp

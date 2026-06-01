@@ -5,7 +5,6 @@
 		skip_catch = !throw_item.allowed_for_alien()
 	..(AM, skip_catch, FALSE, blocked, throwingdatum)
 
-
 /// Alien attack another alien
 /mob/living/carbon/alien/attack_alien(mob/living/carbon/alien/M)
 	switch(M.a_intent)
@@ -19,7 +18,7 @@
 
 			if(on_fire)
 				M.visible_message(span_warning("[M] trying to extinguish [src.name]!"), span_warning("You trying to extinguish [src.name]!"))
-				playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+				playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 				adjust_fire_stacks(-0.5)
 			else
 				M.visible_message(span_notice("[M.name] nuzzles [src] trying to wake it up!"))
@@ -31,15 +30,14 @@
 			..()
 			if(drop_from_active_hand())
 				M.visible_message(span_danger("[M.name] disarms [src.name]!"))
-			playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+			playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 
 		if(INTENT_HARM)
 			..()
 			visible_message(span_danger("[M] has slashed at [src]!"), span_userdanger("[M] has slashed at [src]!"))
-			playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
+			playsound(loc, 'sound/weapons/slice.ogg', 25, TRUE, -1)
 			adjustBruteLoss(M.attack_damage)
 			add_attack_logs(M, src, "Alien attack", ATKLOG_ALL)
-
 
 /mob/living/carbon/alien/attack_larva(mob/living/carbon/alien/larva/L)
 	if(..() && L.a_intent == INTENT_HARM)
@@ -61,13 +59,11 @@
 			return 1
 	return 0
 
-
 /mob/living/carbon/alien/attack_animal(mob/living/simple_animal/M)
 	. = ..()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		apply_damage(damage, M.melee_damage_type)
-
 
 /mob/living/carbon/alien/acid_act(acidpwr, acid_volume)
 	return 0 //aliens are immune to acid.
@@ -79,7 +75,6 @@
 			damage = rand(10 + M.age_state.damage, 40 + M.age_state.damage)
 		adjustBruteLoss(damage)
 		add_attack_logs(M, src, "Slime'd for [damage] damage")
-
 
 /mob/living/carbon/xenomorph/handle_flamer_fire_crossed(obj/flamer_fire/fire)
 	. = ..()

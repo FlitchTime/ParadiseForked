@@ -2,7 +2,7 @@ GLOBAL_LIST_EMPTY(empty_playable_ai_cores)
 
 /mob/living/silicon/ai/verb/wipe_core()
 	set name = "Выгрузить ядро ИИ"
-	set category = "OOC"
+	set category = VERB_CATEGORY_OOC
 	set desc = "Wipe your core. This is functionally equivalent to cryo or robotic storage, freeing up your job slot."
 
 	// Guard against misclicks, this isn't the sort of thing we want happening accidentally
@@ -10,8 +10,9 @@ GLOBAL_LIST_EMPTY(empty_playable_ai_cores)
 		return
 
 	// We warned you.
-	GLOB.empty_playable_ai_cores += new /obj/structure/AIcore/deactivated(loc)
-	GLOB.global_announcer.autosay("[src] has been moved to intelligence storage.", "Artificial Intelligence Oversight")
+	var/dead_aicore = new /obj/structure/AIcore/deactivated(loc)
+	GLOB.empty_playable_ai_cores += dead_aicore
+	radio_announce("[src] has been moved to intelligence storage.", "Artificial Intelligence Oversight", PUB_FREQ, follow_target_override = dead_aicore)
 
 	for(var/mob/living/silicon/robot/R in connected_robots)
 		R.disconnect_from_ai()
@@ -22,7 +23,7 @@ GLOBAL_LIST_EMPTY(empty_playable_ai_cores)
 
 	SSjobs.FreeRole(job)
 
-	if(mind.objectives.len)
+	if(length(mind.objectives))
 		mind.objectives.Cut()
 		mind.special_role = null
 
@@ -62,9 +63,8 @@ GLOBAL_LIST_EMPTY(empty_playable_ai_cores)
 
 // Before calling this, make sure an empty core exists, or this will no-op
 /mob/living/silicon/ai/proc/moveToEmptyCore()
-	if(!GLOB.empty_playable_ai_cores.len)
-		log_runtime(EXCEPTION("moveToEmptyCore called without any available cores"), src)
-		return
+	if(!length(GLOB.empty_playable_ai_cores))
+		CRASH("moveToEmptyCore called without any available cores")
 
 	// IsJobAvailable for AI checks that there is an empty core available in this list
 	var/obj/structure/AIcore/deactivated/C = GLOB.empty_playable_ai_cores[1]

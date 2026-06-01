@@ -1,14 +1,6 @@
 //pyro claws
 /obj/item/twohanded/required/pyro_claws
 	name = "hardplasma energy claws"
-	ru_names = list(
-		NOMINATIVE = "энергокогти", \
-		GENITIVE = "энергокогтей", \
-		DATIVE = "энергокогтям", \
-		ACCUSATIVE = "энергокогти", \
-		INSTRUMENTAL = "энергокогтями", \
-		PREPOSITIONAL = "энергокогтях"
-	)
 	desc = "Мощь солнца, в моих когтях!"
 	gender = PLURAL
 	icon_state = "pyro_claws"
@@ -22,10 +14,32 @@
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut", "savaged", "clawed")
 	toolspeed = 0.5
 
+/obj/item/twohanded/required/pyro_claws/get_ru_names()
+	return list(
+		NOMINATIVE = "энергокогти", \
+		GENITIVE = "энергокогтей", \
+		DATIVE = "энергокогтям", \
+		ACCUSATIVE = "энергокогти", \
+		INSTRUMENTAL = "энергокогтями", \
+		PREPOSITIONAL = "энергокогтях",
+	)
+
 /obj/item/twohanded/required/pyro_claws/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 	START_PROCESSING(SSobj, src)
+
+/obj/item/twohanded/required/pyro_claws/ComponentInitialize()
+	. = ..()
+	AddComponent( \
+		/datum/component/cleave_attack, \
+		arc_size = 180, \
+		swing_speed_mod = 2, \
+		afterswing_slowdown = -0.2, \
+		slowdown_duration = 2 SECONDS, \
+		requires_wielded = TRUE, \
+		swing_sound = SFX_KNIFE_SWING \
+	)
 
 /obj/item/twohanded/required/pyro_claws/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -33,16 +47,18 @@
 
 /obj/item/twohanded/required/pyro_claws/process()
 	if(prob(15))
-		do_sparks(rand(1,6), 1, loc)
+		do_sparks(rand(1,6), TRUE, loc)
 
-/obj/item/twohanded/required/pyro_claws/afterattack(atom/target, mob/user, proximity, params)
-	if(!proximity)
+/obj/item/twohanded/required/pyro_claws/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
+	. = ..()
+
+	if(!proximity_flag)
 		return
 
 	if(prob(60))
-		do_sparks(rand(1,6), 1, loc)
+		do_sparks(rand(1,6), TRUE, loc)
 
-	if(!istype(target, /obj/machinery/door/airlock))
+	if(!is_airlock(target))
 		return
 
 	var/obj/machinery/door/airlock/airlock = target
@@ -55,38 +71,29 @@
 		return
 
 	if(airlock.arePowerSystemsOn())
-		user.visible_message(span_warning("[user] вставля[pluralize_ru(user.gender,"ет","ют")] [declent_ru(NOMINATIVE)] в шлюз и начина[pluralize_ru(user.gender,"ет","ют")] открывать его!"), \
+		user.visible_message(span_warning("[user] вставля[PLUR_ET_YUT(user)] [declent_ru(NOMINATIVE)] в шлюз и начина[PLUR_ET_YUT(user)] открывать его!"), \
 							span_warning("Вы начинаете силой открывать шлюз."), \
 							span_warning("Вы слышите металлический скрежет."))
-		playsound(airlock, 'sound/machines/airlock_alien_prying.ogg', 150, 1)
+		playsound(airlock, 'sound/machines/airlock_alien_prying.ogg', 150, TRUE)
 		if(!do_after(user, 2.5 SECONDS, airlock))
 			return
 
-	user.visible_message(span_warning("[user] силой открыл[genderize_ru(user.gender, "", "а", "о", "и")] шлюз при помощи [declent_ru(GENITIVE)]!"), \
+	user.visible_message(span_warning("[user] силой открыл[GEND_A_O_I(user)] шлюз при помощи [declent_ru(GENITIVE)]!"), \
 						span_warning("Вы силой открыли шлюз."), \
 						span_warning("Вы слышите металлический скрежет."))
 	airlock.open(2)
 
 /obj/item/twohanded/required/pyro_claws/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] начина[pluralize_ru(user.gender,"ет","ют")] пилить [declent_ru(NOMINATIVE)] друг об друга! \
-						Похоже [genderize_ru(user.gender, "он", "она", "оно", "они")] пыта[pluralize_ru(user.gender,"ет","ют")]ся убить себя!"))
+	user.visible_message(span_suicide("[user] начина[PLUR_ET_YUT(user)] пилить [declent_ru(NOMINATIVE)] друг об друга! \
+						Похоже [GEND_HE_SHE(user)] пыта[PLUR_ET_YUT(user)]ся убить себя!"))
 	user.adjust_fire_stacks(10)
 	user.IgniteMob()
 	return FIRELOSS
 
 /obj/item/clothing/gloves/color/black/pyro_claws
 	name = "fusion gauntlets"
-	ru_names = list(
-		NOMINATIVE = "плавящие перчатки", \
-		GENITIVE = "плавящих перчаток", \
-		DATIVE = "плавящим перчаткам", \
-		ACCUSATIVE = "плавящие перчатки", \
-		INSTRUMENTAL = "плавящими перчатками", \
-		PREPOSITIONAL = "плавящих перчатках"
-	)
 	desc = "Перчатки разработаенные Cybersun Industries после того, как один из солдат прикрепил ядро атмосферной аномалии ​​к \
 			энергетическому мечу, и нашел результат весьма эффективными."
-	gender = PLURAL
 	item_state = "pyro"
 	item_color = "pyro"
 	icon_state = "pyro"
@@ -95,6 +102,16 @@
 	var/on_cooldown = FALSE
 	var/used = FALSE
 	var/obj/item/assembly/signaler/core/atmospheric/core
+
+/obj/item/clothing/gloves/color/black/pyro_claws/get_ru_names()
+	return list(
+		NOMINATIVE = "плавящие перчатки", \
+		GENITIVE = "плавящих перчаток", \
+		DATIVE = "плавящим перчаткам", \
+		ACCUSATIVE = "плавящие перчатки", \
+		INSTRUMENTAL = "плавящими перчатками", \
+		PREPOSITIONAL = "плавящих перчатках",
+	)
 
 /obj/item/clothing/gloves/color/black/pyro_claws/Destroy()
 	QDEL_NULL(core)
@@ -118,13 +135,13 @@
 
 	if(on_cooldown)
 		user.balloon_alert(user, "идет перезарядка")
-		do_sparks(rand(1,6), 1, loc)
+		do_sparks(rand(1,6), TRUE, loc)
 		return
 
 	if(used)
 		visible_message(span_warning("Энергетические когти скользят обратно в [declent_ru(ACCUSATIVE)]."))
 		user.drop_from_active_hand(force = TRUE)//dropdel stuff. only ui act, without hotkeys
-		do_sparks(rand(1,6), 1, loc)
+		do_sparks(rand(1,6), TRUE, loc)
 		on_cooldown = TRUE
 		addtimer(CALLBACK(src, PROC_REF(reboot)), 1 MINUTES)
 		return
@@ -134,28 +151,27 @@
 		return
 
 	var/obj/item/twohanded/required/pyro_claws/claws = new /obj/item/twohanded/required/pyro_claws
-	var/strenght_mult = core.get_strenght() / 150
-	claws.force = 25 * strenght_mult
-	claws.force_wielded = 25 * strenght_mult
-	claws.armour_penetration = 100 * (1 - 0.6 / strenght_mult)
-	claws.block_chance = 100 * (1 - 0.5 / strenght_mult)
-	claws.toolspeed = 0.5 / strenght_mult
+	var/strength_mult = core.get_strength() / 150
+	claws.force = 25 * strength_mult
+	claws.force_wielded = 25 * strength_mult
+	claws.armour_penetration = 100 * (1 - 0.6 / strength_mult)
+	claws.block_chance = 100 * (1 - 0.5 / strength_mult)
+	claws.toolspeed = 0.5 / strength_mult
 
-	user.visible_message(span_warning("[user] со снопом искр выпуска[pluralize_ru(user.gender,"ет","ют")] [claws.declent_ru(NOMINATIVE)] из запястий!"), \
+	user.visible_message(span_warning("[user] со снопом искр выпуска[PLUR_ET_YUT(user)] [claws.declent_ru(NOMINATIVE)] из запястий!"), \
 						span_notice("Вы выпускаете [claws.declent_ru(NOMINATIVE)] из [declent_ru(GENITIVE)]!"), \
 						span_warning("Вы слышите сноп искр!"))
 	user.put_in_hands(claws)
 	ADD_TRAIT(src, TRAIT_NODROP, PYRO_CLAWS_TRAIT)
 	used = TRUE
-	do_sparks(rand(1,6), 1, loc)
-
+	do_sparks(rand(1,6), TRUE, loc)
 
 /obj/item/clothing/gloves/color/black/pyro_claws/attackby(obj/item/item, mob/user, params)
 	if(!iscoreatmos(item))
 		return ..()
 
 	var/obj/item/assembly/signaler/core/I_core = item
-	if(I_core.get_strenght() < 100)
+	if(I_core.get_strength() < 100)
 		user.balloon_alert(user, "ядро слишком слабо")
 		return
 

@@ -3,27 +3,19 @@
 #define UI_TAB_FILTER "ЧЁРНЫЙ СПИСОК"
 
 /**
-  * # Telecommunications Core
-  *
-  * The core of the entire telecomms operation
-  *
-  * This thing basically handles the main broadcasting of the data, as well as NTTC configs
-  * The relays dont do any actual processing, they are just objects which can bring tcomms to another zlevel
-  */
+ * # Telecommunications Core
+ *
+ * The core of the entire telecomms operation
+ *
+ * This thing basically handles the main broadcasting of the data, as well as NTTC configs
+ * The relays dont do any actual processing, they are just objects which can bring tcomms to another zlevel
+ */
 /obj/machinery/tcomms/core
 	name = "telecommunications core"
 	desc = "Центральное ядро телекоммуникационной системы станции, обеспечивающее устойчивую \
 			связь между внутренними и внешними сетями. Представляет собой телекоммуникационную стойку, \
 			содержащую модули передачи данных, антенные усилители и интерфейсы для подключения к радиочастотным гарнитурам персонала. \
 			Поддерживает работу всех доступных частот, включая каналы связи отделов и защищённые частоты ЦК."
-	ru_names = list(
-		NOMINATIVE = "ядро телекоммуникаций",
-		GENITIVE = "ядра телекоммуникаций",
-		DATIVE = "ядру телекоммуникаций",
-		ACCUSATIVE = "ядро телекоммуникаций",
-		INSTRUMENTAL = "ядром телекоммуникаций",
-		PREPOSITIONAL = "ядре телекоммуникаций"
-	)
 	gender = NEUTER
 	icon_state = "core"
 	// This starts as off so you cant make cores as hot spares
@@ -39,19 +31,28 @@
 	/// What tab of the UI were currently on
 	var/ui_tab = UI_TAB_CONFIG
 
+/obj/machinery/tcomms/core/get_ru_names()
+	return list(
+		NOMINATIVE = "ядро телекоммуникаций",
+		GENITIVE = "ядра телекоммуникаций",
+		DATIVE = "ядру телекоммуникаций",
+		ACCUSATIVE = "ядро телекоммуникаций",
+		INSTRUMENTAL = "ядром телекоммуникаций",
+		PREPOSITIONAL = "ядре телекоммуникаций",
+	)
+
 /**
-  * Initializer for the core.
-  *
-  * Calls parent to ensure its added to the GLOB of tcomms machines, before generating a link password and adding itself to the list of reachable Zs.
-  */
+ * Initializer for the core.
+ *
+ * Calls parent to ensure its added to the GLOB of tcomms machines, before generating a link password and adding itself to the list of reachable Zs.
+ */
 /obj/machinery/tcomms/core/Initialize(mapload)
 	. = ..()
 	link_password = GenerateKey()
 	var/turf/our_turf = get_turf(loc)
 	if(!isturf(our_turf))
-		log_runtime(EXCEPTION("Tcomms core is in non-turf loc!"))
 		message_admins("Tcomms core is in non-turf loc. Inform maintainrs about it.")
-		return
+		CRASH("Tcomms core is in non-turf loc!")
 	reachable_zlevels |= our_turf.z
 	var/turf/above = GET_TURF_ABOVE(our_turf)
 	while(above)
@@ -69,10 +70,10 @@
 	update_icon(UPDATE_ICON_STATE)
 
 /**
-  * Destructor for the core.
-  *
-  * Ensures that the machine is taken out of the global list when destroyed, and also unlinks all connected relays
-  */
+ * Destructor for the core.
+ *
+ * Ensures that the machine is taken out of the global list when destroyed, and also unlinks all connected relays
+ */
 /obj/machinery/tcomms/core/Destroy()
 	for(var/obj/machinery/tcomms/relay/R in linked_relays)
 		R.Reset()
@@ -81,14 +82,14 @@
 	return ..()
 
 /**
-  * Helper to see if a zlevel is reachable
-  *
-  * This is a simple check to see if the input z-level is in the list of reachable ones
-  * Returns TRUE if it can, FALSE if it cant
-  *
-  * Arguments:
-  * * zlevel - The input z level to test
-  */
+ * Helper to see if a zlevel is reachable
+ *
+ * This is a simple check to see if the input z-level is in the list of reachable ones
+ * Returns TRUE if it can, FALSE if it cant
+ *
+ * Arguments:
+ * * zlevel - The input z level to test
+ */
 /obj/machinery/tcomms/core/proc/zlevel_reachable(zlevel)
 	// Nothing is reachable if the core is offline, unpowered, or ion'd
 	if(!active || (stat & NOPOWER) || ion)
@@ -99,14 +100,14 @@
 		return FALSE
 
 /**
-  * Proc which takes in the message datum
-  *
-  * Some checks are ran on the signal, and NTTC is applied
-  * After that, it is broadcasted out to the required Z-levels
-  *
-  * Arguments:
-  * * tcm - The tcomms message datum
-  */
+ * Proc which takes in the message datum
+ *
+ * Some checks are ran on the signal, and NTTC is applied
+ * After that, it is broadcasted out to the required Z-levels
+ *
+ * Arguments:
+ * * tcm - The tcomms message datum
+ */
 /obj/machinery/tcomms/core/proc/handle_message(datum/tcomms_message/tcm)
 	// Don't do anything with rejected signals, if were offline, if we are ion'd, or if we have no power
 	if(tcm.reject || !active || (stat & NOPOWER) || ion)
@@ -135,12 +136,12 @@
 	return FALSE
 
 /**
-  * Proc to remake the list of available zlevels
-  *
-  * Loops through the list of connected relays and adds their zlevels in.
-  * This is called if a relay is added or removed
-  *
-  */
+ * Proc to remake the list of available zlevels
+ *
+ * Loops through the list of connected relays and adds their zlevels in.
+ * This is called if a relay is added or removed
+ *
+ */
 /obj/machinery/tcomms/core/proc/refresh_zlevels()
 	if(QDELING(src))
 		return
@@ -148,9 +149,8 @@
 	reachable_zlevels = list()
 	var/turf/our_turf = get_turf(loc)
 	if(!isturf(our_turf))
-		log_runtime(EXCEPTION("Tcomms core is in non-turf loc!"))
 		message_admins("Tcomms core is in non-turf loc. Inform maintainrs about it.")
-		return
+		CRASH("Tcomms core is in non-turf loc!")
 	// Add itself as a reachable Z-level
 	reachable_zlevels |= loc.z
 	// add adjacent zlevels above and below
@@ -168,21 +168,20 @@
 		if(R.active && !(R.stat & NOPOWER))
 			reachable_zlevels |= R.loc.z
 
-
 /**
-  * Z-Level transit change helper
-  *
-  * Handles parent call of disabling the machine if it changes Z-level, but also rebuilds the list of reachable levels
-  */
+ * Z-Level transit change helper
+ *
+ * Handles parent call of disabling the machine if it changes Z-level, but also rebuilds the list of reachable levels
+ */
 /obj/machinery/tcomms/core/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents = TRUE)
 	. = ..()
 	refresh_zlevels()
 
 /**
-  * Power-on checker
-  *
-  * Checks the z-level to see if an existing core is already powered on, and deny this one turning on if there is one. Returns TRUE if it can power on, or FALSE if it cannot
-  */
+ * Power-on checker
+ *
+ * Checks the z-level to see if an existing core is already powered on, and deny this one turning on if there is one. Returns TRUE if it can power on, or FALSE if it cannot
+ */
 /obj/machinery/tcomms/core/proc/check_power_on()
 	// Cancel if we are already on
 	if(active)
@@ -216,7 +215,7 @@
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "TcommsCore", capitalize(declent_ru(NOMINATIVE)))
+		ui = new(user, src, "TcommsCore", DECLENT_RU_CAP(src, NOMINATIVE))
 		ui.open()
 
 /obj/machinery/tcomms/core/ui_data(mob/user)
@@ -251,7 +250,7 @@
 		if(R.active && !(R.stat & NOPOWER))
 			status = TRUE
 
-		relays += list(list("addr" = "\ref[R]", "net_id" = R.network_id, "sector" = R.loc.z, "status" = status))
+		relays += list(list("addr" = R.UID(), "net_id" = R.network_id, "sector" = R.loc.z, "status" = status))
 
 	data["relay_entries"] = relays
 	// End the shit
@@ -327,7 +326,6 @@
 			popup.set_content(nttc.nttc_serialize())
 			popup.open(FALSE)
 
-
 		// Set network ID
 		if("network_id")
 			var/new_id = tgui_input_text(usr, "Введите новый сетевой идентификатор", "Сетевой идентификатор", network_id)
@@ -338,9 +336,9 @@
 			network_id = new_id
 
 		if("unlink")
-			var/obj/machinery/tcomms/relay/R = locate(params["addr"])
+			var/obj/machinery/tcomms/relay/R = locateUID(params["addr"])
 			if(istype(R, /obj/machinery/tcomms/relay))
-				var/confirm = tgui_alert(usr, "Вы хотите отвязать это реле?\nID: [R.network_id]\nADDR: \ref[R].", "Отвязка реле", list("Да", "Нет"))
+				var/confirm = tgui_alert(usr, "Вы хотите отвязать это реле?\nID: [R.network_id]\nADDR: [R.UID()].", "Отвязка реле", list("Да", "Нет"))
 				if(confirm == "Да")
 					log_action(usr, "has unlinked tcomms relay with ID [R.network_id] from tcomms core with ID [network_id]", TRUE)
 					R.Reset()
@@ -377,7 +375,6 @@
 					nttc.filtering -= name_to_remove
 					log_action(usr, "has removed [name_to_remove] from the NTTC filter list on core with ID [network_id]", TRUE)
 					to_chat(usr, span_notice("Вы удаляете пользователя <b>[name_to_remove]</b> из чёрного списка системы телекоммуникаций."))
-
 
 #undef UI_TAB_CONFIG
 #undef UI_TAB_LINKS

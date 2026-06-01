@@ -34,7 +34,6 @@
 
 	..()
 
-
 /obj/item/robot_module/Initialize(mapload)
 	. = ..()
 	add_default_robot_items()
@@ -72,9 +71,17 @@
 			rglass.glasource = get_or_create_estorage(/datum/robot_energy_storage/glass)
 		stack.source = get_or_create_estorage(stack.energy_type)
 		stack.is_cyborg = TRUE
-		
 
-/obj/item/robot_module/proc/get_or_create_estorage(var/storage_type)
+/obj/item/robot_module/proc/add_module(obj/item/module)
+	if(!istype(module))
+		return
+
+	modules += module
+	rebuild()
+	fix_modules()
+	handle_storages()
+
+/obj/item/robot_module/proc/get_or_create_estorage(storage_type)
 	for(var/datum/robot_energy_storage/S in storages)
 		if(istype(S, storage_type))
 			return S
@@ -146,17 +153,32 @@
 	module_type = "Standard"
 	subsystems = list(/mob/living/silicon/proc/subsystem_power_monitor, /mob/living/silicon/proc/subsystem_crew_monitor)
 	channels = list(ENG_FREQ_NAME = 1, MED_FREQ_NAME = 1, SEC_FREQ_NAME = 1, SRV_FREQ_NAME = 1, SUP_FREQ_NAME = 1)
-	default_skin = "Robot-STD"
+	default_skin = /datum/robot_skin/basic/std
 	borg_skins = list(
-		"Basic" = "Robot-STD",
-		"Android" = "droid",
-		"Default" = "Standard",
-		"Noble-STD" = "Noble-STD"
+		/datum/robot_skin/default/std,
+		/datum/robot_skin/basic/std,
+		/datum/robot_skin/noble/std,
+		/datum/robot_skin/paladin/std,
+		/datum/robot_skin/robot_drone/std,
+		/datum/robot_skin/protectron/std,
+		/datum/robot_skin/coffin/std,
+		/datum/robot_skin/burger/std,
+		/datum/robot_skin/raptor/std,
+		/datum/robot_skin/doll/std,
+		/datum/robot_skin/buddy/std,
+		/datum/robot_skin/mine/std,
+		/datum/robot_skin/eyebot/std,
+		/datum/robot_skin/seek/std,
+		/datum/robot_skin/noble_h/std,
+		/datum/robot_skin/mech/std,
+		/datum/robot_skin/heavy/std,
+		/datum/robot_skin/android,
+		/datum/robot_skin/wide/drake/std,
 	)
 	has_transform_animation = TRUE
 
-/obj/item/robot_module/standard/New()
-	..()
+/obj/item/robot_module/standard/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/screwdriver/cyborg(src) //added for minor works
 	modules += new /obj/item/wirecutters/cyborg(src) //addded to be able cut at least its own placed wires and rods
 	modules += new /obj/item/crowbar/cyborg(src)
@@ -201,16 +223,34 @@
 	module_type = "Medical"
 	subsystems = list(/mob/living/silicon/proc/subsystem_crew_monitor)
 	channels = list(MED_FREQ_NAME = 1)
-	default_skin = "Robot-MED"
+	default_skin = /datum/robot_skin/basic/std
 	borg_skins = list(
-		"Standard" = "Standard-Medi",
-		"Basic" = "Robot-MED",
-		"Surgeon" = "surgeon",
-		"Chiefbot" = "chiefbot",
-		"Advanced Droid" = "droid-medical",
-		"Needles" = "Robot-SRG",
-		"Noble-MED" = "Noble-MED",
-		"Cricket" = "Cricket-MEDI"
+		/datum/robot_skin/default/medical,
+		/datum/robot_skin/basic/medical,
+		/datum/robot_skin/noble/medical,
+		/datum/robot_skin/cricket/medical,
+		/datum/robot_skin/tall/meka/medical,
+		/datum/robot_skin/tall/fmeka/medical,
+		/datum/robot_skin/tall/mmeka/medical,
+		/datum/robot_skin/paladin/medical,
+		/datum/robot_skin/robot_drone/medical,
+		/datum/robot_skin/protectron/medical,
+		/datum/robot_skin/burger/medical,
+		/datum/robot_skin/raptor/medical,
+		/datum/robot_skin/doll/medical,
+		/datum/robot_skin/buddy/medical,
+		/datum/robot_skin/mine/medical,
+		/datum/robot_skin/eyebot/medical,
+		/datum/robot_skin/seek/medical,
+		/datum/robot_skin/noble_h/medical,
+		/datum/robot_skin/mech/medical,
+		/datum/robot_skin/heavy/medical,
+		/datum/robot_skin/walla,
+		/datum/robot_skin/surgeon,
+		/datum/robot_skin/chiefbot,
+		/datum/robot_skin/droid_medical,
+		/datum/robot_skin/basic/needles,
+		/datum/robot_skin/wide/drake/medical,
 	)
 	has_transform_animation = TRUE
 
@@ -223,8 +263,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/medical/New()
-	..()
+/obj/item/robot_module/medical/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/extinguisher/mini(src)
 	modules += new /obj/item/healthanalyzer/advanced(src)
 	modules += new /obj/item/robotanalyzer(src)
@@ -249,13 +289,13 @@
 	modules += new /obj/item/surgicaldrill(src)
 	modules += new /obj/item/stack/medical/bruise_pack/advanced(src)
 	modules += new /obj/item/stack/medical/ointment/advanced(src)
+	modules += new /obj/item/stack/medical/suture/advanced(src)
 	modules += new /obj/item/reagent_scanner/adv(src)
 	modules += new /obj/item/roller_holder(src)
 	modules += new /obj/item/rlf(src)
 
 	emag = new /obj/item/reagent_containers/borghypo/emagged(src) // emagged med. cyborg gets a special hypospray.
 // can pierce through thick skin and hardsuits.
-
 
 	fix_modules()
 	handle_storages()
@@ -287,32 +327,50 @@
 	name = "Engineering"
 	module_type = "Engineer"
 	subsystems = list(/mob/living/silicon/proc/subsystem_power_monitor, /mob/living/silicon/proc/subsystem_blueprints)
-	module_actions = list(
-		/datum/action/innate/robot_sight/meson,
-	)
+	module_actions = list(/datum/action/innate/robot_sight/meson)
 	channels = list(ENG_FREQ_NAME = 1)
-	default_skin = "Robot-ENG"
+	default_skin = /datum/robot_skin/basic/eng
 	borg_skins = list(
-		"Basic" = "Robot-ENG",
-		"Antique" = "Robot-ENG2",
-		"Landmate" = "landmate",
-		"Сhiefmate" = "chiefmate",
-		"Standard" = "Standard-Engi",
-		"Noble-ENG" = "Noble-ENG",
-		"Cricket" = "Cricket-ENGI"
+		/datum/robot_skin/default/eng,
+		/datum/robot_skin/basic/eng,
+		/datum/robot_skin/noble/eng,
+		/datum/robot_skin/cricket/eng,
+		/datum/robot_skin/tall/meka/eng,
+		/datum/robot_skin/tall/fmeka/eng,
+		/datum/robot_skin/tall/mmeka/eng,
+		/datum/robot_skin/paladin/eng,
+		/datum/robot_skin/robot_drone/eng,
+		/datum/robot_skin/protectron/eng,
+		/datum/robot_skin/coffin/eng,
+		/datum/robot_skin/burger/eng,
+		/datum/robot_skin/raptor/eng,
+		/datum/robot_skin/doll/eng,
+		/datum/robot_skin/buddy/eng,
+		/datum/robot_skin/mine/eng,
+		/datum/robot_skin/eyebot/eng,
+		/datum/robot_skin/seek/eng,
+		/datum/robot_skin/noble_h/eng,
+		/datum/robot_skin/mech/eng,
+		/datum/robot_skin/heavy/eng,
+		/datum/robot_skin/spider/eng,
+		/datum/robot_skin/handy_eng,
+		/datum/robot_skin/basic/antique,
+		/datum/robot_skin/landmate,
+		/datum/robot_skin/chiefmate,
+		/datum/robot_skin/wide/drake/eng,
 	)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/engineering/on_apply(mob/living/silicon/robot/robot)
 	if(robot.camera && ("Robots" in robot.camera.network))
 		LAZYADD(robot.camera.network, "Engineering")
-
-	ADD_TRAIT(robot, TRAIT_NEGATES_GRAVITY, ROBOT_TRAIT)
+	var/obj/item/borg/upgrade/magboots/upgrade = new(robot)
+	robot.install_upgrade(upgrade)
 
 	return TRUE
 
-/obj/item/robot_module/engineering/New()
-	..()
+/obj/item/robot_module/engineering/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/flash/cyborg(src)
 	modules += new /obj/item/rcd/borg(src)
 	modules += new /obj/item/rpd(src)
@@ -336,6 +394,7 @@
 	modules += new /obj/item/stack/cable_coil/cyborg(src)
 	modules += new /obj/item/stack/rods/cyborg(src)
 	modules += new /obj/item/stack/tile/plasteel(src)
+	modules += new /obj/item/lightreplacer/cyborg(src)
 	emag = new /obj/item/gun/energy/emittercannon(src)
 
 	fix_modules()
@@ -353,16 +412,36 @@
 	name = "Security"
 	module_type = "Security"
 	subsystems = list(/mob/living/silicon/proc/subsystem_crew_monitor)
-	channels = list(SEC_FREQ_NAME = 1)
-	default_skin = "Robot-SEC"
+	channels = list(SEC_FREQ_NAME = 1, PRS_FREQ_NAME = 1)
+	default_skin = /datum/robot_skin/basic/sec
 	borg_skins = list(
-		"Basic" = "Robot-SEC",
-		"Red Knight" = "Security",
-		"Black Knight" = "securityrobot",
-		"Bloodhound" = "bloodhound",
-		"Standard" = "Standard-Secy",
-		"Noble-SEC" = "Noble-SEC",
-		"Cricket" = "Cricket-SEC"
+		/datum/robot_skin/default/sec,
+		/datum/robot_skin/basic/sec,
+		/datum/robot_skin/noble/sec,
+		/datum/robot_skin/cricket/sec,
+		/datum/robot_skin/tall/meka/sec,
+		/datum/robot_skin/tall/fmeka/sec,
+		/datum/robot_skin/tall/mmeka/sec,
+		/datum/robot_skin/paladin/sec,
+		/datum/robot_skin/robot_drone/sec,
+		/datum/robot_skin/protectron/sec,
+		/datum/robot_skin/coffin/sec,
+		/datum/robot_skin/burger/sec,
+		/datum/robot_skin/raptor/sec,
+		/datum/robot_skin/doll/sec,
+		/datum/robot_skin/buddy/sec,
+		/datum/robot_skin/mine/sec,
+		/datum/robot_skin/eyebot/sec,
+		/datum/robot_skin/seek/sec,
+		/datum/robot_skin/noble_h/sec,
+		/datum/robot_skin/mech/sec,
+		/datum/robot_skin/heavy/sec,
+		/datum/robot_skin/spider/sec,
+		/datum/robot_skin/securitron,
+		/datum/robot_skin/redknight,
+		/datum/robot_skin/blackknight,
+		/datum/robot_skin/bloodhound,
+		/datum/robot_skin/wide/drake/sec,
 	)
 	has_transform_animation = TRUE
 
@@ -378,7 +457,7 @@
 				count_secborgs++
 
 		var/max_secborgs = 2
-		if(GLOB.security_level == SEC_LEVEL_GREEN)
+		if(SSsecurity_level.get_current_level_as_number() == SEC_LEVEL_GREEN)
 			max_secborgs = 1
 
 		if(count_secborgs >= max_secborgs)
@@ -389,8 +468,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/security/New()
-	..()
+/obj/item/robot_module/security/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/restraints/handcuffs/cable/zipties(src)
 	modules += new /obj/item/melee/baton/security(src)
 	modules += new /obj/item/gun/energy/disabler/cyborg(src)
@@ -402,24 +481,40 @@
 
 	fix_modules()
 
-
 /obj/item/robot_module/janitor
 	name = "Janitor"
 	module_type = "Janitor"
 	channels = list(SRV_FREQ_NAME = 1)
-	default_skin = "Robot-JAN"
+	default_skin = /datum/robot_skin/basic/jan
 	borg_skins = list(
-		"Basic" = "Robot-JAN",
-		"Mopbot" = "Robot-JAN2",
-		"Mop Gear Rex" = "mopgearrex",
-		"Standard" = "Standard-Jani",
-		"Noble-CLN" = "Noble-CLN",
-		"Cricket" = "Cricket-JANI"
+		/datum/robot_skin/default/jan,
+		/datum/robot_skin/basic/jan,
+		/datum/robot_skin/noble/jan,
+		/datum/robot_skin/cricket/jan,
+		/datum/robot_skin/tall/meka/jan,
+		/datum/robot_skin/tall/fmeka/jan,
+		/datum/robot_skin/tall/mmeka/jan,
+		/datum/robot_skin/paladin/jan,
+		/datum/robot_skin/robot_drone/jan,
+		/datum/robot_skin/protectron/jan,
+		/datum/robot_skin/burger/jan,
+		/datum/robot_skin/raptor/jan,
+		/datum/robot_skin/doll/jan,
+		/datum/robot_skin/buddy/jan,
+		/datum/robot_skin/mine/jan,
+		/datum/robot_skin/eyebot/jan,
+		/datum/robot_skin/seek/jan,
+		/datum/robot_skin/noble_h/jan,
+		/datum/robot_skin/mech/jan,
+		/datum/robot_skin/heavy/jan,
+		/datum/robot_skin/basic/mopbot,
+		/datum/robot_skin/mopgearrex,
+		/datum/robot_skin/wide/drake/jan,
 	)
 	has_transform_animation = TRUE
 
-/obj/item/robot_module/janitor/New()
-	..()
+/obj/item/robot_module/janitor/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/soap/nanotrasen(src)
 	modules += new /obj/item/storage/bag/trash/cyborg(src)
 	modules += new /obj/item/mop/advanced/cyborg(src)
@@ -438,17 +533,37 @@
 /obj/item/robot_module/butler
 	name = "Service"
 	module_type = "Service"
+	module_actions = list(
+		/datum/action/innate/robot_sight_hydro,
+	)
 	channels = list(SRV_FREQ_NAME = 1)
-	default_skin = "Robot-MAN"
+	default_skin = /datum/robot_skin/basic/default
 	borg_skins = list(
-		"Waitress" = "Robot-LDY",
-		"Kent" = "toiletbot",
-		"Bro" = "Robot-RLX",
-		"Rich" = "maximillion",
-		"Default" = "Robot-MAN",
-		"Standard" = "Standard-Serv",
-		"Noble-SRV" = "Noble-SRV",
-		"Cricket" = "Cricket-SERV"
+		/datum/robot_skin/default/srv,
+		/datum/robot_skin/basic/default,
+		/datum/robot_skin/noble/srv,
+		/datum/robot_skin/cricket/srv,
+		/datum/robot_skin/tall/meka/srv,
+		/datum/robot_skin/tall/meka/srv_alt,
+		/datum/robot_skin/tall/fmeka/srv,
+		/datum/robot_skin/tall/mmeka/srv,
+		/datum/robot_skin/paladin/srv,
+		/datum/robot_skin/robot_drone/srv,
+		/datum/robot_skin/protectron/srv,
+		/datum/robot_skin/burger/srv,
+		/datum/robot_skin/raptor/srv,
+		/datum/robot_skin/doll/srv,
+		/datum/robot_skin/buddy/srv,
+		/datum/robot_skin/mine/srv,
+		/datum/robot_skin/seek/srv,
+		/datum/robot_skin/mech/srv,
+		/datum/robot_skin/heavy/srv,
+		/datum/robot_skin/handy_serv,
+		/datum/robot_skin/basic/waitress,
+		/datum/robot_skin/basic/bro,
+		/datum/robot_skin/toiletbot,
+		/datum/robot_skin/maximillion,
+		/datum/robot_skin/wide/drake/srv,
 	)
 	has_transform_animation = TRUE
 
@@ -457,9 +572,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/butler/New()
-	..()
-
+/obj/item/robot_module/butler/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/handheld_chem_dispenser/booze(src)
 	modules += new /obj/item/handheld_chem_dispenser/soda(src)
 	modules += new /obj/item/handheld_chem_dispenser/botanical(src)
@@ -487,31 +601,21 @@
 
 	modules += new /obj/item/reagent_containers/dropper/cyborg(src)
 	modules += new /obj/item/lighter/zippo(src)
-	modules += new /obj/item/storage/bag/tray/cyborg(src)
+	modules += new /obj/item/storage/bag/tray(src)
 	modules += new /obj/item/reagent_containers/food/drinks/shaker(src)
 	modules += new /obj/item/extinguisher(src)
 	modules += new /obj/item/crowbar/cyborg(src)
-	emag = new /obj/item/reagent_containers/food/drinks/cans/beer(src)
-
-	var/datum/reagents/R = new/datum/reagents(50)
-	emag.reagents = R
-	R.my_atom = emag
-	R.add_reagent("beer2", 50)
-	emag.name = "Mickey Finn's Special Brew"
+	emag = new /obj/item/kitchen/knife/butcher/meatcleaver(src)
 
 	fix_modules()
 
-/obj/item/robot_module/butler/respawn_consumable(var/mob/living/silicon/robot/R)
-	if(emag)
-		var/obj/item/reagent_containers/food/drinks/cans/beer/B = emag
-		B.reagents.add_reagent("beer2", 2)
-
+/obj/item/robot_module/butler/respawn_consumable(mob/living/silicon/robot/R)
 	var/obj/item/reagent_containers/spray/pestspray/spray = locate() in modules
 	spray?.reagents.add_reagent("pestkiller", 3)
 
 	..()
 
-/obj/item/robot_module/butler/add_languages(var/mob/living/silicon/robot/R)
+/obj/item/robot_module/butler/add_languages(mob/living/silicon/robot/R)
 	//full set of languages
 	R.add_language(LANGUAGE_GALACTIC_COMMON, 1)
 	R.add_language(LANGUAGE_SOL_COMMON, 1)
@@ -532,7 +636,7 @@
 	R.add_language(LANGUAGE_MOTH, 1)
 
 /obj/item/robot_module/butler/handle_death(mob/living/silicon/robot/R, gibbed)
-	var/obj/item/storage/bag/tray/cyborg/T = locate() in modules
+	var/obj/item/storage/bag/tray/T = locate() in modules
 
 	if(istype(T))
 		T.drop_inventory(R)
@@ -541,24 +645,39 @@
 	if(G)
 		G.drop_gripped_item(silent = TRUE)
 
-
 /obj/item/robot_module/miner
 	name = "Miner"
 	module_type = "Miner"
-	module_actions = list(
-		/datum/action/innate/robot_sight/meson,
-	)
+	module_actions = list(/datum/action/innate/robot_sight/meson)
 	custom_removals = list("KA modkits")
 	channels = list(SUP_FREQ_NAME = 1)
-	default_skin = "Robot-MNR"
+	default_skin = /datum/robot_skin/basic/mnr
 	borg_skins = list(
-		"Basic" = "Robot-MNR",
-		"Advanced Droid" = "droid-miner",
-		"Treadhead" = "Miner",
-		"Standard" = "Standard-Mine",
-		"Noble-DIG" = "Noble-DIG",
-		"Cricket" = "Cricket-MINE",
-		"Lavaland" = "lavaland"
+		/datum/robot_skin/default/mnr,
+		/datum/robot_skin/basic/mnr,
+		/datum/robot_skin/noble/mnr,
+		/datum/robot_skin/cricket/mnr,
+		/datum/robot_skin/tall/meka/mnr,
+		/datum/robot_skin/tall/fmeka/mnr,
+		/datum/robot_skin/tall/mmeka/mnr,
+		/datum/robot_skin/paladin/mnr,
+		/datum/robot_skin/robot_drone/mnr,
+		/datum/robot_skin/protectron/mnr,
+		/datum/robot_skin/burger/mnr,
+		/datum/robot_skin/raptor/mnr,
+		/datum/robot_skin/doll/mnr,
+		/datum/robot_skin/buddy/mnr,
+		/datum/robot_skin/mine/mnr,
+		/datum/robot_skin/seek/mnr,
+		/datum/robot_skin/noble_h/mnr,
+		/datum/robot_skin/mech/mnr,
+		/datum/robot_skin/heavy/mnr,
+		/datum/robot_skin/spider/mnr,
+		/datum/robot_skin/walle,
+		/datum/robot_skin/droid_miner,
+		/datum/robot_skin/treadhead,
+		/datum/robot_skin/lavaland,
+		/datum/robot_skin/wide/drake/mnr,
 	)
 	has_transform_animation = TRUE
 
@@ -568,8 +687,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/miner/New()
-	..()
+/obj/item/robot_module/miner/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/storage/bag/ore/cyborg(src)
 	modules += new /obj/item/storage/bag/gem/cyborg(src)
 	modules += new /obj/item/pickaxe/drill/cyborg(src)
@@ -620,22 +739,22 @@
 	name = "Deathsquad"
 	name_disguise = "NT advanced combat"
 	module_type = "Malf"
-	module_actions = list(
-		/datum/action/innate/robot_sight/thermal,
-	)
-	default_skin = "nano_bloodhound"
-	borg_skins = list("Deathsquad" = "nano_bloodhound")
+	module_actions = list(/datum/action/innate/robot_sight/thermal)
+	default_skin = /datum/robot_skin/deathsquad
+	borg_skins = list(/datum/robot_skin/deathsquad)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/deathsquad/on_apply(mob/living/silicon/robot/robot)
 	var/mob/living/silicon/robot/deathsquad/death = new(get_turf(robot))
 	robot.mind?.transfer_to(death)
 	qdel(robot)
+	var/obj/item/borg/upgrade/magboots/upgrade = new(death)
+	death.install_upgrade(upgrade)
 
 	return TRUE
 
-/obj/item/robot_module/deathsquad/New()
-	..()
+/obj/item/robot_module/deathsquad/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/melee/energy/sword/cyborg(src)
 	modules += new /obj/item/gun/energy/pulse/cyborg(src)
 	modules += new /obj/item/crowbar(src)
@@ -648,8 +767,16 @@
 /obj/item/robot_module/syndicate
 	name = "Syndicate Bloodhound"
 	module_type = "Malf" // cuz it looks cool
-	default_skin = "syndie_bloodhound"
-	borg_skins = list("Syndicate Bloodhound" = "syndie_bloodhound")
+	default_skin = /datum/robot_skin/syndie_bloodhound
+	borg_skins = list(
+		/datum/robot_skin/syndie_bloodhound,
+		/datum/robot_skin/tall/meka/syndi,
+		/datum/robot_skin/tall/fmeka/syndi,
+		/datum/robot_skin/tall/mmeka/syndi,
+		/datum/robot_skin/heavy/syndi,
+		/datum/robot_skin/spider/syndi,
+		/datum/robot_skin/wide/drake/syn,
+	)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/syndicate/on_apply(mob/living/silicon/robot/robot)
@@ -658,8 +785,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/syndicate/New()
-	..()
+/obj/item/robot_module/syndicate/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/melee/energy/sword/cyborg(src)
 	modules += new /obj/item/gun/energy/printer(src)
 	modules += new /obj/item/gun/projectile/revolver/grenadelauncher/multi/cyborg(src)
@@ -676,8 +803,16 @@
 /obj/item/robot_module/syndicate_medical
 	name = "Syndicate Medical"
 	module_type = "Malf"
-	default_skin = "syndi-medi"
-	borg_skins = list("Syndicate Medical" = "syndi-medi")
+	default_skin = /datum/robot_skin/syndie_medi
+	borg_skins = list(
+		/datum/robot_skin/syndie_medi,
+		/datum/robot_skin/tall/meka/syndi,
+		/datum/robot_skin/tall/fmeka/syndi,
+		/datum/robot_skin/tall/mmeka/syndi,
+		/datum/robot_skin/heavy/syndi,
+		/datum/robot_skin/spider/syndi,
+		/datum/robot_skin/wide/drake/syn,
+	)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/syndicate_medical/on_apply(mob/living/silicon/robot/robot)
@@ -686,8 +821,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/syndicate_medical/New()
-	..()
+/obj/item/robot_module/syndicate_medical/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/extinguisher/mini(src)
 	modules += new /obj/item/healthanalyzer/advanced(src)
 	modules += new /obj/item/reagent_containers/borghypo/syndicate(src)
@@ -728,18 +863,26 @@
 	name = "Syndicate Saboteur"
 	name_disguise = "Engineering"
 	module_type = "Malf"
-	default_skin = "syndi-engi"
-	borg_skins = list("Syndicate Saboteur" = "syndi-engi")
+	default_skin = /datum/robot_skin/syndi_engi
+	borg_skins = list(
+		/datum/robot_skin/syndi_engi,
+		/datum/robot_skin/tall/meka/syndi,
+		/datum/robot_skin/tall/fmeka/syndi,
+		/datum/robot_skin/tall/mmeka/syndi,
+		/datum/robot_skin/heavy/syndi,
+		/datum/robot_skin/spider/syndi,
+		/datum/robot_skin/wide/drake/syn,
+	)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/syndicate_saboteur/on_apply(mob/living/silicon/robot/robot)
 	robot.spawn_syndicate_borgs(robot, "Saboteur", get_turf(robot))
-	qdel(src)
+	qdel(robot)
 
 	return TRUE
 
-/obj/item/robot_module/syndicate_saboteur/New()
-	..()
+/obj/item/robot_module/syndicate_saboteur/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/screwdriver/cyborg(src)
 	modules += new /obj/item/wirecutters/cyborg(src)
 	modules += new /obj/item/crowbar/cyborg(src)
@@ -765,34 +908,35 @@
 	modules += new /obj/item/stack/cable_coil/cyborg(src)
 	modules += new /obj/item/stack/rods/cyborg(src)
 	modules += new /obj/item/stack/tile/plasteel(src)
+	modules += new /obj/item/storage/bag/kaboom/cyborg/saboteur(src)
 	emag = null
 
 	fix_modules()
 	handle_storages()
 
-/obj/item/robot_module/syndicate_sabateur/add_default_robot_items()
+/obj/item/robot_module/syndicate_saboteur/add_default_robot_items()
 	return
 
 /obj/item/robot_module/destroyer
 	name = "Destroyer"
 	module_type = "Malf"
-	module_actions = list(
-		/datum/action/innate/robot_sight/thermal,
-	)
+	module_actions = list(/datum/action/innate/robot_sight/thermal)
 	channels = list(SEC_FREQ_NAME = 1)
-	default_skin = "droidcombat"
-	borg_skins = list("Destroyer" = "droidcombat")
+	default_skin = /datum/robot_skin/droidcombat
+	borg_skins = list(/datum/robot_skin/droidcombat)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/destroyer/on_apply(mob/living/silicon/robot/robot)
 	var/mob/living/silicon/robot/destroyer/destroy = new(get_turf(robot))
 	robot.mind?.transfer_to(destroy)
 	qdel(robot)
+	var/obj/item/borg/upgrade/magboots/upgrade = new(destroy)
+	destroy.install_upgrade(upgrade)
 
 	return TRUE
 
-/obj/item/robot_module/destroyer/New()
-	..()
+/obj/item/robot_module/destroyer/Initialize(mapload)
+	. = ..()
 
 	modules += new /obj/item/gun/energy/immolator/multi/cyborg(src) // See comments on /robot_module/combat below
 	modules += new /obj/item/melee/baton/security(src) // secondary weapon, for things immune to burn, immune to ranged weapons, or for arresting low-grade threats
@@ -806,22 +950,32 @@
 
 	fix_modules()
 
-
 /obj/item/robot_module/combat
 	name = "Combat"
 	module_type = "Malf"
-	module_actions = list()
-	default_skin = "ertgamma"
-	borg_skins = list("ERT-GAMMA" = "ertgamma")
+	default_skin = /datum/robot_skin/ertgamma
+	borg_skins = list(
+		/datum/robot_skin/ertgamma,
+		/datum/robot_skin/protectron/combat,
+		/datum/robot_skin/coffin/combat,
+		/datum/robot_skin/burger/combat,
+		/datum/robot_skin/raptor/combat,
+		/datum/robot_skin/buddy/combat,
+		/datum/robot_skin/seek/mnr,
+		/datum/robot_skin/mech/mnr,
+		/datum/robot_skin/mrgutsy,
+	)
 	has_transform_animation = TRUE
 
 /obj/item/robot_module/combat/on_apply(mob/living/silicon/robot/robot)
 	robot.status_flags &= ~CANPUSH
+	var/obj/item/borg/upgrade/magboots/upgrade = new(robot)
+	robot.install_upgrade(upgrade)
 
 	return TRUE
 
-/obj/item/robot_module/combat/New()
-	..()
+/obj/item/robot_module/combat/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/gun/energy/immolator/multi/cyborg(src) // primary weapon, strong at close range (ie: against blob/terror/xeno), but consumes a lot of energy per shot.
 	// Borg gets 40 shots of this weapon. Gamma Sec ERT gets 10.
 	// So, borg has way more burst damage, but also takes way longer to recharge / get back in the fight once depleted. Has to find a borg recharger and sit in it for ages.
@@ -838,25 +992,22 @@
 
 	fix_modules()
 
-
 /obj/item/robot_module/hunter
 	name = "Hunter"
 	module_type = "Standard"
-	module_actions = list(
-		/datum/action/innate/robot_sight/thermal/alien,
-	)
-	default_skin = "xenoborg"
-	borg_skins = list("Xenoborg" = "xenoborg")
+	module_actions = list(/datum/action/innate/robot_sight/thermal/alien)
+	default_skin = /datum/robot_skin/xenoborg
+	borg_skins = list(/datum/robot_skin/xenoborg)
 
 /obj/item/robot_module/hunter/on_apply(mob/living/silicon/robot/robot)
-	robot.modtype = "Xeno-Hu"
+	robot.modtype = /obj/item/robot_module/hunter
 	return TRUE
 
 /obj/item/robot_module/hunter/add_default_robot_items()
 	return
 
-/obj/item/robot_module/hunter/New()
-	..()
+/obj/item/robot_module/hunter/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/melee/energy/alien_claws(src)
 	modules += new /obj/item/flash/cyborg/alien(src)
 	modules += new /obj/item/reagent_containers/spray/alien/smoke(src)
@@ -871,7 +1022,7 @@
 		acidSpray.reagents.add_reagent("facid", 3)
 	..()
 
-/obj/item/robot_module/hunter/add_languages(var/mob/living/silicon/robot/R)
+/obj/item/robot_module/hunter/add_languages(mob/living/silicon/robot/R)
 	..()
 	R.add_language(LANGUAGE_XENOS, 1)
 
@@ -886,8 +1037,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/drone/New()
-	..()
+/obj/item/robot_module/drone/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/screwdriver/cyborg(src)
 	modules += new /obj/item/wirecutters/cyborg(src)
 	modules += new /obj/item/crowbar/cyborg(src)
@@ -898,6 +1049,7 @@
 	modules += new /obj/item/extinguisher(src)
 	modules += new /obj/item/reagent_containers/spray/cleaner/drone(src)
 	modules += new /obj/item/soap(src)
+	modules += new /obj/item/storage/bag/trash/cyborg(src)
 	modules += new /obj/item/rpd(src)
 	modules += new /obj/item/t_scanner(src)
 	modules += new /obj/item/analyzer(src)
@@ -940,7 +1092,7 @@
 
 	return TRUE
 
-/obj/item/robot_module/cogscarab/Initialize()
+/obj/item/robot_module/cogscarab/Initialize(mapload)
 	. = ..()
 	modules += new /obj/item/screwdriver/brass(src)
 	modules += new /obj/item/wirecutters/brass(src)
@@ -970,8 +1122,8 @@
 /obj/item/robot_module/clockwork
 	name = "Clockwork"
 	module_type = "Cogscarab" //icon_state
-	default_skin = "cyborg"
-	borg_skins = list("cyborg" = "cyborg")
+	default_skin = /datum/robot_skin/clockwork
+	borg_skins = list(/datum/robot_skin/clockwork)
 
 /obj/item/robot_module/clockwork/on_apply(mob/living/silicon/robot/robot)
 	robot.status_flags &= ~CANPUSH
@@ -985,7 +1137,7 @@
 	robot.icon = 'icons/mob/clockwork_mobs.dmi'
 	robot.icon_state = "cyborg"
 
-/obj/item/robot_module/clockwork/Initialize()
+/obj/item/robot_module/clockwork/Initialize(mapload)
 	. = ..()
 	modules += new /obj/item/clockwork/clockslab(src)
 	modules += new /obj/item/clock_borg_spear(src)
@@ -1019,6 +1171,18 @@
 	name = "Ninja"
 	name_disguise = "Service"
 	module_type = "ninja"
+	default_skin = /datum/robot_skin/ninja
+	borg_skins = list(
+		/datum/robot_skin/ninja,
+		/datum/robot_skin/tall/meka/ninja,
+		/datum/robot_skin/tall/fmeka/ninja,
+		/datum/robot_skin/tall/mmeka/ninja,
+		/datum/robot_skin/heavy/ninja,
+		/datum/robot_skin/spider/ninja,
+		/datum/robot_skin/ninja_sec,
+		/datum/robot_skin/ninja_engi,
+		/datum/robot_skin/ninja_medical,
+	)
 
 /obj/item/robot_module/ninja/on_apply(mob/living/silicon/robot/robot)
 	var/mob/living/silicon/robot/syndicate/saboteur/ninja/ninja = new(get_turf(robot))
@@ -1027,8 +1191,8 @@
 
 	return TRUE
 
-/obj/item/robot_module/ninja/New()
-	..()
+/obj/item/robot_module/ninja/Initialize(mapload)
+	. = ..()
 	modules += new /obj/item/melee/energy_katana/borg(src)
 	modules += new /obj/item/gun/energy/shuriken_emitter/borg(src)
 	modules += new /obj/item/screwdriver/cyborg(src)
@@ -1079,7 +1243,7 @@
 
 //checks whether this item is a module of the robot it is located in.
 /obj/item/proc/is_robot_module()
-	if(!istype(loc, /mob/living/silicon/robot))
+	if(!isrobot(loc))
 		return FALSE
 
 	var/mob/living/silicon/robot/robot = loc
@@ -1088,14 +1252,13 @@
 
 	return (src in robot.module.modules)
 
-
 /datum/robot_energy_storage
 	var/name = "Generic energy storage"
 	var/max_energy
 	var/recharge_rate
 	var/energy
 
-/datum/robot_energy_storage/New(var/obj/item/robot_module/R = null)
+/datum/robot_energy_storage/New(obj/item/robot_module/R = null)
 	if(!energy)
 		energy = max_energy
 
@@ -1105,9 +1268,9 @@
 	return
 
 /datum/robot_energy_storage/proc/use_charge(amount)
-	if (energy >= amount)
+	if(energy >= amount)
 		energy -= amount
-		if (energy == 0)
+		if(energy == 0)
 			return TRUE
 
 		return TRUE
@@ -1147,7 +1310,6 @@
 /datum/robot_energy_storage/medical/syndicate
 	max_energy = 50
 	recharge_rate = 4
-	name = "Medical Supplies Storage"
 
 /datum/robot_energy_storage/nanopaste
 	max_energy = 6
@@ -1163,7 +1325,6 @@
 	max_energy = 160
 	recharge_rate = 2
 	name = "Wood Storage"
-
 
 /**
  * Called when the robot owner of this module has their power cell replaced.

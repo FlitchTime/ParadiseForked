@@ -32,8 +32,8 @@
 	taste_sensitivity = TASTE_SENSITIVITY_NO_TASTE
 
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
-	reagent_tag = PROCESS_ORG
-	blood_color = "#FF5AFF"
+	reagent_tag = ORGANIC
+	blood_color = BLOOD_COLOR_ABDUCTOR
 	female_scream_sound = list('sound/goonstation/voice/male_scream.ogg')
 	female_cough_sounds = list('sound/effects/mob_effects/m_cougha.ogg','sound/effects/mob_effects/m_coughb.ogg', 'sound/effects/mob_effects/m_coughc.ogg')
 	female_sneeze_sound = list('sound/effects/mob_effects/sneeze.ogg') //Abductors always scream like guys
@@ -53,9 +53,9 @@
 	H.add_language(LANGUAGE_HIVE_ABDUCTOR) //other than over the abductor's own mindlink
 	H.add_language(LANGUAGE_GREY) // still grey enouhg to speak in psi link
 	var/datum/atom_hud/abductor_hud = GLOB.huds[DATA_HUD_ABDUCTOR]
-	abductor_hud.add_hud_to(H)
+	abductor_hud.show_to(H)
 
 /datum/species/abductor/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	var/datum/atom_hud/abductor_hud = GLOB.huds[DATA_HUD_ABDUCTOR]
-	abductor_hud.remove_hud_from(H)
+	abductor_hud.hide_from(H)

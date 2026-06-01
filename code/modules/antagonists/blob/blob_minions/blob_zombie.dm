@@ -7,23 +7,20 @@
 	health_doll_icon = "blobpod"
 	health = BLOBMOB_ZOMBIE_HEALTH
 	maxHealth = BLOBMOB_ZOMBIE_HEALTH
-	verb_say = list("gurgles", "groans")
-	verb_ask = "demands"
-	verb_exclaim = "roars"
-	verb_yell = "bellows"
+	verb_say = list("тяжело произносит", "бормочет")
+	verb_ask = "вопросительно бормочет"
+	verb_exclaim = "рычит"
+	verb_yell = "ревёт"
 	melee_damage_lower = BLOBMOB_ZOMBIE_DMG_LOWER
 	melee_damage_upper = BLOBMOB_ZOMBIE_DMG_UPPER
 	obj_damage = BLOBMOB_ZOMBIE_OBJ_DMG
-	environment_smash = ENVIRONMENT_SMASH_STRUCTURES
 	attacktext = "ударяет"
 	attack_sound = 'sound/weapons/genhit1.ogg'
-	deathmessage = 	"падает на землю!"
-	gold_core_spawnable = NO_SPAWN
+	deathmessage =	"падает на землю!"
 	del_on_death = TRUE
 	speed = BLOBMOB_ZOMBIE_SPEED_MOD
 	/// The dead body we have inside
 	var/mob/living/carbon/human/corpse
-
 
 /mob/living/simple_animal/hostile/blob_minion/zombie/death(gibbed)
 	if(corpse)
@@ -41,7 +38,7 @@
 	death()
 
 /mob/living/simple_animal/hostile/blob_minion/zombie/pull_constraint(atom/movable/pulled_atom, state, supress_message = FALSE) //Prevents spore from pulling things
-	if(istype(pulled_atom, /mob/living))
+	if(isliving(pulled_atom))
 		return TRUE // Get dem
 	if(!supress_message)
 		to_chat(src, span_warning("Вы не можете таскать ничего кроме других существ и их тел."))
@@ -51,7 +48,6 @@
 	. = ..()
 	if(istype(mover, /obj/structure/blob))
 		return TRUE
-
 
 /mob/living/simple_animal/hostile/blob_minion/zombie/Initialize(mapload)
 	. = ..()
@@ -74,7 +70,6 @@
 	. |= blob_head_overlay
 	if(blocks_emissive)
 		. |= get_emissive_block()
-
 
 /// Create an explosion of spores on death
 /mob/living/simple_animal/hostile/blob_minion/zombie/proc/death_burst()

@@ -9,13 +9,11 @@
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
 	health = 35
 	maxHealth = 35
-	melee_damage_type = STAMINA
 	melee_damage_lower = 8
-	melee_damage_upper = 10
-	attacktext = "кусает"
-	footstep_type = FOOTSTEP_MOB_CLAW
+	melee_damage_upper = 15
 	butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/security = 3)
 	tts_seed = "Furion"
+	speed = -1
 
 /mob/living/simple_animal/pet/dog/security/ranger
 	name = "Ranger"
@@ -36,8 +34,6 @@
 	icon_resting = "german_shep2_rest"
 	icon_dead = "german_shep2_dead"
 	tts_seed = "pantheon"
-
-
 
 /mob/living/simple_animal/pet/dog/security/Initialize(mapload)
 	. = ..()
@@ -68,7 +64,6 @@
 	..(gibbed)
 	regenerate_icons()
 
-
 /mob/living/simple_animal/pet/dog/security/place_on_head(obj/item/item_to_add, mob/user)
 
 	if(istype(item_to_add, /obj/item/grenade/plastic/c4)) // last thing he ever wears, I guess
@@ -77,16 +72,16 @@
 
 	if(inventory_head)
 		if(user)
-			to_chat(user, "<span class='warning'>You can't put more than one hat on [src]!</span>")
+			to_chat(user, span_warning("You can't put more than one hat on [src]!"))
 		return
 	if(!item_to_add)
-		user.visible_message("<span class='notice'>[user] pets [src].</span>", "<span class='notice'>You rest your hand on [src]'s head for a moment.</span>")
+		user.visible_message(span_notice("[user] pets [src]."), span_notice("You rest your hand on [src]'s head for a moment."))
 		if(flags & HOLOGRAM)
 			return
 		return
 
 	if(user && !user.drop_item_ground(item_to_add))
-		to_chat(user, "<span class='warning'>\The [item_to_add] is stuck to your hand, you cannot put it on [src]'s head!</span>")
+		to_chat(user, span_warning("\The [item_to_add] is stuck to your hand, you cannot put it on [src]'s head!"))
 		return 0
 
 	var/valid = FALSE
@@ -97,17 +92,19 @@
 
 	if(valid)
 		if(health <= 0)
-			to_chat(user, "<span class='notice'>There is merely a dull, lifeless look in [real_name]'s eyes as you put the [item_to_add] on [p_them()].</span>")
+			to_chat(user, span_notice("There is merely a dull, lifeless look in [real_name]'s eyes as you put the [item_to_add] on [p_them()]."))
 		else if(user)
-			user.visible_message("<span class='notice'>[user] puts [item_to_add] on [real_name]'s head. [src] looks at [user] and barks once.</span>",
-				"<span class='notice'>You put [item_to_add] on [real_name]'s head. [src] gives you a peculiar look, then wags [p_their()] tail once and barks.</span>",
-				"<span class='italics'>You hear a friendly-sounding bark.</span>")
+			user.visible_message(
+				span_notice("[user] puts [item_to_add] on [real_name]'s head. [src] looks at [user] and barks once."),
+				span_notice("You put [item_to_add] on [real_name]'s head. [src] gives you a peculiar look, then wags [p_their()] tail once and barks."),
+				span_italics("You hear a friendly-sounding bark.")
+			)
 		item_to_add.forceMove(src)
 		inventory_head = item_to_add
 		update_dog_fluff()
 		regenerate_icons()
 	else
-		to_chat(user, "<span class='warning'>You set [item_to_add] on [src]'s head, but it falls off!</span>")
+		to_chat(user, span_warning("You set [item_to_add] on [src]'s head, but it falls off!"))
 		item_to_add.forceMove(drop_location())
 		if(prob(25))
 			step_rand(item_to_add)
@@ -123,16 +120,16 @@
 	desc = initial(desc)
 	// BYOND/DM doesn't support the use of initial on lists.
 	speak = list("YAP", "Woof!", "Bark!", "AUUUUUU")
-	speak_emote = list("barks", "woofs")
-	emote_hear = list("barks!", "woofs!", "yaps.","pants.")
-	emote_see = list("shakes its head.", "chases its tail.","shivers.")
+	speak_emote = list("лает", "рявкает", "гавкает")
+	emote_hear = list("лает", "гавкает", "тявкает", "пыхтит")
+	emote_see = list("трясёт головой", "пытается поймать свой хвост", "дрожит")
 	desc = initial(desc)
 
-	if(inventory_head && inventory_head.muhtar_fashion)
+	if(inventory_head?.muhtar_fashion)
 		var/datum/muhtar_fashion/DF = new inventory_head.muhtar_fashion(src)
 		DF.apply(src)
 
-	if(inventory_mask && inventory_mask.muhtar_fashion)
+	if(inventory_mask?.muhtar_fashion)
 		var/datum/muhtar_fashion/DF = new inventory_mask.muhtar_fashion(src)
 		DF.apply(src)
 
@@ -149,16 +146,15 @@
 		if(!DF.obj_color)
 			DF.obj_color = inventory_head.color
 
-
-		if (icon_state == icon_resting)
+		if(icon_state == icon_resting)
 			head_icon = DF.get_overlay()
-			head_icon.pixel_y = -2
+			head_icon.pixel_z = -2
 		else
 			head_icon = DF.get_overlay()
 
 		if(health <= 0)
 			head_icon = DF.get_overlay(dir = EAST)
-			head_icon.pixel_y = -8
+			head_icon.pixel_z = -8
 			head_icon.transform = turn(head_icon.transform, 180)
 
 		add_overlay(head_icon)
@@ -176,13 +172,13 @@
 
 		if(icon_state == icon_resting)
 			mask_icon = DF.get_overlay()
-			mask_icon.pixel_y = -2
+			mask_icon.pixel_z = -2
 		else
 			mask_icon = DF.get_overlay()
 
 		if(health <= 0)
 			mask_icon = DF.get_overlay(dir = EAST)
-			mask_icon.pixel_y = -11
+			mask_icon.pixel_z = -11
 			mask_icon.transform = turn(mask_icon.transform, 180)
 
 		add_overlay(mask_icon)
@@ -192,6 +188,7 @@
 	desc = "Старый служебный пёс. Он давно потерял нюх, однако детектив по-прежнему содержит и заботится о нём."
 	icon_state = "blackdog"
 	icon_living = "blackdog"
+	icon_resting = "blackdog_rest"
 	icon_dead = "blackdog_dead"
 	icon_resting = "blackdog_rest"
 	tts_seed = "Thrall"

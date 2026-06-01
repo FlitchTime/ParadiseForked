@@ -67,22 +67,33 @@
 	if(ui_x && ui_y)
 		src.window_size = list(ui_x, ui_y)
 
+/datum/tgui/Destroy(force)
+	user = null
+	state = null
+	src_object = null
+	window?.release_lock()
+	window?.close(TRUE)
+	window = null
+	. = ..()
+
 /**
  * public
  *
  * Open this UI (and initialize it with data).
+ *
+ * return bool - TRUE if a new pooled window is opened, FALSE in all other situations including if a new pooled window didn't open because one already exists.
  */
 /datum/tgui/proc/open()
 	if(!user.client)
-		return null
+		return FALSE
 	if(window)
-		return null
+		return FALSE
 	process_status()
 	if(status < UI_UPDATE)
-		return null
+		return FALSE
 	window = SStgui.request_pooled_window(user)
 	if(!window)
-		return null
+		return FALSE
 	opened_at = world.time
 	window.acquire_lock(src)
 	if(!window.is_ready())
@@ -99,6 +110,8 @@
 		with_data = TRUE,
 		with_static_data = TRUE))
 	SStgui.on_open(src)
+
+	return TRUE
 
 /datum/tgui/proc/send_assets()
 	var/flushqueue = window.send_asset(get_asset_datum(
@@ -129,7 +142,7 @@
 		// the error message properly.
 		window.release_lock()
 		window.close(can_be_suspended)
-		src_object.ui_close(user)
+		src_object?.ui_close(user)
 		SStgui.on_close(src)
 	state = null
 	qdel(src)
@@ -163,7 +176,7 @@
  */
 /datum/tgui/proc/send_asset(datum/asset/asset)
 	if(!window)
-		CRASH("send_asset() can only be called after open().")
+		CRASH("send_asset() was called either without calling open() first or when open() did not return TRUE.")
 	return window.send_asset(asset)
 
 /**
@@ -308,7 +321,7 @@
 	// Pass act type messages to ui_act
 	if(type && copytext(type, 1, 5) == "act/")
 		process_status()
-		if(src_object.ui_act(copytext(type, 5), payload, src, state))
+		if(src_object.ui_act(copytext(type, 5), payload, src, state) && src_object)
 			SStgui.update_uis(src_object)
 		return FALSE
 	switch(type)

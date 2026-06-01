@@ -103,6 +103,13 @@
 	plane = WALL_PLANE
 	render_relay_planes = list(RENDER_PLANE_GAME_WORLD, EMISSIVE_MASK_PLANE)
 
+/atom/movable/screen/plane_master/below_game
+	name = "Под основными объектами"
+	documentation = "Содержит то, что должно быть выше турфов, но ниже большинства игровых объектов. \
+					Используется в случаях, когда спрайт объекта вылазит за свою плитку и перекрывает спрайты находящиеся выше."
+	plane = BELOW_GAME_PLANE
+	render_relay_planes = list(RENDER_PLANE_GAME_WORLD)
+
 /atom/movable/screen/plane_master/game
 	name = "Lower game world"
 	documentation = "Holds anything that draws just above floor. Runes, crayons and etc."
@@ -135,6 +142,18 @@
 	name = "Area"
 	documentation = "Holds the areas themselves, which ends up meaning it holds any overlays/effects we apply to areas. NOT snow or rad storms, those go on above lighting"
 	plane = AREA_PLANE
+
+/atom/movable/screen/plane_master/weather
+	name = "Weather"
+	documentation = "Holds the main tiling 32x32 sprites of weather. We mask against walls that are on the edge of weather effects."
+	plane = WEATHER_PLANE
+	start_hidden = TRUE
+
+/atom/movable/screen/plane_master/weather/set_home(datum/plane_master_group/home)
+	. = ..()
+	if(!.)
+		return
+	home.AddComponent(/datum/component/hide_weather_planes, src)
 
 /atom/movable/screen/plane_master/massive_obj
 	name = "Massive object"
@@ -215,7 +234,7 @@
 	// Has a nice effect, makes thing stand out
 	color = list(1.2,0,0,0, 0,1.2,0,0, 0,0,1.2,0, 0,0,0,1, 0,0,0,0)
 	// This serves a similar purpose, I want the pipes to pop
-	add_filter("pipe_dropshadow", 1, drop_shadow_filter(x = -1, y= -1, size = 1, color = "#0000007A"))
+	add_filter("pipe_dropshadow", 1, drop_shadow_filter(x = -1, y= -1, size = 1, color = COLOR_HALF_TRANSPARENT_BLACK))
 	mirror_parent_hidden()
 
 /atom/movable/screen/plane_master/camera_static
@@ -260,7 +279,6 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	offsetting_flags = BLOCKS_PLANE_OFFSETTING|OFFSET_RELAYS_MATCH_HIGHEST
 
-
 /atom/movable/screen/plane_master/runechat
 	name = "Runechat"
 	documentation = "Holds runechat images, that text that pops up when someone say something. Uses a dropshadow to well, look nice."
@@ -275,14 +293,12 @@
 	if(istype(mymob) && (mymob.canon_client?.prefs.toggles & PREFTOGGLE_AMBIENT_OCCLUSION))
 		add_filter("AO", 1, drop_shadow_filter(x = 0, y = -2, size = 4, color = "#04080FAA"))
 
-
 /atom/movable/screen/plane_master/balloon_chat
 	name = "Balloon chat"
 	documentation = "Holds ballon chat images, those little text bars that pop up for a second when you do some things. NOT runechat."
 	plane = BALLOON_CHAT_PLANE
 	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
 	render_relay_planes = list(RENDER_PLANE_NON_GAME)
-
 
 /atom/movable/screen/plane_master/hud
 	name = "HUD"
@@ -308,7 +324,6 @@
 	render_relay_planes = list(RENDER_PLANE_NON_GAME)
 	offsetting_flags = BLOCKS_PLANE_OFFSETTING|OFFSET_RELAYS_MATCH_HIGHEST
 
-
 /atom/movable/screen/plane_master/gravpulse
 	name = "Gravpulse"
 	documentation = "Ok so this one's fun. Basically, we want to be able to distort the game plane when a grav annom is around.\
@@ -320,3 +335,35 @@
 	blend_mode = BLEND_ADD
 	render_target = GRAVITY_PULSE_RENDER_TARGET
 	render_relay_planes = list()
+
+/atom/movable/screen/plane_master/escape_menu
+	name = "Escape Menu"
+	documentation = "Anything relating to the escape menu."
+	plane = ESCAPE_MENU_PLANE
+	appearance_flags = PLANE_MASTER|NO_CLIENT_COLOR
+	render_relay_planes = list(RENDER_PLANE_MASTER)
+	offsetting_flags = BLOCKS_PLANE_OFFSETTING|OFFSET_RELAYS_MATCH_HIGHEST
+
+/atom/movable/screen/plane_master/escape_menu/show_to(mob/mymob)
+	. = ..()
+	if(!.)
+		return
+
+	var/datum/hud/our_hud = home.our_hud
+	if(!our_hud)
+		return
+
+	RegisterSignal(our_hud, SIGNAL_ADDTRAIT(TRAIT_ESCAPE_MENU_OPEN), PROC_REF(escape_opened), override = TRUE)
+	RegisterSignal(our_hud, SIGNAL_REMOVETRAIT(TRAIT_ESCAPE_MENU_OPEN), PROC_REF(escape_closed), override = TRUE)
+	if(!HAS_TRAIT(our_hud, TRAIT_ESCAPE_MENU_OPEN))
+		escape_closed()
+
+/atom/movable/screen/plane_master/escape_menu/proc/escape_opened(datum/source)
+	SIGNAL_HANDLER
+	var/mob/our_mob = home?.our_hud?.mymob
+	unhide_plane(our_mob)
+
+/atom/movable/screen/plane_master/escape_menu/proc/escape_closed(datum/source)
+	SIGNAL_HANDLER
+	var/mob/our_mob = home?.our_hud?.mymob
+	hide_plane(our_mob)

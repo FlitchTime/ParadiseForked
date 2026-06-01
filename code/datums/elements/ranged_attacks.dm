@@ -3,7 +3,7 @@
 ///This proc is used by basic mobs to give them a simple ranged attack! In theory this could be extended to
 /datum/element/ranged_attacks
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY | ELEMENT_BESPOKE
-	id_arg_index = 2
+	argument_hash_start_idx = 2
 	var/casingtype = /obj/item/ammo_casing/caseless/glockroach
 	var/projectilesound = 'sound/weapons/gunshots/gunshot3.ogg'
 	var/projectiletype
@@ -30,14 +30,14 @@
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(async_fire_ranged_attack), firer, target, modifiers)
 
-
 /datum/element/ranged_attacks/proc/async_fire_ranged_attack(mob/living/basic/firer, atom/target, modifiers)
 	var/turf/startloc = get_turf(firer)
 
 	if(casingtype)
 		var/obj/item/ammo_casing/casing = new casingtype(startloc)
 		playsound(firer, projectilesound, 100)
-		casing.fire(target, firer, zone_override = ran_zone())
+		casing.fire(target, firer, modifiers = null, distro = null, quiet = FALSE, zone_override = ran_zone(), firer_source_atom = firer)
+		casing.after_fire()
 
 	else if(projectiletype)
 		var/obj/projectile/P = new projectiletype(startloc)

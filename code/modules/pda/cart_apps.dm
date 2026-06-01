@@ -1,5 +1,5 @@
 /datum/data/pda/app/status_display
-	name = "Status Display"
+	name = "Панель статуса"
 	icon = "list-alt"
 	template = "pda_status_display"
 	category = "Utilities"
@@ -15,6 +15,9 @@
 /datum/data/pda/app/status_display/ui_act(action, list/params)
 	if(..())
 		return
+
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 	. = TRUE
 	switch(action)
@@ -35,9 +38,8 @@
 				else
 					post_status(params["statdisp"])
 
-
 /datum/data/pda/app/signaller
-	name = "Signaler System"
+	name = "Сигнальная система"
 	icon = "rss"
 	template = "pda_signaler"
 	category = "Utilities"
@@ -56,6 +58,9 @@
 
 	. = TRUE
 
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
+
 	if(pda.cartridge && istype(pda.cartridge.radio, /obj/item/integrated_radio/signal))
 		var/obj/item/integrated_radio/signal/R = pda.cartridge.radio
 
@@ -72,7 +77,7 @@
 				R.code = clamp(text2num(params["code"]), 1, 100)
 
 /datum/data/pda/app/power
-	name = "Power Monitor"
+	name = "Монитор энергопитания"
 	icon = "bolt"
 	template = "pda_power"
 	category = "Engineering"
@@ -87,6 +92,9 @@
 /datum/data/pda/app/power/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	if(..())
 		return
+
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 	. = TRUE
 	// Observe
@@ -117,6 +125,9 @@
 
 	. = TRUE
 
+	if(pda && !pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
+
 	switch(action)
 		if("Records")
 			var/datum/data/record/R = locateUID(params["target"])
@@ -133,7 +144,7 @@
 	has_back = TRUE
 
 /datum/data/pda/app/crew_records/medical
-	name = "Medical Records"
+	name = "Реестр пациентов"
 	icon = "heartbeat"
 	template = "pda_medical"
 	category = "Medical"
@@ -159,7 +170,7 @@
 			break
 
 /datum/data/pda/app/crew_records/security
-	name = "Security Records"
+	name = "Записи СБ"
 	icon = "id-badge"
 	template = "pda_security"
 	category = "Security"
@@ -185,7 +196,7 @@
 			break
 
 /datum/data/pda/app/secbot_control
-	name = "Security Bot Access"
+	name = "Боты СБ"
 	icon = "rss"
 	template = "pda_secbot"
 	category = "Security"
@@ -204,13 +215,13 @@
 		else
 			beepskyData["botstatus"] = list("loca" = null, "mode" = -1)
 		var/botsCount=0
-		if(SC.botlist && SC.botlist.len)
+		if(SC.botlist && length(SC.botlist))
 			for(var/mob/living/simple_animal/bot/B in SC.botlist)
 				botsCount++
 				if(B.loc)
 					botsData[++botsData.len] = list("Name" = sanitize(B.name), "Location" = sanitize(B.loc.loc.name), "uid" = "[B.UID()]")
 
-		if(!botsData.len)
+		if(!length(botsData))
 			botsData[++botsData.len] = list("Name" = "No bots found", "Location" = "Invalid", "uid"= null)
 
 		beepskyData["bots"] = botsData
@@ -229,6 +240,9 @@
 /datum/data/pda/app/secbot_control/ui_act(action, list/params)
 	if(..())
 		return
+
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 	. = TRUE
 
@@ -264,7 +278,7 @@
 				pda.cartridge.radio.Topic(null, list(op = "summon"))
 
 /datum/data/pda/app/mule_control
-	name = "Delivery Bot Control"
+	name = "Боты Снабжения"
 	icon = "truck"
 	template = "pda_mule"
 	category = "Quartermaster"
@@ -284,14 +298,13 @@
 		else
 			muleData["botstatus"] = list("loca" = null, "mode" = -1,"home"=null,"powr" = null,"retn" =null, "pick"=null, "load" = null, "dest" = null)
 
-
 		var/mulebotsCount=0
 		for(var/mob/living/simple_animal/bot/B in QC.botlist)
 			mulebotsCount++
 			if(B.loc)
 				mulebotsData[++mulebotsData.len] = list("Name" = sanitize(B.name), "Location" = sanitize(B.loc.loc.name), "uid" = "[B.UID()]")
 
-		if(!mulebotsData.len)
+		if(!length(mulebotsData))
 			mulebotsData[++mulebotsData.len] = list("Name" = "No bots found", "Location" = "Invalid", "uid"= null)
 
 		muleData["bots"] = mulebotsData
@@ -310,6 +323,9 @@
 /datum/data/pda/app/mule_control/ui_act(action, list/params)
 	if(..())
 		return
+
+	if(!pda.silent)
+		playsound(pda, 'sound/machines/terminal_select.ogg', 15, TRUE)
 
 	. = TRUE
 
@@ -349,7 +365,7 @@
 				pda.cartridge.radio.Topic(null, list(op = "home"))
 
 /datum/data/pda/app/supply
-	name = "Supply Records"
+	name = "Журнал поставок"
 	icon = "archive"
 	template = "pda_supplyrecords"
 	category = "Quartermaster"
@@ -375,7 +391,7 @@
 		supplyOrderCount++
 		supplyOrderData[++supplyOrderData.len] = list("Number" = SO.ordernum, "Name" = html_encode(SO.object.name), "ApprovedBy" = SO.orderedby, "Comment" = html_encode(SO.comment))
 
-	if(!supplyOrderData.len)
+	if(!length(supplyOrderData))
 		supplyOrderData[++supplyOrderData.len] = list("Number" = null, "Name" = null, "OrderedBy"=null)
 
 	supplyData["approved"] = supplyOrderData
@@ -388,7 +404,7 @@
 		requestCount++
 		requestData[++requestData.len] = list("Number" = SO.ordernum, "Name" = html_encode(SO.object.name), "OrderedBy" = SO.orderedby, "Comment" = html_encode(SO.comment))
 
-	if(!requestData.len)
+	if(!length(requestData))
 		requestData[++requestData.len] = list("Number" = null, "Name" = null, "orderedBy" = null, "Comment" = null)
 
 	supplyData["requests"] = requestData
@@ -397,59 +413,81 @@
 	data["supply"] = supplyData
 
 /datum/data/pda/app/janitor
-	name = "Custodial Locator"
+	name = "Локатор уборщика"
 	icon = "trash"
 	template = "pda_janitor"
 	category = "Utilities"
 	update = PDA_APP_UPDATE_SLOW
 
 /datum/data/pda/app/janitor/update_ui(mob/user as mob, list/data)
-	var/list/JaniData = list()
-	var/turf/cl = get_turf(pda)
+	var/list/jani_data = list()
+	var/turf/pda_turf = get_turf(pda)
+	var/janitorial_equipment_chached = GLOB.janitorial_equipment
+	var/bots_list_chached = GLOB.bots_list
 
-	if(cl)
-		JaniData["user_loc"] = list("x" = cl.x, "y" = cl.y)
+	if(pda_turf)
+		jani_data["user_loc"] = list("x" = pda_turf.x, "y" = pda_turf.y)
 	else
-		JaniData["user_loc"] = list("x" = 0, "y" = 0)
+		jani_data["user_loc"] = list("x" = 0, "y" = 0)
 
-	var/list/MopData = list()
-	for(var/obj/item/mop/M in GLOB.janitorial_equipment)
-		var/turf/ml = get_turf(M)
-		if(ml)
-			if(ml.z != cl.z)
+	var/list/mop_data = list()
+	for(var/obj/item/mop/mop in janitorial_equipment_chached)
+		var/turf/item_turf = get_turf(mop)
+		if(item_turf)
+			if(!is_valid_z_level(item_turf, pda_turf))
 				continue
-			var/direction = get_dir(pda, M)
-			MopData[++MopData.len] = list ("x" = ml.x, "y" = ml.y, "dir" = uppertext(dir2text(direction)), "status" = M.reagents.total_volume ? "Wet" : "Dry")
+			var/direction = get_dir(pda, mop)
+			mop_data[++mop_data.len] = list ("x" = item_turf.x, "y" = item_turf.y, "dir" = uppertext(dir2rustext(direction)), "status" = mop.reagents.total_volume ? "Мокрая" : "Сухая")
 
-	var/list/BucketData = list()
-	for(var/obj/structure/mopbucket/B in GLOB.janitorial_equipment)
-		var/turf/bl = get_turf(B)
-		if(bl)
-			if(bl.z != cl.z)
+	var/list/bucket_data = list()
+	for(var/obj/structure/mopbucket/bucket in janitorial_equipment_chached)
+		var/turf/item_turf = get_turf(bucket)
+		if(item_turf)
+			if(!is_valid_z_level(item_turf, pda_turf))
 				continue
-			var/direction = get_dir(pda,B)
-			BucketData[++BucketData.len] = list ("x" = bl.x, "y" = bl.y, "dir" = uppertext(dir2text(direction)), "volume" = B.reagents.total_volume, "max_volume" = B.reagents.maximum_volume)
+			var/direction = get_dir(pda, bucket)
+			bucket_data[++bucket_data.len] = list ("x" = item_turf.x, "y" = item_turf.y, "dir" = uppertext(dir2rustext(direction)), "volume" = bucket.reagents.total_volume, "max_volume" = bucket.reagents.maximum_volume)
 
-	var/list/CbotData = list()
-	for(var/mob/living/simple_animal/bot/cleanbot/B in GLOB.bots_list)
-		var/turf/bl = get_turf(B)
-		if(bl)
-			if(bl.z != cl.z)
+	var/list/cleanbot_data = list()
+	for(var/mob/living/simple_animal/bot/cleanbot/clean_bot in bots_list_chached)
+		var/turf/item_turf = get_turf(clean_bot)
+		if(item_turf)
+			if(!is_valid_z_level(item_turf, pda_turf))
 				continue
-			var/direction = get_dir(pda,B)
-			CbotData[++CbotData.len] = list("x" = bl.x, "y" = bl.y, "dir" = uppertext(dir2text(direction)), "status" = B.on ? "Online" : "Offline")
+			var/direction = get_dir(pda, clean_bot)
+			cleanbot_data[++cleanbot_data.len] = list("x" = item_turf.x, "y" = item_turf.y, "dir" = uppertext(dir2rustext(direction)), "status" = clean_bot.on ? "Включён" : "Выключен")
 
-	var/list/CartData = list()
-	for(var/obj/structure/janitorialcart/B in GLOB.janitorial_equipment)
-		var/turf/bl = get_turf(B)
-		if(bl)
-			if(bl.z != cl.z)
+	var/list/jancart_data = list()
+	for(var/obj/structure/janitorialcart/jan_cart_structure in janitorial_equipment_chached)
+		var/turf/item_turf = get_turf(jan_cart_structure)
+		if(item_turf)
+			if(!is_valid_z_level(item_turf, pda_turf))
 				continue
-			var/direction = get_dir(pda,B)
-			CartData[++CartData.len] = list("x" = bl.x, "y" = bl.y, "dir" = uppertext(dir2text(direction)), "volume" = B.reagents.total_volume, "max_volume" = B.reagents.maximum_volume)
+			var/direction = get_dir(pda, jan_cart_structure)
+			jancart_data[++jancart_data.len] = list("x" = item_turf.x, "y" = item_turf.y, "dir" = uppertext(dir2rustext(direction)), "volume" = jan_cart_structure.reagents.total_volume, "max_volume" = jan_cart_structure.reagents.maximum_volume)
 
-	JaniData["mops"] = MopData.len ? MopData : null
-	JaniData["buckets"] = BucketData.len ? BucketData : null
-	JaniData["cleanbots"] = CbotData.len ? CbotData : null
-	JaniData["carts"] = CartData.len ? CartData : null
-	data["janitor"] = JaniData
+	var/list/cart_key_data = list()
+	for(var/obj/item/key/janitor/jan_key in janitorial_equipment_chached)
+		var/turf/item_turf = get_turf(jan_key)
+		if(item_turf)
+			if(!is_valid_z_level(item_turf, pda_turf))
+				continue
+			var/direction = get_dir(pda, jan_key)
+			cart_key_data[++cart_key_data.len] = list("x" = item_turf.x, "y" = item_turf.y, "dir" = uppertext(dir2rustext(direction)))
+
+	var/list/vehicle_cart_data = list()
+	for(var/obj/vehicle/ridden/janicart/janicart in janitorial_equipment_chached)
+		var/turf/item_turf = get_turf(janicart)
+		if(item_turf)
+			if(!is_valid_z_level(item_turf, pda_turf))
+				continue
+			var/direction = get_dir(pda, janicart)
+			vehicle_cart_data[++vehicle_cart_data.len] = list("x" = item_turf.x, "y" = item_turf.y, "dir" = uppertext(dir2rustext(direction)))
+
+	jani_data["mops"] = length(mop_data) ? mop_data : null
+	jani_data["buckets"] = length(bucket_data) ? bucket_data : null
+	jani_data["pda_turfeanbots"] = length(cleanbot_data) ? cleanbot_data : null
+	jani_data["carts"] = length(jancart_data) ? jancart_data : null
+	jani_data["keys"] = length(cart_key_data) ? cart_key_data : null
+	jani_data["janicarts"] = length(vehicle_cart_data) ? vehicle_cart_data : null
+	data["janitor"] = jani_data

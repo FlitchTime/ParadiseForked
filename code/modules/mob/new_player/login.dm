@@ -1,4 +1,5 @@
 /mob/new_player/Login()
+	client?.persistent_client?.set_mob(src)
 	update_Login_details()	//handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
 
 	//Overflow rerouting, if set, forces players to be moved to a different server once a player cap is reached. Less rough than a pure kick.
@@ -9,7 +10,9 @@
 				src << link(CONFIG_GET(string/overflow_server_url))
 
 	if(GLOB.join_motd)
-		to_chat(src, "<div class=\"motd\">[GLOB.join_motd]</div>")
+		// Strip source newlines so to_chat() does not turn HTML indentation into <br>.
+		var/motd_html = replacetext(GLOB.join_motd, "\n", "")
+		to_chat(src, span_infoplain("<div class=\"motd\">[motd_html]</div>"))
 
 	if(!mind)
 		mind = new /datum/mind(key)
@@ -20,9 +23,10 @@
 		loc = pick(GLOB.newplayer_start)
 	else
 		loc = locate(1,1,1)
+
 	lastarea = loc
 
-	client.screen = list() // Remove HUD items just in case.
+	client.clear_screen() // Remove HUD items just in case.
 	client.images = list()
 	if(!hud_used)
 		create_mob_hud()	 // creating a hud will add it to the client's screen, which can process a disconnect
@@ -37,7 +41,7 @@
 	GLOB.player_list |= src
 	GLOB.new_player_mobs |= src
 
-	if((ckey in GLOB.de_admins) || (ckey in GLOB.de_mentors))
+	if((ckey in GLOB.de_admins) || (ckey in GLOB.de_mentors) || (ckey in GLOB.de_devs))
 		add_verb(src, /client/proc/readmin)
 	. = TRUE
 
@@ -48,7 +52,7 @@
 
 /mob/new_player/proc/whitelist_check()
 	// Admins are immune to overflow rerouting
-	if(check_rights(rights_required = 0, show_msg = 0))
+	if(check_rights(rights_required = R_NONE, show_msg = FALSE))
 		return TRUE
 
 	if(CONFIG_GET(flag/usewhitelist_nojobbanned) && GLOB.jobban_assoclist[src.ckey])

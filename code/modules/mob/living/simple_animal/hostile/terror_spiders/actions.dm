@@ -3,8 +3,8 @@
 	background_icon_state = "bg_terror"
 
 /datum/action/innate/terrorspider/web
-	name = "Web"
-	icon_icon = 'icons/effects/effects.dmi'
+	name = "Паутина"
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "stickyweb1"
 
 /datum/action/innate/terrorspider/web/Activate()
@@ -12,8 +12,8 @@
 	user.Web()
 
 /datum/action/innate/terrorspider/wrap
-	name = "Wrap"
-	icon_icon = 'icons/effects/effects.dmi'
+	name = "Завернуть"
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "cocoon_large1"
 
 /datum/action/innate/terrorspider/wrap/Activate()
@@ -24,8 +24,8 @@
 // ---------- GREEN ACTIONS
 
 /datum/action/innate/terrorspider/greeneggs
-	name = "Lay Green Eggs"
-	icon_icon = 'icons/effects/effects.dmi'
+	name = "Отложить зелёные яйца"
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "eggs"
 
 /datum/action/innate/terrorspider/greeneggs/Activate()
@@ -35,7 +35,7 @@
 // ---------- KNIGHT ACTIONS
 /datum/action/innate/terrorspider/knight/defaultm
 	name = "Default"
-	icon_icon = 'icons/mob/terrorspider.dmi'
+	button_icon = 'icons/mob/terrorspider.dmi'
 	button_icon_state = "terror_princess1"
 
 /datum/action/innate/terrorspider/knight/defaultm/Activate()
@@ -43,8 +43,7 @@
 	user.activate_mode(0)
 
 /datum/action/innate/terrorspider/knight/attackm
-	name = "Rage"
-	icon_icon = 'icons/mob/actions/actions.dmi'
+	name = "Ярость"
 	button_icon_state = "attack"
 
 /datum/action/innate/terrorspider/knight/attackm/Activate()
@@ -52,8 +51,7 @@
 	user.activate_mode(1)
 
 /datum/action/innate/terrorspider/knight/defencem
-	name = "Keratosis"
-	icon_icon = 'icons/mob/actions/actions.dmi'
+	name = "Кератоз"
 	button_icon_state = "defence"
 
 /datum/action/innate/terrorspider/knight/defencem/Activate()
@@ -63,8 +61,8 @@
 // ---------- BOSS ACTIONS
 
 /datum/action/innate/terrorspider/ventsmash
-	name = "Smash Welded Vent"
-	icon_icon = 'icons/obj/pipes_and_stuff/atmospherics/atmos/vent_pump.dmi'
+	name = "Сломать вентиляцию"
+	button_icon = 'icons/obj/pipes_and_stuff/atmospherics/atmos/vent_pump.dmi'
 	button_icon_state = "map_vent"
 
 /datum/action/innate/terrorspider/ventsmash/Activate()
@@ -72,8 +70,8 @@
 	user.DoVentSmash()
 
 /datum/action/innate/terrorspider/remoteview
-	name = "Remote View"
-	icon_icon = 'icons/obj/eyes.dmi'
+	name = "Удалённое зрение"
+	button_icon = 'icons/obj/eyes.dmi'
 	button_icon_state = "heye"
 
 /datum/action/innate/terrorspider/remoteview/Activate()
@@ -83,8 +81,8 @@
 // ---------- QUEEN ACTIONS
 
 /datum/action/innate/terrorspider/queen/queennest
-	name = "Nest"
-	icon_icon = 'icons/mob/terrorspider.dmi'
+	name = "Гнездо"
+	button_icon = 'icons/mob/terrorspider.dmi'
 	button_icon_state = "terror_queen"
 
 /datum/action/innate/terrorspider/queen/queennest/Activate()
@@ -92,8 +90,7 @@
 	user.NestPrompt()
 
 /datum/action/innate/terrorspider/queen/queensense
-	name = "Hive Sense"
-	icon_icon = 'icons/mob/actions/actions.dmi'
+	name = "Чувство улья"
 	button_icon_state = "mindswap"
 
 /datum/action/innate/terrorspider/queen/queensense/Activate()
@@ -101,20 +98,19 @@
 	user.DoHiveSense()
 
 /datum/action/innate/terrorspider/queen/queeneggs
-	name = "Lay Queen Eggs"
-	icon_icon = 'icons/effects/effects.dmi'
+	name = "Отложить королевские яйца"
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "eggs"
 
 /datum/action/innate/terrorspider/queen/queeneggs/Activate()
 	var/mob/living/simple_animal/hostile/poison/terror_spider/queen/user = owner
 	user.LayQueenEggs()
 
-
 // ---------- EMPRESS
 
 /datum/action/innate/terrorspider/queen/empress/empresserase
-	name = "Empress Erase Brood"
-	icon_icon = 'icons/effects/blood.dmi'
+	name = "Уничтожить выводок"
+	button_icon = 'icons/effects/blood.dmi'
 	button_icon_state = "mgibbl1"
 
 /datum/action/innate/terrorspider/queen/empress/empresserase/Activate()
@@ -122,14 +118,13 @@
 	user.EraseBrood()
 
 /datum/action/innate/terrorspider/queen/empress/empresslings
-	name = "Empresss Spiderlings"
-	icon_icon = 'icons/effects/effects.dmi'
+	name = "Паучки императрицы"
+	button_icon = 'icons/effects/effects.dmi'
 	button_icon_state = "spiderling"
 
 /datum/action/innate/terrorspider/queen/empress/empresslings/Activate()
 	var/mob/living/simple_animal/hostile/poison/terror_spider/queen/empress/user = owner
 	user.EmpressLings()
-
 
 // ---------- WEB
 
@@ -140,8 +135,8 @@
 		to_chat(src, span_danger("Паутину можно плести только стоя на полу."))
 		return
 	var/turf/mylocation = loc
-	visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] начинает выделять липкое вещество."))
-	playsound(src.loc, 'sound/creatures/terrorspiders/web.ogg', 50, 1)
+	visible_message(span_notice("[DECLENT_RU_CAP(src, NOMINATIVE)] начинает выделять липкое вещество."))
+	playsound(src.loc, 'sound/creatures/terrorspiders/web.ogg', 50, TRUE)
 	if(do_after(src, delay_web, loc))
 		if(loc != mylocation)
 			return
@@ -158,27 +153,25 @@
 /obj/structure/spider/terrorweb
 	name = "terror web"
 	desc = "Вязкая и липкая паутина."
-	ru_names = list(
-		NOMINATIVE = "паутина Ужаса",
-		GENITIVE = "паутины Ужаса",
-		DATIVE = "паутине Ужаса",
-		ACCUSATIVE = "паутину Ужаса",
-		INSTRUMENTAL = "паутиной Ужаса",
-		PREPOSITIONAL = "паутине Ужаса"
-	)
-	icon = 'icons/effects/effects.dmi'
-	anchored = TRUE // prevents people dragging it
-	density = FALSE // prevents it blocking all movement
 	max_integrity = 20 // two welders, or one laser shot (15 for the normal spider webs)
 	creates_cover = TRUE
 	icon_state = "stickyweb1"
 	var/creator_ckey = null
 
+/obj/structure/spider/terrorweb/get_ru_names()
+	return list(
+		NOMINATIVE = "паутина Ужаса",
+		GENITIVE = "паутины Ужаса",
+		DATIVE = "паутине Ужаса",
+		ACCUSATIVE = "паутину Ужаса",
+		INSTRUMENTAL = "паутиной Ужаса",
+		PREPOSITIONAL = "паутине Ужаса",
+	)
+
 /obj/structure/spider/terrorweb/Initialize(mapload)
 	. = ..()
 	if(prob(50))
 		icon_state = "stickyweb2"
-
 
 /obj/structure/spider/terrorweb/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
@@ -210,10 +203,9 @@
 	if(isprojectile(mover))
 		return prob(20)
 
-
 /obj/structure/spider/terrorweb/bullet_act(obj/projectile/Proj)
 	if(Proj.damage_type != BRUTE && Proj.damage_type != BURN)
-		visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] невосприимчива к [Proj.declent_ru(DATIVE)]!"), projectile_message = TRUE)
+		visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] невосприимчива к [Proj.declent_ru(DATIVE)]!"), projectile_message = TRUE)
 		// Webs don't care about disablers, tasers, etc. Or toxin damage. They're organic, but not alive.
 		return
 	..()
@@ -247,7 +239,7 @@
 			if(Adjacent(O) && !O.anchored)
 				if(!istype(O, /obj/structure/spider))
 					choices += O
-		if(choices.len)
+		if(length(choices))
 			cocoon_target = tgui_input_list(src, "Что вы хотите замотать в кокон?", "", choices)
 		else
 			to_chat(src, span_danger("Рядом нет ничего, что можно было бы завернуть в кокон."))
@@ -258,10 +250,10 @@
 			cocoon_target = null
 			return
 		busy = SPINNING_COCOON
-		visible_message(span_notice("[capitalize(declent_ru(NOMINATIVE))] начинает выделять липкое вещество вокруг [cocoon_target.declent_ru(GENITIVE)]."))
-		playsound(src.loc, 'sound/creatures/terrorspiders/wrap.ogg', 120, 1)
+		visible_message(span_notice("[DECLENT_RU_CAP(src, NOMINATIVE)] начинает выделять липкое вещество вокруг [cocoon_target.declent_ru(GENITIVE)]."))
+		playsound(src.loc, 'sound/creatures/terrorspiders/wrap.ogg', 120, TRUE)
 		stop_automated_movement = 1
-		SSmove_manager.stop_looping(src)
+		GLOB.move_manager.stop_looping(src)
 		if(do_after(src, 4 SECONDS, cocoon_target.loc))
 			if(busy == SPINNING_COCOON)
 				if(cocoon_target && isturf(cocoon_target.loc) && get_dist(src,cocoon_target) <= 1)
@@ -285,12 +277,12 @@
 						if(iscarbon(L))
 							apply_status_effect(STATUS_EFFECT_TERROR_FOOD_REGEN)
 							fed++
-							visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] втыкает хоботок в [L.declent_ru(ACCUSATIVE)] и высасывает вязкое вещество."))
+							visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] втыкает хоботок в [L.declent_ru(ACCUSATIVE)] и высасывает вязкое вещество."))
 							to_chat(src, span_notice("Вы начинаете быстро восстанавливаться!"))
 							if(L.mind && ishuman(L))
 								SEND_SIGNAL(mind, COMSIG_HUMAN_EATEN)
 						else
-							visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] заматывает [L.declent_ru(ACCUSATIVE)] в паутину."))
+							visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] заматывает [L.declent_ru(ACCUSATIVE)] в паутину."))
 						large_cocoon = 1
 						last_cocoon_object = 0
 						L.forceMove(C)
@@ -314,19 +306,19 @@
 	if(!valid_target)
 		to_chat(src, span_warning("Рядом нет заваренного вентиляционного отверстия или скраббера!"))
 		return
-	playsound(get_turf(src), 'sound/creatures/terrorspiders/ventbreak.ogg', 75, 0)
+	playsound(get_turf(src), 'sound/creatures/terrorspiders/ventbreak.ogg', 75, FALSE)
 	if(do_after(src, 4.3 SECONDS, loc))
 		for(var/obj/machinery/atmospherics/unary/vent_pump/P in range(1, get_turf(src)))
 			if(P.welded)
 				P.set_welded(FALSE)
 				forceMove(P.loc)
-				P.visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] выбивает приваренную крышку [P.declent_ru(GENITIVE)]!"))
+				P.visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] выбивает приваренную крышку [P.declent_ru(GENITIVE)]!"))
 				return
 		for(var/obj/machinery/atmospherics/unary/vent_scrubber/C in range(1, get_turf(src)))
 			if(C.welded)
 				C.set_welded(FALSE)
 				forceMove(C.loc)
-				C.visible_message(span_danger("[capitalize(declent_ru(NOMINATIVE))] выбивает приваренную крышку [C.declent_ru(GENITIVE)]!"))
+				C.visible_message(span_danger("[DECLENT_RU_CAP(src, NOMINATIVE)] выбивает приваренную крышку [C.declent_ru(GENITIVE)]!"))
 				return
 		to_chat(src, span_danger("Поблизости нет заваренного вентиляционного отверстия или скраббера."))
 

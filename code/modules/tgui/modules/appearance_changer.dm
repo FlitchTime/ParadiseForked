@@ -12,6 +12,7 @@
 	var/list/valid_tail_marking_styles = list()
 	var/list/valid_body_accessories = list()
 	var/list/valid_alt_head_styles = list()
+	var/wizard_mirror = FALSE
 
 	var/check_whitelist
 	var/list/whitelist
@@ -49,7 +50,7 @@
 			if(can_change_skin_tone())
 				var/new_s_tone = null
 				if(owner.dna.species.bodyflags & HAS_SKIN_TONE)
-					new_s_tone = input(usr, "Choose your character's skin tone:\n(Light 1 - 220 Dark)", "Skin Tone", owner.s_tone) as num|null
+					new_s_tone = tgui_input_number(usr, "Choose your character's skin tone:\n(Light 1 - 220 Dark)", "Skin Tone", owner.s_tone, max_value = 220)
 					if(isnum(new_s_tone) && (!..()))
 						new_s_tone = 35 - max(min(round(new_s_tone), 220),1)
 				else if(owner.dna.species.bodyflags & HAS_ICON_SKIN_TONE)
@@ -63,7 +64,7 @@
 							prompt += ", "
 					prompt += ")"
 
-					new_s_tone = input(usr, prompt, "Skin Tone", owner.s_tone) as num|null
+					new_s_tone = tgui_input_number(usr, prompt, "Skin Tone", owner.s_tone)
 					if(isnum(new_s_tone) && (!..()))
 						new_s_tone = max(min(round(new_s_tone), length(owner.dna.species.icon_skin_tones)), 1)
 
@@ -101,19 +102,19 @@
 
 		if("hair_gradient_offset")
 			if(can_change(APPEARANCE_HAIR) && length(valid_hairstyles))
-				var/new_offset = input("Please enter gradient offset as a comma-separated value (x,y). Example:\n0,0 (no offset)\n5,0 (5 pixels to the right)", "Hair Gradient", "[head_organ.h_grad_offset_x],[head_organ.h_grad_offset_y]") as null|text
+				var/new_offset = tgui_input_text(usr, "Please enter gradient offset as a comma-separated value (x,y). Example:\n0,0 (no offset)\n5,0 (5 pixels to the right)", "Hair Gradient", "[head_organ.h_grad_offset_x],[head_organ.h_grad_offset_y]")
 				if(new_offset)
 					owner.change_hair_gradient(offset_raw = new_offset)
 
 		if("hair_gradient_colour")
 			if(can_change(APPEARANCE_HAIR) && length(valid_hairstyles))
-				var/new_color = input("Please select gradient color.", "Hair Gradient", head_organ.h_grad_colour) as null|color
+				var/new_color = tgui_input_color(usr, "Please select gradient color.", "Hair Gradient", head_organ.h_grad_colour)
 				if(new_color)
 					owner.change_hair_gradient(color = new_color)
 
 		if("hair_gradient_alpha")
 			if(can_change(APPEARANCE_HAIR) && length(valid_hairstyles))
-				var/new_alpha = input("Please enter gradient alpha (0-200).", "Hair Gradient", head_organ.h_grad_alpha) as null|num
+				var/new_alpha = tgui_input_number(usr, "Please enter gradient alpha (0-200).", "Hair Gradient", head_organ.h_grad_alpha, max_value = 200)
 				if(!isnull(new_alpha))
 					owner.change_hair_gradient(alpha = new_alpha)
 
@@ -197,7 +198,6 @@
 					update_dna()
 					head_organ = owner.get_organ(BODY_ZONE_HEAD) //Update the head with the new information.
 					cut_and_generate_data()
-
 
 /datum/ui_module/appearance_changer/ui_interact(mob/user, datum/tgui/ui = null)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -323,10 +323,10 @@
 
 /datum/ui_module/appearance_changer/proc/can_change_head_accessory()
 	if(!head_organ)
-		log_runtime(EXCEPTION("Missing head!"), owner)
+		stack_trace("[owner] Missing head!")
 		return FALSE
 	if(!head_organ.dna)
-		log_runtime(EXCEPTION("Missing head DNA!"), owner)
+		stack_trace("[owner] Missing head DNA!")
 		return FALSE
 	return owner && (flags & APPEARANCE_HEAD_ACCESSORY) && (head_organ.dna.species.bodyflags & HAS_HEAD_ACCESSORY)
 
@@ -359,11 +359,11 @@
 	var/obj/item/organ/external/tail/bodypart_tail = owner.get_organ(BODY_ZONE_TAIL)
 	var/obj/item/organ/external/wing/bodypart_wing = owner.get_organ(BODY_ZONE_WING)
 	if(bodypart_tail)
-		return owner && (flags & APPEARANCE_BODY_ACCESSORY) && bodypart_tail && HAS_BODY_ACCESSORY && check_rights(R_ADMIN, 0, owner)
+		return owner && (flags & APPEARANCE_BODY_ACCESSORY) && bodypart_tail && HAS_BODY_ACCESSORY && check_rights(R_ADMIN, FALSE, owner)
 	if(bodypart_wing)
-		return owner && (flags & APPEARANCE_BODY_ACCESSORY) && bodypart_wing && HAS_BODY_ACCESSORY && check_rights(R_ADMIN, 0, owner)
+		return owner && (flags & APPEARANCE_BODY_ACCESSORY) && bodypart_wing && HAS_BODY_ACCESSORY && check_rights(R_ADMIN, FALSE, owner)
 	else
-		return owner && (flags & APPEARANCE_BODY_ACCESSORY) && HAS_BODY_ACCESSORY && check_rights(R_ADMIN, 0, owner)
+		return owner && (flags & APPEARANCE_BODY_ACCESSORY) && HAS_BODY_ACCESSORY && check_rights(R_ADMIN, FALSE, owner)
 
 /datum/ui_module/appearance_changer/proc/can_change_alt_head()
 	if(!head_organ)
@@ -393,13 +393,13 @@
 		valid_species = owner.generate_valid_species(check_whitelist, whitelist, blacklist)
 	if(!length(valid_hairstyles) || !length(valid_facial_hairstyles))
 		valid_hairstyles = owner.generate_valid_hairstyles()
-		valid_facial_hairstyles = owner.generate_valid_facial_hairstyles()
+		valid_facial_hairstyles = owner.generate_valid_facial_hairstyles(wizard_mirror)
 	if(!length(valid_head_accessories))
 		valid_head_accessories = owner.generate_valid_head_accessories()
 	if(!length(valid_head_marking_styles))
 		valid_head_marking_styles = owner.generate_valid_markings("head")
 	if(!length(valid_body_marking_styles))
-		valid_body_marking_styles = owner.generate_valid_markings("body")
+		valid_body_marking_styles = owner.generate_valid_markings("body", wizard_mirror)
 	if(!length(valid_tail_marking_styles))
 		valid_tail_marking_styles = owner.generate_valid_markings("tail")
 	if(!length(valid_body_accessories))

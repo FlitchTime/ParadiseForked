@@ -58,7 +58,7 @@
 	if(!json_path)
 		TGS_ERROR_LOG("Missing [TGS4_PARAM_INFO_JSON] world parameter!")
 		return
-	var/json_file = wrap_file2text(json_path)
+	var/json_file = WRAP_FILE2TEXT(json_path)
 	if(!json_file)
 		TGS_ERROR_LOG("Missing specified json file: [json_path]")
 		return
@@ -155,7 +155,7 @@
 			return
 		if(TGS4_TOPIC_CHANGE_PORT)
 			var/new_port = text2num(params[TGS4_PARAMETER_DATA])
-			if (!(new_port > 0))
+			if(!(new_port > 0))
 				return "Invalid port: [new_port]"
 
 			//the topic still completes, miraculously
@@ -273,7 +273,7 @@
 	var/list/channels = list()
 	for(var/I in ChatChannelInfo())
 		var/datum/tgs_chat_channel/channel = I
-		if (!channel.is_private_channel && ((channel.is_admin_channel && admin_only) || (!channel.is_admin_channel && !admin_only)))
+		if(!channel.is_private_channel && ((channel.is_admin_channel && admin_only) || (!channel.is_admin_channel && !admin_only)))
 			channels += channel.id
 	message = list("message" = message, "channelIds" = channels)
 	if(intercepted_message_queue)
@@ -291,7 +291,7 @@
 /datum/tgs_api/v4/ChatChannelInfo()
 	. = list()
 	//no caching cause tgs may change this
-	var/list/json = json_decode(wrap_file2text(chat_channels_json_path))
+	var/list/json = json_decode(WRAP_FILE2TEXT(chat_channels_json_path))
 	for(var/I in json)
 		. += DecodeChannel(I)
 

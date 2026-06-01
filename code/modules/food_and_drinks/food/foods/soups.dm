@@ -6,10 +6,12 @@
 /obj/item/reagent_containers/food/snacks/soup
 	name = "impossible soup"
 	desc = "This soup is so good, it shouldn't even exist!"
+	w_class = WEIGHT_CLASS_SMALL
 	icon_state = "beans" // If you don't have a sprite, you get beans.
 	consume_sound = 'sound/items/drink.ogg'
 	trash = /obj/item/trash/snack_bowl
 	bitesize = 5
+	abstract_type = /obj/item/reagent_containers/food/snacks/soup
 
 /obj/item/reagent_containers/food/snacks/soup/meatballsoup
 	name = "meatball soup"
@@ -92,6 +94,25 @@
 		reagents.add_reagent("vitamin", 1)
 	. = ..()
 
+/obj/item/reagent_containers/food/snacks/soup/sawdustsoup
+	name = "sawdust soup"
+	desc = "ЧТООО как этот суп попал в мои опилки!?"
+	icon_state = "sawdustsoup"
+	filling_color = "#D3C28D"
+	list_reagents = list("nutriment" = 15)
+	tastes = list("wood" = 1)
+	foodtype = GROSS
+
+/obj/item/reagent_containers/food/snacks/soup/sawdustsoup/get_ru_names()
+	return list(
+		NOMINATIVE = "суп из опилок",
+		GENITIVE = "супа из опилок",
+		DATIVE = "супу из опилок",
+		ACCUSATIVE = "суп из опилок",
+		INSTRUMENTAL = "супом из опилок",
+		PREPOSITIONAL = "супе из опилок",
+	)
+
 /obj/item/reagent_containers/food/snacks/soup/tomatosoup
 	name = "tomato soup"
 	desc = "Drinking this feels like being a vampire! A tomato vampire..."
@@ -127,8 +148,8 @@
 	tastes = list("beet" = 1)
 	foodtype = VEGETABLES
 
-/obj/item/reagent_containers/food/snacks/soup/beetsoup/New()
-	..()
+/obj/item/reagent_containers/food/snacks/soup/beetsoup/Initialize(mapload)
+	. = ..()
 	name = pick("borsch","bortsch","borstch","borsh","borshch","borscht")
 
 /obj/item/reagent_containers/food/snacks/soup/rassolnik
@@ -154,6 +175,7 @@
 /obj/item/reagent_containers/food/snacks/soup/stew
 	name = "stew"
 	desc = "A nice and warm stew. Healthy and strong."
+	w_class = WEIGHT_CLASS_NORMAL
 	icon_state = "stew"
 	filling_color = "#9E673A"
 	bitesize = 7

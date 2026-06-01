@@ -1,10 +1,10 @@
 SUBSYSTEM_DEF(statpanels)
 	name = "Stat Panels"
 	wait = 4
-	init_order = INIT_ORDER_STATPANELS
 	priority = FIRE_PRIORITY_STATPANEL
-	flags = SS_NO_INIT
+	ss_flags = SS_NO_INIT
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
+
 	var/list/currentrun = list()
 	var/list/global_data
 	var/list/mc_data
@@ -24,8 +24,8 @@ SUBSYSTEM_DEF(statpanels)
 		var/datum/map/cached = SSmapping.next_map
 		var/round_time = world.time - SSticker.time_game_started
 		global_data = list(
-			list("Карта:", SSmapping.map_datum?.station_short ? SSmapping.map_datum?.station_short : "Загрузка..."),
-			cached ? list("Следующая карта:", "[cached.station_short]") : null,
+			list("Карта:", SSmapping.map_datum?.station_name ? SSmapping.map_datum?.station_name : "Загрузка..."),
+			cached ? list("Следующая карта:", "[cached.station_name]") : null,
 			list("ID раунда:", "[GLOB.round_id ? GLOB.round_id : "NULL"]"),
 			list("Серверное время:", "[time2text(world.timeofday, "DD-MM-YYYY hh:mm:ss")]"),
 			list("[SSticker.time_game_started ? "Длительность раунда" : "Длительность лобби"]:", "[round_time > MIDNIGHT_ROLLOVER ? "[round(round_time / MIDNIGHT_ROLLOVER)]:[roundtime2text()]" : roundtime2text()]"),
@@ -50,7 +50,7 @@ SUBSYSTEM_DEF(statpanels)
 		if(!target.stat_panel.is_ready())
 			continue
 
-		if(target.stat_tab == "Статус" && num_fires % status_wait == 0)
+		if(target.stat_tab == STATPANEL_STATUS && num_fires % status_wait == 0)
 			set_status_tab(target)
 
 		var/holder_check = !isnull(target.holder)
@@ -61,7 +61,7 @@ SUBSYSTEM_DEF(statpanels)
 		if(holder_check)
 			target.stat_panel.send_message("update_split_admin_tabs", !!(target.prefs.toggles2 & PREFTOGGLE_2_SPLIT_ADMIN_TABS))
 
-		if(holder_check && target.mob && check_rights(R_DEBUG | R_VIEWRUNTIMES, FALSE, target.mob))
+		if(holder_check && target.mob && check_rights(R_DEBUG|R_VIEWRUNTIMES, FALSE, target.mob))
 
 			// Shows SDQL2 list
 			if(!length(GLOB.sdql2_queries) && ("SDQL2" in target.panel_tabs))
@@ -76,7 +76,6 @@ SUBSYSTEM_DEF(statpanels)
 
 				if(target.stat_tab == "MC" && ((num_fires % mc_wait == 0)))
 					set_MC_tab(target)
-
 
 		if(MC_TICK_CHECK)
 			return
@@ -130,7 +129,7 @@ SUBSYSTEM_DEF(statpanels)
 	if(!target.stat_panel.is_ready())
 		return FALSE
 
-	if(target.stat_tab == "Статус")
+	if(target.stat_tab == STATPANEL_STATUS)
 		set_status_tab(target)
 		return TRUE
 

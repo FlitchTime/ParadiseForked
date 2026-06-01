@@ -2,45 +2,38 @@
 #define ILLEGAL_CHARACTERS_LIST list("<" = "", ">" = "", \
 	"\[" = "", "]" = "", "{" = "", "}" = "")
 
-/mob/proc/say(message, verb = "says", sanitize = TRUE, ignore_speech_problems = FALSE, ignore_atmospherics = FALSE, ignore_languages = FALSE)
+/mob/proc/say(message, verb = "говор%(ит,ят)%", sanitize = TRUE, ignore_speech_problems = FALSE, ignore_atmospherics = FALSE, ignore_languages = FALSE)
 	return
 
-/mob/verb/whisper(message as text)
+/mob/verb/whisper_verb(message as text)
 	set name = "Шептать"
-	set category = "IC"
-	return
+	set category = VERB_CATEGORY_IC
+	set instant = TRUE
 
-/mob/proc/whisper_say(list/message_pieces, verb = "whispers")
+	if(!message)
+		return
+
+	QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, whisper), message), SSspeech_controller)
+
+/mob/proc/whisper(message)
 	return
 
 /mob/verb/say_verb(message as text)
-	set name = "Говорить"
-	set category = "IC"
+	set name = "Сказать"
+	set category = VERB_CATEGORY_IC
+	set instant = TRUE
 
-	//Let's try to make users fix their errors - we try to detect single, out-of-place letters and 'unintended' words
-	/*
-	var/first_letter = copytext(message,1,2)
-	if((copytext(message,2,3) == " " && first_letter != "I" && first_letter != "A" && first_letter != ";") || cmptext(copytext(message,1,5), "say ") || cmptext(copytext(message,1,4), "me ") || cmptext(copytext(message,1,6), "looc ") || cmptext(copytext(message,1,5), "ooc ") || cmptext(copytext(message,2,6), "say "))
-		var/response = alert(usr, "Do you really want to say this using the *say* verb?\n\n[message]\n", "Confirm your message", "Yes", "Edit message", "No")
-		if(response == "Edit message")
-			message = input(usr, "Please edit your message carefully:", "Edit message", message)
-			if(!message)
-				return
-		else if(response == "No")
-			return
-	*/
 	message = replace_characters(message, ILLEGAL_CHARACTERS_LIST)
 	set_typing_indicator(FALSE)
 
 	if(!message)
 		return
 
-	SSspeech_controller.queue_say_for_mob(usr, message, SPEECH_CONTROLLER_QUEUE_SAY_VERB)
-
+	QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, say), message), SSspeech_controller)
 
 /mob/verb/me_verb(message as text)
 	set name = "Эмоция"
-	set category = "IC"
+	set category = VERB_CATEGORY_IC
 
 	message = strip_html_properly(message)
 
@@ -50,13 +43,12 @@
 		return
 
 	if(use_me)
-		custom_emote(usr.emote_type, message, intentional = TRUE)
+		QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, custom_emote), usr.emote_type, message, TRUE), SSspeech_controller)
 	else
-		SSspeech_controller.queue_say_for_mob(usr, message, SPEECH_CONTROLLER_QUEUE_EMOTE_VERB)
-
+		QUEUE_OR_CALL_VERB_FOR(VERB_CALLBACK(src, TYPE_PROC_REF(/mob, emote), "me", 1, message, TRUE), SSspeech_controller)
 
 /mob/proc/say_dead(message)
-	message = handleDiscordEmojis(say_emphasis(message))
+	message = handleDiscordEmojis(apply_message_emphasis(message))
 	if(client)
 		if(!check_rights(R_ADMIN, FALSE) && !CONFIG_GET(flag/dsay_allowed))
 			to_chat(src, span_danger("Deadchat is globally muted."))
@@ -82,11 +74,15 @@
 		create_log(DEADCHAT_LOG, message)
 		return
 
-	say_dead_direct("[pick("complains", "moans", "whines", "laments", "blubbers", "salts")], <span class='message'>\"[message]\"</span>", src)
+	say_dead_direct("[pick("жалуется", "стонет", "хнычет", "причитает", "рыдает", "ноет")], \"[span_message(message)]\"", src)
 	add_deadchat_logs(src, message)
 
-
-/mob/proc/say_understands(mob/other, datum/language/speaking = null)
+/**
+ * Checks if the mob can understand the other speaker
+ *
+ * If it return FALSE, then the message will have some letters replaced with stars from the heard message
+*/
+/mob/proc/say_understands(atom/movable/other, datum/language/speaking = null)
 	if(stat == DEAD)
 		return TRUE
 
@@ -95,18 +91,19 @@
 		return TRUE
 
 	var/mob/living/simple_animal/hostile/gorilla/gorilla = other
-	if(istype(gorilla) && gorilla.check_enlighten())	// BANANA POWER
+	if(istype(gorilla) && gorilla.check_enlighten()) // BANANA POWER
 		return TRUE
 
 	//Languages are handled after.
 	if(!speaking)
-		if(!other)
+		if(!other || !ismob(other))
 			return TRUE
-		if(other.universal_speak)
+		var/mob/other_mob = other
+		if(other_mob.universal_speak)
 			return TRUE
-		if(isAI(src) && ispAI(other))
+		if(isAI(src) && ispAI(other_mob))
 			return TRUE
-		if(istype(other, src.type) || istype(src, other.type))
+		if(istype(other_mob, src.type) || istype(src, other_mob.type))
 			return TRUE
 		return FALSE
 
@@ -118,7 +115,6 @@
 		return TRUE
 
 	return FALSE
-
 
 /mob/proc/say_quote(message, datum/language/speaking = null)
 	var/ending = copytext_char(message, -1)
@@ -139,20 +135,6 @@
 		return verbs
 	return pick(verbs)
 
-/// Transforms the speech emphasis mods from [/atom/movable/proc/say_emphasis] into the appropriate HTML tags
-#define ENCODE_HTML_EMPHASIS(input, char, html, varname) \
-	var/static/regex/##varname = regex("[char](.+?)[char]", "g");\
-	input = varname.Replace_char(input, "<[html]>$1</[html]>&#8203;") //zero-width space to force maptext to respect closing tags.
-
-/// Scans the input sentence for speech emphasis modifiers, notably |italics|, +bold+, and _underline_ -mothblocks
-/mob/proc/say_emphasis(input)
-	ENCODE_HTML_EMPHASIS(input, "\\|", "i", italics)
-	ENCODE_HTML_EMPHASIS(input, "\\%", "b", bold)
-	ENCODE_HTML_EMPHASIS(input, "_", "u", underline)
-	return input
-
-#undef ENCODE_HTML_EMPHASIS
-
 /mob/proc/get_ear()
 	// returns an atom representing a location on the map from which this
 	// mob can hear things
@@ -160,7 +142,6 @@
 	// should be overloaded for all mobs whose "ear" is separate from their "mob"
 
 	return get_turf(src)
-
 
 /proc/say_test(text)
 	var/ending = copytext(text, length(text))
@@ -170,11 +151,10 @@
 		return "2"
 	return "0"
 
-
 //parses the message mode code (e.g. :h, :w) from text, such as that supplied to say.
 //returns the message mode string or null for no message mode.
 //standard mode is the mode returned for the special ';' radio code.
-/mob/proc/parse_message_mode(var/message, var/standard_mode = HEADSET_MODE)
+/mob/proc/parse_message_mode(message, standard_mode = HEADSET_MODE)
 	if(length(message) >= 1 && copytext(message, 1, 2) == ";")
 		return standard_mode
 
@@ -184,18 +164,15 @@
 
 	return null
 
-
 /datum/multilingual_say_piece
 	var/datum/language/speaking = null
 	var/message = ""
-
 
 /datum/multilingual_say_piece/New(datum/language/new_speaking, new_message)
 	. = ..()
 	speaking = new_speaking
 	if(new_message)
 		message = new_message
-
 
 /mob/proc/find_valid_prefixes(message)
 	var/list/prefixes = list() // [["Common", start, end], ["Gutter", start, end]]
@@ -206,9 +183,8 @@
 			prefixes[++prefixes.len] = list(L, i, i + length_char(selection))
 		else if(!L && i == 1)
 			prefixes[++prefixes.len] = list(get_default_language(), i, i)
-		else
-	return prefixes
 
+	return prefixes
 
 /proc/strip_prefixes(message)
 	. = ""
@@ -221,7 +197,6 @@
 			last_index = i + 3
 		if(i + 1 > length_char(message))
 			. += copytext_char(message, last_index)
-
 
 // this returns a structured message with language sections
 // list(/datum/multilingual_say_piece(common, "hi"), /datum/multilingual_say_piece(farwa, "squik"), /datum/multilingual_say_piece(common, "meow!"))
@@ -253,18 +228,15 @@
 			var/spoke_message = trim(copytext_char(message, current[3], next[2]))
 			. += new /datum/multilingual_say_piece(current[1], spoke_message)
 
-
 /* These are here purely because it would be hell to try to convert everything over to using the multi-lingual system at once */
 /proc/message_to_multilingual(message, datum/language/speaking = null)
 	. = list(new /datum/multilingual_say_piece(speaking, message))
-
 
 /proc/multilingual_to_message(list/message_pieces)
 	. = ""
 	for(var/datum/multilingual_say_piece/S in message_pieces)
 		. += S.message + " "
 	. = trim_right(.)
-
 
 #undef ILLEGAL_CHARACTERS_LIST
 

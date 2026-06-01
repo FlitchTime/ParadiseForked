@@ -17,7 +17,7 @@
 	var/subscriber_delegate
 	var/fatally_errored = FALSE
 	var/message_queue
-	var/sent_assets = list()
+	var/list/sent_assets = list()
 	// Vars passed to initialize proc (and saved for later)
 	var/initial_strict_mode
 	var/initial_fancy
@@ -43,6 +43,16 @@
 	src.pooled = pooled
 	if(pooled)
 		src.pool_index = TGUI_WINDOW_INDEX(id)
+
+/datum/tgui_window/Destroy(force)
+	locked_by = null
+	subscriber_object = null
+	client.tgui_windows[id] = null
+	client = null
+	message_queue = null
+	oversized_payloads = null
+	sent_assets = null
+	. = ..()
 
 /**
  * public
@@ -116,8 +126,8 @@
 	client << browse(html, "window=[id];[options]")
 	// Detect whether the control is a browser
 	is_browser = winexists(client, id) == "BROWSER"
-	// Instruct the client to signal UI when the window is closed.
-	if(!is_browser)
+	// Instruct the client to signal UI when the window is closed. Winexists sleeps, so we need one more client check.
+	if(!is_browser && client)
 		winset(client, id, "on-close=\"uiclose [id]\"")
 
 /**
@@ -299,6 +309,9 @@
 	if(istype(asset, /datum/asset/spritesheet))
 		var/datum/asset/spritesheet/spritesheet = asset
 		send_message("asset/stylesheet", spritesheet.css_filename())
+	else if(istype(asset, /datum/asset/spritesheet_batched))
+		var/datum/asset/spritesheet_batched/spritesheet = asset
+		send_message("asset/stylesheet", spritesheet.css_filename())
 	send_raw_message(asset.get_serialized_url_mappings())
 
 /**
@@ -391,8 +404,8 @@
 			append_payload_chunk(payload_id, payload["chunk"])
 			send_message("acknowlegePayloadChunk", list("id" = payload_id))
 
-
-
+/datum/tgui_window/vv_edit_var(var_name, var_value)
+	return var_name != NAMEOF(src, id) && ..()
 
 /datum/tgui_window/proc/create_oversized_payload(payload_id, message_type, chunk_count)
 	if(oversized_payloads[payload_id])

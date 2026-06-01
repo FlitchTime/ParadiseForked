@@ -1,16 +1,24 @@
+#define CREW_TRANSFER_CHOICE "Инициировать трансфер экипажа"
+#define CONTINUE_SHIFT_CHOICE "Продолжить смену"
+
 // Crew transfer vote
 /datum/vote/crew_transfer
-	question = "End the shift"
-	choices = list("Initiate Crew Transfer", "Continue The Round")
+	question = "Завершение смены"
+	choices = list(
+		CREW_TRANSFER_CHOICE,
+		CONTINUE_SHIFT_CHOICE,
+	)
 	vote_type_text = "crew transfer"
 
 /datum/vote/crew_transfer/New()
 	if(SSticker.current_state < GAME_STATE_PLAYING)
 		CRASH("Attempted to call a shuttle vote before the game starts!")
 	..()
+	no_dead_vote = TRUE
+	no_offstation_vote = TRUE
 
 /datum/vote/crew_transfer/handle_result(result)
-	if(result == "Initiate Crew Transfer")
+	if(result == CREW_TRANSFER_CHOICE)
 		SSvote.clear_transfer_votes()
 		init_shift_change(null, TRUE)
 
@@ -24,10 +32,10 @@
 		CRASH("Map Vote triggered before the `map_datum` is defined!")
 	..()
 	no_dead_vote = FALSE
+	no_offstation_vote = FALSE
 
 /datum/vote/map/generate_choices()
 	var/list/map_pool = subtypesof(/datum/map)
-
 	if(CONFIG_GET(string/map_vote_mode) == "nodoubles")
 		map_pool -= SSmapping.map_datum.type
 
@@ -61,7 +69,7 @@
 			// Set top voted map
 			if(result == "[initial(M.station_name)] ([initial(M.name)])")
 				top_voted_map = M
-	to_chat(world, "<b>Map for next round: [initial(top_voted_map.station_name)] ([initial(top_voted_map.name)])</b>")
+	to_chat(world, span_interface("<b>Map for next round: [initial(top_voted_map.station_name)] ([initial(top_voted_map.name)])</b>"))
 	SSmapping.next_map = new top_voted_map
 
 /datum/vote/gamemode
@@ -71,6 +79,7 @@
 /datum/vote/gamemode/New()
 	..()
 	no_dead_vote = FALSE
+	no_offstation_vote = FALSE
 
 /datum/vote/gamemode/generate_choices()
 	choices.Add(config.votable_modes)
@@ -80,10 +89,13 @@
 		return
 	if(GLOB.master_mode != result)
 		world.save_mode(result)
-		if(SSticker && SSticker.mode)
+		if(SSticker?.mode)
 			to_chat(world, "<font color='red'><b>Mode has been selected but round already started, it will be applied next round.</b></font>")
 		else
 			GLOB.master_mode = result
 	if(!SSticker.ticker_going)
 		SSticker.ticker_going = TRUE
 		to_chat(world, "<font color='red'><b>The round will start soon.</b></font>")
+
+#undef CREW_TRANSFER_CHOICE
+#undef CONTINUE_SHIFT_CHOICE

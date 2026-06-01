@@ -61,7 +61,7 @@
 
 	return
 
-/datum/component/ritual_object/proc/attackby(datum/source, mob/living/carbon/human/human)
+/datum/component/ritual_object/proc/attackby(datum/source, mob/living/carbon/human)
 	SIGNAL_HANDLER
 
 	if(active_ui)
@@ -81,7 +81,7 @@
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
-/datum/component/ritual_object/proc/open_ritual_ui(mob/living/carbon/human/human)
+/datum/component/ritual_object/proc/open_ritual_ui(mob/living/carbon/human)
 	var/list/rituals_list = get_available_rituals(human)
 
 	if(!LAZYLEN(rituals_list))
@@ -91,7 +91,6 @@
 
 	ui_interact(human)
 	return
-
 
 /datum/component/ritual_object/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -108,10 +107,10 @@
 		if(ritual.description)
 			data["description"] = ritual.description
 		var/list/params = ritual.get_ui_params()
-		if(params?.len)
+		if(length(params))
 			data["params"] = params
 		var/list/things = ritual.get_ui_things()
-		if(things?.len)
+		if(length(things))
 			data["things"] = things
 		data["ritual_available"] = COOLDOWN_FINISHED(ritual, ritual_cooldown)
 		data["time_left"] = round(COOLDOWN_TIMELEFT(ritual, ritual_cooldown) / (1 SECONDS))
@@ -137,7 +136,7 @@
 	. = ..()
 	active_ui = FALSE
 
-/datum/component/ritual_object/proc/handle_ritual_selection(mob/living/carbon/human/human, choosen_ritual)
+/datum/component/ritual_object/proc/handle_ritual_selection(mob/living/carbon/human, choosen_ritual)
 	if(!choosen_ritual)
 		active_ui = FALSE
 		return
@@ -150,7 +149,7 @@
 
 	return TRUE
 
-/datum/component/ritual_object/proc/pre_ritual_check(mob/living/carbon/human/invoker)
+/datum/component/ritual_object/proc/pre_ritual_check(mob/living/carbon/invoker)
 	var/failed = FALSE
 	var/cause_disaster = FALSE
 	var/del_things = FALSE
@@ -192,7 +191,7 @@
 	if(del_things)
 		ritual.del_things(used_things)
 
-	if(remove_charge)
+	if(remove_charge && ritual.charges != -1)
 		ritual.charges--
 
 	if(failed)
@@ -200,7 +199,7 @@
 
 	if(message)
 		var/atom/atom = parent
-		atom.balloon_alert(invoker, message)
+		addtimer(CALLBACK(src, PROC_REF(create_message), atom, invoker, message), 0.5 SECONDS)
 
 	for(var/atom/movable/atom as anything in used_things)
 		UnregisterSignal(atom, COMSIG_MOVABLE_MOVED)
@@ -211,7 +210,10 @@
 
 	return .
 
-/datum/component/ritual_object/proc/ritual_invoke_check(mob/living/carbon/human/invoker)
+/datum/component/ritual_object/proc/create_message(atom/movable/atom, mob/living/carbon/invoker, message)
+	atom.balloon_alert(invoker, message)
+
+/datum/component/ritual_object/proc/ritual_invoke_check(mob/living/carbon/invoker)
 	if(!check_invokers(invoker))
 		return RITUAL_FAILED_MISSED_INVOKER_REQUIREMENTS
 
@@ -243,7 +245,7 @@
 	INVOKE_ASYNC(src, PROC_REF(cast))
 	UnregisterSignal(source, COMSIG_MOVABLE_MOVED)
 
-/datum/component/ritual_object/proc/check_invokers(mob/living/carbon/human/invoker)
+/datum/component/ritual_object/proc/check_invokers(mob/living/carbon/invoker)
 	if(!ritual.extra_invokers)
 		return ritual.check_invokers(invoker, list(invoker)) // remember about checks on invoker in rituals
 
@@ -260,7 +262,7 @@
 
 	return ritual.check_invokers(invoker, invokers)
 
-/datum/component/ritual_object/proc/check_contents(mob/living/carbon/human/invoker)
+/datum/component/ritual_object/proc/check_contents(mob/living/carbon/invoker)
 	if(!ritual.required_things)
 		return TRUE
 
@@ -323,7 +325,7 @@
 
 	return TRUE
 
-/datum/component/ritual_object/proc/get_available_rituals(mob/living/carbon/human/human)
+/datum/component/ritual_object/proc/get_available_rituals(mob/living/carbon/human)
 	var/list/rituals_list = list()
 
 	for(var/datum/ritual/ritual as anything in rituals)

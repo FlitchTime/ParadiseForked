@@ -4,8 +4,6 @@ GLOBAL_LIST_EMPTY(bread_monsters)
 /mob/living/simple_animal/hostile/bread_monster
 	name = "Bread Monster"
 	desc = "Not exactly what you should do for three days..."
-	health = 20
-	maxHealth = 20
 	harm_intent_damage = 7
 	icon = 'icons/mob/bread_monster.dmi'
 	icon_state = "bread_monster"
@@ -13,7 +11,6 @@ GLOBAL_LIST_EMPTY(bread_monsters)
 	icon_resting = "bread_monster"
 	icon_dead = "bread_monster_dead"
 	speak = list("Rawr!")
-	a_intent = INTENT_HARM
 	intent = INTENT_HARM
 	butcher_results = list(/obj/item/reagent_containers/food/snacks/breadslice/burned = 2)
 	response_help = "pets"
@@ -46,7 +43,7 @@ GLOBAL_LIST_EMPTY(bread_monsters)
 		melee_damage_upper = initial(melee_damage_upper) + damage_increase * current_teleport_count
 		obj_damage = initial(obj_damage) + obj_damage_increase * current_teleport_count
 
-/mob/living/simple_animal/hostile/bread_monster/New(loc, ...)
+/mob/living/simple_animal/hostile/bread_monster/Initialize(mapload)
 	. = ..()
 	GLOB.bread_monsters += src
 

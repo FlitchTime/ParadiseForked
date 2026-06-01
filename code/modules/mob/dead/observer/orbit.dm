@@ -7,6 +7,13 @@
 		qdel(src)
 	owner = new_owner
 
+/datum/orbit_menu/Destroy(force)
+	var/owner_menu = owner?.orbit_menu
+	if(owner_menu && owner_menu == src)
+		owner.orbit_menu = null
+	owner = null
+	return ..()
+
 /datum/orbit_menu/ui_state(mob/user)
 	return GLOB.observer_state
 
@@ -37,7 +44,8 @@
 
 /datum/orbit_menu/proc/handle_orbit_action(list/params)
 	var/ref = params["ref"]
-	var/atom/movable/poi = (locate(ref) in GLOB.mob_list) || (locate(ref) in GLOB.poi_list)
+	var/atom/movable/poi = locateUID(ref)
+
 	if(!poi)
 		return
 
@@ -110,7 +118,7 @@
 			stack_trace("getpois returned something under a non-string name [name] - [pois[name]] - [M.type]")
 			continue
 
-		serialized["ref"] = "\ref[M]"
+		serialized["ref"] = M.UID()
 		var/orbiters = 0
 		if(ismob(M))
 			orbiters = M.ghost_orbiting
@@ -159,14 +167,13 @@
 							other_antags += list("[team.name] — ([team.alife_members_count()])" = (mind in team.members))
 					// Not-very-datumized antags follow
 					// Associative list of antag name => whether this mind is this antag
-					if(SSticker && SSticker.mode)
+					if(SSticker?.mode)
 						other_antags += list(
 							"Жертвы абдукторов — ([length(SSticker.mode.abductees)])" = (mind in SSticker.mode.abductees),
 							"Абдукторы — ([length(SSticker.mode.abductors)])" = (mind in SSticker.mode.abductors),
 							"Демоны — ([length(SSticker.mode.demons)])" = (mind in SSticker.mode.demons),
 							"Ивент роли — ([length(SSticker.mode.eventmiscs)])" = (mind in SSticker.mode.eventmiscs),
 							"Культисты [SSticker.cultdat.entity_name] — ([length(SSticker.mode.cult)])" = (mind in SSticker.mode.cult),
-							"Ядерные оперативники — ([length(SSticker.mode.syndicates)])" = (mind in SSticker.mode.syndicates),
 							"Культисты Ратвара — ([length(SSticker.mode.clockwork_cult)])" = (mind in SSticker.mode.clockwork_cult),
 							"Революционеры — ([length(SSticker.mode.revolutionaries)])" = (mind in SSticker.mode.revolutionaries),
 							"Главы революции — ([length(SSticker.mode.head_revolutionaries)])" = (mind in SSticker.mode.head_revolutionaries),
@@ -184,8 +191,8 @@
 							"Суперзлодеи — ([length(SSticker.mode.supervillains)])" = (mind in SSticker.mode.supervillains),
 							"Отряд Смерти — ([length(SSticker.mode.deathsquad)])" = (mind in SSticker.mode.deathsquad),
 							"Хонксквад — ([length(SSticker.mode.honksquad)])" = (mind in SSticker.mode.honksquad),
-							"Ударный Отряд Синдиката — ([length(SSticker.mode.sst)])" = (mind in SSticker.mode.sst),
-							"Диверсионный Отряд Синдиката — ([length(SSticker.mode.sit)])" = (mind in SSticker.mode.sit),
+							"Ударный Отряд \"Синдиката\" — ([length(SSticker.mode.sst)])" = (mind in SSticker.mode.sst),
+							"Диверсионный Отряд \"Синдиката\" — ([length(SSticker.mode.sit)])" = (mind in SSticker.mode.sit),
 						)
 
 				for(var/antag_name in other_antags)

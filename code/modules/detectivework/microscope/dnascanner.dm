@@ -3,8 +3,7 @@
 	name = "Анализатор ДНК"
 	desc = "Высокотехнологичная машина, которая предназначена для правильного считывания образцов ДНК."
 	icon = 'icons/obj/forensics.dmi'
-	icon_state = "dnaopen"
-	layer = BELOW_OBJ_LAYER
+	icon_state = "dna_open"
 	anchored = TRUE
 	density = TRUE
 
@@ -19,7 +18,7 @@
 	component_parts += new /obj/item/stock_parts/micro_laser(null)
 	component_parts += new /obj/item/stock_parts/manipulator(null)
 	component_parts += new /obj/item/stock_parts/micro_laser(null)
-
+	update_appearance(UPDATE_ICON)
 
 /obj/machinery/dnaforensics/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -34,30 +33,29 @@
 			return ..()
 		to_chat(user, span_notice("Вы вставляете пробирку в ДНК анализатор."))
 		swab = I
-		update_icon(UPDATE_ICON_STATE)
+		update_appearance(UPDATE_ICON)
 		return ATTACK_CHAIN_BLOCKED_ALL
 
 	return ..()
 
-
 /obj/machinery/dnaforensics/attack_hand(mob/user)
 
 	if(!swab)
-		to_chat(user, "<span class='warning'>Сканер пуст!</span>")
+		to_chat(user, span_warning("Сканер пуст!"))
 		return
 	add_fingerprint(user)
 	scanning = TRUE
-	update_icon(UPDATE_ICON_STATE)
-	to_chat(user, "<span class='notice'>Сканер начинает с жужением анализировать содержимое пробирки \the [swab].</span>")
+	update_appearance(UPDATE_ICON)
+	to_chat(user, span_notice("Сканер начинает с жужением анализировать содержимое пробирки \the [swab]."))
 
 	if(!do_after(user, 2.5 SECONDS, src) || !swab)
-		to_chat(user, "<span class='notice'>Вы перестали анализировать \the [swab].</span>")
+		to_chat(user, span_notice("Вы перестали анализировать \the [swab]."))
 		scanning = FALSE
-		update_icon(UPDATE_ICON_STATE)
+		update_appearance(UPDATE_ICON)
 
 		return
 
-	to_chat(user, "<span class='notice'>Печать отчета...</span>")
+	to_chat(user, span_notice("Печать отчета..."))
 	var/obj/item/paper/report = new(get_turf(src))
 	report.stamp(/obj/item/stamp)
 	report_num++
@@ -68,9 +66,9 @@
 		//dna data itself
 		var/data = "Нет доступных данных по анализу."
 		if(bloodswab.dna != null)
-			data = "Спектрометрический анализ на предоставленном образце определил наличие нитей ДНК в количестве [bloodswab.dna.len].<br><br>"
+			data = "Спектрометрический анализ на предоставленном образце определил наличие нитей ДНК в количестве [length(bloodswab.dna)].<br><br>"
 			for(var/blood in bloodswab.dna)
-				data += "<span class='notice'>Группа крови: [bloodswab.dna[blood]]<br>\nДНК: [blood]</span><br><br>"
+				data += "[span_notice("Группа крови: [bloodswab.dna[blood]]<br>\nДНК: [blood]")]<br><br>"
 		else
 			data += "\nДНК не найдено.<br>"
 		report.info = "<b>Отчет №[report_num] по \n[src]</b><br>"
@@ -78,43 +76,55 @@
 		report.forceMove(src.loc)
 		report.update_icon()
 		scanning = FALSE
-		update_icon(UPDATE_ICON_STATE)
+		update_appearance(UPDATE_ICON | UPDATE_OVERLAYS)
 	return
 
 /obj/machinery/dnaforensics/proc/remove_sample(mob/living/remover)
 	if(!istype(remover) || remover.incapacitated() || HAS_TRAIT(remover, TRAIT_HANDS_BLOCKED) || !Adjacent(remover))
 		return
 	if(!swab)
-		to_chat(remover, "<span class='warning'>Внутри сканера нет образца!.</span>")
+		to_chat(remover, span_warning("Внутри сканера нет образца!."))
 		return
-	to_chat(remover, "<span class='notice'>Вы вытащили \the [swab] из сканера.</span>")
+	to_chat(remover, span_notice("Вы вытащили \the [swab] из сканера."))
 	swab.forceMove_turf()
 	remover.put_in_hands(swab, ignore_anim = FALSE)
 	swab = null
-	update_icon(UPDATE_ICON_STATE)
+	update_appearance(UPDATE_ICON)
 
 /obj/machinery/dnaforensics/click_alt(mob/user)
 	remove_sample(user)
 	return CLICK_ACTION_SUCCESS
 
-/obj/machinery/dnaforensics/MouseDrop(atom/over_object, src_location, over_location, src_control, over_control, params)
-	if(usr == over_object)
-		remove_sample(usr)
-		return FALSE
-	return ..()
+/obj/machinery/dnaforensics/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
+	if(user != over_object)
+		return
+	remove_sample(user)
 
 /obj/machinery/dnaforensics/update_icon_state()
-	icon_state = "dnaopen"
-	if(swab)
-		icon_state = "dnaclosed"
+	if(scanning)
+		icon_state = "dna_work"
+	else if(swab)
+		icon_state = "dna_closed"
+	else
+		icon_state = "dna_open"
+
+/obj/machinery/dnaforensics/update_overlays()
+	. = ..()
+	underlays.Cut()
+
+	if(!panel_open && !(stat & (NOPOWER|BROKEN)))
 		if(scanning)
-			icon_state = "dnaworking"
+			underlays += emissive_appearance(icon, "dna_lightmask_work", src)
+		else
+			underlays += emissive_appearance(icon, "dna_lightmask", src)
+
 
 /obj/machinery/dnaforensics/screwdriver_act(mob/user, obj/item/I)
 	if(swab)
 		return
 	. = TRUE
-	default_deconstruction_screwdriver(user, "dnaopenunpowered", "dnaopen", I)
+	default_deconstruction_screwdriver(user, "dna_open_off", "dna_open", I)
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/dnaforensics/wrench_act(mob/user, obj/item/I)
 	. = TRUE

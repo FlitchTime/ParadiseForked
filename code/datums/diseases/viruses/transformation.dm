@@ -1,9 +1,7 @@
 /datum/disease/virus/transformation
-	name = "Transformation"
+	name = "Трансформация"
 	stage_prob = 10
-	max_stages = 5
-	spread_flags = NON_CONTAGIOUS
-	severity = DANGEROUS
+	severity = DISEASE_SEVERITY_DANGEROUS
 	can_immunity = FALSE
 	infectable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/alien)
 	var/list/stage1
@@ -59,7 +57,7 @@
 		affected_mob.cut_overlays()
 		affected_mob.invisibility = INVISIBILITY_ABSTRACT
 
-		for(var/obj/item/item as anything in affected_mob.get_equipped_items(include_pockets = TRUE, include_hands = TRUE))
+		for(var/obj/item/item as anything in affected_mob.get_equipped_items(INCLUDE_POCKETS | INCLUDE_HELD))
 			affected_mob.drop_item_ground(item)
 
 		if(isobj(affected_mob.loc))
@@ -74,29 +72,28 @@
 				if(is_new_mind)
 					new_mob.mind.wipe_memory()
 			else
-				new_mob.key = affected_mob.key
+				new_mob.possess_by_player(affected_mob.ckey)
 
 		qdel(affected_mob)
 		transformed = TRUE
 		return new_mob
 
 /datum/disease/virus/transformation/jungle_fever
-	name = "Jungle Fever"
-	agent = "Kongey Vibrion M-909"
-	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
+	name = "Тропическая лихорадка"
+	agent = "Вибрион Конги М-909"
+	desc = "Обезьяны с этой болезнью кусают людей, вызывая их мутацию в обезьяну."
 	stage_prob = 2
 	cure_prob = 5
 	cures = list("banana")
 	spread_flags = BITES
 	infectable_mobtypes = list(/mob/living/carbon/human)
-	severity = BIOHAZARD
+	severity = DISEASE_SEVERITY_BIOHAZARD
 	cure_after_transform = FALSE
 	stage1	= null
 	stage2	= null
 	stage3	= null
-	stage4	= list(span_warning("Your back hurts."), span_warning("You breathe through your mouth."),
-					span_warning("You have a craving for bananas."), span_warning("Your mind feels clouded."))
-	stage5	= list(span_warning("You feel like monkeying around."))
+	stage4 = list(span_warning_alt("Ваша спина болит."),span_warning_alt("Вы дышите через рот."), span_warning_alt("У вас возникает тяга к бананам."), span_warning_alt("Ваш разум затуманен."))
+	stage5 = list(span_warning_alt("Вам хочется вести себя как обезьяна."))
 	new_form = /mob/living/carbon/human/lesser/monkey
 
 /datum/disease/virus/transformation/jungle_fever/do_disease_transformation()
@@ -122,27 +119,28 @@
 	switch(stage)
 		if(2)
 			if(prob(2))
-				to_chat(affected_mob, span_notice("Your [pick("back", "arm", "leg", "elbow", "head")] itches."))
+				to_chat(affected_mob, span_notice("Ваш [pick("спина", "рука", "нога", "локоть", "голова")] чешется."))
 		if(3)
 			if(prob(4))
-				to_chat(affected_mob, span_danger("You feel a stabbing pain in your head."))
+				to_chat(affected_mob, span_danger("Вы чувствуете острую боль в голове."))
 				affected_mob.AdjustConfused(20 SECONDS)
 		if(4, 5)
 			if(prob(4))
 				affected_mob.say(pick("Иииик, уку уку!", "Иии-ииик!", "Ииии!", "Ун, ун."))
 
 /datum/disease/virus/transformation/robot
-	name = "Robotic Transformation"
-	agent = "R2D2 Nanomachines"
-	desc = "This disease, actually acute nanomachine infection, converts the victim into a cyborg."
+	name = "Роботрансформация"
+	agent = "R2D2 Наномашины"
+	desc = "Эта болезнь, на самом деле острая инфекция наномашин, превращает жертву в киборга."
 	cures = list("copper")
+	severity = DISEASE_SEVERITY_BIOHAZARD
 	cure_prob = 5
 	is_new_mind = TRUE
 	stage1 = null
-	stage2 = list(span_notice("Your joints feel stiff."), span_danger("Beep...boop.."))
-	stage3 = list(span_danger("Your joints feel very stiff."), span_notice("Your skin feels loose."), span_danger("You can feel something move...inside."))
-	stage4 = list(span_danger("Your skin feels very loose."), span_danger("You can feel... something...inside you."))
-	transform_message = list(span_danger("Your skin feels as if it's about to burst off!"))
+	stage2 = list(span_notice_alt("Ваши суставы кажутся скованными."), span_danger_alt("Бип... буп..."))
+	stage3 = list(span_danger_alt("Ваши суставы кажутся очень скованными."), span_notice_alt("Ваша кожа кажется дряблой."), span_danger_alt("Вы чувствуете, как что-то движется... внутри."))
+	stage4 = list(span_danger_alt("Ваша кожа кажется очень дряблой."), span_danger_alt("Вы чувствуете... что-то... внутри вас."))
+	transform_message = list(span_danger_alt("Ваша кожа будто вот-вот лопнет!"))
 	new_form = /mob/living/silicon/robot
 
 /datum/disease/virus/transformation/robot/stage_act()
@@ -152,27 +150,27 @@
 	switch(stage)
 		if(3)
 			if(prob(8))
-				affected_mob.say(pick("Beep, boop", "beep, beep!", "Boop...bop"))
+				affected_mob.say(pick("Бип, буп.", "Бип, бип!", "Бууп...буп."))
 			if(prob(4))
-				to_chat(affected_mob, span_danger("You feel a stabbing pain in your head."))
+				to_chat(affected_mob, span_danger("Вы чувствуете острую головную боль."))
 				affected_mob.Paralyse(4 SECONDS)
 		if(4)
 			if(prob(20))
-				affected_mob.say(pick("beep, beep!", "Boop bop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."))
-
+				affected_mob.say(pick("Бип-буп!", "Биип-буп-бип-буп-бип!", "Уб-бе-ейте мен-н-н-я!", "Я хо-ч-чу ум-м-ме-р-р-ее-е-еть..."))
 
 /datum/disease/virus/transformation/xeno
-	name = "Xenomorph Transformation"
-	agent = "Rip-LEY Alien Microbes"
-	desc = "This disease changes the victim into a xenomorph."
+	name = "Ксенотрансформация"
+	agent = "Чужеродные микробы рип-ЛИ"
+	desc = "Эта болезнь превращает жертву в ксеноморфа."
 	cures = list("spaceacillin", "glycerol")
+	severity = DISEASE_SEVERITY_BIOHAZARD
 	cure_prob = 5
 	stage1 = null
-	stage2 = list("Your throat feels scratchy.", span_danger("Kill..."))
-	stage3 = list(span_danger("Your throat feels very scratchy."), "Your skin feels tight.", span_danger("You can feel something move...inside."))
-	stage4 = list(span_danger("Your skin feels very tight."), span_danger("Your blood boils!"), span_danger("You can feel... something...inside you."))
-	transform_message = list(span_danger("<span style='font-size: 24px;'><b>Теперь вы ксеноморф.</b></span>\n\
-	<b>Вы чувствуете боль от превращения! Вы желаете укусить того, кто с вами это сделал, благо, память вас не покинула и вы всё помните.</b>"))
+	stage2 = list("Ваше горло першит.", span_danger_alt("Убить..."))
+	stage3 = list(span_danger_alt("Ваше горло сильно першит."), "Ваша кожа кажется тугой.", span_danger_alt("Вы чувствуете, как что-то движется... внутри."))
+	stage4 = list(span_danger_alt("Ваша кожа кажется очень тугой."), span_danger_alt("Ваша кровь кипит!"), span_danger_alt("Вы чувствуете... что-то... внутри вас."))
+	transform_message = list(span_danger_alt(span_fontsize5_alt("<b>Теперь вы ксеноморф.</b>") + "\n\
+		<b>Вы чувствуете боль от превращения! Вы желаете укусить того, кто с вами это сделал, благо, память вас не покинула и вы всё помните.</b>"))
 	new_form = null
 
 /datum/disease/virus/transformation/xeno/New()
@@ -186,24 +184,23 @@
 	switch(stage)
 		if(3)
 			if(prob(4))
-				to_chat(affected_mob, span_danger("You feel a stabbing pain in your head."))
+				to_chat(affected_mob, span_danger("Вы чувствуете острую головную боль."))
 				affected_mob.Paralyse(4 SECONDS)
 		if(4)
 			if(prob(20))
-				affected_mob.say(pick("You look delicious.", "Going to... devour you...", "Hsssshhhhh!"))
-
+				affected_mob.say(pick("Ты выглядишь вкусно.", "Собираюсь... сожрать тебя...", "Хииисссс!"))
 
 /datum/disease/virus/transformation/slime
-	name = "Advanced Mutation Transformation"
-	agent = "Advanced Mutation Toxin"
-	desc = "This highly concentrated extract converts anything into more of itself."
+	name = "Продвинутая Мутационная Трансформация"
+	agent = "Токсин Продвинутой Мутации"
+	desc = "Этот высококонцентрированный экстракт превращает всё в большее количество себя."
 	cures = list("frostoil")
 	cure_prob = 80
-	stage1 = list(span_notice("You don't feel very well."))
-	stage2 = list(span_notice("Your skin feels a little slimy."))
-	stage3 = list(span_danger("Your appendages are melting away."), span_danger("Your limbs begin to lose their shape."))
-	stage4 = list(span_danger("You are turning into a slime."))
-	transform_message = list(span_danger("You have become a slime."))
+	stage1 = list(span_notice_alt("Вы чувствуете себя не очень хорошо."))
+	stage2 = list(span_notice_alt("Ваша кожа кажется немного скользкой."))
+	stage3 = list(span_danger_alt("Ваши конечности тают."), span_danger_alt("Ваши конечности начинают терять форму."))
+	stage4 = list(span_danger_alt("Вы превращаетесь в слайма."))
+	transform_message = list(span_danger_alt("Вы превратились в слайма."))
 	new_form = /mob/living/simple_animal/slime/random
 
 /datum/disease/virus/transformation/slime/stage_act()
@@ -221,16 +218,17 @@
 					human.set_species(/datum/species/slime)
 
 /datum/disease/virus/transformation/corgi
-	name = "The Barkening"
-	agent = "Fell Doge Majicks"
-	desc = "This disease transforms the victim into a corgi."
-	cure_text = "Death"
+	name = "Лаяние"
+	agent = "Шерсть магической собаки"
+	desc = "Эта болезнь превращает жертву в корги."
+	cure_text = "Смерть"
 	cures = list("adminordrazine")
-	stage1	= list(span_notice("BARK."))
-	stage2	= list(span_notice("You feel the need to wear silly hats."))
-	stage3	= list(span_danger("Must... eat... chocolate...."), span_danger("YAP"))
-	stage4	= list(span_danger("Visions of washing machines assail your mind!"))
-	transform_message	= list(span_danger("AUUUUUU!!!"))
+	severity = DISEASE_SEVERITY_UNCURABLE
+	stage1 = list(span_notice_alt("ГАВ."))
+	stage2 = list(span_notice_alt("Вам хочется надеть глупую шляпу."))
+	stage3 = list(span_danger_alt("Нужно... съесть... шоколад...."), span_danger_alt("ТЯФ"))
+	stage4 = list(span_danger_alt("Видения стиральных машин атакуют ваш разум!"))
+	transform_message = list(span_danger_alt("АУУУУУУ!!!"))
 	new_form = /mob/living/simple_animal/pet/dog/corgi
 	is_new_mind = TRUE
 
@@ -241,23 +239,50 @@
 	switch(stage)
 		if(3)
 			if(prob(8))
-				affected_mob.say(pick("YAP", "Woof!"))
+				affected_mob.say(pick("ТЯФ", "Вууф!"))
 		if(4)
 			if(prob(20))
-				affected_mob.say(pick("Bark!", "AUUUUUU"))
+				affected_mob.say(pick("ГАВ!", "АВУУУУ!"))
 
 /datum/disease/virus/transformation/morph
-	name = "Gluttony's Blessing"
-	agent = "Gluttony's Blessing"
-	desc = "A 'gift' from somewhere terrible."
-	cure_text = "Nothing"
+	name = "Благословение Обжорства"
+	desc = "\"Дар\" из какого-то ужасного места."
+	cure_text = "Ничего"
 	cures = list("adminordrazine")
+	severity = DISEASE_SEVERITY_UNCURABLE
 	stage_prob = 20
-	stage1 = list(span_notice("Your stomach rumbles."))
-	stage2 = list(span_notice("Your skin feels saggy."))
-	stage3 = list(span_danger("Your appendages are melting away."), span_danger("Your limbs begin to lose their shape."))
-	stage4 = list(span_danger("You're ravenous."))
-	transform_message = list(span_danger("<span style='font-size: 24px;'><b>ТЕПЕРЬ ВЫ МОРФ!</b></span> \n \
+	stage1 = list(span_notice_alt("Ваш желудок урчит."))
+	stage2 = list(span_notice_alt("Ваша кожа кажется обвисшей."))
+	stage3 = list(span_danger_alt("Ваши конечности тают."), span_danger_alt("Ваши конечности начинают терять форму."))
+	stage4 = list(span_danger_alt("Вы ненасытны!"))
+	transform_message = list(span_danger_alt(span_fontsize5_alt("<b>ТЕПЕРЬ ВЫ МОРФ!</b>") + "\n\
 	Хоть Вы и трансформировались в отвратительную зелёную жижу, но это не повлияло на Ваше сознание \
 	и память. Вы не являетесь антагонистом."))
 	new_form = /mob/living/simple_animal/hostile/morph
+
+/datum/disease/virus/transformation/pig
+	name = "Свинофикация"
+	agent = "Мистическая грязь"
+	desc = "Эта болезнь превращает жертву в свинью."
+	cure_text = "Смерть"
+	cures = list("adminordrazine")
+	severity = DISEASE_SEVERITY_UNCURABLE
+	stage1 = list(span_notice_alt("ХРЮ."))
+	stage2 = list(span_notice_alt("Вам хочется валяться в грязи."))
+	stage3 = list(span_danger_alt("Нужно... валяться... в грязи...."), span_danger_alt("ХРЮ"))
+	stage4 = list(span_danger_alt("Видения грязевых луж атакуют ваш разум!"))
+	transform_message = list(span_danger_alt("ХРЮЮЮЮЮ!!!"))
+	new_form = /mob/living/simple_animal/pig
+	is_new_mind = TRUE
+
+/datum/disease/virus/transformation/pig/stage_act()
+	if(!..() || !affected_mob)
+		return FALSE
+
+	switch(stage)
+		if(3)
+			if(prob(8))
+				affected_mob.say(pick("Хррр", "Хрю!"))
+		if(4)
+			if(prob(20))
+				affected_mob.say(pick("Уииии!", "ХРЮЮЮ!"))

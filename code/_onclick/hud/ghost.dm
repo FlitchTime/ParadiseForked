@@ -1,11 +1,13 @@
 /atom/movable/screen/ghost
 	icon = 'icons/mob/screen_ghost.dmi'
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
-/atom/movable/screen/ghost/MouseEntered()
+/atom/movable/screen/ghost/MouseEntered(location, control, params)
+	. = ..()
 	flick(icon_state + "_anim", src)
 
 /atom/movable/screen/ghost/jumptomob
-	name = "Jump to mob"
+	name = "К существу"
 	icon_state = "jumptomob"
 
 /atom/movable/screen/ghost/jumptomob/Click()
@@ -13,7 +15,7 @@
 	G.jumptomob()
 
 /atom/movable/screen/ghost/orbit
-	name = "Orbit"
+	name = "Следовать за"
 	icon_state = "orbit"
 
 /atom/movable/screen/ghost/orbit/Click()
@@ -21,7 +23,7 @@
 	G.follow()
 
 /atom/movable/screen/ghost/reenter_corpse
-	name = "Re-enter corpse"
+	name = "Вернуться в тело"
 	icon_state = "reenter_corpse"
 
 /atom/movable/screen/ghost/reenter_corpse/Click()
@@ -29,7 +31,7 @@
 	G.reenter_corpse()
 
 /atom/movable/screen/ghost/teleport
-	name = "Teleport"
+	name = "Телепортация"
 	icon_state = "teleport"
 
 /atom/movable/screen/ghost/teleport/Click()
@@ -37,7 +39,7 @@
 	G.dead_tele()
 
 /atom/movable/screen/ghost/respawn_list
-	name = "Ghost spawns"
+	name = "Роли призраков"
 	icon = 'icons/mob/screen_midnight.dmi'
 	icon_state = "template"
 
@@ -59,12 +61,12 @@
 	M.Turn(-90)
 
 	cut_overlays()
-	var/image/img = image('icons/mob/actions/actions.dmi', src, (hud && hud.inventory_shown) ? "hide" : "show")
+	var/image/img = image('icons/mob/actions/actions.dmi', src, (hud?.inventory_shown) ? "hide" : "show")
 	img.transform = M
 	add_overlay(img)
 
 /atom/movable/screen/ghost/respawn_mob
-	name = "Mob spawners"
+	name = "Роли призраков"
 	icon_state = "mob_spawner"
 
 /atom/movable/screen/ghost/respawn_mob/Click()
@@ -72,26 +74,25 @@
 	G.open_spawners_menu()
 
 /atom/movable/screen/ghost/mini_games
-	name = "Mini games"
+	name = "Мини-игры"
 	icon_state = "minigames"
 
 /atom/movable/screen/ghost/Click()
-	var/mob/dead/observer/G = usr
-	G.open_minigames_menu()
+	var/mob/dead/observer/observer = usr
+	observer.open_minigames_menu()
 
 /atom/movable/screen/ghost/respawn_pai
-	name = "Configure pAI"
+	name = "Настроить ПИИ"
 	icon_state = "pai"
 
 /atom/movable/screen/ghost/respawn_pai/Click()
 	var/mob/dead/observer/G = usr
 	if(!GLOB.paiController.check_recruit(G))
-		to_chat(G, "<span class='warning'>You are not eligible to become a pAI.</span>")
+		to_chat(G, span_warning("Вам не доступна роль ПИИ."))
 		return
 	GLOB.paiController.recruitWindow(G)
 
 /datum/hud/ghost
-	inventory_shown = FALSE
 
 /datum/hud/ghost/New(mob/owner)
 	..()
@@ -132,14 +133,9 @@
 
 /datum/hud/ghost/show_hud(version = 0, mob/viewmob)
 	// don't show this HUD if observing; show the HUD of the observee
-	var/mob/dead/observer/observe = mymob
-	if(istype(observe) && observe.orbiting)
+	var/mob/dead/observer/observer = mymob
+	if(istype(observer) && observer.orbiting)
 		plane_masters_update()
 		return FALSE
 
-	var/mob/screenmob = viewmob || mymob
-
-	screenmob.client.screen = list()
-	screenmob.client.screen += static_inventory
-
-	..()
+	. = ..()

@@ -22,10 +22,10 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 
 /turf/simulated/floor
 	name = "floor"
-	icon = 'icons/turf/floors.dmi'
 	icon_state = "dont_use_this_tile"
 	plane = FLOOR_PLANE
 	var/icon_regular_floor = "floor" //used to remember what icon the tile should have by default
+	var/icon_regular_floor_dmi = 'icons/turf/floors.dmi' //used to remember what icon the tile should have by default (fix bug for change dmi)
 	var/floor_regular_dir = SOUTH  //used to remember what dir the tile should have by default
 	var/icon_plating = "plating"
 	thermal_conductivity = 0.040
@@ -49,10 +49,11 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 	. = ..()
 	if(icon_state in GLOB.icons_to_ignore_at_floor_init) //so damaged/burned tiles or plating icons aren't saved as the default
 		icon_regular_floor = "floor"
+		icon_regular_floor_dmi = 'icons/turf/floors.dmi'
 	else
 		icon_regular_floor = icon_state
+		icon_regular_floor_dmi = icon
 		floor_regular_dir = dir
-
 
 /// Returns a list of every turf state considered "broken".
 /// Will be randomly chosen if a turf breaks at runtime.
@@ -64,18 +65,20 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 /turf/simulated/floor/proc/burnt_states()
 	return list("floorscorched1", "floorscorched2")
 
-/turf/simulated/floor/ex_act(severity)
+/turf/simulated/floor/ex_act(severity, target)
 	if(is_shielded())
 		return
+
 	switch(severity)
-		if(1.0)
+		if(EXPLODE_DEVASTATE)
 			ChangeTurf(baseturf)
-		if(2.0)
-			switch(pick(1,2;75,3))
+		if(EXPLODE_HEAVY)
+			switch(rand(1, 3))
 				if(1)
 					spawn(0)
 						ReplaceWithLattice()
-						if(prob(33)) new /obj/item/stack/sheet/metal(src)
+						if(prob(33))
+							new /obj/item/stack/sheet/metal(src)
 				if(2)
 					ChangeTurf(baseturf)
 				if(3)
@@ -83,16 +86,18 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 						break_tile_to_plating()
 					else
 						break_tile()
-					hotspot_expose(1000,CELL_VOLUME)
-					if(prob(33)) new /obj/item/stack/sheet/metal(src)
-		if(3.0)
+					hotspot_expose(1000, 100)
+					if(prob(33))
+						new /obj/item/stack/sheet/metal(src)
+		if(EXPLODE_LIGHT)
 			if(prob(50))
 				break_tile()
-				hotspot_expose(1000,CELL_VOLUME)
+				hotspot_expose(1000, 100)
+
 	return
 
 /turf/simulated/floor/burn_down()
-	ex_act(2)
+	ex_act(EXPLODE_HEAVY)
 
 /turf/simulated/floor/is_shielded()
 	for(var/obj/structure/A in contents)
@@ -101,17 +106,14 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 
 // Checks if the turf is safe to be on
 /turf/simulated/floor/is_safe()
-	if(!air)
-		return FALSE
-	var/datum/gas_mixture/Z = air
+	var/datum/gas_mixture/Z = get_readonly_air()
 	var/pressure = Z.return_pressure()
 	// Can most things breathe and tolerate the temperature and pressure?
-	if(Z.oxygen < 16 || Z.toxins >= 0.05 || Z.carbon_dioxide >= 10 || Z.sleeping_agent >= 1 || (Z.temperature <= 270) || (Z.temperature >= 360) || (pressure <= 20) || (pressure >= 550))
+	if(Z.oxygen() < 16 || Z.toxins() >= 0.05 || Z.carbon_dioxide() >= 10 || Z.sleeping_agent() >= 1 || (Z.temperature() <= 270) || (Z.temperature() >= 360) || (pressure <= 20) || (pressure >= 550))
 		return FALSE
 	return TRUE
 
-
-/turf/simulated/floor/blob_act(obj/structure/blob/B)
+/turf/simulated/floor/blob_act(obj/structure/blob/blob)
 	return
 
 /turf/simulated/floor/update_overlays()
@@ -138,7 +140,12 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 	burnt = TRUE
 	update_icon()
 
-/turf/simulated/floor/proc/make_plating(make_floor_tile, mob/user)	// Set `make_floor_tile` to FALSE, if `floor_tile` have another drop logic before calling this proc.
+/turf/simulated/floor/temperature_expose(exposed_temperature, exposed_volume)
+	if(temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST && prob(1))
+		burn_tile()
+
+/// Set `make_floor_tile` to FALSE, if `floor_tile` have another drop logic before calling this proc.
+/turf/simulated/floor/proc/make_plating(make_floor_tile, mob/user)
 	if(make_floor_tile && floor_tile && !broken && !burnt)
 		var/obj/item/stack/stack_dropped = new floor_tile(src)
 		if(user)
@@ -153,6 +160,7 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 	if(!ispath(T, /turf/simulated/floor))
 		return ..()
 
+	var/old_dmi = icon_regular_floor_dmi
 	var/old_icon = icon_regular_floor
 	var/old_plating = icon_plating
 	var/old_dir = dir
@@ -160,6 +168,9 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 	var/old_transparent_floor = transparent_floor
 
 	var/turf/simulated/floor/W = ..()
+
+	if(old_dmi != W.icon_regular_floor_dmi) //bugfix for dark tiles
+		keep_icon = FALSE
 
 	var/obj/machinery/atmospherics/R
 	var/obj/machinery/power/terminal/term
@@ -179,7 +190,6 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 		R.update_underlays()
 	W.update_icon()
 	return W
-
 
 /turf/simulated/floor/attackby(obj/item/I, mob/user, params)
 	. = ..()
@@ -215,7 +225,6 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 			pipe.setDir(user.dir)
 		return .|ATTACK_CHAIN_BLOCKED_ALL
 
-
 /turf/simulated/floor/crowbar_act(mob/user, obj/item/I)
 	if(!intact)
 		return
@@ -237,7 +246,7 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 
 /turf/simulated/floor/proc/pry_tile(obj/item/C, mob/user, silent = FALSE)
 	if(!silent)
-		playsound(src, C.usesound, 80, 1)
+		playsound(src, C.usesound, 80, TRUE)
 	return remove_tile(user, silent)
 
 /turf/simulated/floor/proc/remove_tile(mob/user, silent = FALSE, make_tile = TRUE)
@@ -253,7 +262,7 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 			to_chat(user, span_danger("You remove the floor tile."))
 	return make_plating(make_tile, user)
 
-/turf/simulated/floor/singularity_pull(S, current_size)
+/turf/simulated/floor/singularity_pull(atom/singularity, current_size)
 	..()
 	if(current_size == STAGE_THREE)
 		if(prob(30))
@@ -286,52 +295,52 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 	. = ..()
 	if(our_rcd.checkResource(5, user))
 		to_chat(user, "Deconstructing floor...")
-		playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+		playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 		if(do_after(user, 5 SECONDS * our_rcd.toolspeed, src, category = DA_CAT_TOOL))
 			if(!our_rcd.useResource(5, user))
 				return RCD_ACT_FAILED
-			playsound(get_turf(our_rcd), our_rcd.usesound, 50, 1)
+			playsound(get_turf(our_rcd), our_rcd.usesound, 50, TRUE)
 			add_attack_logs(user, src, "Deconstructed floor with RCD")
 			src.ChangeTurf(baseturf)
 			return RCD_ACT_SUCCESSFULL
 		return RCD_ACT_FAILED
 	to_chat(user, span_warning("ERROR! Not enough matter in unit to deconstruct this floor!"))
-	playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+	playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 	return RCD_ACT_FAILED
 
 /turf/simulated/floor/rcd_construct_act(mob/user, obj/item/rcd/our_rcd, rcd_mode)
 	. = ..()
 	if(locate(/obj/machinery/field) in src)
 		to_chat(user, span_warning("ERROR! Due to safety protocols building is prohibited in high-energy field areas!"))
-		playsound(loc, 'sound/machines/click.ogg', 50, 1)
+		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 		return RCD_ACT_FAILED
 	switch(rcd_mode)
 		if(RCD_MODE_TURF)
 			if(our_rcd.checkResource(3, user))
 				to_chat(user, "Building Wall...")
-				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 				if(do_after(user, 2 SECONDS * our_rcd.toolspeed, src, category = DA_CAT_TOOL))
 					if(!our_rcd.useResource(3, user))
 						return RCD_ACT_FAILED
-					playsound(get_turf(our_rcd), our_rcd.usesound, 50, 1)
+					playsound(get_turf(our_rcd), our_rcd.usesound, 50, TRUE)
 					add_attack_logs(user, src, "Constructed wall with RCD")
 					ChangeTurf(our_rcd.wall_type)
 					return RCD_ACT_SUCCESSFULL
 				to_chat(user, span_warning("ERROR! Construction interrupted!"))
 				return RCD_ACT_FAILED
 			to_chat(user, span_warning("ERROR! Not enough matter in unit to construct this wall!"))
-			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 			return RCD_ACT_FAILED
 		if(RCD_MODE_AIRLOCK)
 			if(our_rcd.checkResource(10, user))
 				to_chat(user, "Building Airlock...")
-				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 				if(do_after(user, 5 SECONDS * our_rcd.toolspeed, src, category = DA_CAT_TOOL))
 					if(locate(/obj/machinery/door/airlock) in src.contents)
 						return RCD_NO_ACT
 					if(!our_rcd.useResource(10, user))
 						return RCD_ACT_FAILED
-					playsound(get_turf(our_rcd), our_rcd.usesound, 50, 1)
+					playsound(get_turf(our_rcd), our_rcd.usesound, 50, TRUE)
 					var/obj/machinery/door/airlock/T = new our_rcd.door_type(src)
 					add_attack_logs(user, T, "Constructed airlock with RCD")
 					T.name = our_rcd.door_name
@@ -342,17 +351,17 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 				to_chat(user, span_warning("ERROR! Construction interrupted!"))
 				return RCD_ACT_FAILED
 			to_chat(user, span_warning("ERROR! Not enough matter in unit to construct this airlock!"))
-			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 			return RCD_ACT_FAILED
 		if(RCD_MODE_WINDOW)
 			if(locate(/obj/structure/grille) in src)
 				return // We already have window
 			if(!our_rcd.checkResource(2, user))
 				to_chat(user, span_warning("ERROR! Not enough matter in unit to construct this window!"))
-				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 				return RCD_ACT_FAILED
 			to_chat(user, "Constructing window...")
-			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 			if(!do_after(user, 2 SECONDS * our_rcd.toolspeed, src, category = DA_CAT_TOOL))
 				to_chat(user, span_warning("ERROR! Construction interrupted!"))
 				return RCD_ACT_FAILED
@@ -360,7 +369,7 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 				return RCD_NO_ACT// We already have window
 			if(!our_rcd.useResource(2, user))
 				return RCD_ACT_FAILED
-			playsound(get_turf(our_rcd), our_rcd.usesound, 50, 1)
+			playsound(get_turf(our_rcd), our_rcd.usesound, 50, TRUE)
 			add_attack_logs(user, src, "Constructed window with RCD")
 			new /obj/structure/grille(src)
 			for(var/obj/structure/window/del_window in src)
@@ -382,20 +391,20 @@ GLOBAL_LIST_INIT(icons_to_ignore_at_floor_init, list("damaged1","damaged2","dama
 		if(RCD_MODE_FIRELOCK)
 			if(our_rcd.checkResource(8, user))
 				to_chat(user, "Building Firelock...")
-				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+				playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 				if(do_after(user, 5 SECONDS * our_rcd.toolspeed, src, category = DA_CAT_TOOL))
 					if(locate(/obj/machinery/door/firedoor) in src)
 						return RCD_NO_ACT
 					if(!our_rcd.useResource(8, user))
 						return RCD_ACT_FAILED
-					playsound(get_turf(our_rcd), our_rcd.usesound, 50, 1)
+					playsound(get_turf(our_rcd), our_rcd.usesound, 50, TRUE)
 					new our_rcd.firelock_type(src)
 					add_attack_logs(user, src, "Constructed firelock with RCD")
 					return RCD_ACT_SUCCESSFULL
 				to_chat(user, span_warning("ERROR! Construction interrupted!"))
 				return RCD_ACT_FAILED
 			to_chat(user, span_warning("ERROR! Not enough matter in unit to construct this Firelock!"))
-			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, 1)
+			playsound(get_turf(our_rcd), 'sound/machines/click.ogg', 50, TRUE)
 			return RCD_ACT_FAILED
 	return RCD_NO_ACT
 

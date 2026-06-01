@@ -8,7 +8,13 @@
 /obj/item/mounted/frame/torch_holder
 	name = "torch holder"
 	desc = "Один из самых популярных способов осветить пространство в средневековых замках."
-	ru_names = list(
+	icon = 'icons/obj/lighting.dmi'
+	icon_state = "torch_holder_item"
+	mount_requirements = MOUNTED_FRAME_SIMFLOOR | MOUNTED_FRAME_NOSPACE
+	metal_sheets_refunded = 0
+
+/obj/item/mounted/frame/torch_holder/get_ru_names()
+	return list(
 		NOMINATIVE = "крепление для факела",
 		GENITIVE = "крепления для факела",
 		DATIVE = "креплению для факела",
@@ -16,13 +22,10 @@
 		INSTRUMENTAL = "креплением для факела",
 		PREPOSITIONAL = "креплении для факела",
 	)
-	icon = 'icons/obj/lighting.dmi'
-	icon_state = "torch_holder_item"
-	mount_reqs = list("simfloor", "nospace")
 
 /obj/item/mounted/frame/torch_holder/do_build(turf/on_wall, mob/user)
 	to_chat(user, span_notice("Вы начинаете устанавливать [declent_ru(ACCUSATIVE)] на [on_wall.declent_ru(ACCUSATIVE)]."))
-	playsound(get_turf(src), 'sound/machines/click.ogg', 75, 1)
+	playsound(get_turf(src), 'sound/machines/click.ogg', 75, TRUE)
 
 	var/constrdir = user.dir
 	var/constrloc = get_turf(user)
@@ -34,25 +37,17 @@
 	torch.fingerprints = src.fingerprints
 	torch.fingerprintshidden = src.fingerprintshidden
 	torch.fingerprintslast = src.fingerprintslast
-	user.visible_message(span_notice("[user] устанавлива[pluralize_ru(user.gender, "ет", "ют")] [declent_ru(ACCUSATIVE)] на [on_wall.declent_ru(ACCUSATIVE)]"), \
+	user.visible_message(span_notice("[user] устанавлива[PLUR_ET_YUT(user)] [declent_ru(ACCUSATIVE)] на [on_wall.declent_ru(ACCUSATIVE)]"), \
 		span_notice("вы устанавливаете [declent_ru(ACCUSATIVE)] на [on_wall.declent_ru(ACCUSATIVE)]."))
 	qdel(src)
 
 /obj/structure/torch_holder
 	name = "torch holder"
 	desc = "Красиво выглядящее крепление для факела."
-	ru_names = list(
-		NOMINATIVE = "крепление для факела",
-		GENITIVE = "крепления для факела",
-		DATIVE = "креплению для факела",
-		ACCUSATIVE = "крепление для факела",
-		INSTRUMENTAL = "креплением для факела",
-		PREPOSITIONAL = "креплении для факела",
-	)
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "torch_holder"
 	/// Our torch, that stored in holder
-	var/obj/item/flashlight/flare/torch/fakel
+	var/obj/item/flashlight/flare/torch/torch
 	/// For mapping. Ancient torches can't be taken away and they are infinite
 	var/ancient = FALSE
 	/// Light range when on. Standart torch is brighter, this is for mapping reason.
@@ -71,10 +66,20 @@
 	/// Timer for our torch.
 	var/timer = null
 
+/obj/structure/torch_holder/get_ru_names()
+	return list(
+		NOMINATIVE = "крепление для факела",
+		GENITIVE = "крепления для факела",
+		DATIVE = "креплению для факела",
+		ACCUSATIVE = "крепление для факела",
+		INSTRUMENTAL = "креплением для факела",
+		PREPOSITIONAL = "креплении для факела",
+	)
+
 /obj/structure/torch_holder/Initialize(mapload) //mapping version, preloaded with torch
 	. = ..()
-	fakel = new(src)
-	fuel = fakel.fuel
+	torch = new(src)
+	fuel = torch.fuel
 	update_icon(UPDATE_OVERLAYS)
 	update_light_state()
 	if(TORCH_OK && !ancient)
@@ -82,20 +87,20 @@
 
 /obj/structure/torch_holder/Destroy()
 	. = ..()
-	QDEL_NULL(fakel)
+	QDEL_NULL(torch)
 	deltimer(timer)
 
 /obj/structure/torch_holder/examine(mob/user)
 	. = ..()
 	switch(status)
 		if(TORCH_OK)
-			. += span_notice("[capitalize(fakel.declent_ru(NOMINATIVE))] ярко горит.")
+			. += span_notice("[DECLENT_RU_CAP(torch, NOMINATIVE)] ярко горит.")
 		if(TORCH_EMPTY)
 			. += span_notice("Внутри нет факела.")
 		if(TORCH_OFF)
-			. += span_notice("[capitalize(fakel.declent_ru(NOMINATIVE))] не подожжён.")
+			. += span_notice("[DECLENT_RU_CAP(torch, NOMINATIVE)] не подожжён.")
 		if(TORCH_BURNED)
-			. += span_notice("[capitalize(fakel.declent_ru(NOMINATIVE))] выгорел.")
+			. += span_notice("[DECLENT_RU_CAP(torch, NOMINATIVE)] выгорел.")
 
 /obj/structure/torch_holder/proc/update_light_state() //I can't make it better..
 	switch(status)
@@ -111,7 +116,7 @@
 /obj/structure/torch_holder/proc/burnout()
 	if(ancient)
 		return
-	fuel = 0 //if someone will take our fakel
+	fuel = 0 //if someone will take our torch
 	status = TORCH_BURNED
 	update_light_state()
 	update_icon(UPDATE_OVERLAYS)
@@ -201,21 +206,21 @@
 			if(H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves
 				if(G.max_heat_protection_temperature)
-					prot = (G.max_heat_protection_temperature > fakel.get_heat())
+					prot = (G.max_heat_protection_temperature > torch.get_temperature())
 		else
 			prot = 1
 
 		if(prot > 0 || HAS_TRAIT(user, TRAIT_RESIST_HEAT))
-			to_chat(user, span_notice("Вы вытаскиваете [fakel.declent_ru(ACCUSATIVE)]."))
+			to_chat(user, span_notice("Вы вытаскиваете [torch.declent_ru(ACCUSATIVE)]."))
 		else if(HAS_TRAIT(user, TRAIT_TELEKINESIS))
-			to_chat(user, span_notice("Вы вытаскиваете [fakel.declent_ru(ACCUSATIVE)] с помощью телекинеза."))
+			to_chat(user, span_notice("Вы вытаскиваете [torch.declent_ru(ACCUSATIVE)] с помощью телекинеза."))
 		else
 			if(user.a_intent == INTENT_DISARM || user.a_intent == INTENT_GRAB)
-				to_chat(user, span_warning("Вы пытаетесь вытащить [fakel.declent_ru(ACCUSATIVE)], но обжигаетесь в процессе!"))
+				to_chat(user, span_warning("Вы пытаетесь вытащить [torch.declent_ru(ACCUSATIVE)], но обжигаетесь в процессе!"))
 				H.apply_damage(5, BURN, def_zone = H.hand ? BODY_ZONE_PRECISE_L_HAND : BODY_ZONE_PRECISE_R_HAND)
 				return FALSE
 			else
-				to_chat(user, span_warning("Вы пытаетесь вытащить [fakel.declent_ru(ACCUSATIVE)], но он слишком горячий!"))
+				to_chat(user, span_warning("Вы пытаетесь вытащить [torch.declent_ru(ACCUSATIVE)], но он слишком горячий!"))
 				return FALSE
 	else
 		balloon_alert(user, "факел вынут")
@@ -247,7 +252,11 @@
 /obj/structure/torch_holder/mapping //infinite mapping version
 	name = "ancient torch holder"
 	desc = "Красиво выглядящее крепление для факела. Поверхность проржавела от времени, а сам факел практически прирос к креплению."
-	ru_names = list(
+	icon_state = "torch_holder_complete"
+	ancient = TRUE
+
+/obj/structure/torch_holder/mapping/get_ru_names()
+	return list(
 		NOMINATIVE = "древнее крепление для факела",
 		GENITIVE = "древнего крепления для факела",
 		DATIVE = "древнему креплению для факела",
@@ -255,8 +264,6 @@
 		INSTRUMENTAL = "древним креплением для факела",
 		PREPOSITIONAL = "древнем креплении для факела",
 	)
-	icon_state = "torch_holder_complete"
-	ancient = TRUE
 
 /obj/structure/torch_holder/mapping/Initialize(mapload)
 	. = ..()
@@ -269,9 +276,9 @@
 /obj/structure/torch_holder/extinguish_light(force = FALSE)
 	if(force)
 		burnout()
-		visible_message(span_danger("[capitalize(fakel.declent_ru(NOMINATIVE))] быстро выгорает!"))
+		visible_message(span_danger("[DECLENT_RU_CAP(torch, NOMINATIVE)] быстро выгорает!"))
 	else
-		visible_message(span_notice("[capitalize(fakel.declent_ru(NOMINATIVE))] ненадолго меркнет, после чего снова начинает освещать пространство вокруг."))
+		visible_message(span_notice("[DECLENT_RU_CAP(torch, NOMINATIVE)] ненадолго меркнет, после чего снова начинает освещать пространство вокруг."))
 
 #undef TORCH_OK
 #undef TORCH_EMPTY

@@ -7,13 +7,17 @@
 	. = ..()
 
 	handle_equipment()
+	if(shell)
+		if(mainframe)
+			laws = mainframe.laws //AI shells must sync their laws with AI-pilot every tick!!!
+			if(!cell || (cell.charge <= 0))
+				evacuate_ai(DANGER_LVL_NONE)
 
 	// if Alive
 	if(.)
 		handle_robot_hud_updates()
 		handle_robot_cell()
 		process_locks()
-
 
 /mob/living/silicon/robot/proc/handle_robot_cell()
 	if(stat != DEAD)
@@ -55,9 +59,9 @@
 		uneq_all()
 
 	if(!is_component_functioning("radio") || stat == UNCONSCIOUS)
-		radio.on = 0
+		radio.set_on(FALSE)
 	else
-		radio.on = 1
+		radio.set_on(TRUE)
 
 /mob/living/silicon/robot/proc/SetEmagged(new_state)
 	emagged = new_state
@@ -95,13 +99,13 @@
 	if(cell)
 		var/cellcharge = cell.charge/cell.maxcharge
 		switch(cellcharge)
-			if(0.75 to INFINITY)
+			if(CELL_CHARGE_HIGH to CELL_CHARGE_UPPER_BORDER)
 				clear_alert("charge")
-			if(0.5 to 0.75)
+			if(CELL_CHARGE_MEDIUM to CELL_CHARGE_HIGH)
 				throw_alert("charge", /atom/movable/screen/alert/lowcell, 1)
-			if(0.25 to 0.5)
+			if(CELL_CHARGE_LOW to CELL_CHARGE_MEDIUM)
 				throw_alert("charge", /atom/movable/screen/alert/lowcell, 2)
-			if(0.01 to 0.25)
+			if(CELL_CHARGE_LOWER_BORDER to CELL_CHARGE_LOW)
 				throw_alert("charge", /atom/movable/screen/alert/lowcell, 3)
 			else
 				throw_alert("charge", /atom/movable/screen/alert/emptycell)
@@ -114,7 +118,7 @@
 		weaponlock_time --
 		if(weaponlock_time <= 0)
 			if(src.client)
-				to_chat(src, "<span class='warning'><b>Weapon Lock Timed Out!</span>")
+				to_chat(src, span_warning("<b>Weapon Lock Timed Out!"))
 			weapon_lock = 0
 			weaponlock_time = 120
 
@@ -129,15 +133,13 @@
 	else
 		ExtinguishMob()
 
-
 /mob/living/silicon/robot/update_fire()
-	var/static/robot_fire_olay = mutable_appearance('icons/mob/OnFire.dmi', "Generic_mob_burning")
+	var/static/robot_fire_olay = mutable_appearance('icons/mob/OnFire.dmi', "human_generic_burn")
 	cut_overlay(robot_fire_olay)
 	if(on_fire)
 		add_overlay(robot_fire_olay)
 
-
-/mob/living/silicon/robot/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume, global_overlay = TRUE)
+/mob/living/silicon/robot/fire_act(exposed_temperature, exposed_volume)
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them
 		IgniteMob()
 

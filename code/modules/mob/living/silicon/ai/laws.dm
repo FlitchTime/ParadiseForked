@@ -1,27 +1,33 @@
 /mob/living/silicon/ai/proc/show_laws_verb()
-	set category = "ИИ команды"
-	set name = "Показать список законов"
+	set category = VERB_CATEGORY_AICOMMANDS
+	set name = "Список законов"
 	src.show_laws()
 
-/mob/living/silicon/ai/show_laws(var/everyone = 0)
+/mob/living/silicon/ai/show_laws(everyone = 0)
 	var/who
 
 	if(everyone)
 		who = world
 	else
 		who = src
-		to_chat(who, "<b>Obey these laws:</b>")
+		to_chat(who, "<b>Подчиняйтесь данным законам:</b>")
 
 	src.laws_sanity_check()
 	src.laws.show_laws(who)
 
-/mob/living/silicon/ai/add_ion_law(var/law)
+/mob/living/silicon/ai/add_ion_law(law)
+	..()
+	for(var/mob/living/silicon/robot/R in GLOB.mob_list)
+		if(R.lawupdate && (R.connected_ai == src))
+			R.show_laws()
+
+/mob/living/silicon/ai/add_devil_law(law)
 	..()
 	for(var/mob/living/silicon/robot/R in GLOB.mob_list)
 		if(R.lawupdate && (R.connected_ai == src))
 			R.show_laws()
 
 /mob/living/silicon/ai/proc/ai_checklaws()
-	set category = "ИИ команды"
-	set name = "Объявить список законов"
+	set category = VERB_CATEGORY_AICOMMANDS
+	set name = "Объявить законы"
 	subsystem_law_manager()
