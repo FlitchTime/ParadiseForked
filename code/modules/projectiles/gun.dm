@@ -395,6 +395,11 @@
 		to_chat(user, span_userdanger("Для стрельбы из [declent_ru(GENITIVE)] нужны две свободные руки!"))
 		return
 
+	if(!HAS_TRAIT(user, TRAIT_BADASS) && weapon_weight == WEAPON_MEDIUM)
+		if(isgun(user.get_inactive_hand()))
+			to_chat(user, span_userdanger("Стрелять с двух рук используя [declent_ru(ACCUSATIVE)] не получится!"))
+			return
+
 	if(gun_on_cooldown(user))
 		return
 
