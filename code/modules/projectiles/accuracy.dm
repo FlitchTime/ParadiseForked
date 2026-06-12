@@ -155,7 +155,7 @@ GLOBAL_DATUM_INIT(gun_accuracy_sniper, /datum/gun_accuracy, GUN_ACCURACY_SNIPER)
 	spread_restore_duration = 1 SECONDS
 
 /datum/gun_accuracy/rifle/laser
-	max_spread = 6
+	max_spread = 0
 
 /datum/gun_accuracy/rifle/uplink
 	head = 95
