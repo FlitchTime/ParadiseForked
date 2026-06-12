@@ -138,7 +138,6 @@
 	magout_sound = 'sound/weapons/gun_interactions/batrifle_magout.ogg'
 	burst_amount = 2
 	accuracy = GUN_ACCURACY_RIFLE_LASER
-	weapon_weight = WEAPON_HEAVY
 	attachable_allowed = GUN_MODULE_CLASS_RIFLE_RAIL | GUN_MODULE_CLASS_RIFLE_UNDER
 	attachable_offset = list(
 		ATTACHMENT_SLOT_RAIL = list(ATTACHMENT_OFFSET_X = 3, ATTACHMENT_OFFSET_Y = 6),
@@ -162,7 +161,6 @@
 	magout_sound = 'sound/weapons/gun_interactions/batrifle_magout.ogg'
 	burst_amount = 1
 	accuracy = GUN_ACCURACY_RIFLE_LASER
-	weapon_weight = WEAPON_HEAVY
 	attachable_allowed = GUN_MODULE_CLASS_RIFLE_RAIL | GUN_MODULE_CLASS_RIFLE_UNDER
 	attachable_offset = list(
 		ATTACHMENT_SLOT_RAIL = list(ATTACHMENT_OFFSET_X = 3, ATTACHMENT_OFFSET_Y = 9),
