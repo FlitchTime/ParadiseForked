@@ -56,6 +56,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/high_risk = TRUE
 	accuracy = GUN_ACCURACY_RIFLE
+	weapon_weight = WEAPON_LIGHT
 	attachable_allowed = GUN_MODULE_CLASS_NONE
 
 /obj/item/gun/energy/laser/captain/Initialize(mapload, ...)
@@ -143,6 +144,7 @@
 	origin_tech = "combat=6;materials=4;magnets=4"
 	ammo_type = list(/obj/item/ammo_casing/energy/xray)
 	accuracy = GUN_ACCURACY_RIFLE_LASER
+	weapon_weight = WEAPON_HEAVY
 	attachable_allowed = GUN_MODULE_CLASS_RIFLE_RAIL | GUN_MODULE_CLASS_RIFLE_UNDER
 	attachable_offset = list(
 		ATTACHMENT_SLOT_RAIL = list(ATTACHMENT_OFFSET_X = 7, ATTACHMENT_OFFSET_Y = 7),
@@ -159,6 +161,7 @@
 	origin_tech = "combat=4;magnets=4;powerstorage=3"
 	shaded_charge = TRUE
 	accuracy = GUN_ACCURACY_RIFLE_LASER
+	weapon_weight = WEAPON_HEAVY
 	attachable_allowed = GUN_MODULE_CLASS_RIFLE_RAIL | GUN_MODULE_CLASS_RIFLE_UNDER | GUN_MODULE_CLASS_ENERGY_WEAPON
 	attachable_offset = list(
 		ATTACHMENT_SLOT_RAIL = list(ATTACHMENT_OFFSET_X = 7, ATTACHMENT_OFFSET_Y = 7),
@@ -172,6 +175,7 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/immolator/strong, /obj/item/ammo_casing/energy/immolator/scatter)
 	origin_tech = "combat=5;magnets=5;powerstorage=4"
 	accuracy = GUN_ACCURACY_RIFLE_LASER
+	weapon_weight = WEAPON_HEAVY
 	attachable_allowed = GUN_MODULE_CLASS_ENERGY_WEAPON
 
 /obj/item/gun/energy/immolator/multi/sibyl/Initialize(mapload)
@@ -201,6 +205,7 @@
 	ammo_x_offset = 2
 	selfcharge = TRUE
 	accuracy = GUN_ACCURACY_PISTOL
+	weapon_weight = WEAPON_LIGHT
 	attachable_allowed = GUN_MODULE_CLASS_NONE
 
 /obj/item/gun/energy/laser/tag/blue

@@ -507,8 +507,8 @@
 	if(dual_wield && !(gun_user && HAS_TRAIT(gun_user, TRAIT_BADASS)))
 		bonus_spread += accuracy.dual_wield_spread * weapon_weight
 	//CLOWN CHECK
-	if(gun_user && HAS_TRAIT(gun_user, TRAIT_CLUMSY) && prob(50))
-		bonus_spread += 45
+	if(gun_user && HAS_TRAIT(gun_user, TRAIT_CLUMSY))
+		bonus_spread += 75
 
 /obj/item/gun/proc/set_fire_delay(value, mob/user)
 	fire_delay = value
