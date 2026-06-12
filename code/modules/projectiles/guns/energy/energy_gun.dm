@@ -179,7 +179,6 @@
 	windup_autofire = TRUE
 	windup_autofire_reduction_multiplier = 0.1
 	windup_autofire_cap = 0.25
-	windup_spindown = 3 SECONDS
 	gun_firemode = GUN_FIREMODE_AUTOMATIC
 	gun_firemode_list = list(GUN_FIREMODE_AUTOMATIC)
 	var/force_unwielded = 10
