@@ -218,7 +218,6 @@
 		ATTACHMENT_SLOT_MUZZLE = list(ATTACHMENT_OFFSET_X = 18, ATTACHMENT_OFFSET_Y = 7),
 		ATTACHMENT_SLOT_RAIL = list(ATTACHMENT_OFFSET_X = 0, ATTACHMENT_OFFSET_Y = 12),
 	)
-	weapon_weight = WEAPON_LIGHT
 	accuracy = GUN_ACCURACY_PISTOL
 	recoil = GUN_RECOIL_LOW
 
@@ -235,6 +234,7 @@
 	fire_sound = 'sound/weapons/gunshots/1saber.ogg'
 	burst_amount = 4
 	recoil = GUN_RECOIL_MEDIUM
+	weapon_weight = WEAPON_HEAVY
 
 // MARK: SFG-5
 /obj/item/gun/projectile/automatic/smg/sfg
@@ -265,6 +265,7 @@
 	magout_sound = 'sound/weapons/gun_interactions/batrifle_magout.ogg'
 	burst_amount = 5
 	accuracy = GUN_ACCURACY_PISTOL
+	weapon_weight = WEAPON_HEAVY
 	attachable_allowed = GUN_MODULE_CLASS_RIFLE_MUZZLE | GUN_MODULE_CLASS_RIFLE_RAIL
 	attachable_offset = list(
 		ATTACHMENT_SLOT_MUZZLE = list(ATTACHMENT_OFFSET_X = 20, ATTACHMENT_OFFSET_Y = 2),
