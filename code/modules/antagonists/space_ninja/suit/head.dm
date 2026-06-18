@@ -11,13 +11,12 @@
 	desc = "What may appear to be a simple black garment is in fact a highly sophisticated nano-weave helmet. Standard issue ninja gear."
 	flags_inv = HIDEHEADSETS|HIDENAME|HIDEHAIR
 	flags_cover = HEADCOVERSEYES	//We don't need to cover mouth
-	clothing_flags = STOPSPRESSUREDAMAGE|STACKABLE_HELMET_EXEMPT
 	icon = 'icons/obj/ninjaobjects.dmi'
 	lefthand_file = 'icons/mob/inhands/antag/ninja_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/antag/ninja_righthand.dmi'
 	icon_state = "ninja_hood_classic"
 	item_state = "ninja_hood_classic"
-	armor = list(MELEE = 40, BULLET = 30, LASER = 20,ENERGY = 15, BOMB = 30, BIO = 30, FIRE = 100, ACID = 100)
+	armor = list(MELEE = 40, BULLET = 30, LASER = 20, ENERGY = 15, BOMB = 30, BIO = 30, FIRE = 100, ACID = 100)
 	blockTracking = TRUE //Roughly the only unique thing about this helmet.
 	strip_delay = 12
 	permeability_coefficient = 1
