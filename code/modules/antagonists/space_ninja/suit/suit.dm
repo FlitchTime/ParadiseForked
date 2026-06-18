@@ -28,14 +28,14 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	armor = list(MELEE = 40, BULLET = 30, LASER = 20,ENERGY = 30, BOMB = 30, BIO = 100, FIRE = 100, ACID = 100)
 	strip_delay = 12
-	slowdown = 1
 	permeability_coefficient = 1
+	clothing_flags = NONE
 	flags_inv = HIDEGLOVES|HIDEJUMPSUIT|HIDETAIL
 	flags_inv_transparent = HIDEGLOVES|HIDEJUMPSUIT
 	actions = list()
 	action_icon = list()
 	action_icon_state = list()
-	var/suit_mode = NINJA_SUITMODE_SPACE
+	var/suit_mode = NINJA_SUITMODE_COMBAT
 	/// Абилки костюма
 	actions_types = list(
 		/datum/action/item_action/advanced/ninja/SpiderOS,
@@ -485,7 +485,6 @@
 	name = "Переключить режим костюма"
 	desc = "Доступные режимы: защита от космоса, боевой."
 	button_icon = 'icons/mob/actions/actions_ninja.dmi'
-	background_icon = 'icons/mob/actions/actions_ninja.dmi'
 	background_icon_state = "background_green"
 
 /obj/item/clothing/suit/space/space_ninja/proc/suit_mode()
@@ -493,17 +492,17 @@
 	if(suit_mode == NINJA_SUITMODE_SPACE)
 		suit_mode = NINJA_SUITMODE_COMBAT
 		src.slowdown = NINJA_SUITSLOWDOWN_COMBAT
-		src.clothing_flags = NINJA_SUITTRAIT_SPACE
+		src.clothing_flags = NINJA_SUITTRAIT_COMBAT
 		if(istype(ninja.head, /obj/item/clothing/head/helmet/space/space_ninja))
-			ninja.head.clothing_flags = NINJA_SUITTRAIT_SPACE
+			ninja.head.clothing_flags = NINJA_SUITTRAIT_COMBAT
 			ninja.head.update_equipped_item()
 		balloon_alert(ninja, "боевой режим")
 	else
 		suit_mode = NINJA_SUITMODE_SPACE
 		src.slowdown = NINJA_SUITSLOWDOWN_SPACE
-		src.clothing_flags = NINJA_SUITTRAIT_COMBAT
+		src.clothing_flags = NINJA_SUITTRAIT_SPACE
 		if(istype(ninja.head, /obj/item/clothing/head/helmet/space/space_ninja))
-			ninja.head.clothing_flags = NINJA_SUITTRAIT_COMBAT
+			ninja.head.clothing_flags = NINJA_SUITTRAIT_SPACE
 			ninja.head.update_equipped_item()
 		balloon_alert(ninja, "защита от космоса")
 	src.update_equipped_item()
