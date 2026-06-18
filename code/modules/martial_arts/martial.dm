@@ -744,7 +744,7 @@
 	var/used = FALSE
 
 /obj/item/midichlorian_injector/get_ru_names()
-	return list(
+	return alist(
 		NOMINATIVE = "инъектор мидихлориан",
 		GENITIVE = "инъектора мидихлориан",
 		DATIVE = "инъектору мидихлориан",
@@ -752,7 +752,7 @@
 		INSTRUMENTAL = "инъектором мидихлориан",
 		PREPOSITIONAL = "инъекторе мидихлориан",
 	)
-	
+
 
 /obj/item/midichlorian_injector/update_icon_state()
 	icon_state = used ? "injector-used" : "injector"
