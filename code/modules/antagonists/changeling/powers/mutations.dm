@@ -68,6 +68,28 @@
 				span_warning("Вы слышите ужасный хруст и хлюпание органики!"),
 			)
 
+/obj/item/melee/changeling
+	w_class = WEIGHT_CLASS_HUGE
+	item_flags = ABSTRACT|DROPDEL
+	throw_range = 0
+	throw_speed = 0
+	var/datum/action/changeling/weapon/parent_action
+
+/obj/item/melee/changeling/Initialize(mapload, silent, new_parent_action)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
+	parent_action = new_parent_action
+
+/obj/item/melee/changeling/Destroy()
+	. = ..()
+
+	if(!parent_action)
+		return
+
+	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
+	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
+	parent_action = null
+
 //Parent to space suits and armor.
 /datum/action/changeling/suit
 	name = "Organic Suit"
@@ -141,18 +163,13 @@
 	desc = "Уродливый клинок из костей и плоти, что режет людей, как масло."
 	icon_state = "arm_blade"
 	item_state = "arm_blade"
-	item_flags = ABSTRACT|DROPDEL
-	w_class = WEIGHT_CLASS_HUGE
 	sharp = TRUE
 	force = 45
 	armour_penetration = -15
 	block_chance = 75
 	block_type = MELEE_ATTACKS
 	hitsound = 'sound/weapons/armblade.ogg'
-	throw_range = 0
-	throw_speed = 0
 	gender = FEMALE
-	var/datum/action/changeling/weapon/parent_action
 
 /obj/item/melee/changeling/arm_blade/get_ru_names()
 	return alist(
@@ -164,27 +181,12 @@
 		PREPOSITIONAL = "руке-клинке",
 	)
 
-/obj/item/melee/changeling/arm_blade/Initialize(mapload, silent, new_parent_action)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
-	parent_action = new_parent_action
-
 /obj/item/melee/changeling/arm_blade/ComponentInitialize()
 	. = ..()
 	AddComponent( \
 		/datum/component/cleave_attack, \
 		swing_sound = SFX_BLADE_SWING_LIGHT \
 	)
-
-/obj/item/melee/changeling/arm_blade/Destroy()
-	. = ..()
-
-	if(!parent_action)
-		return
-
-	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
-	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
-	parent_action = null
 
 /obj/item/melee/changeling/arm_blade/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
 	. = ..()
@@ -237,15 +239,10 @@
 	desc = "Огромный молот из костей и плоти, что давит кости в пыль."
 	icon_state = "flesh_maul"
 	item_state = "flesh_maul"
-	item_flags = ABSTRACT|DROPDEL
-	w_class = WEIGHT_CLASS_HUGE
 	force = 40
 	armour_penetration = 40
 	hitsound = SFX_SWING_HIT
-	throw_range = 0
-	throw_speed = 0
 	gender = MALE
-	var/datum/action/changeling/weapon/parent_action
 
 /obj/item/melee/changeling/fleshy_maul/get_ru_names()
 	return alist(
@@ -257,11 +254,6 @@
 		PREPOSITIONAL = "молоте из плоти",
 	)
 
-/obj/item/melee/changeling/fleshy_maul/Initialize(mapload, silent, new_parent_action)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
-	parent_action = new_parent_action
-
 /obj/item/melee/changeling/fleshy_maul/ComponentInitialize()
 	. = ..()
 	AddComponent( \
@@ -272,16 +264,6 @@
 		no_multi_hit = TRUE, \
 		swing_sound = SFX_BLUNT_SWING_HEAVY, \
 	)
-
-/obj/item/melee/changeling/fleshy_maul/Destroy()
-	. = ..()
-
-	if(!parent_action)
-		return
-
-	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
-	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
-	parent_action = null
 
 /obj/item/melee/changeling/fleshy_maul/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
 	. = ..()
@@ -324,7 +306,6 @@
 	weapon_type = /obj/item/gun/magic/tentacle
 	weapon_check_type = /obj/item/gun/magic/tentacle
 	weapon_name_simple = "мясное щупальце"
-	silent = TRUE
 
 /obj/item/gun/magic/tentacle
 	name = "tentacle"
@@ -349,24 +330,16 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	parent_action = new_parent_action
-	if(ismob(loc))
-		if(!silent)
-			loc.visible_message(
-				span_warning("[loc.name] с ужасным хрустом превращает руку в мясное щупальце!"),
-				span_notice("Мы трансформируем руку в мясное щупальце."),
-				span_warning("Вы слышите ужасный хруст и хлюпание органики!"),
-			)
-			playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
-		else
-			to_chat(loc, span_notice("Мы готовы вытянуть щупальце."))
 
 /obj/item/gun/magic/tentacle/Destroy()
-	if(parent_action)
-		parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
-		parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
-		parent_action = null
-		playsound(loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
-	return ..()
+	. = ..()
+
+	if(!parent_action)
+		return
+
+	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
+	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
+	parent_action = null
 
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	balloon_alert(user, "щупальце не готово")
@@ -396,17 +369,22 @@
 	desc = "Щит из плотной костяной ткани. На нём можно разглядеть скрюченные в безумном узоре пальцы."
 	item_flags = DROPDEL
 	icon_state = "ling_shield"
+	var/datum/action/changeling/weapon/parent_action
 
-/obj/item/shield/changeling/Initialize(mapload)
+/obj/item/shield/changeling/Initialize(mapload, silent, new_parent_action)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
-	if(ismob(loc))
-		loc.visible_message(
-			span_warning("[loc.name] с ужасным хрустом превращает руку в костянной щит!"),
-			span_notice("Мы трансформируем руку в костянной щит."),
-			span_warning("Вы слышите ужасный хруст и хлюпание органики!"),
-		)
-		playsound(loc, 'sound/effects/bone_break_1.ogg', 100, TRUE)
+	parent_action = new_parent_action
+
+/obj/item/shield/changeling/Destroy()
+	. = ..()
+
+	if(!parent_action)
+		return
+
+	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
+	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
+	parent_action = null
 
 /***************************************\
 |*********SPACE SUIT + HELMET***********|
