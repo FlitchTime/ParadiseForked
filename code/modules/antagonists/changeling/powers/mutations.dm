@@ -81,14 +81,13 @@
 	parent_action = new_parent_action
 
 /obj/item/melee/changeling/Destroy()
-	. = ..()
-
 	if(!parent_action)
 		return
 
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
 	parent_action = null
+	return ..()
 
 //Parent to space suits and armor.
 /datum/action/changeling/suit
@@ -332,14 +331,13 @@
 	parent_action = new_parent_action
 
 /obj/item/gun/magic/tentacle/Destroy()
-	. = ..()
-
 	if(!parent_action)
 		return
 
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
 	parent_action = null
+	return ..()
 
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	balloon_alert(user, "щупальце не готово")
@@ -377,14 +375,13 @@
 	parent_action = new_parent_action
 
 /obj/item/shield/changeling/Destroy()
-	. = ..()
-
 	if(!parent_action)
 		return
 
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
 	parent_action = null
+	return ..()
 
 /***************************************\
 |*********SPACE SUIT + HELMET***********|
