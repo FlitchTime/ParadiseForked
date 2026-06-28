@@ -82,7 +82,7 @@
 
 /obj/item/melee/changeling/Destroy()
 	if(!parent_action)
-		return
+		return ..()
 
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
@@ -332,7 +332,7 @@
 
 /obj/item/gun/magic/tentacle/Destroy()
 	if(!parent_action)
-		return
+		return ..()
 
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
@@ -376,7 +376,7 @@
 
 /obj/item/shield/changeling/Destroy()
 	if(!parent_action)
-		return
+		return ..()
 
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_KEY_DROP_ITEM_DOWN)
 	parent_action.UnregisterSignal(parent_action.owner, COMSIG_MOB_WEAPON_APPEARS)
