@@ -97,8 +97,8 @@
 	req_human = TRUE
 	var/helmet_type = /obj/item
 	var/suit_type = /obj/item
-	var/suit_name_simple = "    "
-	var/helmet_name_simple = "     "
+	var/suit_name_simple = ""
+	var/helmet_name_simple = ""
 	var/recharge_slowdown = 0
 
 /datum/action/changeling/suit/try_to_sting(mob/living/carbon/human/user, mob/target)
@@ -108,7 +108,7 @@
 	if(istype(user.wear_suit, suit_type) || istype(user.head, helmet_type))
 		user.visible_message(
 			span_warning("[user] трансформирует [suit_name_simple] в кожу!"),
-			span_warning("Мы трансформируем [suit_name_simple]."),
+			span_notice("Мы трансформируем [suit_name_simple] в кожу."),
 			span_warning("Вы слышите ужасный хруст и хлюпание органики!"),
 		)
 		playsound(owner.loc, 'sound/effects/bone_break_2.ogg', 100, TRUE)
