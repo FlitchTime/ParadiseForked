@@ -8,6 +8,7 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/electrode)
 	ammo_x_offset = 3
 	accuracy = GUN_ACCURACY_SNIPER
+	weapon_weight = WEAPON_LIGHT
 
 /obj/item/gun/energy/gun/advtaser
 	name = "hybrid taser"
@@ -17,6 +18,7 @@
 	origin_tech = "combat=4"
 	ammo_x_offset = 2
 	accuracy = GUN_ACCURACY_RIFLE_LASER
+	weapon_weight = WEAPON_LIGHT
 	attachable_allowed = GUN_MODULE_CLASS_PISTOL_UNDER | GUN_MODULE_CLASS_ENERGY_WEAPON
 	attachable_offset = list(
 		ATTACHMENT_SLOT_UNDER = list(ATTACHMENT_OFFSET_X = 7, ATTACHMENT_OFFSET_Y = -6),
@@ -53,6 +55,7 @@
 	icon_state = "disabler"
 	item_state = null
 	origin_tech = "combat=3"
+	weapon_weight = WEAPON_LIGHT
 	ammo_type = list(/obj/item/ammo_casing/energy/disabler)
 	ammo_x_offset = 3
 	accuracy = GUN_ACCURACY_PISTOL

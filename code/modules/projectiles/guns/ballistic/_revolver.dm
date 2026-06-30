@@ -10,6 +10,7 @@
 	origin_tech = "combat=3;materials=2"
 	fire_sound = 'sound/weapons/gunshots/1rev.ogg'
 	accuracy = GUN_ACCURACY_PISTOL
+	weapon_weight = WEAPON_LIGHT
 	attachable_allowed = GUN_MODULE_CLASS_PISTOL_MUZZLE
 	fire_delay = 0.45 SECONDS
 	attachable_offset = list(
