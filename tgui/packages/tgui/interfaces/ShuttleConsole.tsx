@@ -117,12 +117,12 @@ export const ShuttleConsoleContent = (props: ShuttleConsoleProps) => {
         </Box>
       </Box>
       <Section
-        title={type === 'shuttle' ? 'Управление шаттлом' : 'Base Launch Controls'}
+        title={
+          type === 'shuttle' ? 'Управление шаттлом' : 'Base Launch Controls'
+        }
       >
         <LabeledList>
-          <LabeledList.Item
-          label="Местоположение"
-          >
+          <LabeledList.Item label="Местоположение">
             {docked_location || 'Недоступно'}
           </LabeledList.Item>
           <LabeledList.Item
@@ -143,18 +143,12 @@ export const ShuttleConsoleContent = (props: ShuttleConsoleProps) => {
             }
           >
             {(locations.length === 0 && (
-              <Box
-              mb={1.7}
-              color="bad"
-              >
+              <Box mb={1.7} color="bad">
                 Недоступно
               </Box>
             )) ||
               (locations.length === 1 && (
-                <Box
-                mb={1.7}
-                color="average"
-                >
+                <Box mb={1.7} color="average">
                   {getLocationNameById(locations, destination)}
                 </Box>
               )) || (
