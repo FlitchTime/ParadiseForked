@@ -818,7 +818,7 @@
 			dst = previous
 		else
 			dst = destination
-		. = "В пути к [dst ? dst.name : "неизвестно"]"
+		. = "В пути к [dst ? dst.name : lowertext(UNKNOWN_STATUS_RUS)]"
 	else if(mode == SHUTTLE_RECHARGING)
 		return "[dockedAt.name]"
 
@@ -937,7 +937,7 @@
 	if(..())	//we can't actually interact, so no action
 		return TRUE
 	if(!allowed(usr))
-		to_chat(usr, span_danger("Доступ запрещен."))
+		to_chat(usr, span_danger("Доступ запрещён."))
 		playsound(src, SFX_BUTTON_DENIED, 20)
 		return	TRUE
 	if(!can_call_shuttle(usr, action))
