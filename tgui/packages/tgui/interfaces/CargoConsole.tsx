@@ -116,11 +116,7 @@ const StatusPane = (_properties) => {
   } else if (moving) {
     shuttleButtonText = 'В пути';
     statusText =
-      'В пути к объекту (прилетит через ' +
-      timeleft +
-      ' минут' +
-      declension_ru(timeleft, 'у', 'ы', '') +
-      ')';
+      'В пути к объекту (прилетит через ' + timeleft +')';
   }
 
   return (

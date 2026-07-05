@@ -15,17 +15,22 @@
 	var/id
 	// this should point -away- from the dockingport door, ie towards the ship
 	dir = NORTH
-	var/width = 0	//size of covered area, perpendicular to dir
-	var/height = 0	//size of covered area, parallel to dir
-	var/dwidth = 0	//position relative to covered area, perpendicular to dir
-	var/dheight = 0	//position relative to covered area, parallel to dir
+	///size of covered area, perpendicular to dir
+	var/width = 0
+	///size of covered area, parallel to dir
+	var/height = 0
+	///position relative to covered area, perpendicular to dir
+	var/dwidth = 0
+	///position relative to covered area, parallel to dir
+	var/dheight = 0
 
 	// A timid shuttle will not register itself with the shuttle subsystem
 	// All shuttle templates are timid
 	var/timid = FALSE
 
 	var/list/ripples = list()
-	var/hidden = FALSE //are we invisible to shuttle navigation computers?
+	///Are we invisible to shuttle navigation computers?
+	var/hidden = FALSE
 
 	//these objects are indestructible
 /obj/docking_port/Destroy(force)
@@ -230,7 +235,7 @@
 	var/area/shuttle/areaInstance
 	var/list/shuttle_areas
 
-	var/fly_sound = 'sound/effects/hyperspace_mini.ogg'
+	var/fly_sound = 'sound/effects/hyperspace_begin.ogg'
 
 	var/timer						//used as a timer (if you want time left to complete move, use timeLeft proc)
 	var/last_timer_length
@@ -239,12 +244,12 @@
 	/// force lock shuttle moving
 	var/locked_move = FALSE
 	/// time recharging before ready to launch again
-	var/rechargeTime = 5 SECONDS
+	var/rechargeTime = 1 MINUTES
 	/// time spent in transit (deciseconds)
-	var/callTime = 5 SECONDS
+	var/callTime = 30 SECONDS
 	/// time spent "starting the engines". Also rate limits how often we try to reserve transit space if its ever full of transiting shuttles.
 	/// DO NOT set under 3 seconds. We need to reserve space before we can launch the shuttle. Also it'll break launch sound(not by not playing. it'll be unsynced)
-	var/ignitionTime = 3 SECONDS
+	var/ignitionTime = 5 SECONDS
 	/// id of port to send shuttle to at roundstart
 	var/roundstart_move
 	/// can build new shuttle consoles for this one
@@ -258,7 +263,8 @@
 	/// Meaning, if port located at: front = NORTH, left side = WEST, right side = EAST, backside = SOUTH.
 	var/port_direction = NORTH
 
-	var/mob/last_caller				// Who called the shuttle the last time
+	/// Who called the shuttle the last time
+	var/mob/last_caller
 
 	var/obj/docking_port/stationary/destination
 	var/obj/docking_port/stationary/previous
@@ -812,9 +818,9 @@
 			dst = previous
 		else
 			dst = destination
-		. += " towards [dst ? dst.name : "unknown location"] ([timeLeft(600)]mins)"
+		. = "В пути к [dst ? dst.name : "неизвестно"]"
 	else if(mode == SHUTTLE_RECHARGING)
-		return "[dockedAt.name], recharging [getTimerStr()]"
+		return "[dockedAt.name]"
 
 /obj/machinery/computer/shuttle
 	name = "Shuttle Console"
@@ -887,22 +893,22 @@
 	data["docked_location"] = mobile_docking_port ? mobile_docking_port.getStatusText() : lowertext(UNKNOWN_STATUS_RUS)
 	data["timer_str"] = mobile_docking_port ? mobile_docking_port.getTimerStr() : "00:00"
 	if(!mobile_docking_port)
-		data["status"] = "Missing"
+		data["status"] = "Потерянный"
 		return data
 	if(admin_controlled)
-		data["status"] = "Unauthorized Access"
+		data["status"] = "Несанкционированный доступ"
 	else if(lockdown_check)
-		data["status"] = "Lockdown"
+		data["status"] = "Заблокирован"
 	else
 		switch(mobile_docking_port.mode)
 			if(SHUTTLE_IGNITING)
-				data["status"] = "Igniting"
+				data["status"] = "Запуск"
 			if(SHUTTLE_IDLE)
-				data["status"] = "Idle"
+				data["status"] = "Ожидание"
 			if(SHUTTLE_RECHARGING)
-				data["status"] = "Recharging"
+				data["status"] = "Зарядка"
 			else
-				data["status"] = "In Transit"
+				data["status"] = "В пути"
 	if(mobile_docking_port)
 		data["shuttle"] = TRUE	//this should just be boolean, right?
 		var/list/docking_ports = list()
@@ -922,7 +928,7 @@
 				data["destination"] = destination
 		else if(!length(data["locations"]))
 			data["locked"] = TRUE
-			data["status"] = "Locked"
+			data["status"] = "Заблокирован"
 		data["docking_ports_len"] = docking_ports.len
 		data["admin_controlled"] = admin_controlled || lockdown_check
 	return data
@@ -931,7 +937,7 @@
 	if(..())	//we can't actually interact, so no action
 		return TRUE
 	if(!allowed(usr))
-		to_chat(usr, span_danger("Access denied."))
+		to_chat(usr, span_danger("Доступ запрещен."))
 		playsound(src, SFX_BUTTON_DENIED, 20)
 		return	TRUE
 	if(!can_call_shuttle(usr, action))
