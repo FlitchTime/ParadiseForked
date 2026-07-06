@@ -207,6 +207,7 @@
 /obj/item/ammo_casing/energy/tesla_cannon
 	fire_sound = null
 	e_cost = 200
+	delay = 0.6 SECONDS
 	select_name = "shock"
 	projectile_type = /obj/projectile/energy/tesla_cannon
 
