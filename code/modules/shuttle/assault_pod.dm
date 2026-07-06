@@ -4,6 +4,8 @@
 	dwidth = 3
 	width = 7
 	height = 7
+	rechargeTime = 0
+	callTime = 5 SECONDS
 
 /obj/docking_port/mobile/assault_pod/nt
 	name = "Emergency Droppod"

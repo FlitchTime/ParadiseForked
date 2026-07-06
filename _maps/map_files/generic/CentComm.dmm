@@ -2857,24 +2857,26 @@
 	pixel_y = -23;
 	req_access = list(150)
 	},
-/obj/docking_port/mobile{
-	dir = 4;
-	dwidth = 7;
-	height = 5;
-	id = "sit";
-	name = "SIT shuttle";
-	port_direction = 4;
-	preferred_direction = 2;
-	roundstart_move = "sit_away";
-	width = 11
-	},
 /obj/docking_port/stationary{
 	dir = 4;
 	dwidth = 7;
 	height = 5;
 	id = "sit_away";
 	name = "Syndicate Base";
+	pixel_x = -11;
 	turf_type = /turf/simulated/floor/indestructible/plating;
+	width = 11
+	},
+/obj/docking_port/mobile/fast{
+	dir = 4;
+	dwidth = 7;
+	height = 5;
+	id = "sit";
+	name = "SIT shuttle";
+	pixel_x = 5;
+	port_direction = 4;
+	preferred_direction = 2;
+	roundstart_move = "sit_away";
 	width = 11
 	},
 /turf/simulated/floor/shuttle/plating,
@@ -4013,6 +4015,7 @@
 	dir = 8;
 	id = "pod2";
 	name = "escape pod 2";
+	pixel_x = -5;
 	port_direction = 2;
 	roundstart_move = "pod2_home"
 	},
@@ -4022,6 +4025,7 @@
 	height = 6;
 	id = "pod2_away";
 	name = "recovery ship bay 2";
+	pixel_x = 11;
 	turf_type = /turf/simulated/floor/plating/airless;
 	width = 5
 	},
@@ -4569,6 +4573,7 @@
 	dir = 4;
 	id = "pod4";
 	name = "escape pod 4";
+	pixel_x = 11;
 	port_direction = 2;
 	roundstart_move = "pod4_home"
 	},
@@ -4578,6 +4583,7 @@
 	height = 6;
 	id = "pod4_away";
 	name = "recovery ship bay 4";
+	pixel_x = -5;
 	turf_type = /turf/simulated/floor/plating/airless;
 	width = 5
 	},
@@ -6392,7 +6398,7 @@
 /turf/simulated/floor/carpet/arcade,
 /area/centcom/central_command_areas/zone/three)
 "dlh" = (
-/obj/docking_port/mobile/scavenger{
+/obj/docking_port/mobile/fast/scavenger{
 	pixel_y = -5
 	},
 /obj/docking_port/stationary{
@@ -6703,6 +6709,7 @@
 	dir = 8;
 	id = "pod1";
 	name = "escape pod 1";
+	pixel_x = -5;
 	port_direction = 2;
 	roundstart_move = "pod1_home"
 	},
@@ -6712,6 +6719,7 @@
 	height = 6;
 	id = "pod1_away";
 	name = "recovery ship bay 1";
+	pixel_x = 11;
 	turf_type = /turf/simulated/floor/plating/airless;
 	width = 5
 	},
@@ -7083,6 +7091,7 @@
 	dir = 4;
 	id = "pod3";
 	name = "escape pod 3";
+	pixel_x = 11;
 	port_direction = 2;
 	roundstart_move = "pod3_home"
 	},
@@ -7092,6 +7101,7 @@
 	height = 6;
 	id = "pod3_away";
 	name = "recovery ship bay 3";
+	pixel_x = -5;
 	turf_type = /turf/simulated/floor/plating/airless;
 	width = 5
 	},
@@ -8198,17 +8208,6 @@
 /area/centcom/syndicate_base/cargo)
 "ebI" = (
 /obj/structure/fans/tiny,
-/obj/docking_port/mobile{
-	dir = 8;
-	dwidth = 8;
-	height = 18;
-	id = "admin";
-	name = "administration shuttle";
-	port_direction = 2;
-	preferred_direction = 8;
-	roundstart_move = "admin_away";
-	width = 18
-	},
 /obj/machinery/door/airlock/external{
 	frequency = 1331;
 	id_tag = "admin_s_outer";
@@ -8229,8 +8228,21 @@
 	height = 18;
 	id = "admin_away";
 	name = "centcom bay 1";
+	pixel_x = 11;
 	timid = 1;
 	turf_type = /turf/simulated/floor/plating/airless;
+	width = 18
+	},
+/obj/docking_port/mobile/fast{
+	dir = 8;
+	dwidth = 8;
+	height = 18;
+	id = "admin";
+	name = "administration shuttle";
+	pixel_x = -5;
+	port_direction = 2;
+	preferred_direction = 8;
+	roundstart_move = "admin_away";
 	width = 18
 	},
 /turf/simulated/floor/shuttle{
@@ -16621,6 +16633,7 @@
 /obj/docking_port/mobile/emergency{
 	dwidth = 11;
 	height = 18;
+	pixel_x = 11;
 	port_direction = 8;
 	width = 29
 	},
@@ -16630,6 +16643,7 @@
 	height = 18;
 	id = "emergency_away";
 	name = "emergency centcom";
+	pixel_x = -5;
 	width = 29
 	},
 /turf/simulated/floor/plasteel{
@@ -17601,24 +17615,26 @@
 	req_access = list(150)
 	},
 /obj/structure/fans/tiny,
-/obj/docking_port/mobile{
-	dir = 8;
-	dwidth = 3;
-	height = 5;
-	id = "sst";
-	name = "SST shuttle";
-	port_direction = 8;
-	preferred_direction = 2;
-	roundstart_move = "sst_away";
-	width = 11
-	},
 /obj/docking_port/stationary{
 	dir = 8;
 	dwidth = 3;
 	height = 5;
 	id = "sst_away";
 	name = "Syndicate Base";
+	pixel_x = 11;
 	turf_type = /turf/simulated/floor/indestructible/plating;
+	width = 11
+	},
+/obj/docking_port/mobile/fast{
+	dir = 8;
+	dwidth = 3;
+	height = 5;
+	id = "sst";
+	name = "SST shuttle";
+	pixel_x = -5;
+	port_direction = 8;
+	preferred_direction = 2;
+	roundstart_move = "sst_away";
 	width = 11
 	},
 /turf/simulated/floor/shuttle/plating,
@@ -22838,6 +22854,7 @@
 	height = 18;
 	id = "trade_sol";
 	name = "sol trade shuttle";
+	pixel_x = -5;
 	port_direction = 2;
 	preferred_direction = 8;
 	roundstart_move = "trade_sol_base";
@@ -22854,6 +22871,7 @@
 	height = 18;
 	id = "trade_sol_base";
 	name = "docking bay 2 at Jupiter Station";
+	pixel_x = 11;
 	width = 15
 	},
 /turf/simulated/floor/wood,
@@ -32830,11 +32848,13 @@
 	height = 7;
 	id = "supply_away";
 	name = "supply centcom";
+	pixel_y = 11;
 	turf_type = /turf/simulated/floor/plating/airless;
 	width = 12
 	},
 /obj/docking_port/mobile/supply{
 	dir = 2;
+	pixel_y = -5;
 	port_direction = 4;
 	preferred_direction = 8
 	},
@@ -33821,23 +33841,25 @@
 	id_tag = "s_docking_airlock"
 	},
 /obj/structure/fans/tiny,
-/obj/docking_port/mobile{
-	dir = 8;
-	dwidth = 2;
-	height = 12;
-	id = "ferry";
-	name = "ferry shuttle";
-	preferred_direction = 4;
-	roundstart_move = "ferry_away";
-	width = 5
-	},
 /obj/docking_port/stationary{
 	dir = 8;
 	dwidth = 2;
 	height = 12;
 	id = "ferry_away";
 	name = "centcom bay 2";
+	pixel_x = 11;
 	turf_type = /turf/simulated/floor/plating/airless;
+	width = 5
+	},
+/obj/docking_port/mobile/fast{
+	dir = 8;
+	dwidth = 2;
+	height = 12;
+	id = "ferry";
+	name = "ferry shuttle";
+	pixel_x = -5;
+	preferred_direction = 4;
+	roundstart_move = "ferry_away";
 	width = 5
 	},
 /turf/simulated/floor/shuttle,
@@ -34773,15 +34795,6 @@
 	name = "Shuttle Hatch";
 	req_access = list(109)
 	},
-/obj/docking_port/mobile{
-	dir = 2;
-	dwidth = 2;
-	height = 11;
-	id = "specops";
-	name = "ert shuttle";
-	roundstart_move = "specops_away";
-	width = 5
-	},
 /obj/structure/fans/tiny,
 /obj/docking_port/stationary{
 	dir = 2;
@@ -34789,9 +34802,20 @@
 	height = 11;
 	id = "specops_away";
 	name = "centcom bay 3";
+	pixel_y = 11;
 	top_left_corner = 8;
 	top_right_corner = 1;
 	turf_type = /turf/simulated/floor/plating/airless;
+	width = 5
+	},
+/obj/docking_port/mobile/fast{
+	dir = 2;
+	dwidth = 2;
+	height = 11;
+	id = "specops";
+	name = "ert shuttle";
+	pixel_y = -5;
+	roundstart_move = "specops_away";
 	width = 5
 	},
 /turf/simulated/floor/shuttle/plating,
@@ -35700,6 +35724,7 @@
 /obj/machinery/door/airlock/shuttle,
 /obj/structure/fans/tiny,
 /obj/docking_port/mobile/gamma{
+	pixel_x = 11;
 	port_direction = 8
 	},
 /obj/docking_port/stationary{
@@ -35708,6 +35733,7 @@
 	height = 6;
 	id = "gamma_away";
 	name = "gamma centcom";
+	pixel_x = -5;
 	width = 7
 	},
 /turf/simulated/floor/shuttle{
@@ -47227,18 +47253,6 @@
 	id_tag = "ninja_outer_right";
 	name = "Ship External Access"
 	},
-/obj/docking_port/mobile{
-	dheight = 2;
-	dir = 2;
-	dwidth = 4;
-	height = 10;
-	id = "ombra";
-	name = "Spider Clan Ombra";
-	port_direction = 2;
-	preferred_direction = 2;
-	roundstart_move = "ombra_home";
-	width = 21
-	},
 /obj/structure/fans/tiny/invisible,
 /obj/docking_port/stationary{
 	area_type = /area/centcom/ninja/outside;
@@ -47248,7 +47262,21 @@
 	height = 10;
 	id = "ombra_home";
 	name = "Spider Clan Facility";
+	pixel_y = 11;
 	turf_type = /turf/simulated/floor/indestructible/snow;
+	width = 21
+	},
+/obj/docking_port/mobile/fast{
+	dheight = 2;
+	dir = 2;
+	dwidth = 4;
+	height = 10;
+	id = "ombra";
+	name = "Spider Clan Ombra";
+	pixel_y = -5;
+	port_direction = 2;
+	preferred_direction = 2;
+	roundstart_move = "ombra_home";
 	width = 21
 	},
 /turf/simulated/floor/shuttle{
@@ -50599,15 +50627,6 @@
 	},
 /area/centcom/central_command_areas/evacuation)
 "xbV" = (
-/obj/docking_port/mobile{
-	dwidth = 8;
-	height = 22;
-	id = "syndicate";
-	name = "syndicate shuttle";
-	port_direction = 2;
-	roundstart_move = "syndicate_away";
-	width = 18
-	},
 /obj/structure/lattice/catwalk,
 /obj/docking_port/stationary{
 	area_type = /area/centcom/syndicate_base;
@@ -50615,7 +50634,18 @@
 	height = 22;
 	id = "syndicate_away";
 	name = "syndicate base";
+	pixel_y = -11;
 	turf_type = /turf/simulated/floor/indestructible/plating;
+	width = 18
+	},
+/obj/docking_port/mobile/fast{
+	dwidth = 8;
+	height = 22;
+	id = "syndicate";
+	name = "syndicate shuttle";
+	pixel_y = 5;
+	port_direction = 2;
+	roundstart_move = "syndicate_away";
 	width = 18
 	},
 /turf/simulated/floor/shuttle/transparent_floor{

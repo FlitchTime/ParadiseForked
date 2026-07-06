@@ -270,6 +270,10 @@
 	var/obj/docking_port/stationary/previous
 	var/obj/docking_port/stationary/transit/assigned_transit
 
+/obj/docking_port/mobile/fast
+	rechargeTime = 15 SECONDS
+	callTime = 5 SECONDS
+
 /obj/docking_port/mobile/Initialize(mapload)
 	. = ..()
 
