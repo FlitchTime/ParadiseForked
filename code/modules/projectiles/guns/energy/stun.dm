@@ -107,7 +107,6 @@
 	cell_type = /obj/item/stock_parts/cell/laser/tesla_cannon
 	can_add_sibyl_system = FALSE
 	attachable_allowed = GUN_MODULE_CLASS_NONE
-	fire_delay = 100 MILLISECONDS
 	gun_firemode = GUN_FIREMODE_AUTOMATIC
 	gun_firemode_list = list(GUN_FIREMODE_AUTOMATIC)
 	sound_loop = /datum/looping_sound/tesla_cannon
