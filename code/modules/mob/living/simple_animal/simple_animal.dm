@@ -215,6 +215,8 @@
 	master_commander = null
 	GLOB.simple_animals[AIStatus] -= src
 	SSnpcpool.currentrun -= src
+	SSidlenpcpool.currentrun -= src
+	walk(src, NONE)
 
 	if(nest)
 		nest.spawned_mobs -= src
@@ -652,6 +654,7 @@
 	overlay_fullscreen("see_through_darkness", /atom/movable/screen/fullscreen/see_through_darkness)
 	SEND_SIGNAL(src, COMSIG_MOB_UPDATE_SIGHT)
 	sync_lighting_plane_alpha()
+	return ..()
 
 /mob/living/simple_animal/proc/toggle_ai(togglestatus)
 	if(AIStatus == togglestatus)
@@ -729,9 +732,6 @@
 		add_overlay("[collar_type]tag")
 
 	update_fire()
-
-	if(blocks_emissive)
-		add_overlay(get_emissive_block())
 
 /mob/living/simple_animal/Login()
 	..()
