@@ -113,6 +113,10 @@
 	materials = list(MAT_METAL = SHEET_MATERIAL_AMOUNT * 5, MAT_GLASS = SHEET_MATERIAL_AMOUNT * 5, MAT_SILVER = SHEET_MATERIAL_AMOUNT * 5)
 	var/ready_to_fire = FALSE
 
+/obj/item/gun/energy/tesla_cannon/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NOT_TURRET_GUN, NO_HITSCAN_TURRET_TRAIT)
+
 /obj/item/gun/energy/tesla_cannon/can_trigger_gun(mob/living/user, akimbo_usage)
 	if(ready_to_fire)
 		return ..()
