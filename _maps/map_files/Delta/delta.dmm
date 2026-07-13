@@ -5359,7 +5359,6 @@
 	},
 /area/station/maintenance/kitchen)
 "bga" = (
-/obj/structure/fans/tiny,
 /obj/machinery/door/airlock/external{
 	id_tag = "laborcamp_home";
 	name = "Labor Camp Airlock";
@@ -10515,6 +10514,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plasteel,
 /area/station/hallway/secondary/entry/additional)
 "coi" = (
@@ -16166,6 +16166,7 @@
 	locked = 1;
 	name = "Escape Airlock"
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plasteel,
 /area/station/hallway/secondary/exit/maint)
 "dBX" = (
@@ -18080,6 +18081,7 @@
 	locked = 1;
 	name = "Escape Airlock"
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/station/hallway/secondary/exit)
 "dYK" = (
@@ -19676,7 +19678,6 @@
 	req_access = list(1);
 	use_power = 0
 	},
-/obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/station/security/hallway/secure)
 "eqh" = (
@@ -40306,6 +40307,7 @@
 	id_tag = "graveyard_church";
 	locked = 1
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/station/hallway/secondary/exit)
 "igM" = (
@@ -44374,6 +44376,7 @@
 	name = "Security Escape Airlock";
 	req_access = list(63)
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/station/hallway/secondary/exit)
 "iXK" = (
@@ -50071,6 +50074,16 @@
 	},
 /turf/simulated/floor/plating,
 /area/station/service/chapel)
+"kbL" = (
+/obj/machinery/door/airlock/external{
+	id_tag = "trade_dock";
+	locked = 1
+	},
+/obj/structure/fans/tiny,
+/turf/simulated/floor/plasteel{
+	icon_state = "neutralfull"
+	},
+/area/station/hallway/secondary/entry/commercial)
 "kbO" = (
 /obj/structure/table/reinforced,
 /obj/machinery/camera{
@@ -50475,6 +50488,13 @@
 	icon_state = "wood-broken"
 	},
 /area/station/maintenance/library)
+"kfd" = (
+/obj/machinery/door/airlock/external{
+	name = "Arrival Airlock"
+	},
+/obj/structure/fans/tiny,
+/turf/simulated/floor/plasteel,
+/area/station/hallway/secondary/entry/eastarrival)
 "kfg" = (
 /obj/structure/table/reinforced,
 /obj/item/reagent_containers/food/condiment/saltshaker{
@@ -58710,6 +58730,13 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /turf/simulated/floor/glass,
 /area/station/maintenance/consarea_virology)
+"lFA" = (
+/obj/machinery/door/airlock/external{
+	name = "Arrival Airlock"
+	},
+/obj/structure/fans/tiny,
+/turf/simulated/floor/plasteel,
+/area/station/hallway/secondary/entry/westarrival)
 "lFB" = (
 /obj/machinery/vending/tool,
 /obj/effect/turf_decal/delivery,
@@ -59192,6 +59219,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod Airlock"
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/station/ai/satellite/exterior)
 "lKb" = (
@@ -63579,6 +63607,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plasteel,
 /area/station/hallway/secondary/entry/westarrival)
 "myj" = (
@@ -67260,6 +67289,17 @@
 	},
 /turf/simulated/floor/plasteel,
 /area/station/engineering/gravity_generator)
+"nkI" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/door/airlock/external{
+	id_tag = "specops_home";
+	locked = 1
+	},
+/obj/structure/fans/tiny,
+/turf/simulated/floor/plasteel,
+/area/station/hallway/secondary/entry/additional)
 "nkL" = (
 /obj/structure/chair/stool{
 	dir = 4
@@ -96153,6 +96193,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plasteel,
 /area/station/hallway/secondary/entry/additional)
 "swf" = (
@@ -99933,6 +99974,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod Airlock"
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plating,
 /area/station/maintenance/starboard)
 "tch" = (
@@ -111929,6 +111971,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod Airlock"
 	},
+/obj/structure/fans/tiny,
 /turf/simulated/floor/plasteel,
 /area/station/hallway/secondary/entry/eastarrival)
 "vqd" = (
@@ -152232,8 +152275,8 @@ aaq
 aaq
 aaq
 ovA
-pEH
-pEH
+kbL
+kbL
 ovA
 aaq
 aaq
@@ -157114,7 +157157,7 @@ coE
 coE
 coE
 aCh
-rAO
+nkI
 aCh
 coE
 coE
@@ -163275,14 +163318,14 @@ coE
 coE
 coE
 fDN
-kqu
+lFA
 fDN
 coE
 aaq
 aaq
 coE
 fDN
-kqu
+lFA
 fDN
 coE
 coE
@@ -165845,14 +165888,14 @@ coE
 coE
 coE
 sCP
-riY
+kfd
 sCP
 coE
 aaq
 aaq
 coE
 sCP
-riY
+kfd
 sCP
 coE
 coE
