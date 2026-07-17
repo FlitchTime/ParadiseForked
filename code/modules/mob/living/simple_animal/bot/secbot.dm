@@ -172,15 +172,11 @@
 /mob/living/simple_animal/bot/secbot/Initialize(mapload)
 	. = ..()
 	icon_state = "[base_icon][on]"
-	var/datum/job/security/detective/J = new/datum/job/security/detective
+	var/datum/job/security/detective/J = SSjobs.GetJob(JOB_TITLE_DETECTIVE)
 	access_card.access += J.get_access()
 	prev_access = access_card.access
 
 	AddSpell(new /obj/effect/proc_holder/spell/bot_speed)
-
-	//SECHUD
-	var/datum/atom_hud/secsensor = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
-	secsensor.show_to(src)
 
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),

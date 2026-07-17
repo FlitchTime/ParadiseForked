@@ -29,7 +29,7 @@
 	addiction_list = null
 	if(my_atom && my_atom.reagents == src)
 		my_atom.reagents = null
-		my_atom = null
+	my_atom = null
 
 /datum/reagents/proc/remove_any(amount = 1)
 	var/list/cached_reagents = reagent_list
@@ -729,7 +729,7 @@
 
 /datum/reagents/proc/has_reagent(reagent, amount = -1)
 	for(var/datum/reagent/R in reagent_list)
-		if(R.id == reagent)
+		if(R.id == reagent || R.type == reagent)
 			if(!amount)
 				return R
 			else

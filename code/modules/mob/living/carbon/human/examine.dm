@@ -214,7 +214,7 @@
 							if(G.can_reenter_corpse == 0)
 								foundghost = FALSE
 							break
-				if(!foundghost)
+				if(!foundghost && !HAS_TRAIT(src, TRAIT_MIND_TEMPORARILY_GONE))
 					msg += span_deadsay(" [GEND_HIS_HER_CAP(src)] душа покинула тело")
 		msg += span_deadsay("...\n")
 
@@ -358,6 +358,16 @@
 		else
 			msg += span_warning(span_bold("[GEND_HIS_HER_CAP(src)] [bodypart.declent_ru(NOMINATIVE)] кровоточ[PLUR_IT_AT(bodypart)]!\n"))
 
+	if(hasHUD(user, EXAMINE_HUD_MEDICAL) && !HAS_TRAIT(src, TRAIT_NO_BLOOD) && blood_volume < max_blood)
+		var/blood_volume_text
+		if(blood_volume >= BLOOD_VOLUME_PALE)
+			blood_volume_text = span_warning("Пониженный уровень крови.")
+		else if(blood_volume >= BLOOD_VOLUME_BAD)
+			blood_volume_text = span_warning("Низкий уровень крови.")
+		else
+			blood_volume_text = span_warning("Критический уровень крови!")
+		msg += "[blood_volume_text]\n"
+
 	if(reagents.has_reagent("teslium"))
 		msg += span_warning("[GEND_HE_SHE_CAP(src)] излуча[PLUR_ET_YUT(src)] мягкое голубое свечение!\n")
 
@@ -387,7 +397,7 @@
 	if(istype(implant) && implant.activated)
 		msg += span_italics("Вы замечаете странный [implant.biological ? "нарост" : "блеск"] на [GEND_HIS_HER(src)] хвосте.\n")
 
-	if(get_gravity(src) < -NO_GRAVITY && !buckled)
+	if(has_gravity(src) < -NO_GRAVITY && !buckled)
 		msg += "[GEND_HE_SHE_CAP(src)] наход[PLUR_IT_YAT(src)]ся на потолке.\n"
 
 	if(user.no_gravity() && !buckled)
@@ -449,7 +459,6 @@
 					if(R.fields["id"] == E.fields["id"])
 						medical = R.fields["p_stat"]
 
-		msg += "[span_deptradio("Состояние:")] [span_notice(get_desc_for_medical_status(hud_list[STATUS_HUD].icon_state))]\n"
 		msg += "[span_deptradio("Психологический статус:")] <a href='byond://?src=[UID()];medical=1'>\[[medical]\]</a>\n"
 		msg += "[span_deptradio("Медицинские записи:")] <a href='byond://?src=[UID()];medrecord=`'>\[View\]</a> <a href='byond://?src=[UID()];medrecordadd=`'>\[Добавить комментарий\]</a>\n"
 

@@ -3,8 +3,8 @@ GLOBAL_LIST_INIT(wcBrig, pick(list("#aa0808", "#7f0606", "#ff0000")))
 GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8fcf44", "#ffffff")))
 
 /obj/proc/color_windows(obj/W)
-	var/list/wcBarAreas = list(/area/crew_quarters/bar)
-	var/list/wcBrigAreas = list(/area/security, /area/shuttle/gamma)
+	var/list/wcBarAreas = list(/area/station/service/bar)
+	var/list/wcBrigAreas = list(/area/station/security, /area/shuttle/gamma)
 
 	var/newcolor
 	var/turf/T = get_turf(W)
@@ -43,6 +43,8 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	var/ini_dir = null
 	var/state = WINDOW_OUT_OF_FRAME
 	var/reinf = FALSE
+	/// Minimum singularity stage that can rip this window from its anchors and start dragging it.
+	var/singularity_unanchor_stage = STAGE_TWO
 	var/heat_resistance = 800
 	var/decon_speed = null
 	var/fulltile = FALSE
@@ -55,10 +57,10 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	var/real_explosion_block	//ignore this, just use explosion_block
 	var/breaksound = SFX_SHATTER
 	var/hitsound = 'sound/effects/glasshit.ogg'
-
+	var/painted = FALSE
+	var/mutable_appearance/paint_overlay
 	/// If we added a leaning component to ourselves
 	var/added_leaning = FALSE
-
 	/// How well this window resists superconductivity.
 	var/superconductivity = WINDOW_HEAT_TRANSFER_COEFFICIENT
 
@@ -74,6 +76,8 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 
 /obj/structure/window/Initialize(mapload, direct)
 	. = ..()
+	RegisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
+	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_cleaned))
 
 	if(direct)
 		setDir(direct)
@@ -119,7 +123,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/window/add_debris_element()
-	AddElement(/datum/element/debris, DEBRIS_GLASS, -40, 5)
+	generate_debris_handler(DEBRIS_GLASS, -40, 5)
 
 /obj/structure/window/mouse_drop_receive(atom/dropping, mob/user, params)
 	. = ..()
@@ -127,6 +131,8 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	LoadComponent(/datum/component/leanable, dropping)
 
 /obj/structure/window/Destroy()
+	UnregisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
+	UnregisterSignal(src, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_cleaned))
 	set_density(FALSE)
 	recalculate_atmos_connectivity()
 	update_nearby_icons()
@@ -168,7 +174,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 
 /obj/structure/window/singularity_pull(atom/singularity, current_size)
 	..()
-	if(anchored && current_size >= STAGE_TWO)
+	if(anchored && current_size >= singularity_unanchor_stage)
 		set_anchored(FALSE)
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
@@ -525,6 +531,50 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 /obj/structure/window/get_explosion_block()
 	return reinf && fulltile ? real_explosion_block : 0
 
+/obj/structure/window/wash_tg(clean_types)
+	. = ..()
+	if(!(clean_types & CLEAN_SCRUB))
+		return
+	var/initial_opacity = initial(opacity)
+	if(opacity != initial_opacity)
+		set_opacity(initial_opacity)
+		. |= COMPONENT_CLEANED|COMPONENT_CLEANED_GAIN_XP
+	for(var/atom/movable/cleanables as anything in src)
+		if(cleanables == src)
+			continue
+		var/cleanable_washed = cleanables.wash_tg(clean_types)
+		if(!cleanable_washed)
+			continue
+		. |= cleanable_washed
+		vis_contents -= cleanables
+		
+/obj/structure/window/proc/on_painted(datum/source, new_color)
+	SIGNAL_HANDLER
+	if(painted)
+		return
+	painted = TRUE
+
+	paint_overlay = mutable_appearance(icon, icon_state, layer + 0.01)
+	paint_overlay.color = new_color
+	paint_overlay.alpha = 200
+	add_overlay(paint_overlay)
+
+	if(new_color == COLOR_BLACK)
+		set_opacity(TRUE)
+
+/obj/structure/window/proc/on_cleaned(datum/source, clean_strength)
+	SIGNAL_HANDLER
+	if(!painted)
+		return
+
+	painted = FALSE
+	if(paint_overlay)
+		cut_overlay(paint_overlay)
+		paint_overlay = null
+
+	set_opacity(initial(opacity))
+	return COMPONENT_CLEANED
+
 /obj/structure/window/basic
 	desc = "Выглядит тонким и хрупким. Пары ударов чем угодно будет достаточно, чтобы разбить его."
 
@@ -540,6 +590,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	explosion_block = 1
 	glass_type = /obj/item/stack/sheet/rglass
 	rad_insulation = RAD_LIGHT_INSULATION
+	singularity_unanchor_stage = STAGE_THREE
 
 /obj/structure/window/reinforced/get_ru_names()
 	return alist(
@@ -618,7 +669,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 /obj/machinery/button/windowtint
 	name = "window tint control"
 	icon = 'icons/obj/engines_and_power/power.dmi'
-	icon_state = "light0"
+	icon_state = "light-off"
 	desc = "Пульт дистанционного управления для поляризованных окон."
 	anchored = TRUE
 	var/range = 7
@@ -679,7 +730,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 		toggle_tint()
 
 /obj/machinery/button/windowtint/update_icon_state()
-	icon_state = "light[active]"
+	icon_state = "light[active ? "-on" : "-off"]"
 
 /obj/structure/window/plasmabasic
 	name = "plasma window"
@@ -693,6 +744,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	armor = list(MELEE = 75, BULLET = 5, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
 	superconductivity = ZERO_HEAT_TRANSFER_COEFFICIENT
 	rad_insulation = RAD_MEDIUM_INSULATION
+	singularity_unanchor_stage = STAGE_THREE
 
 /obj/structure/window/plasmabasic/get_ru_names()
 	return alist(
@@ -719,6 +771,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	superconductivity = ZERO_HEAT_TRANSFER_COEFFICIENT
 	rad_insulation = RAD_HEAVY_INSULATION
 	cares_about_temperature = FALSE
+	singularity_unanchor_stage = STAGE_FOUR
 
 /obj/structure/window/plasmareinforced/get_ru_names()
 	return alist(
@@ -797,6 +850,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	armor = list(MELEE = 75, BULLET = 5, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
 	superconductivity = ZERO_HEAT_TRANSFER_COEFFICIENT
 	rad_insulation = RAD_MEDIUM_INSULATION
+	singularity_unanchor_stage = STAGE_THREE
 
 /obj/structure/window/full/plasmabasic/get_ru_names()
 	return alist(
@@ -847,6 +901,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	superconductivity = ZERO_HEAT_TRANSFER_COEFFICIENT
 	rad_insulation = RAD_HEAVY_INSULATION
 	cares_about_temperature = FALSE
+	singularity_unanchor_stage = STAGE_FOUR
 
 /obj/structure/window/full/plasmareinforced/get_ru_names()
 	return alist(
@@ -878,6 +933,7 @@ GLOBAL_LIST_INIT(wcCommon, pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e",
 	glass_type = /obj/item/stack/sheet/rglass
 	cancolor = TRUE
 	rad_insulation = RAD_LIGHT_INSULATION
+	singularity_unanchor_stage = STAGE_THREE
 
 /obj/structure/window/full/reinforced/get_ru_names()
 	return alist(

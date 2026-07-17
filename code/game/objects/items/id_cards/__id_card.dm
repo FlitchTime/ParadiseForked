@@ -64,6 +64,8 @@
 	/// Guest pass attached to the ID
 	var/obj/item/card/id/guest/guest_pass = null
 
+	var/cart_prefix = "`s ID-card"
+
 /obj/item/card/id/get_ru_names()
 	return alist(
 		NOMINATIVE = "ID-карта",
@@ -82,6 +84,13 @@
 /obj/item/card/id/Destroy()
 	UnregisterSignal(src, COMSIG_FREEZE_LINKED_ACCOUNT)
 	. = ..()
+
+/// Helper proc that determines if a card can be used in certain types of payment transactions.
+/obj/item/card/id/proc/can_be_used_in_payment(mob/living/user)
+	if(QDELETED(src) || isnull(get_money_account(associated_account_number)) || !isliving(user))
+		return FALSE
+
+	return TRUE
 
 /obj/item/card/id/proc/set_info()
 	if(ishuman(loc) && blood_type == "\[[DATA_NOT_SPECIFIED]\]")
@@ -217,7 +226,7 @@
 	if(!newjob)
 		newjob = assignment
 
-	name = "[newname ? "[newname]`s ID-card" : "identification card"][newjob ? " ([newjob])" : ""]"
+	name = "[newname ? "[newname][cart_prefix]" : "identification card"][newjob ? " ([newjob])" : ""]"
 	set_ru_names_suffix("[newname ? " \"[newname]\"" : ""][newjob ? " ([newjob])" : ""]")
 
 /obj/item/card/id/attackby(obj/item/I, mob/user, params)

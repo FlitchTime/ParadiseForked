@@ -158,6 +158,8 @@ GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
 
 #define is_cash(A) (istype(A, /obj/item/coin) || istype(A, /obj/item/stack/spacecash))
 
+#define isvoxcash(W) (istype(W, /obj/item/stack/vox_cash))
+
 #define is_airlock(A) (istype(A, /obj/machinery/door/airlock))
 
 #define is_camera(A) (istype(A, /obj/item/camera))
@@ -230,6 +232,10 @@ GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list(
 
 #define isspaceturf(A) (istype(A, /turf/space))
 
+#define isnearstation(A) (istype(A, /area/space/nearstation))
+
+#define iscordon(A) (istype(A, /turf/cordon))
+
 #define isopenspaceturf(A) (istype(A, /turf/simulated/openspace) || istype(A, /turf/space/openspace))
 
 #define istransparentturf(A) (HAS_TRAIT(A, TURF_Z_TRANSPARENT_TRAIT))
@@ -237,6 +243,8 @@ GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list(
 #define is_space_or_openspace(A) (isopenspaceturf(A) || isspaceturf(A))
 
 #define isfloorturf(A) (istype(A, /turf/simulated/floor))
+
+#define isplasteelfloor(A) (istype(A, /turf/simulated/floor/plasteel))
 
 #define iswallturf(A) (istype(A, /turf/simulated/wall))
 
@@ -440,5 +448,12 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define is_cargo_shelf(A) (istype(A, /obj/structure/cargo_shelf))
 #define is_crate(A) (istype(A, /obj/structure/closet/crate))
 
+<<<<<<< HEAD
 #define is_esword(A) (istype(A, /obj/item/melee/energy/sword))
 #define is_dualsaber(A) (istype(A, /obj/item/twohanded/dualsaber))
+=======
+#define is_area_nearby_station(checked_area) (istype(checked_area, /area/space) || istype(checked_area, /area/space/nearstation) || istype(checked_area, /area/centcom/asteroid))
+#define is_area_shuttle(checked_area) (istype(checked_area, /area/shuttle))
+
+#define is_reagent_container(O) (istype(O, /obj/item/reagent_containers))
+>>>>>>> d908d28444332e0df9c372299b795b8d9c29e50f

@@ -599,7 +599,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	var/cached_emergency_channel = emergency_channel
 	radio_announce(
 		count_down_messages[1],
-		src,
+		DECLENT_RU_CAP(src, NOMINATIVE),
 		cached_emergency_channel
 	)
 
@@ -610,7 +610,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 		radio_announce(
 			"ВНИМАНИЕ: Расчётное время до полного расслоения кристалла значительно меньше ожидаемого. \
 				Проверьте кристалл на структурные аномалии или следы саботажа!",
-			src,
+			DECLENT_RU_CAP(src, NOMINATIVE),
 			cached_emergency_channel
 		)
 
@@ -633,7 +633,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 		radio_announce(
 			message,
-			src,
+			DECLENT_RU_CAP(src, NOMINATIVE),
 			cached_emergency_channel
 		)
 
@@ -642,7 +642,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 			if(!istype(delamination_strategy, /datum/sm_delam/cascade))
 				return
-			for(var/mob/living/lucky_engi as anything in mobs_in_area_type(list(/area/engineering/supermatter)))
+			for(var/mob/living/lucky_engi as anything in mobs_in_area_type(list(/area/station/engineering/supermatter/engine)))
 				if(isnull(lucky_engi.client))
 					continue
 				if(isanimal(lucky_engi))

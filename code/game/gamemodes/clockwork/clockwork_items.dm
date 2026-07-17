@@ -128,21 +128,16 @@
 				return
 			var/mob/living/living = target
 			visible_message(span_warning("[user]'s [src] sparks for a moment with bright light!"))
-			user.mob_light(LIGHT_COLOR_HOLY_MAGIC, 3, _duration = 2) //No questions
+			user.mob_light(LIGHT_COLOR_HOLY_MAGIC, 3, duration = 2) //No questions
 
 			if(living.null_rod_check())
 				visible_message(span_warning("[target]'s holy weapon absorbs the light!"))
 				deplete_spell()
 				return
 
-			if(ismindshielded(living))
-				target.visible_message(span_warning("Имплант [target.declent_ru(GENITIVE)] блокирует свет!"))
-				return
-
 			living.Knockdown(3 SECONDS)
 			living.apply_damage(55, STAMINA)
-			if(!ismindshielded(living))
-				living.apply_status_effect(STATUS_EFFECT_STAMINADOT)
+			living.apply_status_effect(STATUS_EFFECT_STAMINADOT)
 			living.flash_eyes(1, TRUE)
 			if(isrobot(living))
 				var/mob/living/silicon/robot/robot = living
@@ -1384,7 +1379,7 @@
 			if(TIME_SPELL)
 				add_attack_logs(user, user, "Time stopped with [src]")
 				qdel(src)
-				new /obj/effect/timestop/clockwork(get_turf(user), null, null, list(user))
+				new /obj/effect/timestop/slowing(get_turf(user), null, null, list(user))
 			if(RECONSTRUCT_SPELL)
 				add_attack_logs(user, user, "Reconstructed with [src]")
 				qdel(src)

@@ -44,6 +44,7 @@
 	return
 
 /turf/simulated/floor/indestructible/rcd_deconstruct_act(mob/user, obj/item/rcd/our_rcd)
+	balloon_alert(user, "нельзя деконструировать!")
 	return
 
 /turf/simulated/floor/indestructible/plating
@@ -51,6 +52,36 @@
 	icon_state = "plating"
 	icon = 'icons/turf/floors/plating.dmi'
 	footstep = FOOTSTEP_PLATING
+
+/turf/simulated/floor/indestructible/gray_floor
+	icon_state = "floor"
+
+/turf/simulated/floor/indestructible/brig_floor
+	icon_state = "darkredfull"
+
+/turf/simulated/floor/indestructible/brig_black
+	icon_state = "blackfull"
+
+/turf/simulated/floor/indestructible/medical_floor
+	icon_state = "bluefull"
+
+/turf/simulated/floor/indestructible/medical_white
+	icon_state = "white"
+
+/turf/simulated/floor/indestructible/asteroid_ground
+	icon_state = "asteroidfloor"
+
+/turf/simulated/floor/indestructible/cargo_floor
+	icon_state = "yellowfull"
+
+/turf/simulated/floor/indestructible/grime_floor
+	icon_state = "floorgrime"
+
+/turf/simulated/floor/indestructible/dirt_floor
+	icon_state = "dirt"
+
+/turf/simulated/floor/indestructible/stone_floor
+	icon_state = "stone_floor"
 
 /turf/simulated/floor/indestructible/necropolis
 	name = "necropolis floor"
@@ -143,7 +174,6 @@
 /turf/simulated/floor/indestructible/abductor
 	name = "alien floor"
 	icon_state = "alienpod1"
-	always_lit = TRUE
 
 /turf/simulated/floor/indestructible/abductor/Initialize(mapload)
 	. = ..()
@@ -310,7 +340,6 @@
 	icon = null
 	icon_state = null
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	always_lit = TRUE
 
 /turf/simulated/floor/indestructible/view_portal/dense
 	density = TRUE

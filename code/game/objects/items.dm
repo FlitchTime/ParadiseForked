@@ -1,8 +1,10 @@
 GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/goonstation/effects/fire.dmi', "fire"))
 
+/// Anything you can pick up and hold.
 /obj/item
 	name = "item"
 	icon = 'icons/obj/items.dmi'
+	abstract_type = /obj/item
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSITEM
 	pass_flags = PASSTABLE
@@ -329,7 +331,7 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	scatter_item()
 
 /obj/item/proc/add_eatable_component()
-	AddComponent(/datum/component/eatable)
+	AddElement(/datum/element/eatable)
 
 /obj/item/proc/get_equip_sound()
 	return islist(equip_sound) ? pick(equip_sound) : (equip_sound || SFX_EQUIP)
@@ -355,7 +357,7 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 		if(WEIGHT_CLASS_GIGANTIC)
 			move_resist = MOVE_FORCE_NORMAL
 
-/obj/item/Destroy()
+/obj/item/Destroy(force)
 	item_flags &= ~DROPDEL	//prevent reqdels
 	QDEL_NULL(hidden_uplink)
 
@@ -423,11 +425,20 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 /obj/item/proc/add_weapon_description()
 	AddElement(/datum/element/weapon_description)
 
-/obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
-	if(((src in target) && !target_self) || (!isturf(target.loc) && !isturf(target) && not_inside))
+/**
+ * Checks if an item is allowed to be used on an atom/target
+ * Returns TRUE if allowed.
+ *
+ * Args:
+ * target_self - Whether we will check if we (src) are in target, preventing people from using items on themselves.
+ * not_inside - Whether target (or target's loc) has to be a turf.
+ */
+/obj/item/proc/check_allowed_items(atom/target, not_inside = FALSE, target_self = FALSE)
+	if(!target_self && (src in target))
 		return FALSE
-	else
-		return TRUE
+	if(not_inside && !isturf(target.loc) && !isturf(target))
+		return FALSE
+	return TRUE
 
 /obj/item/blob_act(obj/structure/blob/B)
 	if(B && B.loc == loc && !QDELETED(src) && !(obj_flags & IGNORE_BLOB_ACT))
@@ -619,9 +630,9 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 
 // Due to storage type consolidation this should get used more now.
 // I have cleaned it up a little, but it could probably use more.  -Sayu
-/obj/item/attackby(obj/item/I, mob/user, list/modifiers)
-	if(isstorage(I))
-		var/obj/item/storage/storage = I
+/obj/item/attackby(obj/item/item, mob/living/user, list/modifiers)
+	if(isstorage(item))
+		var/obj/item/storage/storage = item
 		if(!storage.use_to_pickup)
 			return ..()
 		if(storage.pickup_all_on_tile) //Mode is set to collect all items on a tile and we clicked on a valid one.
@@ -629,13 +640,13 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 				return ..()
 			var/success = FALSE
 			var/failure = FALSE
-			for(var/obj/item/item as anything in loc)
-				if(!storage.can_be_inserted(item, stop_messages = TRUE))
+			for(var/obj/item/item_in_loc as anything in loc)
+				if(!storage.can_be_inserted(item_in_loc, stop_messages = TRUE))
 					failure = TRUE
 					continue
 				success = TRUE
-				item.do_pickup_animation(user)
-				storage.handle_item_insertion(item, prevent_warning = TRUE)
+				item_in_loc.do_pickup_animation(user)
+				storage.handle_item_insertion(item_in_loc, prevent_warning = TRUE)
 			if(success && !failure)
 				playsound(loc, 'sound/items/handling/pickup/generic_pickup3.ogg', PICKUP_SOUND_VOLUME, channel = CHANNEL_INTERACTION_SOUNDS, ignore_walls = FALSE)
 				to_chat(user, span_notice("Вы [pick(list("помещаете", "складываете", "кладёте"))] все в [storage.declent_ru(ACCUSATIVE)]."))
@@ -648,18 +659,18 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 			return ATTACK_CHAIN_PROCEED
 
 		if(storage.can_be_inserted(src))
-			I.do_pickup_animation(user)
+			item.do_pickup_animation(user)
 			storage.handle_item_insertion(src)
 			return ATTACK_CHAIN_BLOCKED_ALL
 
 		return ATTACK_CHAIN_PROCEED
 
-	if(istype(I, /obj/item/stack/tape_roll))
+	if(istype(item, /obj/item/stack/tape_roll))
 		if(isstorage(src)) //Don't tape the bag if we can put the duct tape inside it instead
 			var/obj/item/storage/bag = src
-			if(bag.can_be_inserted(I))
+			if(bag.can_be_inserted(item))
 				return ..()
-		var/obj/item/stack/tape_roll/tape = I
+		var/obj/item/stack/tape_roll/tape = item
 		var/x_offset = text2num(LAZYACCESS(modifiers, ICON_X))
 		var/y_offset = text2num(LAZYACCESS(modifiers, ICON_Y))
 		add_fingerprint(user)
@@ -1109,21 +1120,6 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 		return TRUE
 	return FALSE
 
-/obj/item/proc/wash(mob/user, atom/source)
-	if(item_flags & ABSTRACT) //Abstract items like grabs won't wash. No-drop items will though because it's still technically an item in your hand.
-		return
-	to_chat(user, span_notice("Вы начинаете мыть [declent_ru(ACCUSATIVE)]..."))
-	if(!do_after(user, 4 SECONDS, source))
-		return
-	clean_blood()
-	SEND_SIGNAL(src, COMSIG_COMPONENT_CLEAN_ACT, 5)
-	acid_level = 0
-	user.visible_message(
-		span_notice("[user] мо[PLUR_ET_YUT(user)] [declent_ru(ACCUSATIVE)] с помощью [source.declent_ru(GENITIVE)]."),
-		span_notice("Вы моете [declent_ru(ACCUSATIVE)] с помощью [source.declent_ru(GENITIVE)].")
-	)
-	return TRUE
-
 /// Returns an effectiveness of an item as a crunch, which allow mobs to stand if they are missing a leg/foot?
 /obj/item/proc/is_crutch()
 	return 0
@@ -1145,7 +1141,7 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 		return ..()
 	return FALSE
 
-/obj/item/mech_melee_attack(obj/mecha/M)
+/obj/item/mech_melee_attack(obj/mecha/mech)
 	return FALSE
 
 /obj/item/proc/openTip(location, control, params, user)
@@ -1352,7 +1348,6 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	return user = get(src, /mob/living)
 
 /obj/item/proc/do_pickup_animation(atom/target)
-
 	if(!CONFIG_GET(flag/item_animations_enabled))
 		return
 
@@ -1362,6 +1357,7 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	if(get_turf(src) == get_turf(target))	// No need for pickup animation if item is on user or on the same turf
 		return
 
+	SEND_SIGNAL(src, COMSIG_ITEM_BEFORE_PICKUP_ANIMATION)
 	var/image/transfer_animation = image(icon = src, layer = ABOVE_MOB_LAYER)
 	SET_PLANE(transfer_animation, GAME_PLANE, loc)
 	transfer_animation.transform.Scale(0.75)
@@ -1399,6 +1395,7 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	if(!isturf(loc) || !istype(moving_from))
 		return
 
+	SEND_SIGNAL(src, COMSIG_ITEM_BEFORE_DROP_ANIMATION)
 	var/from_x = moving_from.pixel_x
 	var/from_y = moving_from.pixel_y
 	var/direction = get_dir(moving_from, get_turf(src))
@@ -1540,3 +1537,28 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 			FORCE: <font size='1'><a href='byond://?_src_=vars;item_to_tweak=[UID_of(src)];var_tweak=force' id='force'>[force]</a>
 		</font>
 	"}
+
+/// Common proc used by painting tools like spraycans and palettes that can access the entire 24 bits color space.
+/obj/item/proc/pick_painting_tool_color(mob/user, default_color)
+	var/chosen_color = tgui_input_color(user, "Pick new color", "[src]", default_color)
+	if(!chosen_color || QDELETED(src) || IS_DEAD_OR_INCAP(user) || !user.is_in_hands(src))
+		return
+	set_painting_tool_color(chosen_color)
+
+/obj/item/proc/set_painting_tool_color(chosen_color)
+	SEND_SIGNAL(src, COMSIG_PAINTING_TOOL_SET_COLOR, chosen_color)
+
+// Update icons if this is being carried by a mob
+/obj/item/wash_tg(clean_types)
+	. = ..()
+
+	if((clean_types & CLEAN_TYPE_BLOOD) && initial(icon) && initial(icon_state))
+		if(remove_filter("blood_splatter"))
+			. |= COMPONENT_CLEANED
+
+	if(!.) // we don't need mob updates when the item was already clean
+		return
+
+	if(ismob(loc))
+		var/mob/mob_loc = loc
+		mob_loc.update_clothing(slot_flags)

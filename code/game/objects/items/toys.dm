@@ -75,13 +75,6 @@
 			desc = "A translucent balloon with some form of liquid sloshing around in it."
 			update_icon(UPDATE_ICON_STATE)
 
-/obj/item/toy/balloon/wash(mob/user, atom/source)
-	if(reagents.total_volume < 10)
-		reagents.add_reagent("water", min(10-reagents.total_volume, 10))
-		to_chat(user, span_notice("Вы наполняете шарик из [source.declent_ru(GENITIVE)]."))
-		desc = "A translucent balloon with some form of liquid sloshing around in it."
-		update_icon(UPDATE_ICON_STATE)
-
 /obj/item/toy/balloon/attackby(obj/item/I, mob/user, params)
 	if(isglassreagentcontainer(I) || istype(I, /obj/item/reagent_containers/food/drinks/drinkingglass))
 		add_fingerprint(user)
@@ -803,6 +796,22 @@
 	icon_state = "plushie_vox"
 	item_state = "plushie_vox"
 	var/cooldown = 0
+
+/obj/item/toy/plushie/voxplushie/brick
+	name = "vox brick toy"
+	desc = "Мини-прималис. Главное в воксе — держать клюв Кирпичом. Игрушка сшитая основателем камневидного базирования в перерыве между рейдами."
+	color = "#ff78f4"
+
+/obj/item/toy/plushie/voxplushie/brick/get_ru_names()
+	return alist(
+		NOMINATIVE = "Кирпич",
+		GENITIVE = "Кирпича",
+		DATIVE = "Кирпичу",
+		ACCUSATIVE = "Кирпича",
+		INSTRUMENTAL = "Кирпичом",
+		PREPOSITIONAL = "Кирпиче",
+	)
+
 
 /obj/item/toy/plushie/rdplushie
 	name = "RD doll"
