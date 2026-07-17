@@ -586,10 +586,9 @@
 
 #define TRAIT_GIVE_READY "give_ready"
 
-<<<<<<< HEAD
 /// If a mob is grasped with force grab
 #define TRAIT_FORCE_GRASPED "force_grasped"
-=======
+
 /// Mob has fov applied to it
 #define TRAIT_FOV_APPLIED "fov_applied"
 
@@ -631,4 +630,3 @@
 
 /// Trait given to objects with the wallmounted component
 #define TRAIT_WALLMOUNTED "wallmounted"
->>>>>>> d908d28444332e0df9c372299b795b8d9c29e50f
