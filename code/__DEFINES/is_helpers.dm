@@ -448,12 +448,10 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define is_cargo_shelf(A) (istype(A, /obj/structure/cargo_shelf))
 #define is_crate(A) (istype(A, /obj/structure/closet/crate))
 
-<<<<<<< HEAD
 #define is_esword(A) (istype(A, /obj/item/melee/energy/sword))
 #define is_dualsaber(A) (istype(A, /obj/item/twohanded/dualsaber))
-=======
+
 #define is_area_nearby_station(checked_area) (istype(checked_area, /area/space) || istype(checked_area, /area/space/nearstation) || istype(checked_area, /area/centcom/asteroid))
 #define is_area_shuttle(checked_area) (istype(checked_area, /area/shuttle))
 
 #define is_reagent_container(O) (istype(O, /obj/item/reagent_containers))
->>>>>>> d908d28444332e0df9c372299b795b8d9c29e50f
