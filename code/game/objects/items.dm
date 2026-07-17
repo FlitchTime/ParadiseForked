@@ -1062,8 +1062,7 @@ GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/g
 	if(QDELETED(hit_atom))
 		return
 
-	if(SEND_SIGNAL(src, COMSIG_MOVABLE_IMPACT, hit_atom, throwingdatum))
-		return
+	SEND_SIGNAL(src, COMSIG_MOVABLE_IMPACT, hit_atom, throwingdatum)
 
 	var/itempush = TRUE
 	if(w_class < WEIGHT_CLASS_BULKY)

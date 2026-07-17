@@ -1098,19 +1098,19 @@
 			if(vampire_grab)
 				. = vampire_grab.grab_resist_chances[MARTIAL_GRAB_AGGRESSIVE]
 			else
-				var/martial_override = grabber.mind?.martial_art?.get_resist_chance(GRAB_AGGRESSIVE)
+				var/martial_override = grabber.mind?.martial_art?.get_resist_chance(GRAB_AGGRESSIVE, grabber.pulling)
 				. = isnull(martial_override) ? GRAB_RESIST_CHANCE_AGGRESSIVE : martial_override
 		if(GRAB_NECK)
 			if(vampire_grab)
 				. = vampire_grab.grab_resist_chances[MARTIAL_GRAB_NECK]
 			else
-				var/martial_override = grabber.mind?.martial_art?.get_resist_chance(GRAB_NECK)
+				var/martial_override = grabber.mind?.martial_art?.get_resist_chance(GRAB_NECK, grabber.pulling)
 				. = isnull(martial_override) ? GRAB_RESIST_CHANCE_NECK : martial_override
 		if(GRAB_KILL)
 			if(vampire_grab)
 				. = vampire_grab.grab_resist_chances[MARTIAL_GRAB_KILL]
 			else
-				var/martial_override = grabber.mind?.martial_art?.get_resist_chance(GRAB_KILL)
+				var/martial_override = grabber.mind?.martial_art?.get_resist_chance(GRAB_KILL, grabber.pulling)
 				. = isnull(martial_override) ? GRAB_RESIST_CHANCE_KILL : martial_override
 	if(. > 0)
 		if(ishuman(src))

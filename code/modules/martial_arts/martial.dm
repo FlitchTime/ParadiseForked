@@ -773,8 +773,6 @@
 	var/datum/martial_art/force/force_art = new
 	force_art.teach(user)
 
-	ADD_TRAIT(user, TRAIT_TELEKINESIS, UNIQUE_TRAIT_SOURCE(src))
-
 	used = TRUE
 	update_icon(UPDATE_ICON_STATE)
 	desc = "Пустой автоинъектор."
