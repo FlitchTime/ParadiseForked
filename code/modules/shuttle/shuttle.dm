@@ -246,7 +246,7 @@
 	/// time recharging before ready to launch again
 	var/rechargeTime = 1 MINUTES
 	/// time spent in transit (deciseconds)
-	var/callTime = 30 SECONDS
+	var/callTime = 15 SECONDS
 	/// time spent "starting the engines". Also rate limits how often we try to reserve transit space if its ever full of transiting shuttles.
 	/// DO NOT set under 3 seconds. We need to reserve space before we can launch the shuttle. Also it'll break launch sound(not by not playing. it'll be unsynced)
 	var/ignitionTime = 5 SECONDS
