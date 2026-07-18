@@ -66,6 +66,9 @@
 	. = ..()
 	to_chat(user, "[span_notice("Силовой захват")]: в режиме [span_yellow("Grab")] нажмите правой кнопкой мыши на жертву в пределах [FORCE_GRAB_MAX_DISTANCE] тайл[DECL_CREDIT(FORCE_GRAB_MAX_DISTANCE)], чтобы схватить её на расстоянии. Перезарядка [FORCE_GRAB_COOLDOWN] секунд[DECL_SEC_MIN(FORCE_GRAB_COOLDOWN)].")
 	to_chat(user, "[span_notice("Силовая молния")]: в режиме [span_blue("Disarm")] нажмите правой кнопкой мыши на жертву в пределах [FORCE_LIGHTNING_MAX_DISTANCE] тайл[DECL_CREDIT(FORCE_LIGHTNING_MAX_DISTANCE)], чтобы поразить её молнией. Перезарядка: [FORCE_LIGHTNING_COOLDOWN] секунд[DECL_SEC_MIN(FORCE_LIGHTNING_COOLDOWN)].")
+	to_chat(user, "[span_notice("Силовой бросок")]: в режиме броска нажмите левой кнопкой мыши на жертву, чтобы с [FORCE_THROW_DROPLIMB_CHANCE]% шансом отрубить ей конечность.")
+	to_chat(user, "[span_notice("Призыв меча")]: нажмите на способность, чтобы привязать или призвать энергетический меч.")
+	to_chat(user, "[span_notice("Телекинез")]: нажмите на предмет, чтобы удалённо управлять им.")
 
 /datum/martial_art/force/explaination_footer(user)
 	to_chat(user, "<b><i>Используйте свои способности с умом.</i></b>")
@@ -194,15 +197,15 @@
 	if(bound_esword in user)
 		return
 
-	if(!(bound_esword in view(user)))
-		return
-
 	if(ismob(bound_esword.loc))
 		var/mob/holder = bound_esword.loc
 		if(!holder.drop_item_ground(bound_esword, force = TRUE))
 			bound_esword.forceMove(get_turf(bound_esword))
 	else if(!isturf(bound_esword.loc))
 		bound_esword.forceMove(get_turf(bound_esword))
+
+	if(!(bound_esword in view(user)))
+		return
 
 	SEND_SIGNAL(bound_esword, COMSIG_ITEM_RECALL, user)
 

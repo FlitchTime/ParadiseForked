@@ -14,7 +14,7 @@
 	/// How to do the combo. If null it'll auto generate it from the steps
 	var/combo_text_override
 
-/datum/martial_combo/proc/check_combo(step, mob/living/target, mob/living/carbon/human/user, datum/martial_art/MA)
+/datum/martial_combo/proc/check_combo(step, mob/living/target)
 	if(!combos_require_same_target || current_combo_target == null || current_combo_target == target)
 		if(!length(steps) || step == steps[current_step_index])
 			return TRUE

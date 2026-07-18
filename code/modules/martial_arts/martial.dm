@@ -112,7 +112,7 @@
 	. = FALSE
 	for(var/thing in current_combos)
 		var/datum/martial_combo/combo = thing
-		if(!combo.check_combo(step, target, user, src))
+		if(!combo.check_combo(step, target))
 			current_combos -= combo
 		else
 			switch(combo.progress_combo(user, target, src))
@@ -752,7 +752,6 @@
 		INSTRUMENTAL = "инъектором мидихлориан",
 		PREPOSITIONAL = "инъекторе мидихлориан",
 	)
-
 
 /obj/item/midichlorian_injector/update_icon_state()
 	icon_state = used ? "injector-used" : "injector"

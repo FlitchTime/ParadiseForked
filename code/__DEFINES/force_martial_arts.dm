@@ -18,3 +18,6 @@
 
 /// Electrocute power (burn damage) for the primary lightning target.
 #define FORCE_LIGHTNING_PRIMARY_POWER 30
+
+/// The chance a esword throw will cut off a limb.
+#define FORCE_THROW_DROPLIMB_CHANCE 30

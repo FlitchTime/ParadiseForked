@@ -184,7 +184,7 @@
 		zone = pick(no_vital_zones)
 
 	var/obj/item/organ/external/limb = victim.get_organ(zone)
-	if(!limb || limb.cannot_amputate || !prob(30))
+	if(!limb || limb.cannot_amputate || !prob(FORCE_THROW_DROPLIMB_CHANCE))
 		return
 
 	limb.droplimb()
