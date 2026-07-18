@@ -179,7 +179,7 @@
 
 	var/mob/living/carbon/human/human = recall_mob
 	human.put_in_active_hand(esword)
-	//recall_mob = null
+	recall_mob = null
 
 /datum/martial_art/force/proc/unbind_esword()
 	if(bound_esword)
