@@ -972,7 +972,6 @@
 #include "code\datums\elements\reagent_scoopable_atom.dm"
 #include "code\datums\elements\reagents_heated_on_fire.dm"
 #include "code\datums\elements\reagents_item_heatable.dm"
-#include "code\datums\elements\recall.dm"
 #include "code\datums\elements\ridable.dm"
 #include "code\datums\elements\right_click_mappers.dm"
 #include "code\datums\elements\ritual_dye_removal.dm"

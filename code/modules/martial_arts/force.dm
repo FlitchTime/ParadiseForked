@@ -12,6 +12,8 @@
 		/datum/martial_combo/force/force_push,
 	)
 
+	/// Keeps a recaller mob
+	var/mob/living/recall_mob
 	/// Keeps a recalled esword
 	var/obj/item/bound_esword
 	/// Keeps recall esword action
@@ -124,14 +126,16 @@
 		return
 
 	var/obj/item/held = user.get_active_hand()
-	if(!held)
-		held = user.get_inactive_hand()
-
 	if((is_esword(held) || is_dualsaber(held)) && held != force_art.bound_esword)
 		force_art.bind_esword(held, user)
 		return
 
 	force_art.try_force_recall(user)
+
+/datum/action/innate/force_esword_pull/Remove(mob/removed_from)
+	var/datum/martial_art/force/force_art = target
+	force_art.recall_mob = null
+	return ..()
 
 /*//////////////////////
 // MARK: FORCE RECALL
@@ -146,18 +150,38 @@
 	unbind_esword()
 	bound_esword = item
 	RegisterSignal(bound_esword, COMSIG_QDELETING, PROC_REF(qdel_esword))
-	bound_esword.AddElement(/datum/element/force_recall)
+	RegisterSignal(bound_esword, COMSIG_ITEM_RECALL, PROC_REF(on_recall))
+	RegisterSignal(bound_esword, COMSIG_MOVABLE_IMPACT, PROC_REF(on_impact))
 	to_chat(user, span_notice("Вы связываете [bound_esword] с вашей волей."))
-
-/datum/martial_art/force/proc/unbind_esword()
-	if(bound_esword)
-		bound_esword.RemoveElement(/datum/element/force_recall)
-		UnregisterSignal(bound_esword, COMSIG_QDELETING)
-	bound_esword = null
 
 /datum/martial_art/force/proc/qdel_esword(datum/source)
 	SIGNAL_HANDLER
+	UnregisterSignal(source, list(COMSIG_ITEM_RECALL, COMSIG_MOVABLE_IMPACT))
 	unbind_esword()
+
+/datum/martial_art/force/proc/on_recall(obj/item/esword, mob/living/user)
+	SIGNAL_HANDLER
+	if(esword.loc == user || esword.loc == user.loc)
+		user.put_in_active_hand(esword)
+		return
+
+	recall_mob = user
+	var/distance = get_dist(user, esword)
+	esword.throw_at(user, distance + 1, esword.throw_speed, user)
+
+/datum/martial_art/force/proc/on_impact(obj/item/esword, atom/hit_atom)
+	SIGNAL_HANDLER
+	if(!recall_mob || !hit_atom)
+		return
+
+	var/mob/living/carbon/human/human = recall_mob
+	human.put_in_active_hand(esword)
+	//recall_mob = null
+
+/datum/martial_art/force/proc/unbind_esword()
+	if(bound_esword)
+		UnregisterSignal(bound_esword, COMSIG_QDELETING)
+	bound_esword = null
 
 /datum/martial_art/force/proc/try_force_recall(mob/living/carbon/human/user)
 	if(!user)
@@ -170,15 +194,15 @@
 	if(bound_esword in user)
 		return
 
+	if(!(bound_esword in view(user)))
+		return
+
 	if(ismob(bound_esword.loc))
 		var/mob/holder = bound_esword.loc
 		if(!holder.drop_item_ground(bound_esword, force = TRUE))
 			bound_esword.forceMove(get_turf(bound_esword))
 	else if(!isturf(bound_esword.loc))
 		bound_esword.forceMove(get_turf(bound_esword))
-
-	if(!(bound_esword in view(user)))
-		return
 
 	SEND_SIGNAL(bound_esword, COMSIG_ITEM_RECALL, user)
 
@@ -236,7 +260,7 @@
 			return
 
 		if(!COOLDOWN_FINISHED(src, force_grab))
-			user.balloon_alert(user, "далеко!")
+			user.balloon_alert(user, "не готово!")
 			return
 
 		INVOKE_ASYNC(src, PROC_REF(try_force_grab), user, target)
@@ -246,8 +270,11 @@
 	if(QDELETED(user) || QDELETED(victim))
 		return
 
-	if(victim.grabbedby(user, supress_message = TRUE))
-		victim.grippedby(user, grab_state_override = GRAB_AGGRESSIVE)
+	if(!victim.grabbedby(user, supress_message = TRUE))
+		return
+
+	if(!victim.grippedby(user, grab_state_override = GRAB_AGGRESSIVE))
+		return
 
 	set_force_grab_target(user, victim)
 	COOLDOWN_START(src, force_grab, FORCE_GRAB_COOLDOWN)

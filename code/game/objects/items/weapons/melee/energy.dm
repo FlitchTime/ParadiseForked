@@ -169,6 +169,9 @@
 
 	var/mob/living/carbon/human/victim = hit_atom
 	var/mob/thrower = throwingdatum.thrower
+	if(!thrower)
+		return
+
 	var/force_user = istype(thrower.mind?.martial_art, /datum/martial_art/force)
 
 	if(!force_user)
