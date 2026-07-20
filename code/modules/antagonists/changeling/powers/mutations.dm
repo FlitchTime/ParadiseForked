@@ -320,6 +320,7 @@
 	fire_sound = 'sound/effects/splat.ogg'
 	force = 0
 	max_charges = 1
+	recharge_rate = 1
 	throwforce = 0
 	throw_range = 0
 	throw_speed = 0
@@ -343,14 +344,17 @@
 	power_type = CHANGELING_PURCHASABLE_POWER
 	dna_cost = 1
 	recharge_slowdown = 0.25
-	weapon_type = /obj/item/shield/changeling
+	weapon_type = /obj/item/shield/riot/changeling
 	weapon_name_simple = "костяной щит"
 
-/obj/item/shield/changeling
+/obj/item/shield/riot/changeling
 	name = "shield-like mass"
 	desc = "Щит из плотной костяной ткани. На нём можно разглядеть скрюченные в безумном узоре пальцы."
-	item_flags = DROPDEL
+	w_class = WEIGHT_CLASS_HUGE
+	item_flags = ABSTRACT|DROPDEL
 	icon_state = "ling_shield"
+	throw_range = 0
+	throw_speed = 0
 
 /***************************************\
 |*********SPACE SUIT + HELMET***********|
