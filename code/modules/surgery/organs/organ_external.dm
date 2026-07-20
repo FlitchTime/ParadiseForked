@@ -17,7 +17,7 @@
 /// Chance for arterial bleeding based on inflicting damage
 #define LIMB_ARTERIAL_BLEEDING_CHANCE_MOD 0.5
 /// Arterial bleeding size
-#define LIMB_ARTERIAL_BLEEDING_SIZE 25
+#define LIMB_ARTERIAL_BLEEDING_SIZE 15
 
 // MARK: External organs
 
@@ -150,7 +150,7 @@
 	else
 		application_surgery = /datum/surgery/reattach_synth
 
-	AddComponent(/datum/component/surgery_initiator/limb, forced_surgery = application_surgery)
+	AddElement(/datum/element/surgery_initiator/limb, forced_surgery = application_surgery)
 
 /obj/item/organ/external/Destroy()
 	if(parent)
@@ -1190,7 +1190,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 	encased = null
 
 	// override the existing initiator
-	AddComponent(/datum/component/surgery_initiator/limb, forced_surgery = /datum/surgery/reattach_synth)
+
+	if(!is_robotic())
+		RemoveElement(/datum/element/surgery_initiator/limb, forced_surgery = /datum/surgery/reattach)
+		AddElement(/datum/element/surgery_initiator/limb, forced_surgery = /datum/surgery/reattach_synth)
 
 	if(istext(company))
 		set_company(company)
@@ -1212,6 +1215,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(owner)
 		owner.update_body()
 		if(!silent)
+			owner.balloon_alert(owner, "конечность не двигается!")
 			to_chat(owner, span_danger("Вы перестаёте чувствовать [GEND_YOUR(src)] [declent_ru(ACCUSATIVE)]!"))
 		if(vital)
 			owner.death()
