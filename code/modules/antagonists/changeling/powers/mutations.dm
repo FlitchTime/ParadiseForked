@@ -189,9 +189,6 @@
 /obj/item/melee/changeling/arm_blade/afterattack(atom/target, mob/user, proximity_flag, list/modifiers, status)
 	. = ..()
 
-	if(!proximity_flag)
-		return
-
 	if(is_airlock(target))
 		var/obj/machinery/door/airlock/airlock = target
 
@@ -208,7 +205,7 @@
 			if(!do_after(user, 3 SECONDS, airlock))
 				return
 
-		airlock.open(2)
+		airlock.open(TRUE)
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human = target
