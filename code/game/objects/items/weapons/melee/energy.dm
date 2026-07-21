@@ -168,7 +168,7 @@
 /obj/item/melee/energy/sword/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
 
-	if(!active || !throwingdatum || !ishuman(hit_atom))
+	if(!HAS_TRAIT(src, TRAIT_ITEM_ACTIVE) || !throwingdatum || !ishuman(hit_atom))
 		return
 
 	var/mob/living/carbon/human/victim = hit_atom
