@@ -116,3 +116,11 @@
 	name = "Harm Intent (зажать)"
 	intent = INTENT_HARM
 
+/datum/keybinding/carbon/parry
+	name = "Parry"
+	keys = list("Space")
+	signa
+
+/datum/keybinding/carbon/parry/down(client/user)
+	. = ..()
+	SEND_SIGNAL(user.mob, COMSIG_CARBON_PARRY)
