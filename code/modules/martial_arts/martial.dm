@@ -760,7 +760,7 @@
 
 /obj/item/midichlorian_injector/update_desc(updates = ALL)
 	. = ..()
-	desc = used ? "Пустой автоинъектор. : initial(desc)
+	desc = used ? "Пустой автоинъектор." : initial(desc)
 
 /obj/item/midichlorian_injector/attack_self(mob/living/carbon/human/user)
 	if(!istype(user))
