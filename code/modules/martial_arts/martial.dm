@@ -758,6 +758,10 @@
 /obj/item/midichlorian_injector/update_icon_state()
 	icon_state = used ? "injector-used" : "injector"
 
+/obj/item/midichlorian_injector/update_desc(updates = ALL)
+	. = ..()
+	desc = used ? "Пустой автоинъектор. : initial(desc)
+
 /obj/item/midichlorian_injector/attack_self(mob/living/carbon/human/user)
 	if(!istype(user))
 		return TRUE
@@ -775,8 +779,7 @@
 	force_art.teach(user)
 
 	used = TRUE
-	update_icon(UPDATE_ICON_STATE)
-	desc = "Пустой автоинъектор."
+	update_appearance(UPDATE_ICON_STATE|UPDATE_DESC)
 	return FALSE
 
 #undef HAS_COMBOS
