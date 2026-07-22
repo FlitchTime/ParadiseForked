@@ -1,4 +1,4 @@
-#define INJECT_LARVA_COOLDOWN 10 MINUTES
+#define INJECT_LARVA_COOLDOWN 2 MINUTES
 #define IMPREGNATION_PROCESS_TIME 5 SECONDS
 
 /obj/effect/proc_holder/spell/alien_spell/impregnate
