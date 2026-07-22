@@ -179,6 +179,9 @@
 		PREPOSITIONAL = "руке-клинке",
 	)
 
+/obj/item/melee/changeling/arm_blade/add_parry_component()
+	AddComponent(/datum/component/parry, _stamina_constant = 2, _stamina_coefficient = 0.25, _parryable_attack_types = NON_PROJECTILE_ATTACKS, _parry_cooldown = (1 / 3) SECONDS, _requires_two_hands = TRUE)
+
 /obj/item/melee/changeling/arm_blade/ComponentInitialize()
 	. = ..()
 	AddComponent( \
