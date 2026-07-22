@@ -162,7 +162,6 @@
 	sharp = TRUE
 	force = 45
 	armour_penetration = -15
-	block_chance = 75
 	block_type = MELEE_ATTACKS
 	hitsound = 'sound/weapons/armblade.ogg'
 	throw_range = 0
