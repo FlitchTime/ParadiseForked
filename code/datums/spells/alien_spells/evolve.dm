@@ -1,5 +1,3 @@
-#define LIVING_PLAYERS_COUNT_FOR_1_PRAETORIAN 25
-
 /obj/effect/proc_holder/spell/alien_spell/evolve
 	name = "Evolve"
 	desc = "Evolve into reporting this issue."
