@@ -77,18 +77,24 @@
 		if(QDELETED(src))
 			return
 
+		var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите сыгрять за Чужого?", ROLE_ALIEN, FALSE, source = /mob/living/carbon/alien/larva)
 		var/mob/candidate = null
 
-		if(owner.client)
+		if(QDELETED(src))
+			return
+		// To stop clientless larva, we will check that our host has a client
+		// if we find no ghosts to become the alien. If the host has a client
+		// he will become the alien but if he doesn't then we will set the stage
+		// to 4, so we don't do a process heavy check everytime.
+
+		if(length(candidates))
+			candidate = pick(candidates)
+		else if(owner.client)
 			candidate = owner.client
 		else
-			var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите сыгрять за Чужого?", ROLE_ALIEN, FALSE, poll_time = 5 SECONDS, source = /mob/living/carbon/alien/larva)
-			if(length(candidates))
-				candidate = pick(candidates)
-			else
-				stage = 4 // Let's try again later.
-				polling = FALSE
-				return
+			stage = 4 // Let's try again later.
+			polling = FALSE
+			return
 
 		var/stand_check = owner.body_position == STANDING_UP
 		var/overlay = mutable_appearance('icons/mob/alien.dmi', icon_state = stand_check? "burst_stand" : "burst_lie")
