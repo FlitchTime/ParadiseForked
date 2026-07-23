@@ -251,7 +251,7 @@
 		spawn_larvas(vents, spawn_count)
 
 /proc/spawn_larvas(list/vents, spawncount)
-	var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите сыграть за Ксеноморфа?", ROLE_ALIEN, TRUE, poll_time = 5 SECONDS, source = /mob/living/carbon/alien/larva)
+	var/list/candidates = SSghost_spawns.poll_candidates("Вы хотите сыграть за Ксеноморфа?", ROLE_ALIEN, TRUE, source = /mob/living/carbon/alien/larva)
 	var/first_spawn = TRUE
 	while(spawncount && length(vents) && length(candidates))
 		var/obj/vent = pick_n_take(vents)
