@@ -17,3 +17,5 @@
 #define XENO_STAGE_STORM 2
 #define XENO_STAGE_END 3
 #define XENO_STAGE_POST_END 4
+
+#define XENO_EMBRYO_TIME pick(15, 30) SECONDS
