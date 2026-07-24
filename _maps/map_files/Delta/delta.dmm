@@ -29936,7 +29936,7 @@
 	dir = 4
 	},
 /obj/item/clothing/ears/earmuffs,
-/obj/structure/toilet{
+/obj/structure/toilet/directional/east{
 	desc = "Старый грязный туалет, по какой-то причине стоящий в техах. У вас нет ни единого понятия откуда он здесь.";
 	name = "Параша"
 	},
@@ -84087,7 +84087,7 @@
 /obj/machinery/light/small{
 	dir = 4
 	},
-/obj/structure/toilet{
+/obj/structure/toilet/directional/east{
 	desc = "Старый грязный туалет, по какой-то причине стоящий в техах. У вас нет ни единого понятия откуда он здесь.";
 	name = "Параша"
 	},

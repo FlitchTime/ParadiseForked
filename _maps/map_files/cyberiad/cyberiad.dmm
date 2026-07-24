@@ -58331,7 +58331,7 @@
 	},
 /area/station/medical/virology/lab)
 "kGS" = (
-/obj/structure/toilet,
+/obj/structure/toilet/directional/east,
 /obj/item/toy/figure/dsquad,
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/plating,

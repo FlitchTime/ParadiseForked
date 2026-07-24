@@ -493,15 +493,6 @@
 	opacity = 1
 	},
 /area/awaymission/spacehotel)
-"cn" = (
-/obj/structure/toilet{
-	dir = 1
-	},
-/turf/simulated/floor/indestructible{
-	icon_state = "freezerfloor";
-	opacity = 1
-	},
-/area/awaymission/spacehotel)
 "co" = (
 /obj/machinery/door/window/eastleft,
 /obj/machinery/button/windowtint{
@@ -556,16 +547,6 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/turf/simulated/floor/indestructible{
-	icon_state = "floor"
-	},
-/area/awaymission/spacehotel/amazing_place)
-"cu" = (
-/obj/structure/mirror{
-	dir = 4;
-	pixel_x = 28
-	},
-/obj/structure/sink/directional/west,
 /turf/simulated/floor/indestructible{
 	icon_state = "floor"
 	},
@@ -898,15 +879,6 @@
 "eb" = (
 /turf/simulated/floor/indestructible/carpet,
 /area/awaymission/spacehotel)
-"ec" = (
-/obj/structure/toilet,
-/obj/machinery/light/small{
-	dir = 1
-	},
-/turf/simulated/floor/indestructible{
-	icon_state = "freezerfloor"
-	},
-/area/awaymission/spacehotel)
 "ed" = (
 /obj/structure/closet/secure_closet/personal,
 /turf/simulated/floor/indestructible{
@@ -1049,7 +1021,7 @@
 /obj/structure/mirror{
 	pixel_x = 28
 	},
-/obj/structure/sink/directional/west,
+/obj/structure/sink/directional/east,
 /turf/simulated/floor/indestructible{
 	icon_state = "freezerfloor"
 	},
@@ -3188,14 +3160,6 @@
 "yE" = (
 /turf/simulated/wall/indestructible/invisible/view_portal,
 /area/awaymission/spacehotel)
-"zo" = (
-/obj/structure/toilet{
-	pixel_y = 8
-	},
-/turf/simulated/floor/indestructible{
-	icon_state = "floor"
-	},
-/area/awaymission/spacehotel/amazing_place)
 "zw" = (
 /obj/machinery/power/supermatter_crystal/shard/hugbox,
 /turf/simulated/floor/indestructible/plating,
@@ -23230,7 +23194,7 @@ ai
 ai
 ai
 cc
-cn
+vd
 cl
 cy
 cy
@@ -25363,7 +25327,7 @@ pj
 pj
 pj
 cl
-ec
+sS
 ei
 en
 ei
@@ -25623,7 +25587,7 @@ pj
 pj
 pj
 cl
-ec
+sS
 ei
 en
 es
@@ -26923,7 +26887,7 @@ pj
 pj
 pj
 cl
-ec
+sS
 ei
 en
 ei
@@ -27183,7 +27147,7 @@ pj
 pj
 pj
 cl
-ec
+sS
 ei
 en
 ei
@@ -31952,7 +31916,7 @@ eR
 eR
 bX
 am
-cu
+CS
 ae
 ag
 ag
@@ -32332,7 +32296,7 @@ hI
 ae
 ag
 ae
-zo
+HQ
 Dv
 an
 an

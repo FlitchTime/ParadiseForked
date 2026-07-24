@@ -34,7 +34,7 @@
 		PREPOSITIONAL = "унитазе",
 	)
 
-MAPPING_DIRECTIONAL_HELPERS_CUSTOM(/obj/structure/toilet, -SHIFTING_TOILET, SHIFTING_TOILET, 0, 0)
+MAPPING_DIRECTIONAL_HELPERS_CUSTOM(/obj/structure/toilet, SHIFTING_TOILET, -SHIFTING_TOILET, 0, 0)
 
 /obj/structure/toilet/Initialize(mapload)
 	. = ..()

@@ -1697,7 +1697,7 @@
 	},
 /area/ruin/space/spacehotelv1/entryhallway)
 "nx" = (
-/obj/structure/toilet,
+/obj/structure/toilet/directional/east,
 /turf/simulated/floor/plasteel{
 	icon_state = "white"
 	},
